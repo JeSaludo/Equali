@@ -1,0 +1,28 @@
+.dropdown-menu { 
+    transform: translateY(-30px);
+    transition: opacity 50ms ease-in-out, transform 150ms ease-in-out; 
+
+   }
+
+  .dropdown{
+    height: 40px;
+    transition: height 150ms ease-in-out, opacity 50ms ease-in-out, transform 150ms ease-in-out;
+  }
+
+  .dropdown.active{
+    height: 140px;
+   
+  }
+  .dropdown.active .dropdown-menu {
+    opacity: 1;
+    transform: translateY(0);
+   
+    pointer-events: auto;
+    transition: opacity 50ms ease-in-out, transform 150ms ease-in-out; 
+   }
+  
+
+   .dropdown.active .dropdown-button {
+      background-color: #EAF0FF;
+   
+   }

@@ -13,7 +13,9 @@
         rel="stylesheet">
     @vite('resources/css/app.css')
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
-    <link rel="stylesheet" href="{{ asset('css/style.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/main.css') }}">
+
+
 </head>
 
 <body>
@@ -27,50 +29,62 @@
             </div>
 
             <div class="">
-                <h2 class="font-raleway text-[14px] font-semibold text-[#718297] px-4">MAIN MENU</h2>
+                <h2 class="font-raleway text-[14px] font-semibold text-[#718297] px-4 my-2 ">MAIN MENU</h2>
 
-                <ul class="">
-                    <div class="bg-gradient-to-r from-[#234BDA] to-[#6499FF] mx-4 rounded-[15px] h-[33px] my-2">
+                <a href=""
+                    class="mx-4 bg-gradient-to-r from-[#234BDA] to-[#6499FF] px-4 py-2 rounded-[15px] flex justify-between items-center text-white my-2">
+                    <div class=""><i class='bx bxs-dashboard '></i> Overview</div>
 
+                </a>
 
-                        <li class="flex items-center justify-between mx-2  ">
-                            <div class="flex gap-2 my-[6px]">
-                                <i class='bx bxs-dashboard text-white my-[2px]'></i>
-                                <h1 class="font-ralewar text-[13px] font-semibold text-white"> Dashboard</h1>
-                            </div>
+                <nav class="relative">
+                    <div class="dropdown " data-dropdown>
 
-                            <div class="bg-white rounded-lg w-2 h-2"></div>
-                        </li>
+                        <a class="dropdown-button mx-4 cursor-pointer hover:bg-[#EAF0FF]  px-4 py-2 rounded-[15px] flex justify-between items-center text-[#718297] my-2"
+                            data-dropdown-button>Applicant</a>
+
+                        <div class="dropdown-menu  pointer-events-none opacity-0 " data-dropdown-content>
+                            <a
+                                class=" mx-4 cursor-pointer hover:bg-[#EAF0FF]  px-4 py-2 rounded-[15px] flex justify-between items-center text-[#718297] my-2">View
+                                Applicant</a>
+
+                            <a
+                                class=" mx-4 cursor-pointer hover:bg-[#EAF0FF]  px-4 py-2 rounded-[15px] flex justify-between items-center text-[#718297] my-2">View
+                                Applicant</a>
+                        </div>
                     </div>
 
-                    <a href="">
-                        <div
-                            class="hover:bg-gradient-to-r from-[#234BDA] to-[#6499FF] mx-4  text-[#718297]  hover:text-white rounded-[15px] h-[33px] my-2">
-                            <li class="flex items-center justify-between mx-2  ">
-                                <div class="flex gap-2 my-[6px]">
-                                    <i class='bx bxs-dashboard my-[2px]'></i>
-                                    <h1 class="font-ralewar text-[13px] font-semibold  hover:text-white">
-                                        Applicants</h1>
-                                </div>
-                                <div class="bg-white rounded-lg w-2 h-2"></div>
-                            </li>
+                    <div class="dropdown" data-dropdown>
+
+                        <a class="dropdown-button mx-4 cursor-pointer hover:bg-[#EAF0FF]  px-4 py-2 rounded-[15px] flex justify-between items-center text-[#718297] my-2"
+                            data-dropdown-button>User</a>
+
+                        <div class="dropdown-menu  pointer-events-none opacity-0" data-dropdown-content>
+                            <a
+                                class=" mx-4 cursor-pointer hover:bg-[#EAF0FF]  px-4 py-2 rounded-[15px] flex justify-between items-center text-[#718297] my-2">
+                                View User</a>
+
+                            <a
+                                class=" mx-4 cursor-pointer hover:bg-[#EAF0FF]  px-4 py-2 rounded-[15px] flex justify-between items-center text-[#718297] my-2">
+                                Add User</a>
                         </div>
-                    </a>
-
-
-
-                </ul>
-
-                <h2 class="font-raleway text-[14px] font-semibold text-[#718297] px-4">SETTINGS</h2>
-
-                <ul class="">
+                    </div>
+                </nav>
 
 
 
 
-
-                </ul>
             </div>
+
+
+
+
+
+
+
+
+
+
         </aside>
         <div class="ml-[218px] w-auto  text-black flex justify-between ">
             <div class="my-4">
@@ -122,7 +136,7 @@
         </section>
 
     </div>
-
+    <script src="{{ asset('js/dropdown.js') }}"></script>
 </body>
 
 </html>

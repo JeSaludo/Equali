@@ -61,9 +61,13 @@
 
                     </div>
 
-                    <div class="relative my-4">
+                    <div class="relative my-4 flex w-full">
+                        <div
+                            class="h-[50px] py-3 w-4/12 bg-white placeholder:text-[#4E4E4E]  px-[40px] rounded-l   border-x-2 border-y-2 border-r-2 border-[#D7D8D0]">
+                            <label for="">Role </label>
+                        </div>
                         <select name="role"
-                            class="h-[50px] w-full rounded placeholder:text-[#4E4E4E]  px-[40px] border-2 border-[#D7D8D0]"
+                            class="h-[50px] w-full  placeholder:text-[#4E4E4E]  px-[40px] rounded-r border-y-2 border-r-2 border-[#D7D8D0]"
                             autocomplete="off">
                             <option disabled selected>Choose a Role</option>
                             <option value="Program Head">Program Head</option>

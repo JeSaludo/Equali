@@ -62,7 +62,7 @@ class AuthController extends Controller
         $user->role = 'User';
         $user->save();
 
-        return redirect()->route('login.show')->with('status', 'Registration Successfull');
+        return redirect()->route('home')->with('status', 'Registration Successfull');
     }
 
     public function ShowAdminRegistration()
