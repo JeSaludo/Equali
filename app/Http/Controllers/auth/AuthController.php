@@ -85,7 +85,7 @@ class AuthController extends Controller
         $user->role = $validatedData['role'];
         $user->save();
 
-        return redirect()->route('home')->with('status', 'Registration Successfull');
+        return redirect()->route('auth.login')->with('status', 'Registration Successfull');
     }
 
     public function Logout(Request $request)

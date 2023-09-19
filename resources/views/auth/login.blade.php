@@ -90,7 +90,16 @@
                                 {{ $message }}
                             </h1>
                         @enderror
+
+                        @if (session('status'))
+                            <div class="bg-gray-200 p-3 text-[12px] rounded-md text-green-500 font-bold font-poppins">
+                                {{ session('status') }}
+                            </div>
+                        @endif
                     </div>
+
+
+
 
                 </form>
 

@@ -26,5 +26,8 @@ Route::post('/login/authenticate', [AuthController::class, 'Authenticate'])->nam
 $rndRoute = "31dsda943dasd4azx2Qesd2123";
 Route::get('/register/admin/' . $rndRoute, [AuthController::class, 'ShowAdminRegistration'])->name("auth.show.admin.registration");
 Route::post('/register/store/admin/' . $rndRoute, [AuthController::class, 'CreateAccountAdmin'])->name("auth.store.admin.registration");
+Route::get('dashboard/overview', [AdminController::class, 'ShowAdminOverview'])->name('admin.dashboard.overview');
+Route::get('dashboard/add-question', [AdminController::class, 'ShowAddQuestion'])->name('admin.dashboard.add-question');
 
-Route::get('/admin/dashboard/overview', [AdminController::class, 'ShowAdminOverview'])->name('admin.dashboard.overview');
+Route::get('/dashboard/questions', [AdminController::class, 'ShowQuestions']);
+

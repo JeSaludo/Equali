@@ -132,7 +132,7 @@
         <div class="ml-[218px] w-auto  text-black flex justify-between ">
             <div class="my-4">
                 <h1 class="text-[#1D489A] font-poppins font-medium text-[24px] mx-8">Welcome, Name Here👋</h1>
-                <p class="text-[#718297] text-[12px] font-raleway font-normal mx-8 mb-4">Check your info here</p>
+                <p class="text-[#718297] text-[12px] font-raleway font-normal mx-8 mb-4"> Question Bank </p>
             </div>
 
             <div class="my-4 "><!--need to rework this-->
@@ -172,10 +172,44 @@
         </div>
 
 
-        <section class="ml-[218px] main ">
-            <div class="bg-white mx-4 w-[200px] h-14">
-                <h1>Hello</h1>
-            </div>
+        <section class="ml-[218px] ">
+
+            <div class="bg-white  mx-4 rounded-[12px]  h-[587px] p-4">
+
+                <div class="flex justify-between">
+                    <div class="flex w-2/12 relative">
+
+                        <i class='absolute top-0 left-0 py-4 pl-3 bx bx-filter-alt'></i>
+                        <select name="difficulty"
+                            class="h-[50px] w-10/12  placeholder:text-[#4E4E4E] placeholder:font-poppins   px-[40px] rounded-r border-y-2 border-x-2 border-[#D7D8D0] rounded-lg"
+                            autocomplete="off">
+                            <option disabled selected>FILTER</option>
+                            <option value="Program Head">Easy</option>
+                            <option value="Proctor">Medium</option>
+                            <option value="Dean">Hard</option>
+
+                        </select>
+
+
+                    </div>
+
+                    <div class="w-2/12">
+                        <button type="submit"
+                            class="text-lg font-poppins font-normal mr-2 w-full h-[50px] rounded-[18px]  bg-[#2B6CE6] hover:bg-[#134197] transition-colors duration-200 text-white">
+                            <i class='bx bx-plus-medical'></i> Add Question</button>
+                    </div>
+                </div>
+
+
+
+
+
+
+
+
+
+
+
         </section>
 
     </div>
