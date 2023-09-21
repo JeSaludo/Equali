@@ -8,5 +8,10 @@ class InterviewController extends Controller
 {
     function ShowPendingInterview(){
         return view('admin.dashboard-pending-interview');
+    } 
+    function ShowAddInterview(){
+        return view('admin.dashboard-add-interview');
     }
+
+    
 }

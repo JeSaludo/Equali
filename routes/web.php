@@ -38,3 +38,4 @@ Route::post('/dashboard/add-question/store', [QuestionController::class, 'StoreQ
 
 
 Route::get('/dashboard/interview-pending',[InterviewController::class, 'ShowPendingInterview']);
+Route::get('/dashboard/add-interview', [InterviewController::class, 'ShowAddInterview']);
