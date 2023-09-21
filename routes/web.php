@@ -2,6 +2,8 @@
 
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\auth\AuthController;
+use App\Http\Controllers\ExamController;
+use App\Http\Controllers\QuestionController;
 use Illuminate\Auth\Events\Login;
 use Illuminate\Support\Facades\Route;
 
@@ -27,7 +29,10 @@ $rndRoute = "31dsda943dasd4azx2Qesd2123";
 Route::get('/register/admin/' . $rndRoute, [AuthController::class, 'ShowAdminRegistration'])->name("auth.show.admin.registration");
 Route::post('/register/store/admin/' . $rndRoute, [AuthController::class, 'CreateAccountAdmin'])->name("auth.store.admin.registration");
 Route::get('dashboard/overview', [AdminController::class, 'ShowAdminOverview'])->name('admin.dashboard.overview');
-Route::get('dashboard/add-question', [AdminController::class, 'ShowAddQuestion'])->name('admin.dashboard.add-question');
 
-Route::get('/dashboard/questions', [AdminController::class, 'ShowQuestions']);
+
+Route::get('dashboard/add-question', [QuestionController::class, 'ShowAddQuestion'])->name('admin.dashboard.add-question');
+Route::get('/dashboard/questions', [QuestionController::class, 'ShowQuestions'])->name('admin.dashboard.view-question');
+Route::post('/dashboard/add-question/store', [QuestionController::class, 'StoreQuestion'])->name('admin.dashboard.store-question');
+
 

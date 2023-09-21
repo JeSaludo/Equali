@@ -44,4 +44,8 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
+
+    protected function examSubmissions(){
+        return $this->hasMany(ExamSubmission::class);
+    }
 }

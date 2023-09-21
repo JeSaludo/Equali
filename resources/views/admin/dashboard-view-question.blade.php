@@ -19,7 +19,7 @@
 </head>
 
 <body>
-    <div class="min-h-screen  bg-[#EEF4F6]">
+    <div class="min-h-screen  bg-[#EEF4F6] ">
 
 
         <aside class="fixed top-0 left-0 w-[218px] h-screen bg-white">
@@ -28,17 +28,17 @@
                 <div class="border-b-2 w-6/12 mx-auto"></div>
             </div>
 
-            <div class="">
-                <h2 class="font-raleway text-[14px] font-semibold text-[#718297] px-4 my-2 ">MAIN MENU</h2>
+            <div class="font-raleway font-semibold">
+                <h2 class=" text-[14px]  text-[#718297] px-4 my-2 ">MAIN MENU</h2>
 
                 <a href=""
-                    class="mx-4 bg-gradient-to-r from-[#234BDA] to-[#6499FF] px-4 py-2 rounded-[15px] flex justify-between items-center text-white my-2">
+                    class="mx-4  px-4 py-2 rounded-[15px] flex justify-between items-center hover:bg-[#EAF0FF] text-[#718297] my-2">
                     <div class=""><i class='bx bxs-dashboard '></i> Overview </i></div>
-                    <i class='bx bxs-circle'></i>
+
                 </a>
 
-                <nav class="relative">
-                    <div class="dropdown" data-dropdown>
+                <nav class="relative ">
+                    <div class="dropdown " data-dropdown>
 
 
                         <a class="dropdown-button mx-4 cursor-pointer hover:bg-[#EAF0FF]  px-4 py-2 rounded-[15px] flex justify-between items-center text-[#718297] my-2"
@@ -96,13 +96,13 @@
 
                         <a class="dropdown-button mx-4 cursor-pointer hover:bg-[#EAF0FF]  px-4 py-2 rounded-[15px] flex justify-between items-center text-[#718297] my-2"
                             data-dropdown-button>
-                            <div class="pointer-events-none"><i class='bx bxs-user pr-2'></i>Question Bank</div><i
+                            <div class="pointer-events-none"><i class='bx bxs-data pr-2'></i></i>Question Bank</div><i
                                 class='caret-icon pointer-events-none  bx bx-caret-right'></i>
                         </a>
 
                         <div class="dropdown-menu  pointer-events-none opacity-0 " data-dropdown-content>
                             <a href="#test"
-                                class=" mx-4 px-4 py-2 hover:cursor-pointer hover:bg-[#EAF0FF] rounded-[15px] flex justify-between items-center text-[#718297] my-2">
+                                class="bg-gradient-to-r from-[#234BDA] to-[#6499FF] mx-4 px-4 py-2 hover:cursor-pointer  rounded-[15px] flex justify-between items-center text-white my-2">
                                 <div class=""><i class='bx bx-radio-circle pr-2 '></i>View
                                     Question
                                 </div>
@@ -171,37 +171,161 @@
 
         </div>
 
-
         <section class="ml-[218px] ">
 
-            <div class="bg-white  mx-4 rounded-[12px]  h-[587px] p-4">
+            <div class="bg-white mx-4 rounded-[12px]  mb-2 p-4  ">
 
-                <div class="flex justify-between">
-                    <div class="flex w-2/12 relative">
+                <div class="flex justify-end">
 
-                        <i class='absolute top-0 left-0 py-4 pl-3 bx bx-filter-alt'></i>
-                        <select name="difficulty"
-                            class="h-[50px] w-10/12  placeholder:text-[#4E4E4E] placeholder:font-poppins   px-[40px] rounded-r border-y-2 border-x-2 border-[#D7D8D0] rounded-lg"
-                            autocomplete="off">
-                            <option disabled selected>FILTER</option>
-                            <option value="Program Head">Easy</option>
-                            <option value="Proctor">Medium</option>
-                            <option value="Dean">Hard</option>
-
-                        </select>
-
-
-                    </div>
 
                     <div class="w-2/12">
-                        <button type="submit"
-                            class="text-lg font-poppins font-normal mr-2 w-full h-[50px] rounded-[18px]  bg-[#2B6CE6] hover:bg-[#134197] transition-colors duration-200 text-white">
-                            <i class='bx bx-plus-medical'></i> Add Question</button>
+                        <button id="addQuestionBtn"
+                            class="px-4 py-2 text-lg font-poppins font-normal mr-2 w-full  rounded-[15px]  bg-[#2B6CE6] hover:bg-[#134197] transition-colors duration-200 text-white">
+                            <i id="icon" class='bx bx-plus-medical pr-2'></i> Add
+                            Question</button>
+                    </div>
+                </div>
+
+                <div class="relative mt-5 ">
+                    <div id="addQuestionContent"
+                        class="absolute  w-full  z-10 top-0 left-0 opacity-0  pointer-events-none translate-y-[-15px] transition-all transform  delay-150 ease-linear">
+                        <form action="{{ route('admin.dashboard.store-question') }}" method="POST">
+                            @csrf
+                            <div class="bg-white mx-4 rounded-[12px]  h-[500] p-4 border-2 border-gray-500 ">
+                                <div class="bg-[#4c4a67] h-[163px]  rounded-[8px] ">
+                                    <input type="text"
+                                        class="bg-transparent text-[28px] mx-auto text-center w-full h-full placeholder:text-[#EBEFF9] caret-white text-white"
+                                        placeholder="Type Question Here" name="question_text" required
+                                        autocomplete="off">
+                                </div>
+
+                                <div class="h-[163px] my-7 flex justify-evenly gap-4 ">
+                                    <div class="w-full bg-[#4c4a67] rounded-lg relative">
+                                        <input type="text"
+                                            class="bg-transparent text-[16px]  placeholder:font-poppins mx-auto text-center w-full h-full placeholder:text-[#EBEFF9] caret-white text-white"
+                                            placeholder="Type Question Here" name="choice_text[]" required
+                                            autocomplete="off">
+                                        <div>
+                                            <input
+                                                class="absolute top-0 right-0 m-1 w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 "
+                                                type="radio" id="choice" name="correct_choice" value="1"
+                                                checked />
+                                        </div>
+
+                                    </div>
+                                    <div class="w-full bg-[#4c4a67] rounded-lg relative">
+                                        <input type="text"
+                                            class="bg-transparent text-[16px]  placeholder:font-poppins mx-auto text-center w-full h-full placeholder:text-[#EBEFF9] caret-white text-white"
+                                            placeholder="Type Question Here" name="choice_text[]" required required
+                                            autocomplete="off">
+                                        <div>
+                                            <input
+                                                class="absolute top-0 right-0 m-1 w-4 h-4 text-blue-600 bg-gray-100 border-gray-300"
+                                                type="radio" id="choice" name="correct_choice"
+                                                value="2" />
+                                        </div>
+                                    </div>
+                                    <div class="w-full bg-[#4c4a67] rounded-lg relative">
+                                        <input type="text"
+                                            class="bg-transparent text-[16px]  placeholder:font-poppins mx-auto text-center w-full h-full placeholder:text-[#EBEFF9] caret-white text-white"
+                                            placeholder="Type Question Here" name="choice_text[]" required required
+                                            autocomplete="off">
+                                        <div>
+                                            <input
+                                                class="absolute top-0 right-0 m-1 w-4 h-4 text-blue-600 bg-gray-100 border-gray-300"
+                                                type="radio" id="choice" name="correct_choice"
+                                                value="3" />
+                                        </div>
+                                    </div>
+                                    <div class="w-full bg-[#4c4a67] rounded-lg relative">
+                                        <input type="text"
+                                            class="bg-transparent text-[16px]  placeholder:font-poppins mx-auto text-center w-full h-full placeholder:text-[#EBEFF9] caret-white text-white"
+                                            placeholder="Type Question Here" name="choice_text[]" required required
+                                            autocomplete="off">
+                                        <div>
+                                            <input
+                                                class="absolute top-0 right-0 m-1 w-4 h-4 text-blue-600 bg-gray-100 border-gray-300"
+                                                type="radio" id="choice" name="correct_choice"
+                                                value="4" />
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="flex justify-end w-full">
+                                    <div class="w-2/12">
+                                        <input type="submit" value="Save Question"
+                                            class="text-lg font-poppins font-normal mr-2 w-full h-[50px] rounded-[18px] bg-[#2B6CE6] hover:bg-[#134197] transition-colors duration-200 text-white">
+                                    </div>
+
+                                </div>
+
+
+
+                            </div>
+
+                        </form>
+                        @if ($errors->any())
+                            <div class="text-red-900">
+                                <ul>
+                                    @foreach ($errors->all() as $error)
+                                        <li>{{ $error }}</li>
+                                    @endforeach
+                                </ul>
+                            </div>
+                        @endif
                     </div>
                 </div>
 
 
+                <div id="questionContent" class="mb-4 ">
 
+                    <table class="w-full ">
+                        <thead class="border-b-2 border-[#718297]">
+                            <tr>
+                                <th
+                                    class="py-2
+                            px-4 font-poppins text-[22px] text-[#26386A] uppercase">
+                                    No.</th>
+                                <th class="py-2 px-4 font-poppins text-[22px] text-[#26386A]">Question</th>
+                                <th class="py-2 px-4 font-poppins text-[22px] text-[#26386A]">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody class="text-center font-poppins text-[18px] w-full  ">
+                            <div class="flex justify-between">
+                                @foreach ($questions as $index => $question)
+                                    <tr
+                                        class="{{ $index % 2 == 0 ? 'bg-[#aecafd5c]' : 'bg-white' }} border-b-2 border-gray-100 ">
+                                        <td class="px-3 py-2 w-2/12">{{ $index + 1 }}</td>
+                                        <td class="px-3 py-2 w-6/12">{{ $question->question_text }}</td>
+                                        <td class="px-3 py-2 w-5/12 text-[#718297] mx-auto  flex justify-evenly">
+                                            <a href=""><i class='bx bxs-edit'></i></a>
+                                            <a href=""><i class='bx bxs-trash'></i></a>
+                                            <a href=""><i class='bx bx-dots-vertical'></i></a>
+                                        </td>
+                                    </tr>
+                                @endforeach
+                            </div>
+
+
+
+
+
+
+                        </tbody>
+
+                    </table>
+
+
+
+                </div>
+
+
+
+
+
+
+
+            </div>
 
 
 
@@ -214,6 +338,7 @@
 
     </div>
     <script src="{{ asset('js/dropdown.js') }}"></script>
+    <script src="{{ asset('js/scripts.js') }}"></script>
 </body>
 
 </html>

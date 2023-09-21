@@ -173,74 +173,61 @@
 
 
         <section class="ml-[218px] ">
-            <form action="">
+            <form action="{{ route('admin.dashboard.store-question') }}" method="POST">
+                @csrf
                 <div class="bg-white mx-4 rounded-[12px]  h-[587px] p-4">
                     <div class="bg-[#4c4a67] h-[163px]  rounded-[8px] ">
                         <input type="text"
                             class="bg-transparent text-[28px] mx-auto text-center w-full h-full placeholder:text-[#EBEFF9] caret-white text-white"
-                            placeholder="Type Question Here" requiredvv>
+                            placeholder="Type Question Here" name="question_text" required>
                     </div>
 
                     <div class="h-[163px] my-7 flex justify-evenly gap-4 ">
                         <div class="w-full bg-[#4c4a67] rounded-lg relative">
                             <input type="text"
                                 class="bg-transparent text-[16px]  placeholder:font-poppins mx-auto text-center w-full h-full placeholder:text-[#EBEFF9] caret-white text-white"
-                                placeholder="Type Question Here" required>
+                                placeholder="Type Question Here" name="choice_text[]" required>
                             <div>
                                 <input
                                     class="absolute top-0 right-0 m-1 w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 "
-                                    type="radio" id="choice" name="choice" value="A" checked />
+                                    type="radio" id="choice" name="correct_choice" value="1" checked />
                             </div>
 
                         </div>
                         <div class="w-full bg-[#4c4a67] rounded-lg relative">
                             <input type="text"
                                 class="bg-transparent text-[16px]  placeholder:font-poppins mx-auto text-center w-full h-full placeholder:text-[#EBEFF9] caret-white text-white"
-                                placeholder="Type Question Here" required>
+                                placeholder="Type Question Here" name="choice_text[]" required>
                             <div>
                                 <input
                                     class="absolute top-0 right-0 m-1 w-4 h-4 text-blue-600 bg-gray-100 border-gray-300"
-                                    type="radio" id="choice" name="choice" value="B" />
+                                    type="radio" id="choice" name="correct_choice" value="2" />
                             </div>
                         </div>
                         <div class="w-full bg-[#4c4a67] rounded-lg relative">
                             <input type="text"
                                 class="bg-transparent text-[16px]  placeholder:font-poppins mx-auto text-center w-full h-full placeholder:text-[#EBEFF9] caret-white text-white"
-                                placeholder="Type Question Here" required>
+                                placeholder="Type Question Here" name="choice_text[]" required>
                             <div>
                                 <input
                                     class="absolute top-0 right-0 m-1 w-4 h-4 text-blue-600 bg-gray-100 border-gray-300"
-                                    type="radio" id="choice" name="choice" value="C" />
+                                    type="radio" id="choice" name="correct_choice" value="3" />
                             </div>
                         </div>
                         <div class="w-full bg-[#4c4a67] rounded-lg relative">
                             <input type="text"
                                 class="bg-transparent text-[16px]  placeholder:font-poppins mx-auto text-center w-full h-full placeholder:text-[#EBEFF9] caret-white text-white"
-                                placeholder="Type Question Here" required>
+                                placeholder="Type Question Here" name="choice_text[]" required>
                             <div>
                                 <input
                                     class="absolute top-0 right-0 m-1 w-4 h-4 text-blue-600 bg-gray-100 border-gray-300"
-                                    type="radio" id="choice" name="choice" value="D" />
+                                    type="radio" id="choice" name="correct_choice" value="4" />
                             </div>
                         </div>
                     </div>
 
-                    <div class="flex justify-between w-full">
-                        <div class="flex  w-4/12">
-                            <div
-                                class="h-[50px] py-3  bg-white placeholder:text-[#4E4E4E]   font-poppins px-[40px] rounded-l   border-x-2 border-y-2 border-r-2 border-[#D7D8D0]">
-                                <label for="">Difficulty </label>
-                            </div>
-                            <select name="difficulty"
-                                class="h-[50px] w-full  placeholder:text-[#4E4E4E] placeholder:font-poppins   px-[40px] rounded-r border-y-2 border-r-2 border-[#D7D8D0]"
-                                autocomplete="off">
-                                <option disabled selected>Choose Diffuculty</option>
-                                <option value="Program Head">Easy</option>
-                                <option value="Proctor">Medium</option>
-                                <option value="Dean">Hard</option>
+                    <div class="flex justify-end w-full">
 
-                            </select>
-                        </div>
 
                         <div class="w-2/12">
                             <input type="submit" value="Save Question"
@@ -256,7 +243,21 @@
                 </div>
 
             </form>
+            @if ($errors->any())
+                <div class="text-red-900">
+                    <ul>
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
 
+            @if (session('success'))
+                <div class="bg-gray-200 p-3 text-[12px] rounded-md text-green-500 font-bold font-poppins">
+                    {{ session('success') }}
+                </div>
+            @endif
 
 
 

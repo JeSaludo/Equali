@@ -11,12 +11,7 @@ class AdminController extends Controller
         return view('admin.dashboard-overview');
     }
 
-    function ShowAddQuestion()
-    {
-        return view('admin.dashboard-add-question');
-    }
+    
 
-    function ShowQuestions(){
-        return view('admin.dashboard-view-question');
-    }
+   
 }
