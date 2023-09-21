@@ -3,6 +3,7 @@
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\auth\AuthController;
 use App\Http\Controllers\ExamController;
+use App\Http\Controllers\InterviewController;
 use App\Http\Controllers\QuestionController;
 use Illuminate\Auth\Events\Login;
 use Illuminate\Support\Facades\Route;
@@ -36,3 +37,4 @@ Route::get('/dashboard/questions', [QuestionController::class, 'ShowQuestions'])
 Route::post('/dashboard/add-question/store', [QuestionController::class, 'StoreQuestion'])->name('admin.dashboard.store-question');
 
 
+Route::get('/dashboard/interview-pending',[InterviewController::class, 'ShowPendingInterview']);
