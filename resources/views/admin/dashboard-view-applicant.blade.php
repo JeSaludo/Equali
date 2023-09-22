@@ -4,8 +4,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Equali | Login </title>
+    <title>Equali | Applicant </title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
@@ -156,7 +157,7 @@
             </div>
 
             <div class="my-6">
-                <h1>September 9, 2023</h1>
+                <h1>September 22, 2023</h1>
             </div>
 
             <div class="my-6 mx-4">
@@ -167,6 +168,8 @@
                         fill="#626B7F" />
                     <circle cx="18" cy="8" r="4" fill="#EA3332" />
                 </svg>
+                
+
             </div>
 
         </div>
@@ -176,14 +179,39 @@
             <div class="bg-white mx-4 p-2">
             
             <table class="w-full font-poppins ">
+                <div class="flex justify-end mt-3">
+                    <button class="text-[#718297] bg-[#254EDB] hover:bg-[#6679a9] py-2 px-2 rounded-md focus:ring-blue-300 dark:focus:ring-blue-800">
+                        <i class='bx bx-plus-circle text-white'></i> <a class="text-[#FFFF]">Add New Applicant</a>
+                    </button>
+                </div>
+                       
                 <thead class="border-b-2 border-[#718297]"">
                     <tr class=" text-[22px] text-[#26386A]">
-                         <th class="px-10 py-2">Applicant</th>
+                         <th class="px-3 py-2">Applicant</th>
                          <th class="px-3 py-2">Score</th>
                          <th class="px-3 py-2">Status</th>
                          <th class="px-3 py-2">Action</th>
                     </tr>
                 </thead>
+                <tbody class="mx-auto text-center">
+                    <tr>
+                         <td class="px-8 py-2">
+                         
+                            <div>
+                                <h1 class="text-[18px]">Vincent Ray Orbien</h1>
+                                <p class="text-[14px] pl-10 text-[#8898AC]">vincentorbien@example.com</p>
+                            </div>
+                            
+                         </td>
+                         <td class="px-10 py-2 text-[#617388]">70/80</td>
+                         <td class="px-10 py-2">Passed</td>
+                         <td>
+                            <a href=""><i class='text-[#718297] bx bxs-edit'></i></a>
+                            <a href=""><i class='text-[#718297] bx bxs-trash'></i></a>
+                            <a href=""><i class='text-[#718297] bx bx-dots-vertical'></i></a>
+                         </td>
+                     </tr>
+                </tbody>
                 <tbody class="mx-auto text-center">
                     <tr>
                          <td class="px-8 py-2">
@@ -193,12 +221,30 @@
                             </div>
                             
                          </td>
-                         <td class="px-10 py-2">70/80</td>
+                         <td class="px-10 py-2 text-[#617388]">10/80</td>
+                         <td class="px-10 py-2">Failed</td>
+                         <td>
+                            <a href=""><i class='text-[#718297] bx bxs-edit'></i></a>
+                            <a href=""><i class='text-[#718297] bx bxs-trash' ></i></a>
+                            <a href=""><i class='text-[#718297] bx bx-dots-vertical' ></i></a>
+                         </td>
+                     </tr>
+                </tbody>
+                <tbody class="mx-auto text-center">
+                    <tr>
+                         <td class="px-8 py-2">
+                            <div>
+                                <h1 class="text-[18px]">Vincent Ray Orbien</h1>
+                                <p class="text-[14px] pl-10 text-[#8898AC]">vincentorbien@example.com</p>
+                            </div>
+                            
+                         </td>
+                         <td class="px-10 py-2 text-[#617388]">70/80</td>
                          <td class="px-10 py-2">Passed</td>
                          <td>
-                            <a href=""><i class='bx bxs-edit'></i></a>
-                            <a href=""><i class='bx bxs-trash' ></i></a>
-                            <a href=""><i class='bx bx-dots-vertical' ></i></a>
+                            <a href=""><i class='text-[#718297] bx bxs-edit'></i></a>
+                            <a href=""><i class='text-[#718297] bx bxs-trash' ></i></a>
+                            <a href=""><i class='text-[#718297] bx bx-dots-vertical' ></i></a>
                          </td>
                      </tr>
                 </tbody>
