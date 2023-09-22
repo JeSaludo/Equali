@@ -4,8 +4,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Equali | Login </title>
+    <title>Equali | Screening Form </title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
@@ -173,9 +174,30 @@
 
 
         <section class="ml-[218px] main ">
-            <div class="bg-white mx-4 w-[200px] h-14">
-                <h1>Hello</h1>
+            <div class="bg-white mx-4 rounded-[12px]  mb-2 p-4">
+                <h1 class="text-center text-[#26386A] font-poppins font-bold text-2xl my-3">Screening Form</h1>
+                <div>
+                    <form class="mx-10">
+                        <div class="flex mt-10">
+                            <input class="pl-8 pr-56 border-2 py-2 rounded-[10px]" type="text"
+                                placeholder="Applicant Name:">
+                            <input class="border-2 rounded-[10px] py-2 pl-8 ml-64 w-full" type="date"
+                                placeholder="Date:">
+                        </div>
+                        <div class="flex mt-4">
+                            <input class="pl-8 pr-56 border-2 rounded-[10px]" type="text"
+                                placeholder="Home Address:">
+                            <select class="py-2 pl-8 border-2 rounded-[10px] ml-64 w-full" name="">
+                                <option value="" disabled selected>Course Applied:</option>
+                                <option value="">Bachelor in Science of Information Technology</option>
+                                <option value="">Bachelor in Science of Information Systems</option>
+                            </select>
+                        </div>
+                    </form>
+
+                </div>
             </div>
+
         </section>
 
     </div>
