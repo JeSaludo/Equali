@@ -296,9 +296,12 @@
                                     <tr
                                         class="{{ $index % 2 == 0 ? 'bg-[#aecafd5c]' : 'bg-white' }} border-b-2 border-gray-100 ">
                                         <td class="px-3 py-2 w-2/12">{{ $index + 1 }}</td>
-                                        <td class="px-3 py-2 w-6/12">{{ $question->question_text }}</td>
+                                        <td class="px-3 py-2 w-6/12 text-left pl-[220px] whitespace-nowrap">
+                                            {{ $question->question_text }}
+                                        </td>
                                         <td class="px-3 py-2 w-5/12 text-[#718297] mx-auto  flex justify-evenly">
-                                            <a href=""><i class='bx bxs-edit'></i></a>
+                                            <a href="{{ route('admin.dashboard.edit-question', $question) }}"><i
+                                                    class='bx bxs-edit'></i></a>
                                             <a href=""><i class='bx bxs-trash'></i></a>
                                             <a href=""><i class='bx bx-dots-vertical'></i></a>
                                         </td>

@@ -173,78 +173,51 @@
 
 
         <section class="ml-[218px] ">
-            <form action="{{ route('admin.dashboard.store-question') }}" method="POST">
+            <form action="{{ route('admin.dashboard.update-question', $question) }}" method="POST">
                 @csrf
+                @method('put')
                 <div class="bg-white mx-4 rounded-[12px]  h-[587px] p-4">
                     <div class="bg-[#4c4a67] h-[163px]  rounded-[8px] ">
                         <input type="text"
                             class="bg-transparent text-[28px] mx-auto text-center w-full h-full placeholder:text-[#EBEFF9] caret-white text-white"
-                            placeholder="Type Question Here" name="question_text" required>
+                            placeholder="Type Question Here" name="question_text"
+                            value="{{ $question->question_text }}" required>
                     </div>
 
-                    <div class="h-[163px] my-7 flex justify-evenly gap-4 ">
-                        <div class="w-full bg-[#4c4a67] rounded-lg relative">
-                            <input type="text"
-                                class="bg-transparent text-[16px]  placeholder:font-poppins mx-auto text-center w-full h-full placeholder:text-[#EBEFF9] caret-white text-white"
-                                placeholder="Type Question Here" name="choice_text[]" required>
-                            <div>
-                                <input
-                                    class="absolute top-0 right-0 m-1 w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 "
-                                    type="radio" id="choice" name="correct_choice" value="1" checked />
-                            </div>
+                    <div>
+                        <div class="h-[163px] my-7 flex justify-evenly gap-4 ">
+                            @foreach ($question->choices as $key => $choice)
+                                <div class="w-full bg-[#4c4a67] rounded-lg relative">
+                                    <input type="text"
+                                        class="bg-transparent text-[16px]  placeholder:font-poppins mx-auto text-center w-full h-full placeholder:text-[#EBEFF9] caret-white text-white"
+                                        placeholder="Type Question Here" name="choice_text[]"
+                                        value="{{ $choice->choice_text }}" required>
 
+                                    <input
+                                        class="absolute top-0 right-0 m-1 w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 "
+                                        type="radio" id="choice" name="correct_choice"
+                                        value="{{ $key + 1 }}" @if ($choice->is_correct) checked @endif />
+                                </div>
+                            @endforeach
                         </div>
-                        <div class="w-full bg-[#4c4a67] rounded-lg relative">
-                            <input type="text"
-                                class="bg-transparent text-[16px]  placeholder:font-poppins mx-auto text-center w-full h-full placeholder:text-[#EBEFF9] caret-white text-white"
-                                placeholder="Type Question Here" name="choice_text[]" required>
-                            <div>
-                                <input
-                                    class="absolute top-0 right-0 m-1 w-4 h-4 text-blue-600 bg-gray-100 border-gray-300"
-                                    type="radio" id="choice" name="correct_choice" value="2" />
-                            </div>
-                        </div>
-                        <div class="w-full bg-[#4c4a67] rounded-lg relative">
-                            <input type="text"
-                                class="bg-transparent text-[16px]  placeholder:font-poppins mx-auto text-center w-full h-full placeholder:text-[#EBEFF9] caret-white text-white"
-                                placeholder="Type Question Here" name="choice_text[]" required>
-                            <div>
-                                <input
-                                    class="absolute top-0 right-0 m-1 w-4 h-4 text-blue-600 bg-gray-100 border-gray-300"
-                                    type="radio" id="choice" name="correct_choice" value="3" />
-                            </div>
-                        </div>
-                        <div class="w-full bg-[#4c4a67] rounded-lg relative">
-                            <input type="text"
-                                class="bg-transparent text-[16px]  placeholder:font-poppins mx-auto text-center w-full h-full placeholder:text-[#EBEFF9] caret-white text-white"
-                                placeholder="Type Question Here" name="choice_text[]" required>
-                            <div>
-                                <input
-                                    class="absolute top-0 right-0 m-1 w-4 h-4 text-blue-600 bg-gray-100 border-gray-300"
-                                    type="radio" id="choice" name="correct_choice" value="4" />
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="flex justify-end w-full">
+                        <div class="flex justify-end w-full">
 
 
-                        <div class="w-2/12">
-                            <input type="submit" value="Save Question"
-                                class="text-lg font-poppins font-normal mr-2 w-full h-[50px] rounded-[18px] bg-[#2B6CE6] hover:bg-[#134197] transition-colors duration-200 text-white">
+                            <div class="w-2/12 mb-8">
+                                <input type="submit" value="Save Question"
+                                    class="text-lg font-poppins font-normal mr-2 w-full h-[50px] rounded-[18px] bg-[#2B6CE6] hover:bg-[#134197] transition-colors duration-200 text-white">
+
+                            </div>
+
 
                         </div>
 
 
                     </div>
-
-
-
-                </div>
 
             </form>
             @if ($errors->any())
-                <div class="text-red-900">
+                <div class="text-red-900 ">
                     <ul>
                         @foreach ($errors->all() as $error)
                             <li>{{ $error }}</li>
