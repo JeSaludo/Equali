@@ -92,4 +92,12 @@ class QuestionController extends Controller
         return redirect()->route('admin.dashboard.view-question')->with('success', 'Question edited successfully!');
     }   
 
+    public function DeleteQuestion($id){
+        $question = Question::findOrFail($id);
+        $question->choices()->delete();
+        $question->delete();
+
+        return redirect()->route('admin.dashboard.view-question')->with('success', 'Question remove successfully!');
+    }
+
 }

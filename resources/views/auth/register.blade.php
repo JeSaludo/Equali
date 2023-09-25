@@ -63,8 +63,8 @@
 
                     <div class="relative my-4 flex w-full">
                         <div
-                            class="h-[50px] py-3 w-4/12 bg-white placeholder:text-[#4E4E4E]  px-[40px] rounded-l   border-x-2 border-y-2 border-r-2 border-[#D7D8D0]">
-                            <label for="">Role </label>
+                            class="h-[50px] py-3 w-5/12 bg-white whitespace-nowrap placeholder:text-[#4E4E4E]  px-[40px] rounded-l   border-x-2 border-y-2 border-r-2 border-[#D7D8D0]">
+                            <label for="">Admin Type </label>
                         </div>
                         <select name="role"
                             class="h-[50px] w-full  placeholder:text-[#4E4E4E]  px-[40px] rounded-r border-y-2 border-r-2 border-[#D7D8D0]"

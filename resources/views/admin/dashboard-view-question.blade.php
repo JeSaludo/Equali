@@ -294,15 +294,24 @@
                             <div class="flex justify-between">
                                 @foreach ($questions as $index => $question)
                                     <tr
-                                        class="{{ $index % 2 == 0 ? 'bg-[#aecafd5c]' : 'bg-white' }} border-b-2 border-gray-100 ">
+                                        class="{{ $index % 2 == 0 ? 'bg-[#aecafd30]' : 'bg-white' }} border-b-2 border-gray-100 ">
                                         <td class="px-3 py-2 w-2/12">{{ $index + 1 }}</td>
-                                        <td class="px-3 py-2 w-6/12 text-left pl-[220px] whitespace-nowrap">
+                                        <td class="px-3 py-2 w-6/12 text-center  whitespace-nowrap">
                                             {{ $question->question_text }}
                                         </td>
-                                        <td class="px-3 py-2 w-5/12 text-[#718297] mx-auto  flex justify-evenly">
+                                        <td class="px-3 py-2 w-5/12 text-[#626B7F] mx-auto  flex justify-evenly">
                                             <a href="{{ route('admin.dashboard.edit-question', $question) }}"><i
                                                     class='bx bxs-edit'></i></a>
-                                            <a href=""><i class='bx bxs-trash'></i></a>
+
+                                            <form action="{{ route('admin.dashboard.delete-question', $question) }}"
+                                                method="POST" style="display: inline-block;">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button type="submit" class="mx-2  hover:text-indigo-900"
+                                                    onclick="return confirm('Are you sure you want to delete this user?')"><i
+                                                        class='bx bxs-trash'></i></button>
+
+                                            </form>
                                             <a href=""><i class='bx bx-dots-vertical'></i></a>
                                         </td>
                                     </tr>
