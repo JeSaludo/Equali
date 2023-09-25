@@ -13,5 +13,7 @@ class InterviewController extends Controller
         return view('admin.dashboard-view-applicant');
     }
 
-    
+    function ShowScreeningForm(){
+        return view('admin.dashboard-screening-form');
+    }
 }

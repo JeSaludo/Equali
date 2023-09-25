@@ -47,6 +47,7 @@ Route::middleware(['admin'])->group(function () {
 });
 
 Route::get('/dashboard/interview-pending',[InterviewController::class, 'ShowPendingInterview']);
+Route::get('/dashboard/screening-form',[InterviewController::class, 'ShowScreeningForm']);
 Route::get('/dashboard/add-interview', [InterviewController::class, 'ShowViewApplicant']);
 
 Route::get('/exam', [ExamController::class,'ShowExam']);

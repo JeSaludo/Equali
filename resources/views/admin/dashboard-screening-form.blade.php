@@ -4,8 +4,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Equali | Pending Interview </title>
+    <title>Equali | Screening Form </title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
@@ -173,102 +174,30 @@
 
 
         <section class="ml-[218px] main ">
-            <div class="bg-white mx-4 rounded-[12px]  mb-2 p-4  ">
+            <div class="bg-white mx-4 rounded-[12px]  mb-2 p-4">
+                <h1 class="text-center text-[#26386A] font-poppins font-bold text-2xl my-3">Screening Form</h1>
                 <div>
-                    <h1 class="text-[#26386A] font-poppins font-bold text-[24] ">Pending Interview/s</h1>
+                    <form class="mx-10">
+                        <div class="flex mt-10">
+                            <input class="pl-8 pr-56 border-2 py-2 rounded-[10px]" type="text"
+                                placeholder="Applicant Name:">
+                            <input class="border-2 rounded-[10px] py-2 pl-8 ml-64 w-full" type="date"
+                                placeholder="Date:">
+                        </div>
+                        <div class="flex mt-4">
+                            <input class="pl-8 pr-56 border-2 rounded-[10px]" type="text"
+                                placeholder="Home Address:">
+                            <select class="py-2 pl-8 border-2 rounded-[10px] ml-64 w-full" name="">
+                                <option value="" disabled selected>Course Applied:</option>
+                                <option value="">Bachelor in Science of Information Technology</option>
+                                <option value="">Bachelor in Science of Information Systems</option>
+                            </select>
+                        </div>
+                    </form>
+
                 </div>
-                <table class="w-full mt-6">
-                    <thead class="">
-                        <tr class="text-[#26386A] text-lg font-poppins">
-                            <th class="">Name</th>
-                            <th>Status</th>
-                            <th>Action</th>
-                        </tr>
-                    </thead>
-                    <tbody class="text-center font-poppins">
-                        <tr class="bg-[#aecafd5c]">
-                            <td class="py-2">Vincent</td>
-                            <td class="py-2">Interviewed</td>
-                            <td class="py-2">
-                                <a class="px-3.5" href="">Interview Now</a>
-                                <a href="">Delete</a>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="py-2">Vincent</td>
-                            <td class="py-2">Interviewed</td>
-                            <td class="py-2">
-                                <a class="px-3.5" href="">Interview Now</a>
-                                <a href="">Delete</a>
-                            </td>
-                        </tr>
-                        <tr class="bg-[#aecafd5c]">
-                            <td class="py-2">Vincent</td>
-                            <td class="py-2">Interviewed</td>
-                            <td class="py-2">
-                                <a class="px-3.5" href="">Interview Now</a>
-                                <a href="">Delete</a>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="py-2">Vincent</td>
-                            <td class="py-2">Interviewed</td>
-                            <td class="py-2">
-                                <a class="px-3.5" href="">Interview Now</a>
-                                <a href="">Delete</a>
-                            </td>
-                        </tr>
-                        <tr class="bg-[#aecafd5c]">
-                            <td class="py-2">Vincent</td>
-                            <td class="py-2">Interviewed</td>
-                            <td class="py-2">
-                                <a class="px-3.5" href="">Interview Now</a>
-                                <a href="">Delete</a>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="py-2">Vincent</td>
-                            <td class="py-2">Interviewed</td>
-                            <td class="py-2">
-                                <a class="px-3.5" href="">Interview Now</a>
-                                <a href="">Delete</a>
-                            </td>
-                        </tr>
-                        <tr class="bg-[#aecafd5c]">
-                            <td class="py-2">Vincent</td>
-                            <td class="py-2">Interviewed</td>
-                            <td class="py-2">
-                                <a class="px-3.5" href="">Interview Now</a>
-                                <a href="">Delete</a>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="py-2">Vincent</td>
-                            <td class="py-2">Interviewed</td>
-                            <td class="py-2">
-                                <a class="px-3.5" href="">Interview Now</a>
-                                <a href="">Delete</a>
-                            </td>
-                        </tr>
-                        <tr class="bg-[#aecafd5c]">
-                            <td class="py-2">Vincent</td>
-                            <td class="py-2">Interviewed</td>
-                            <td class="py-2">
-                                <a class="px-3.5" href="">Interview Now</a>
-                                <a href="">Delete</a>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="py-2">Vincent</td>
-                            <td class="py-2">Interviewed</td>
-                            <td class="py-2">
-                                <a class="px-3.5" href="">Interview Now</a>
-                                <a href="">Delete</a>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
             </div>
+
         </section>
 
     </div>
