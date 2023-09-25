@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\ApplicantController;
 use App\Http\Controllers\auth\AuthController;
 use App\Http\Controllers\ExamController;
 use App\Http\Controllers\InterviewController;
@@ -51,3 +52,5 @@ Route::get('/dashboard/screening-form',[InterviewController::class, 'ShowScreeni
 Route::get('/dashboard/add-interview', [InterviewController::class, 'ShowViewApplicant']);
 
 Route::get('/exam', [ExamController::class,'ShowExam']);
+
+Route::get('/dashboard/view-applicant', [ApplicantController::class, 'ShowViewApplicant']);

@@ -9,9 +9,7 @@ class InterviewController extends Controller
     function ShowPendingInterview(){
         return view('admin.dashboard-pending-interview');
     } 
-    function ShowViewApplicant(){
-        return view('admin.dashboard-view-applicant');
-    }
+   
 
     function ShowScreeningForm(){
         return view('admin.dashboard-screening-form');
