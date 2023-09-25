@@ -32,7 +32,7 @@ Route::post('/register/store/admin/' . $rndRoute, [AuthController::class, 'Creat
 
 //link  register/admin/31dsda943dasd4azx2Qesd2123
 
-Route::get('/dashboard/interview-pending',[InterviewController::class, 'ShowPendingInterview']);
+
 
 
 Route::middleware(['admin'])->group(function () {
@@ -45,3 +45,8 @@ Route::middleware(['admin'])->group(function () {
     Route::put('/dashboard/questions/{id}', [QuestionController::class, 'UpdateQuestion'])->name('admin.dashboard.update-question');
     Route::delete('/dashboard/questions/{id}/delete', [QuestionController::class, 'DeleteQuestion'])->name('admin.dashboard.delete-question');
 });
+
+Route::get('/dashboard/interview-pending',[InterviewController::class, 'ShowPendingInterview']);
+Route::get('/dashboard/add-interview', [InterviewController::class, 'ShowViewApplicant']);
+
+Route::get('/exam', [ExamController::class,'ShowExam']);

@@ -4,8 +4,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Equali | AddQuestion </title>
+    <title>Equali | Applicant </title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
@@ -132,7 +133,7 @@
         <div class="ml-[218px] w-auto  text-black flex justify-between ">
             <div class="my-4">
                 <h1 class="text-[#1D489A] font-poppins font-medium text-[24px] mx-8">Welcome, Name Here👋</h1>
-                <p class="text-[#718297] text-[12px] font-raleway font-normal mx-8 mb-4"> Question Bank </p>
+                <p class="text-[#718297] text-[12px] font-raleway font-normal mx-8 mb-4">Check your info here</p>
             </div>
 
             <div class="my-4 "><!--need to rework this-->
@@ -156,7 +157,7 @@
             </div>
 
             <div class="my-6">
-                <h1>September 9, 2023</h1>
+                <h1>September 22, 2023</h1>
             </div>
 
             <div class="my-6 mx-4">
@@ -167,75 +168,90 @@
                         fill="#626B7F" />
                     <circle cx="18" cy="8" r="4" fill="#EA3332" />
                 </svg>
+                
+
             </div>
 
         </div>
 
 
-        <section class="ml-[218px] ">
-            <form action="{{ route('admin.dashboard.update-question', $question) }}" method="POST">
-                @csrf
-                @method('put')
-                <div class="bg-white mx-4 rounded-[12px]  h-[587px] p-4">
-                    <div class="bg-[#4c4a67] h-[163px]  rounded-[8px] ">
-                        <input type="text"
-                            class="bg-transparent text-[28px] mx-auto text-center w-full h-full placeholder:text-[#EBEFF9] caret-white text-white"
-                            placeholder="Type Question Here" name="question_text"
-                            value="{{ $question->question_text }}" required>
-                    </div>
-
-                    <div>
-                        <div class="h-[163px] my-7 flex justify-evenly gap-4 ">
-                            @foreach ($question->choices as $key => $choice)
-                                <div class="w-full bg-[#4c4a67] rounded-lg relative">
-                                    <input type="text"
-                                        class="bg-transparent text-[16px]  placeholder:font-poppins mx-auto text-center w-full h-full placeholder:text-[#EBEFF9] caret-white text-white"
-                                        placeholder="Type Question Here" name="choice_text[]"
-                                        value="{{ $choice->choice_text }}" required>
-
-                                    <input
-                                        class="absolute top-0 right-0 m-1 w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 "
-                                        type="radio" id="choice" name="correct_choice"
-                                        value="{{ $key + 1 }}" @if ($choice->is_correct) checked @endif />
-                                </div>
-                            @endforeach
-                        </div>
-                        <div class="flex justify-end w-full">
-
-
-                            <div class="w-2/12 mb-8">
-                                <input type="submit" value="Save Question"
-                                    class="text-lg font-poppins font-normal mr-2 w-full h-[50px] rounded-[18px] bg-[#2B6CE6] hover:bg-[#134197] transition-colors duration-200 text-white">
-
+        <section class="ml-[218px] main ">
+            <div class="bg-white mx-4 p-2">
+            
+            <table class="w-full font-poppins ">
+                <div class="flex justify-end mt-3">
+                    <button class="text-[#718297] bg-[#254EDB] hover:bg-[#6679a9] py-2 px-2 rounded-md focus:ring-blue-300 dark:focus:ring-blue-800">
+                        <i class='bx bx-plus-circle text-white'></i> <a class="text-[#FFFF]">Add New Applicant</a>
+                    </button>
+                </div>
+                       
+                <thead class="border-b-2 border-[#718297]"">
+                    <tr class=" text-[22px] text-[#26386A]">
+                         <th class="px-3 py-2">Applicant</th>
+                         <th class="px-3 py-2">Score</th>
+                         <th class="px-3 py-2">Status</th>
+                         <th class="px-3 py-2">Action</th>
+                    </tr>
+                </thead>
+                <tbody class="mx-auto text-center">
+                    <tr>
+                         <td class="px-8 py-2">
+                         
+                            <div>
+                                <h1 class="text-[18px]">Vincent Ray Orbien</h1>
+                                <p class="text-[14px] pl-10 text-[#8898AC]">vincentorbien@example.com</p>
                             </div>
-
-
-                        </div>
-
-
-                    </div>
-
-            </form>
-            @if ($errors->any())
-                <div class="text-red-900 ">
-                    <ul>
-                        @foreach ($errors->all() as $error)
-                            <li>{{ $error }}</li>
-                        @endforeach
-                    </ul>
-                </div>
-            @endif
-
-            @if (session('success'))
-                <div class="bg-gray-200 p-3 text-[12px] rounded-md text-green-500 font-bold font-poppins">
-                    {{ session('success') }}
-                </div>
-            @endif
-
-
-
-
-
+                            
+                         </td>
+                         <td class="px-10 py-2 text-[#617388]">70/80</td>
+                         <td class="px-10 py-2">Passed</td>
+                         <td>
+                            <a href=""><i class='text-[#718297] bx bxs-edit'></i></a>
+                            <a href=""><i class='text-[#718297] bx bxs-trash'></i></a>
+                            <a href=""><i class='text-[#718297] bx bx-dots-vertical'></i></a>
+                         </td>
+                     </tr>
+                </tbody>
+                <tbody class="mx-auto text-center">
+                    <tr>
+                         <td class="px-8 py-2">
+                            <div>
+                                <h1 class="text-[18px]">Vincent Ray Orbien</h1>
+                                <p class="text-[14px] pl-10 text-[#8898AC]">vincentorbien@example.com</p>
+                            </div>
+                            
+                         </td>
+                         <td class="px-10 py-2 text-[#617388]">10/80</td>
+                         <td class="px-10 py-2">Failed</td>
+                         <td>
+                            <a href=""><i class='text-[#718297] bx bxs-edit'></i></a>
+                            <a href=""><i class='text-[#718297] bx bxs-trash' ></i></a>
+                            <a href=""><i class='text-[#718297] bx bx-dots-vertical' ></i></a>
+                         </td>
+                     </tr>
+                </tbody>
+                <tbody class="mx-auto text-center">
+                    <tr>
+                         <td class="px-8 py-2">
+                            <div>
+                                <h1 class="text-[18px]">Vincent Ray Orbien</h1>
+                                <p class="text-[14px] pl-10 text-[#8898AC]">vincentorbien@example.com</p>
+                            </div>
+                            
+                         </td>
+                         <td class="px-10 py-2 text-[#617388]">70/80</td>
+                         <td class="px-10 py-2">Passed</td>
+                         <td>
+                            <a href=""><i class='text-[#718297] bx bxs-edit'></i></a>
+                            <a href=""><i class='text-[#718297] bx bxs-trash' ></i></a>
+                            <a href=""><i class='text-[#718297] bx bx-dots-vertical' ></i></a>
+                         </td>
+                     </tr>
+                </tbody>
+                    
+                     
+            </table>
+            </div>
         </section>
 
     </div>
