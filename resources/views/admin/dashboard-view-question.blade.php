@@ -298,7 +298,7 @@
                                         class="{{ $index % 2 == 0 ? 'bg-[#aecafd30]' : 'bg-white' }} border-b-2 border-gray-100 ">
                                         <td class="px-3 py-2 w-2/12">{{ $index + 1 }}</td>
                                         <td class="px-3 py-2 w-6/12 text-center  whitespace-nowrap">
-                                            {{ substr($question->question_text, 0, 28) }}
+                                            {{ substr($question->question_text, 0, 36) }}
 
                                         </td>
                                         <td class="px-3 py-2 w-5/12 text-[#626B7F] mx-auto  flex justify-evenly">
