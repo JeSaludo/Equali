@@ -173,101 +173,85 @@
 
 
         <section class="ml-[218px] ">
-            <div class="relative">
-                <div id="addApplicantContent"
-                    class="absolute   w-5/12  z-10  opacity-0 pointer-events-none top-6  left-0 right-0 mx-auto   translate-y-[-15px] transition-all transform  delay-150 ease-linear">
-                    <form action="{{ route('admin.dashboard.store-applicant') }}" method="POST">
-                        @csrf
-                        <div class="bg-white mx-4 rounded-[12px]  h-[470px] p-4 border-gray-600 border-2">
-                            <div
-                                class="text-center mx-auto font-poppins text-[28px] font-semibold  text-[#26386A] uppercase">
-                                <h1>Add Applicant</h1>
+            <div class=" w-6/12 right-0 mx-auto   translate-y-[-15px] transition-all transform  delay-150 ease-linear">
+                <form action="{{ route('admin.dashboard.update-applicant', $user->id) }}" method="POST">
+                    @csrf
+                    @method('put')
+                    <div class="bg-white mx-4 rounded-[12px]  h-[470px] p-4 border-gray-600 border-2">
+                        <div
+                            class="text-center mx-auto font-poppins text-[28px] font-semibold  text-[#26386A] uppercase">
+                            <h1>Edit Applicant</h1>
 
-                            </div>
+                        </div>
 
-                            <div class=" px-8 flex justify-between gap-4 mt-6 ">
-                                <div class="relative   w-full">
-                                    <input type="text" name="firstName"
-                                        class="h-[50px] w-full rounded placeholder:text-[#4E4E4E] placeholder:font-poppins placeholder:text-[16px] px-[40px] border-2 border-[#D7D8D0] "
-                                        placeholder="First Name" required autocomplete="off">
-
-                                </div>
-
-                                <div class="relative  w-full">
-                                    <input type="text" name="lastName"
-                                        class="h-[50px] w-full rounded placeholder:text-[#4E4E4E] placeholder:font-poppins placeholder:text-[16px] px-[40px] border-2 border-[#D7D8D0] "
-                                        placeholder="Last Name" required autocomplete="off">
-
-                                </div>
-
-
-
-                            </div>
-
-
-                            <div class="relative px-8 my-4 w-full">
-                                <input type="text" name="email"
+                        <div class=" px-8 flex justify-between gap-4 mt-6 ">
+                            <div class="relative   w-full">
+                                <input type="text" name="firstName"
                                     class="h-[50px] w-full rounded placeholder:text-[#4E4E4E] placeholder:font-poppins placeholder:text-[16px] px-[40px] border-2 border-[#D7D8D0] "
-                                    placeholder="Email Address" required autocomplete="off">
+                                    placeholder="First Name" required autocomplete="off"
+                                    value={{ $user->first_name }}>
 
                             </div>
 
-                            <div class="relative px-8 my-4 w-full">
-                                <input type="text" name="contactNumber"
+                            <div class="relative  w-full">
+                                <input type="text" name="lastName"
                                     class="h-[50px] w-full rounded placeholder:text-[#4E4E4E] placeholder:font-poppins placeholder:text-[16px] px-[40px] border-2 border-[#D7D8D0] "
-                                    placeholder="Contact Number" required autocomplete="off">
+                                    placeholder="Last Name" required autocomplete="off" value={{ $user->last_name }}>
 
                             </div>
 
 
-                            <div class=" px-8 flex justify-between gap-4 my-4">
-                                <div class="relative  w-full">
-                                    <input type="number" name="score"
-                                        class="h-[50px] w-full rounded placeholder:text-[#4E4E4E] placeholder:font-poppins placeholder:text-[16px] px-[40px] border-2 border-[#D7D8D0] "
-                                        placeholder="Score" required autocomplete="off">
-
-                                </div>
-
-
-                                <div class="relative  w-full">
-                                    <input type="number" name="totalScore"
-                                        class="h-[50px] w-full rounded placeholder:text-[#4E4E4E] placeholder:font-poppins placeholder:text-[16px] px-[40px] border-2 border-[#D7D8D0] "
-                                        placeholder="Full Score" required autocomplete="off" value=70>
-                                    {{-- Change for auto  --}}
-                                </div>
-                            </div>
-                            <div class="px-8 my-6">
-                                <input type="submit" value="Submit"
-                                    class="text-lg font-poppins font-normal mr-2 w-full h-[50px] rounded-[18px] bg-[#1E5CD1] hover:bg-[#134197] transition-colors duration-200 text-white">
-                            </div>
 
                         </div>
 
 
+                        <div class="relative px-8 my-4 w-full">
+                            <input type="text" name="email"
+                                class="h-[50px] w-full rounded placeholder:text-[#4E4E4E] placeholder:font-poppins placeholder:text-[16px] px-[40px] border-2 border-[#D7D8D0] "
+                                placeholder="Email Address" required autocomplete="off" value="{{ $user->email }}">
 
-                    </form>
+                        </div>
+
+                        <div class="relative px-8 my-4 w-full">
+                            <input type="text" name="contactNumber"
+                                class="h-[50px] w-full rounded placeholder:text-[#4E4E4E] placeholder:font-poppins placeholder:text-[16px] px-[40px] border-2 border-[#D7D8D0] "
+                                placeholder="Contact Number" required autocomplete="off"
+                                value="{{ $user->contact_number }}">
+
+                        </div>
 
 
-                </div>
+                        <div class=" px-8 flex justify-between gap-4 my-4">
+                            <div class="relative  w-full">
+                                <input type="number" name="score"
+                                    class="h-[50px] w-full rounded placeholder:text-[#4E4E4E] placeholder:font-poppins placeholder:text-[16px] px-[40px] border-2 border-[#D7D8D0] "
+                                    placeholder="Score" required autocomplete="off"
+                                    value={{ $user->admissionExam->score }}>
 
+                            </div>
+
+
+                            <div class="relative  w-full">
+                                <input type="number" name="totalScore"
+                                    class="h-[50px] w-full rounded placeholder:text-[#4E4E4E] placeholder:font-poppins placeholder:text-[16px] px-[40px] border-2 border-[#D7D8D0] "
+                                    placeholder="Full Score" required autocomplete="off" value=70>
+                                {{-- Change for auto  --}}
+                            </div>
+                        </div>
+                        <div class="px-8 my-6">
+                            <input type="submit" value="Submit"
+                                class="text-lg font-poppins font-normal mr-2 w-full h-[50px] rounded-[18px] bg-[#1E5CD1] hover:bg-[#134197] transition-colors duration-200 text-white">
+                        </div>
+
+                    </div>
+
+
+
+                </form>
 
 
             </div>
-            @if ($errors->any())
-                <div class="text-red-900 ">
-                    <ul>
-                        @foreach ($errors->all() as $error)
-                            <li>{{ $error }}</li>
-                        @endforeach
-                    </ul>
-                </div>
-            @endif
 
-            @if (session('success'))
-                <div class="bg-gray-200 p-3 text-[12px] rounded-md text-green-500 font-bold font-poppins">
-                    {{ session('success') }}
-                </div>
-            @endif
 
 
 

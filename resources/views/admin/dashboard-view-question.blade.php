@@ -189,7 +189,7 @@
 
                 <div class="relative mt-5 ">
                     <div id="addQuestionContent"
-                        class="absolute  w-full  z-10 top-0 left-0 opacity-0  pointer-events-none translate-y-[-15px] transition-all transform  delay-150 ease-linear">
+                        class="absolute  w-full  z-10 top-0 right-0 mx-auto left-0 opacity-0  pointer-events-none translate-y-[-15px] transition-all transform  delay-150 ease-linear">
                         <form action="{{ route('admin.dashboard.store-question') }}" method="POST">
                             @csrf
                             <div class="bg-white mx-4 rounded-[12px]  h-[500] p-4 border-2 border-gray-500 ">
@@ -316,7 +316,7 @@
                                                 @csrf
                                                 @method('DELETE')
                                                 <button type="submit" class="mx-2  hover:text-indigo-900"
-                                                    onclick="return confirm('Are you sure you want to delete this user?')"><i
+                                                    onclick="return confirm('Are you sure you want to delete this question?')"><i
                                                         class='bx bxs-trash'></i></button>
 
                                             </form>

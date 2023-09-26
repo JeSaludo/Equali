@@ -22,6 +22,7 @@ class User extends Authenticatable
         'last_name',
         'username',
         'email',
+        'contact_number',
         'password',
     ];
 
@@ -47,5 +48,14 @@ class User extends Authenticatable
 
     protected function examSubmissions(){
         return $this->hasMany(ExamSubmission::class);
+    }
+
+    public function admissionExam()
+    {
+        return $this->hasOne(AdmissionExam::class);
+    }
+    public function scores()
+    {
+        return $this->hasMany(Score::class);
     }
 }

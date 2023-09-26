@@ -9,7 +9,6 @@ let isActive = true
 
 
 document.addEventListener("click", e =>{  
-
     
     if (e.target.closest("#addQuestionBtn") === currentAddQuestionBtn) {
         if(e.target.closest("#addQuestionBtn") ===null) return           
@@ -23,11 +22,11 @@ document.addEventListener("click", e =>{
         } 
         
         isActive = !isActive; 
-       
+        questionContent.classList.toggle('blur-sm')
         addQuestionContent.classList.toggle('opacity-0');        
         addQuestionContent.classList.toggle('pointer-events-none');
         addQuestionContent.classList.toggle('translate-y-[-15px]');
-      
+        
        
     } else if (!addQuestionContent.contains(e.target)) {        
         addQuestionContent.classList.add('opacity-0');
@@ -36,11 +35,6 @@ document.addEventListener("click", e =>{
         currentAddQuestionBtn.innerHTML  = "<i class='bx bx-plus-medical pr-2' ></i> Add Question"
       
     }
-  
-    
-
-    //add back button logo
-    
 })
 
 

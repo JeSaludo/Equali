@@ -49,8 +49,12 @@ Route::middleware(['admin'])->group(function () {
 
 Route::get('/dashboard/interview-pending',[InterviewController::class, 'ShowPendingInterview']);
 Route::get('/dashboard/screening-form',[InterviewController::class, 'ShowScreeningForm']);
-Route::get('/dashboard/add-interview', [InterviewController::class, 'ShowViewApplicant']);
+
 
 Route::get('/exam', [ExamController::class,'ShowExam']);
 
-Route::get('/dashboard/view-applicant', [ApplicantController::class, 'ShowViewApplicant']);
+Route::get('/dashboard/view-applicant', [ApplicantController::class, 'ShowApplicant'])->name('admin.dashboard.show-applicant');
+Route::get('/dashboard/applicant/{id}/edit', [ApplicantController::class, "EditApplicant"])->name('admin.dashboard.edit-applicant');
+Route::post('/dashboard/add-applicant/store', [ApplicantController::class, 'StoreApplicant'])->name('admin.dashboard.store-applicant');
+Route::put('/dashboard/applicant/{id}', [ApplicantController::class, 'UpdateApplicant'])->name('admin.dashboard.update-applicant');
+Route::delete('/dashboard/applicant/{id}/delete', [ApplicantController::class, 'DeleteApplicant'])->name('admin.dashboard.delete-applicant');

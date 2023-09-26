@@ -168,7 +168,7 @@
                         fill="#626B7F" />
                     <circle cx="18" cy="8" r="4" fill="#EA3332" />
                 </svg>
-                
+
 
             </div>
 
@@ -177,85 +177,176 @@
 
         <section class="ml-[218px] main ">
             <div class="bg-white mx-4 p-2">
-            
-            <table class="w-full font-poppins ">
-                <div class="flex justify-end mt-3">
-                    <button class="text-[#718297] bg-[#254EDB] hover:bg-[#6679a9] py-2 px-2 rounded-md focus:ring-blue-300 dark:focus:ring-blue-800">
-                        <i class='bx bx-plus-circle text-white'></i> <a class="text-[#FFFF]">Add New Applicant</a>
-                    </button>
+                <div class="flex justify-end">
+
+
+                    <div class="w-2/12">
+                        <button id="addApplicantBtn"
+                            class="px-4 py-2 text-lg font-poppins font-normal mr-2 w-full  rounded-[15px]  bg-[#2B6CE6] hover:bg-[#134197] transition-colors duration-200 text-white">
+                            <i id="icon" class='bx bx-plus-medical pr-2'></i> Add
+                            Applicant</button>
+                    </div>
                 </div>
-                       
-                <thead class="border-b-2 border-[#718297]"">
-                    <tr class=" text-[22px] text-[#26386A]">
-                         <th class="px-3 py-2">Applicant</th>
-                         <th class="px-3 py-2">Score</th>
-                         <th class="px-3 py-2">Status</th>
-                         <th class="px-3 py-2">Action</th>
-                    </tr>
-                </thead>
-                <tbody class="mx-auto text-center">
-                    <tr>
-                         <td class="px-8 py-2">
-                         
-                            <div>
-                                <h1 class="text-[18px]">Vincent Ray Orbien</h1>
-                                <p class="text-[14px] pl-10 text-[#8898AC]">vincentorbien@example.com</p>
+
+                <div class="relative">
+                    <div id="addApplicantContent"
+                        class="absolute   w-5/12  z-10  opacity-0 pointer-events-none top-6  left-0 right-0 mx-auto   translate-y-[-15px] transition-all transform  delay-150 ease-linear">
+                        <form action="{{ route('admin.dashboard.store-applicant') }}" method="POST">
+                            @csrf
+                            <div class="bg-white mx-4 rounded-[12px]  h-[470px] p-4 border-gray-600 border-2">
+                                <div
+                                    class="text-center mx-auto font-poppins text-[28px] font-semibold  text-[#26386A] uppercase">
+                                    <h1>Add Applicant</h1>
+
+                                </div>
+
+                                <div class=" px-8 flex justify-between gap-4 mt-6 ">
+                                    <div class="relative   w-full">
+                                        <input type="text" name="firstName"
+                                            class="h-[50px] w-full rounded placeholder:text-[#4E4E4E] placeholder:font-poppins placeholder:text-[16px] px-[40px] border-2 border-[#D7D8D0] "
+                                            placeholder="First Name" required autocomplete="off">
+
+                                    </div>
+
+                                    <div class="relative  w-full">
+                                        <input type="text" name="lastName"
+                                            class="h-[50px] w-full rounded placeholder:text-[#4E4E4E] placeholder:font-poppins placeholder:text-[16px] px-[40px] border-2 border-[#D7D8D0] "
+                                            placeholder="Last Name" required autocomplete="off">
+
+                                    </div>
+
+
+
+                                </div>
+
+
+                                <div class="relative px-8 my-4 w-full">
+                                    <input type="text" name="email"
+                                        class="h-[50px] w-full rounded placeholder:text-[#4E4E4E] placeholder:font-poppins placeholder:text-[16px] px-[40px] border-2 border-[#D7D8D0] "
+                                        placeholder="Email Address" required autocomplete="off">
+
+                                </div>
+
+                                <div class="relative px-8 my-4 w-full">
+                                    <input type="text" name="contactNumber"
+                                        class="h-[50px] w-full rounded placeholder:text-[#4E4E4E] placeholder:font-poppins placeholder:text-[16px] px-[40px] border-2 border-[#D7D8D0] "
+                                        placeholder="Contact Number" required autocomplete="off">
+
+                                </div>
+
+
+                                <div class=" px-8 flex justify-between gap-4 my-4">
+                                    <div class="relative  w-full">
+                                        <input type="number" name="score"
+                                            class="h-[50px] w-full rounded placeholder:text-[#4E4E4E] placeholder:font-poppins placeholder:text-[16px] px-[40px] border-2 border-[#D7D8D0] "
+                                            placeholder="Score" required autocomplete="off">
+
+                                    </div>
+
+
+                                    <div class="relative  w-full">
+                                        <input type="number" name="totalScore"
+                                            class="h-[50px] w-full rounded placeholder:text-[#4E4E4E] placeholder:font-poppins placeholder:text-[16px] px-[40px] border-2 border-[#D7D8D0] "
+                                            placeholder="Full Score" required autocomplete="off" value=70>
+                                        {{-- Change for auto  --}}
+                                    </div>
+                                </div>
+                                <div class="px-8 my-6">
+                                    <input type="submit" value="Submit"
+                                        class="text-lg font-poppins font-normal mr-2 w-full h-[50px] rounded-[18px] bg-[#1E5CD1] hover:bg-[#134197] transition-colors duration-200 text-white">
+                                </div>
+
                             </div>
-                            
-                         </td>
-                         <td class="px-10 py-2 text-[#617388]">70/80</td>
-                         <td class="px-10 py-2">Passed</td>
-                         <td>
-                            <a href=""><i class='text-[#718297] bx bxs-edit'></i></a>
-                            <a href=""><i class='text-[#718297] bx bxs-trash'></i></a>
-                            <a href=""><i class='text-[#718297] bx bx-dots-vertical'></i></a>
-                         </td>
-                     </tr>
-                </tbody>
-                <tbody class="mx-auto text-center">
-                    <tr>
-                         <td class="px-8 py-2">
-                            <div>
-                                <h1 class="text-[18px]">Vincent Ray Orbien</h1>
-                                <p class="text-[14px] pl-10 text-[#8898AC]">vincentorbien@example.com</p>
+
+
+
+                        </form>
+
+
+                    </div>
+                </div>
+                @if ($errors->any())
+                    <div class="text-red-900">
+                        <ul>
+                            @foreach ($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
+                @endif
+                <div id="applicantContent" class="app-content">
+                    <table class="w-full ">
+                        <thead class="border-b-2 border-[#718297]">
+                            <tr>
+                                <th
+                                    class="py-2
+                        px-4 font-poppins text-[22px] text-[#26386A] uppercase">
+                                    Applicant</th>
+                                <th class="py-2 px-4 font-poppins text-[22px] text-[#26386A]">Score</th>
+                                <th class="py-2 px-4 font-poppins text-[22px] text-[#26386A]">Status</th>
+                                <th class="py-2 px-4 font-poppins text-[22px] text-[#26386A]">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody class="text-center font-poppins text-[18px] w-full  ">
+                            <div class="flex justify-between">
+                                @foreach ($users as $index => $user)
+                                    <tr
+                                        class="{{ $index % 2 == 0 ? 'bg-[#aecafd30]' : 'bg-white' }} border-b-2 border-gray-100 ">
+                                        <td class="px-3 py-2 w-4/12 whitespace-nowrap">
+                                            {{ $user->last_name }}, {{ $user->first_name }}
+                                        </td>
+                                        @if ($user->admissionExam)
+                                            <td class="px-3 py-2 w-2/12 text-center  whitespace-nowrap">
+                                                {{ $user->admissionExam->score }} /
+                                                {{ $user->admissionExam->total_score }}
+                                            </td>
+                                        @else
+                                            No Admission Exam Score
+                                        @endif
+
+                                        <td class="px-3 py-2  whitespace-nowrap ">
+                                            @if ($user->admissionExam->status === 'Failed')
+                                                <div
+                                                    class="w-4/12  item-center mx-auto rounded-lg bg-[#FFC7C7] text-[#A25656] ">
+                                                    <p class="py-1 ">Failed</p>
+                                                </div>
+                                            @else
+                                                <div
+                                                    class="w-4/12  item-center mx-auto rounded-lg bg-[#C7FFD7] text-[#56A26B]">
+                                                    <p class="py-1">Passed</p>
+                                                </div>
+                                            @endif
+                                        </td>
+                                        <td class="px-3 py-2 w-4/12 text-[#626B7F] mx-auto  flex justify-evenly">
+                                            <a href="{{ route('admin.dashboard.edit-applicant', $user->id) }}"><i
+                                                    class='bx bxs-edit'></i></a>
+
+                                            <form action="{{ route('admin.dashboard.delete-applicant', $user->id) }}"
+                                                method="POST" style="display: inline-block;">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button type="submit" class="mx-2  hover:text-indigo-900"
+                                                    onclick="return confirm('Are you sure you want to delete this user?')"><i
+                                                        class='bx bxs-trash'></i></button>
+
+                                            </form>
+                                            <a href=""><i class='bx bx-dots-vertical'></i></a>
+                                        </td>
+                                    </tr>
+                                @endforeach
                             </div>
-                            
-                         </td>
-                         <td class="px-10 py-2 text-[#617388]">10/80</td>
-                         <td class="px-10 py-2">Failed</td>
-                         <td>
-                            <a href=""><i class='text-[#718297] bx bxs-edit'></i></a>
-                            <a href=""><i class='text-[#718297] bx bxs-trash' ></i></a>
-                            <a href=""><i class='text-[#718297] bx bx-dots-vertical' ></i></a>
-                         </td>
-                     </tr>
-                </tbody>
-                <tbody class="mx-auto text-center">
-                    <tr>
-                         <td class="px-8 py-2">
-                            <div>
-                                <h1 class="text-[18px]">Vincent Ray Orbien</h1>
-                                <p class="text-[14px] pl-10 text-[#8898AC]">vincentorbien@example.com</p>
-                            </div>
-                            
-                         </td>
-                         <td class="px-10 py-2 text-[#617388]">70/80</td>
-                         <td class="px-10 py-2">Passed</td>
-                         <td>
-                            <a href=""><i class='text-[#718297] bx bxs-edit'></i></a>
-                            <a href=""><i class='text-[#718297] bx bxs-trash' ></i></a>
-                            <a href=""><i class='text-[#718297] bx bx-dots-vertical' ></i></a>
-                         </td>
-                     </tr>
-                </tbody>
-                    
-                     
-            </table>
+                        </tbody>
+
+                    </table>
+                </div>
             </div>
+
+
         </section>
 
     </div>
     <script src="{{ asset('js/dropdown.js') }}"></script>
+    <script src="{{ asset('js/add-applicant.js') }}"></script>
 </body>
 
 </html>
