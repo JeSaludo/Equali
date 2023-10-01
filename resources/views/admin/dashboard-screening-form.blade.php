@@ -179,19 +179,78 @@
                 <div>
                     <form class="mx-10">
                         <div class="flex mt-10">
-                            <input class="pl-8 pr-56 border-2 py-2 rounded-[10px]" type="text"
+                            <input class="pl-8 pr-80 border-2 py-2 rounded-[10px]" type="text"
                                 placeholder="Applicant Name:">
-                            <input class="border-2 rounded-[10px] py-2 pl-8 ml-64 w-full" type="date"
+                            <input class="border-2 rounded-[10px] py-2 pl-8 ml-12 w-full" type="date"
                                 placeholder="Date:">
                         </div>
                         <div class="flex mt-4">
-                            <input class="pl-8 pr-56 border-2 rounded-[10px]" type="text"
+                            <input class="pl-8 pr-80 border-2 py-2 rounded-[10px]" type="text"
                                 placeholder="Home Address:">
-                            <select class="py-2 pl-8 border-2 rounded-[10px] ml-64 w-full" name="">
+                            <select class="border-2 rounded-[10px] py-2 pl-8 ml-12 w-full" name="">
                                 <option value="" disabled selected>Course Applied:</option>
                                 <option value="">Bachelor in Science of Information Technology</option>
                                 <option value="">Bachelor in Science of Information Systems</option>
                             </select>
+                        </div>
+                        <div class="flex mt-16">
+                            <input class="pl-8 pr-80 border-2 py-2 rounded-[10px]" type="text"
+                                placeholder="School Attended:">
+                            <input class="py-2 pl-8 border-2 rounded-[10px] ml-12 w-full" type="text"
+                                placeholder="School Address:">
+                        </div>
+                        <div class="flex mt-4">
+                            <input class="pl-8 pr-80 border-2 py-2 rounded-[10px]" type="text"
+                                placeholder="Year Graduated:">
+                            <input class="border-2 rounded-[10px] py-2 pl-8 ml-12 w-full" type="text"
+                                placeholder="GWA:">
+                        </div>
+                        <div class="flex mt-4">
+                            <select class="pl-8 pr-[118px] border-2 py-2 rounded-[10px]" name="">
+                                <option value="" disabled selected>Academic Track:</option>
+                                <option value="">Accountancy, Business, and Management </option>
+                                <option value="">Humanities and Social Sciences</option>
+                                <option value="">Science, Technology, Engineering, and Mathematics</option>
+                                <option value="">General Academic Strand</option>
+                                <option value="">Technical Vocational Livelihood (TVL) Track</option>
+                                <option value="">Sports Track</option>
+                                <option value="">Arts and Design Track</option>
+                            </select>
+                            <input class="py-2 pl-8 border-2 rounded-[10px] ml-12 w-full" type="text"
+                                placeholder="Others:">
+                        </div>
+                        <div class="flex mt-2">
+                            <h2 class="ml-2 font-poppins text-[#4E4E4E] opacity-50">Do you have any of Following:</h2>
+                        </div>
+                        <div class="flex ml-6 gap-32">
+                            <h2>Computer:</h2>
+                            <h2>Mobile Devices:</h2>
+                            <h2>Status of Internet Connectivity:</h2>
+                        </div>
+                        <div class="flex-auto ml-6">
+                            <input class="" type="checkbox">
+                            <label class="pr-[124px]" for="desktop">Desktop</label>
+                            <input class="" type="checkbox">
+                            <label class="pr-[128px]" for="smartphone">Smartphone</label>
+                            <input class="" type="checkbox">
+                            <label class="" for="stable">Stable</label>
+                        </div>
+                        <div class="flex-auto ml-6">
+                            <input class="" type="checkbox">
+                            <label class="pr-[133px]" for="laptop">Laptop</label>
+                            <input class="" type="checkbox">
+                            <label class="pr-[173px]" for="tablet">Tablet</label>
+                            <input class="" type="checkbox">
+                            <label class="" for="unstable">Unstable</label>
+                        </div>
+                        <div class="flex-auto ml-6">
+                            <input class="ml-[440px]" type="checkbox">
+                            <label class="" for="none">None</label>
+                        </div>
+                        <div class="flex justify-end mt-10 ">
+                            <button id=""
+                                class="font-bold text-white bg-[#2B6CE6] hover:bg-[#134197] rounded-[8px] font-poppins text-lg py-3 px-12 transition-colors duration-200"
+                                type="button">Next</button>
                         </div>
                     </form>
 
