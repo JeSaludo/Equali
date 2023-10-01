@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Equali | AddQuestion </title>
+    <title>Equali | Overview </title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
@@ -76,7 +76,7 @@
                         </a>
 
                         <div class="dropdown-menu  pointer-events-none opacity-0 " data-dropdown-content>
-                            <a href="#test"
+                            <a href="{{ route('admin.dashboard.show-applicant') }}"
                                 class=" mx-4 px-4 py-2 hover:cursor-pointer hover:bg-[#EAF0FF] rounded-[15px] flex justify-between items-center text-[#718297] my-2">
                                 <div class=""><i class='bx bx-radio-circle pr-2 '></i>View
                                     User
@@ -102,7 +102,7 @@
                         </a>
 
                         <div class="dropdown-menu  pointer-events-none opacity-0 " data-dropdown-content>
-                            <a href="#test"
+                            <a href="{{ route('admin.dashboard.view-question') }}"
                                 class=" mx-4 px-4 py-2 hover:cursor-pointer hover:bg-[#EAF0FF] rounded-[15px] flex justify-between items-center text-[#718297] my-2">
                                 <div class=""><i class='bx bx-radio-circle pr-2 '></i>View
                                     Question
@@ -133,7 +133,7 @@
         <div class="ml-[218px] w-auto  text-black flex justify-between ">
             <div class="my-4">
                 <h1 class="text-[#1D489A] font-poppins font-medium text-[24px] mx-8">Welcome, Name Here👋</h1>
-                <p class="text-[#718297] text-[12px] font-raleway font-normal mx-8 mb-4"> Question Bank </p>
+                <p class="text-[#718297] text-[12px] font-raleway font-normal mx-8 mb-4">Check your info here</p>
             </div>
 
             <div class="my-4 "><!--need to rework this-->
@@ -173,74 +173,113 @@
         </div>
 
 
-        <section class="ml-[218px] ">
-            <form action="{{ route('admin.dashboard.update-question', $question) }}" method="POST">
-                @csrf
-                @method('put')
-                <div class="bg-white mx-4 rounded-[12px]  h-[587px] p-4">
-                    <div class="bg-[#4c4a67] h-[163px]  rounded-[8px] ">
-                        <input type="text"
-                            class="bg-transparent text-[28px] mx-auto text-center w-full h-full placeholder:text-[#EBEFF9] caret-white text-white"
-                            placeholder="Type Question Here" name="question_text"
-                            value="{{ $question->question_text }}" required>
-                    </div>
+        <section class="ml-[218px] main ">
 
-                    <div>
-                        <div class="h-[163px] my-7 flex justify-evenly gap-4 ">
-                            @foreach ($question->choices as $key => $choice)
-                                <div class="w-full bg-[#4c4a67] rounded-lg relative">
-                                    <input type="text"
-                                        class="bg-transparent text-[16px]  placeholder:font-poppins mx-auto text-center w-full h-full placeholder:text-[#EBEFF9] caret-white text-white"
-                                        placeholder="Type Question Here" name="choice_text[]"
-                                        value="{{ $choice->choice_text }}" required>
 
-                                    <input
-                                        class="absolute top-0 right-0 m-1 w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 "
-                                        type="radio" id="choice" name="correct_choice"
-                                        value="{{ $key + 1 }}" @if ($choice->is_correct) checked @endif />
+
+            <div class="relative ">
+                <div id="addExamContent"
+                    class="absolute  w-6/12  z-10 top-10 right-0 mx-auto opacity-0 left-0   translate-y-[-15px] transition-all transform  delay-150 ease-linear">
+                    <form action="{{ Route('admin.dashboard.store-exam') }}" method="POST">
+                        @csrf
+                        <div class="bg-white mx-4 rounded-lg  border-2  px-6 py-4 drop-shadow-sm">
+                            <h1 class="font-poppins text-[24px] pt-2">Create Exam Now</h1>
+                            <p class="font-poppins text-[14px]">Review exam settings and you're good to go</p>
+
+                            <div class="flex justify-between">
+                                <div class="w-full">
+                                    <div class=" my-4">
+                                        <input type="text" name="examName"
+                                            class="h-[50px] w-full rounded placeholder:text-[#4E4E4E] placeholder:font-poppins placeholder:text-[16px] px-[16px] border-2 border-[#D7D8D0]"
+                                            placeholder="Untitled Exam" autocomplete="off">
+
+                                    </div>
+
+
+                                    <div class="my-2">
+                                        <textarea name="description"
+                                            class="w-full h-[80px] placeholder:font-poppins placeholder:text-[#4E4E4E] resize-none p-2 text-[16px] text-[#4E4E4E] border-2 border-[#D7D8D0]"
+                                            placeholder="Description Here"></textarea>
+
+                                    </div>
+
+
+                                    <button id="" type="submit"
+                                        class="px-2 py-1 text-lg font-poppins font-normal w-[100px]  rounded-[8px]  bg-[#2B6CE6] hover:bg-[#134197] transition-colors duration-200 text-white">
+
+                                        PUBLISH </button>
+
                                 </div>
-                            @endforeach
+
+                                <div class="w-full flex items-center">
+                                    <img src="{{ asset('img/equali-banner.png') }}"
+                                        class="w-[200px] h-[200px] text-center mx-auto" alt=""
+                                        srcset="">
+                                </div>
+                            </div>
                         </div>
-                        <div class="flex justify-end w-full">
 
 
-                            <div class="w-2/12 mb-8">
-                                <input type="submit" value="Save Question"
-                                    class="text-lg font-poppins font-normal mr-2 w-full h-[50px] rounded-[18px] bg-[#2B6CE6] hover:bg-[#134197] transition-colors duration-200 text-white">
+
+                    </form>
+
+                </div>
+
+            </div>
+
+            <div class="flex justify-between mx-4 items-center">
+                <h1 class="font-poppins text-2xl px-2 py-2 text-[#26386A]  font-semibold">Admission Exam</h1>
+                <button id="addExamBtn"
+                    class="px-2 py-1 text-lg font-poppins font-normal w-[100px]  rounded-[8px]  bg-[#2B6CE6] hover:bg-[#134197] transition-colors duration-200 text-white">
+
+                    CREATE </button>
+            </div>
+            <div id="examContent">
+
+                @foreach ($exams as $exam)
+                    <div class="bg-white mx-4 rounded-lg flex relative my-2 drop-shadow-sm ">
+
+                        <div class="flex gap-2 p-2 w-full">
+                            <div class=" ">
+                                <img class=" w-[100px] h-[100px] rounded-md"
+                                    src="{{ asset('img/equali-banner.png') }}">
+                            </div>
+
+                            <div class="w-9/12 mx-2 font-poppins">
+                                <h1 class="text-xl s font-bold text-[#26386A] ">{{ $exam->title }}</h1>
+                                <p class="font-semibold text-[#617388] text-[14px]">{{ $exam->num_of_question }}
+                                    Question
+                                </p>
+                                <p class="text-[14px] text-[#827F8A]">{{ $exam->description }}</p>
+                            </div>
+                        </div>
+
+                        <div class="relative">
+                            <div class="px-3 py-3">
+                                <i class='bx bx-dots-vertical bx-sm text-[#827F8A]'></i>
+                            </div>
+
+                            <div class="absolute bottom-2 m-2 mr-5 right-0 ">
+                                <a href="{{ route('admin.dashboard.edit-exam', $exam->id) }}"
+                                    class="drop-shadow-md border border-gray-200 bg-[#F2F2F3] hover:bg-[#d2d2d2] hover:text-[white] px-4 py-2 rounded-md">EDIT</a>
 
                             </div>
 
-
                         </div>
 
 
                     </div>
+                @endforeach
 
-            </form>
-            @if ($errors->any())
-                <div class="text-red-900 ">
-                    <ul>
-                        @foreach ($errors->all() as $error)
-                            <li>{{ $error }}</li>
-                        @endforeach
-                    </ul>
-                </div>
-            @endif
-
-            @if (session('success'))
-                <div class="bg-gray-200 p-3 text-[12px] rounded-md text-green-500 font-bold font-poppins">
-                    {{ session('success') }}
-                </div>
-            @endif
-
-
-
-
+            </div>
 
         </section>
 
     </div>
     <script src="{{ asset('js/dropdown.js') }}"></script>
+    <script src="{{ asset('js/exam.js') }}"></script>
+
+
 </body>
 
 </html>

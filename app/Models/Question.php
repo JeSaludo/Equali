@@ -13,19 +13,19 @@ class Question extends Model
     protected $fillable = ['question_text','category']; 
 
 
-    public function exam()
-    {
-        return $this->belongsTo(Exam::class);
+
+    public function choices(){
+        return $this->hasMany(Choice::class);
     }
 
-  
-    public function studentResponses()
+    public function correctAnswer()
     {
-        return $this->hasMany(StudentResponse::class);
+        return $this->choices()->where('is_correct', true)->value('choice_text');
     }
 
-    public function choices()
-{
-    return $this->hasMany(Choice::class);
-}
+    public function examSubmission()
+    {
+        return $this->hasMany(Question::class, 'question_id');
+    }
+
 }

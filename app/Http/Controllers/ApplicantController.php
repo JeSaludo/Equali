@@ -59,8 +59,6 @@ class ApplicantController extends Controller
        
     }
 
-
-
     function EditApplicant($id){       
 
         $user = User::where('role', 'User')->with('admissionExam')->findOrFail($id);
@@ -92,8 +90,15 @@ class ApplicantController extends Controller
         $user->contact_number = $request->contactNumber;           
         
 
-        $user->admissionExam->score = $request->score;
-  
+        $user->admissionExam->score = $request->score;        
+        $passingScore = 30;
+        if($request->score >= $passingScore){
+            $user->admissionExam->status = "Passed";
+        }
+        else{
+            $user->admissionExam->status = "Failed";
+        }
+        $user->admissionExam->save();
         $user->save();
         $user->admissionExam->save();
                
@@ -101,7 +106,6 @@ class ApplicantController extends Controller
     }
     
     function DeleteApplicant($id){
-
         $user = User::where('role', 'User')->with('admissionExam')->findOrFail($id);
         $user->admissionExam->delete();
         $user->delete();

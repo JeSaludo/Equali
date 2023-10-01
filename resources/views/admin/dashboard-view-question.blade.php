@@ -291,12 +291,14 @@
                                 <th class="py-2 px-4 font-poppins text-[22px] text-[#26386A]">Action</th>
                             </tr>
                         </thead>
+
+
                         <tbody class="text-center font-poppins text-[18px] w-full  ">
                             <div class="flex justify-between">
                                 @foreach ($questions as $index => $question)
                                     <tr
                                         class="{{ $index % 2 == 0 ? 'bg-[#aecafd30]' : 'bg-white' }} border-b-2 border-gray-100 ">
-                                        <td class="px-3 py-2 w-2/12">{{ $index + 1 }}</td>
+                                        <td class="px-3 py-2 w-2/12">Question {{ $index + 1 }}</td>
                                         <td class="px-3 py-2 w-6/12 text-center  whitespace-nowrap">
                                             @if (strlen($question->question_text) >= 36)
                                                 {{ substr($question->question_text, 0, 36) }}...

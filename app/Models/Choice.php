@@ -16,8 +16,6 @@ class Choice extends Model
         return $this->belongsTo(Question::class);
     }
     
-    public function studentResponse()
-    {
-        return $this->hasOne(StudentResponse::class);
-    }
+  
+    
 }

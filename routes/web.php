@@ -33,16 +33,11 @@ Route::post('/register/store/admin/' . $rndRoute, [AuthController::class, 'Creat
 
 //link  register/admin/31dsda943dasd4azx2Qesd2123
 
-
-
-
 Route::middleware(['admin'])->group(function () {
-    Route::get('dashboard/overview', [AdminController::class, 'ShowAdminOverview'])->name('admin.dashboard.overview');
-    
-
+    Route::get('dashboard/overview', [AdminController::class, 'ShowAdminOverview'])->name('admin.dashboard.overview');   
     //Question 
     Route::get('dashboard/add-question', [QuestionController::class, 'ShowAddQuestion'])->name('admin.dashboard.add-question');
-    Route::get('/dashboard/questions', [QuestionController::class, 'ShowQuestions'])->name('admin.dashboard.view-question');
+    Route::get('/dashboard/view-questions', [QuestionController::class, 'ShowQuestions'])->name('admin.dashboard.view-question');
     Route::post('/dashboard/add-question/store', [QuestionController::class, 'StoreQuestion'])->name('admin.dashboard.store-question');
     Route::get('/dashboard/questions/{id}/edit', [QuestionController::class, 'ShowEditQuestion'])->name('admin.dashboard.edit-question');
     Route::put('/dashboard/questions/{id}', [QuestionController::class, 'UpdateQuestion'])->name('admin.dashboard.update-question');
@@ -65,4 +60,11 @@ Route::middleware(['admin'])->group(function () {
 
 
 Route::get('/exam', [ExamController::class,'ShowExam']);
+Route::post('/exam/store', [ExamController::class, 'SubmitExam'])->name('store-exam');
 
+Route::get('/dashboard/exam', [ExamController::class, 'ShowAdminExam'])->name('admin.dashboard.show-exam');
+Route::get('/dashboard/exam/{id}/edit', [ExamController::class, 'EditExam'])->name('admin.dashboard.edit-exam');
+Route::put('/dashboard/exam/{id}', [ExamController::class, 'UpdateExam'])->name('admin.dashboard.update-exam');
+
+Route::post('/dashboard/exam/{id}/add-random', [ExamController::class, 'StoreRandomExam'])->name('admin.dashboard.store-random');
+Route::post('/dashboard/exam/store', [ExamController::class, 'StoreExam'])->name('admin.dashboard.store-exam');

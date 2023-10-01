@@ -53,9 +53,7 @@ class QuestionController extends Controller
     public function ShowEditQuestion($id)
     {   
         // Fetch the question and its choices
-        $question = Question::with('choices')->findOrFail($id);      
-
-       
+        $question = Question::with('choices')->findOrFail($id);  
         return view('admin.dashboard-edit-question', compact('question'));
     }
     public function UpdateQuestion(Request $request,  $id)
@@ -98,6 +96,11 @@ class QuestionController extends Controller
         $question->delete();
 
         return redirect()->route('admin.dashboard.view-question')->with('success', 'Question remove successfully!');
+    }
+
+
+    public function ShowCreateExam(){
+        return view('');
     }
 
 }
