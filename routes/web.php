@@ -60,7 +60,7 @@ Route::middleware(['admin'])->group(function () {
 
 
 Route::get('/exam', [ExamController::class,'ShowExam']);
-Route::post('/exam/store', [ExamController::class, 'SubmitExam'])->name('store-exam');
+Route::post('/exam/store', [ExamController::class, 'SubmitExam'])->name('submit-exam');
 
 Route::get('/dashboard/exam', [ExamController::class, 'ShowAdminExam'])->name('admin.dashboard.show-exam');
 Route::get('/dashboard/exam/{id}/edit', [ExamController::class, 'EditExam'])->name('admin.dashboard.edit-exam');
@@ -68,3 +68,4 @@ Route::put('/dashboard/exam/{id}', [ExamController::class, 'UpdateExam'])->name(
 
 Route::post('/dashboard/exam/{id}/add-random', [ExamController::class, 'StoreRandomExam'])->name('admin.dashboard.store-random');
 Route::post('/dashboard/exam/store', [ExamController::class, 'StoreExam'])->name('admin.dashboard.store-exam');
+Route::delete('/dashboard/exam/{id}', [ExamController::class, 'DeleteExam'])->name('admin.dashboard.delete-exam');

@@ -13,29 +13,42 @@ class ExamController extends Controller
 {
     function ShowExam()
     {
-        $questions  = Question::with('choices')->get();
+        $randomExam = Exam::inRandomOrder()->with('examQuestion.question.choices')->first();
 
-        return view('student.exam', compact('questions'));
+        if (!$randomExam) {
+            // Handle the case where there are no exams available
+            return "No exams available.";
+        }     
+
+        return view('student.exam', compact('randomExam'));
     }
 
     function SubmitExam(Request $request){
 
-        $submittedAnswers = $request->input('answer');
-
-        
+        $userAnswers = $request->answer;
         $score = 0;
     
-       
-        foreach ($submittedAnswers as $questionIndex => $submittedAnswer) {
-            $question = Question::find($questionIndex); // Assuming Question model
-            $correctAnswer = $question->correctAnswer(); // Implement this method in your Question model
+        $correctAnswer = [];
+        $userAnswer = [];
+
+        $currentExamId = $request->exam_id;
+      
+        $currentExam = ExamQuestion::where('exam_id', $currentExamId)->with('question.choices')->get();
+        
+        foreach($currentExam as $index => $exam){
             
-            // Check if the submitted answer matches the correct answer
-            if ($submittedAnswer === $correctAnswer) {
-                $score++; // Increment the score
+            $correctChoice = $exam->question->correctAnswer();
+            $correctAnswer[$index] = $correctChoice;
+            foreach($userAnswers  as $answerId => $answer){
+                $userAnswer[$answerId] = $answer;
+                if($answer === $exam->question->correctAnswer()){
+                    $score++;
+                }
             }
         }
-        dd($score);
+    
+        return "Your result is " .$score . "/" . sizeOf($userAnswers); 
+        
     }
 
     public function ShowAdminExam(){
@@ -43,6 +56,7 @@ class ExamController extends Controller
         $exams = Exam::all();
         return view('admin.dashboard-exam', compact('exams'));
     }
+
 
     public function StoreExam(Request $request){
         
@@ -111,38 +125,58 @@ class ExamController extends Controller
         return view('admin.dashboard-edit-exam', compact('exam', 'examQuestions'));
     }
 
+    public function DeleteExam($id){
+        $exam = Exam::findOrFail($id);
+       
+
+
+        $exam->delete();
+
+        return redirect()->back()->with('success', 'Exam deleted successfully!');      
+    }
+
     public function StoreRandomExam(Request $request, $id){
+ 
+        $existingQuestionIds = ExamQuestion::where('exam_id', $id)->pluck('question_id')->toArray();
 
-        $examId = $id;
+        // Check if there are any available questions to add.
+        $availableQuestionsCount = Question::whereNotIn('id', $existingQuestionIds)->count();
 
-        // Get the existing question IDs associated with the exam.
-        $existingQuestionIds = ExamQuestion::where('exam_id', $examId)->pluck('question_id')->toArray();
-        
+        if ($availableQuestionsCount < 5) {
+            return "Not enough available questions to add.";
+        }
+
         // Initialize an array to keep track of the added question IDs.
         $addedQuestionIds = [];
-    
-        // Loop until you have added 10 unique random questions.
-        while (count($addedQuestionIds) < 2) {
+
+        // Loop until you have added 5 unique random questions or until no more questions are available.
+        while (count($addedQuestionIds) < 5) {
             // Get a random question that is not already in the exam.
-            $randomQuestion = Question::inRandomOrder()->whereNotIn('id', $existingQuestionIds)->first();
-    
+            $randomQuestion = Question::inRandomOrder()
+                ->whereNotIn('id', $existingQuestionIds)
+                ->first();
+
             // Check if a valid random question is found.
             if ($randomQuestion) {
                 // Create a new ExamQuestion record.
                 $examQuestion = new ExamQuestion();
-                $examQuestion->exam_id = $examId;
+                $examQuestion->exam_id = $id;
                 $examQuestion->question_id = $randomQuestion->id;
                 $examQuestion->save();
-    
+
                 // Add the question ID to the list of added question IDs.
                 $addedQuestionIds[] = $randomQuestion->id;
+
+                // Update the $existingQuestionIds array to avoid adding the same question multiple times.
+                $existingQuestionIds[] = $randomQuestion->id;
             } else {
                 // Handle the case where there are no more unique questions to add.
-                return "Already ADded";   
+                break;
             }
-        
+        }
 
-            return "Done";     
-    }}
+        return redirect()->back()->with('success', 'Question added successfully!');       
+            
+    }
 }
 

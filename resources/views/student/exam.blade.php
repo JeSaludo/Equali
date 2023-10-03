@@ -32,7 +32,7 @@
                     </div>
 
                 </nav>
-                <form action="{{ route('admin.dashboard.store-exam') }}" method="POST" class=" mt-4">
+                <form action="{{ route('submit-exam') }}" method="POST" class=" mt-4">
                     <div class="w-full">
                         @csrf
                         <div class="mx-16">
@@ -55,43 +55,45 @@
                         </div>
 
                         <div class=" mt-3">
-                            @foreach ($questions as $index => $question)
+                            @foreach ($randomExam->examQuestion as $index => $examQuestion)
                                 <div class="mx-16">
                                     <h1 class="font-bold  text-lg text-[#2B6BE6]">
-                                        Question {{ $index + 1 }}
+                                        {{-- Question {{ $index + 1 }} --}}
                                     </h1>
 
                                     <p class="text-[#626B7F]">
-                                        {{ $question->question_text }}
+                                    <h2>{{ $examQuestion->question->question_text }}</h2>
                                     </p>
                                     <div>
-
-
                                         <div class="border-t-2 border-x-2 rounded-t-lg flex  w-6/12  items-center">
                                             <input class="py-2 px-4 ml-2" type="radio"
                                                 name="answer[{{ $index + 1 }}]" id="" required
-                                                value="{{ $question->choices->get(0)->choice_text }}">
-                                            <p class="ml-2 py-1">{{ $question->choices->get(0)->choice_text }}</p>
+                                                value="{{ $examQuestion->question->choices->get(0)->choice_text }}">
+                                            <p class="ml-2 py-1">
+                                                {{ $examQuestion->question->choices->get(0)->choice_text }}
+                                            </p>
                                         </div>
                                         <div class="border-x-2 border-t-2 flex w-6/12  items-center">
                                             <input class="py-2 px-4 ml-2" type="radio"
                                                 name="answer[{{ $index + 1 }}]" id="" required
-                                                value=">{{ $question->choices->get(1)->choice_text }}">
-                                            <p class="ml-2">{{ $question->choices->get(1)->choice_text }}</p>
+                                                value="{{ $examQuestion->question->choices->get(1)->choice_text }}">
+                                            <p class="ml-2">
+                                                {{ $examQuestion->question->choices->get(1)->choice_text }}</p>
                                         </div>
                                         <div class="border-x-2 border-t-2 flex w-6/12  items-center">
                                             <input class="py-2 px-4 ml-2" type="radio"
                                                 name="answer[{{ $index + 1 }}]" id="" required
-                                                value="{{ $question->choices->get(2)->choice_text }}">
-                                            <p class="ml-2">{{ $question->choices->get(2)->choice_text }}</p>
+                                                value="{{ $examQuestion->question->choices->get(2)->choice_text }}">
+                                            <p class="ml-2">
+                                                {{ $examQuestion->question->choices->get(2)->choice_text }}</p>
                                         </div>
                                         <div class="border-2 rounded-b-lg flex  w-6/12  items-center">
                                             <input class="py-2 px-4 ml-2" type="radio"
                                                 name="answer[{{ $index + 1 }}]" id="" required
-                                                value="{{ $question->choices->get(3)->choice_text }}">
-                                            <p class="ml-2">{{ $question->choices->get(3)->choice_text }}</p>
+                                                value="{{ $examQuestion->question->choices->get(3)->choice_text }}">
+                                            <p class="ml-2">
+                                                {{ $examQuestion->question->choices->get(3)->choice_text }}</p>
                                         </div>
-
                                     </div>
                                 </div>
 
@@ -100,29 +102,11 @@
                         </div>
 
                     </div>
-
+                    <input type="hidden" name="exam_id" value="{{ $randomExam->id }}">
                 </form>
             </div>
-
-
-            <div class=" border-l-2  h-screen w-3/12">
-
-                <h1 class="mt-16 mx-4 font-poppins font-semibold">Question Navigator</h1>
-                <div class="flex justify-evenly">
-                    <div>
-                        Answered
-                    </div>
-
-                    <div>
-                        Unanswered
-                    </div>
-                </div>
-
-            </div>
-
-
         </div>
-
+    </div>
 
 
 

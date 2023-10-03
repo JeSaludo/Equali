@@ -269,14 +269,15 @@
                 <div class="w-3/12">
                     <i
                         class='bx bxs-circle
-                @if ($examQuestion->question->choices->get(0)->is_correct) text-green-600 @else text-red-600 @endif '></i>
+                    @if ($examQuestion->question->choices->get(0)->is_correct) text-green-600 @else text-red-600 @endif '></i>
+
                     {{ $examQuestion->question->choices->get(0)->choice_text }}
                 </div>
 
                 <div>
                     <i
-                        class='bx bxs-circle
-                    @if ($examQuestion->question->choices->get(1)->is_correct) text-green-600 @else text-red-600 @endif '></i>
+                        class='bx
+                        bxs-circle @if ($examQuestion->question->choices->get(1)->is_correct) text-green-600 @else text-red-600 @endif '></i>
                     {{ $examQuestion->question->choices->get(1)->choice_text }}
                 </div>
 

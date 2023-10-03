@@ -259,11 +259,24 @@
                                 <i class='bx bx-dots-vertical bx-sm text-[#827F8A]'></i>
                             </div>
 
-                            <div class="absolute bottom-2 m-2 mr-5 right-0 ">
-                                <a href="{{ route('admin.dashboard.edit-exam', $exam->id) }}"
-                                    class="drop-shadow-md border border-gray-200 bg-[#F2F2F3] hover:bg-[#d2d2d2] hover:text-[white] px-4 py-2 rounded-md">EDIT</a>
+                            <div class="absolute bottom-2 m-2 mr-5 right-0  flex justify-between">
+                                <div class="">
+                                    <a href="{{ route('admin.dashboard.edit-exam', $exam->id) }}"
+                                        class="drop-shadow-md border border-gray-200 bg-[#F2F2F3] hover:bg-[#d2d2d2] hover:text-[white] px-4 py-2 rounded-md">EDIT</a>
 
+                                </div>
+
+                                <form action="{{ route('admin.dashboard.delete-exam', $exam->id) }}" method="POST"
+                                    style="display: inline-block;">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="mx-2  hover:text-indigo-900"
+                                        onclick="return confirm('Are you sure you want to delete this Exam?')"><i
+                                            class='bx bxs-trash'></i></button>
+
+                                </form>
                             </div>
+
 
                         </div>
 
