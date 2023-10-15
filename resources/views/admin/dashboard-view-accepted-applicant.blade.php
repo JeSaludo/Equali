@@ -14,6 +14,8 @@
         rel="stylesheet">
     @vite('resources/css/app.css')
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+
+
     <link rel="stylesheet" href="{{ asset('css/main.css') }}">
 
 
@@ -69,16 +71,49 @@
         </div>
 
 
-        <section class="ml-[218px] main ">
-            <div class="bg-white mx-4 m-2 p-4">
+        <section class="ml-[218px] main  ">
+            <div class="absolute bottom-5 right-0 ">
+                <a href=""
+                    class="px-4 py-2  text-lg font-poppins font-normal mr-2 w-full  rounded-[15px]  bg-[#2B6CE6] hover:bg-[#134197] transition-colors duration-200 text-white">Schedule</a>
+
+            </div>
+
+            <div class="absolute bottom-5 right-0">
+                <a href="#" id="openPopup"
+                    class="px-4 py-2 text-lg font-poppins font-normal mr-2 w-full rounded-[15px] bg-[#2B6CE6] hover:bg-[#134197] transition-colors duration-200 text-white">Schedule</a>
+            </div>
+
+            <div id="popup"
+                class="fixed top-0 left-0 w-full h-full flex justify-center items-center bg-gray-500 bg-opacity-50 z-50 hidden">
+                <div class="bg-white rounded-lg p-4">
+                    <span class="cursor-pointer absolute top-2 right-2 text-gray-600" id="closePopup">&times;</span>
+                    <h2 class="text-lg font-semibold mb-4">Schedule Event</h2>
+                    <form id="scheduleForm">
+                        <div class="mb-4">
+                            <label for="event" class="block text-sm font-medium text-gray-600">Event:</label>
+                            <input type="date" name="date" class="w-full px-3 py-2 border rounded-md">
+
+                        </div>
+                        <button type="button" id="submitSchedule"
+                            class="bg-[#2B6CE6] text-white px-4 py-2 rounded-md hover:bg-[#134197] transition-colors duration-200">Submit</button>
+                        <button type="button" id="cancelSchedule"
+                            class="bg-gray-300 text-gray-600 px-4 py-2 rounded-md hover:bg-gray-400 transition-colors duration-200 ml-2">Cancel</button>
+                    </form>
+                </div>
+            </div>
 
 
+            <div class="bg-white   mx-4 rounded-[12px] ">
 
 
                 <div id="applicantContent" class="app-content">
+
                     <table class="w-full ">
                         <thead class="border-b-2 border-[#718297]">
                             <tr>
+                                <th>
+                                    <input type="checkbox" id="selectAllCheckbox">
+                                </th>
                                 <th
                                     class="py-2
                         px-4 font-poppins text-[22px] text-[#26386A] uppercase">
@@ -94,6 +129,9 @@
                                 @foreach ($users as $index => $user)
                                     <tr
                                         class="{{ $index % 2 == 0 ? 'bg-[#aecafd30]' : 'bg-white' }} border-b-2 border-gray-100 ">
+                                        <td>
+                                            <input type="checkbox" name="selectedUsers[]" value="{{ $user->id }}">
+                                        </td>
                                         <td class="px-3 py-2 w-4/12 whitespace-nowrap">
                                             {{ $user->last_name }}, {{ $user->first_name }}
                                         </td>
@@ -111,16 +149,11 @@
                                         <td
                                             class="px-3 py-2 w-4/12 text-[#626B7F] mx-auto  flex justify-evenly gap-1 items-center ">
 
-                                            <div class="relative">
-                                                <a href="" class="mx-2"><i
-                                                        class='bx bx-calendar-check'></i></a>
-                                                <div class="absolute bg-red-900 mx-4">
-                                                    <form action="">
-                                                        <input type="date" name="" id="">
-                                                        <button>lol</button>
-                                                    </form>
-                                                </div>
-                                            </div>
+
+                                            {{-- <a href="" class="mx-2" title="Schedule"><i
+                                                    class='bx bx-calendar-check'></i></a> --}}
+
+
 
 
                                             <a href="{{ route('admin.dashboard.edit-accepted-appplicant', $user->id) }}"
@@ -132,7 +165,8 @@
                                                 method="POST" style="display: inline-block;">
                                                 @csrf
                                                 @method('DELETE')
-                                                <button type="submit" title="Delete" class="mx-2   hover:text-red-400"
+                                                <button type="submit" title="Delete"
+                                                    class="mx-2   hover:text-red-400"
                                                     onclick="return confirm('Are you sure you want to delete this user?')"><i
                                                         class='bx bxs-trash '></i></button>
                                             </form>
@@ -154,6 +188,57 @@
     </div>
 
     <script src="{{ asset('js/add-applicant.js') }}"></script>
+
+    <script>
+        const selectAllCheckbox = document.getElementById('selectAllCheckbox');
+        const checkboxes = document.querySelectorAll('tbody input[type="checkbox"]');
+
+        function updateSelectAllCheckbox() {
+            selectAllCheckbox.checked = Array.from(checkboxes).every(checkbox => checkbox.checked);
+        }
+
+        selectAllCheckbox.addEventListener('click', function() {
+            checkboxes.forEach(checkbox => {
+                checkbox.checked = selectAllCheckbox.checked;
+            });
+        });
+
+
+        checkboxes.forEach(checkbox => {
+            checkbox.addEventListener('click', function() {
+                updateSelectAllCheckbox();
+            });
+        });
+
+
+        // Open the popup
+        document.getElementById("openPopup").addEventListener("click", function() {
+            document.getElementById("popup").classList.remove("hidden");
+        });
+
+        // Close the popup when the close button is clicked
+        document.getElementById("closePopup").addEventListener("click", function() {
+            document.getElementById("popup").classList.add("hidden");
+        });
+
+        // Close the popup when the cancel button is clicked
+        document.getElementById("cancelSchedule").addEventListener("click", function() {
+            document.getElementById("popup").classList.add("hidden");
+        });
+
+        // Handle the submit button
+        document.getElementById("submitSchedule").addEventListener("click", function() {
+            // You can add your submit logic here
+            // For example, you can retrieve the event name from the input field
+            var eventName = document.getElementById("event").value;
+
+            // Close the popup
+            document.getElementById("popup").classList.add("hidden");
+
+            // You can do something with the event name, e.g., save it to a database
+            console.log("Event Name: " + eventName);
+        });
+    </script>
 </body>
 
 </html>

@@ -54,5 +54,10 @@ class User extends Authenticatable
     {
         return $this->hasOne(AdmissionExam::class);
     }
+
+    public function qualifiedStudent()
+    {
+        return $this->hasOne(QualifiedStudent::class);
+    }
     
 }
