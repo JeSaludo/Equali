@@ -70,7 +70,7 @@
                             class="h-[50px] w-full  placeholder:text-[#4E4E4E]  px-[40px] rounded-r border-y-2 border-r-2 border-[#D7D8D0]"
                             autocomplete="off">
                             <option disabled selected>Choose a Role</option>
-                            <option value="Program Head">Program Head</option>
+                            <option value="ProgramHead">Program Head</option>
                             <option value="Proctor">Proctor</option>
                             <option value="Dean">Dean</option>
                             <option value="Tester">Tester</option>
@@ -96,7 +96,7 @@
 
 
                     <div class="relative my-6">
-                        <input type="submit" value="Login"
+                        <input type="submit" value="Create Account"
                             class="text-lg font-poppins font-normal mr-2 w-full h-[50px] rounded-[18px] bg-[#1E5CD1] hover:bg-[#134197] transition-colors duration-200 text-white">
                     </div>
 

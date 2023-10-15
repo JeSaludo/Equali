@@ -23,113 +23,7 @@
     <div class="min-h-screen  bg-[#EEF4F6]">
 
 
-        <aside class="fixed top-0 left-0 w-[218px] h-screen bg-white">
-            <div class="mx-auto text-center py-2  ">
-                <h1 class=" text-[36px] font-raleway font-semibold"><span class="text-[#2217D0]">e</span>quali.</h1>
-                <div class="border-b-2 w-6/12 mx-auto"></div>
-            </div>
-
-            <div class="">
-                <h2 class="font-raleway text-[14px] font-semibold text-[#718297] px-4 my-2 ">MAIN MENU</h2>
-
-                <a href=""
-                    class="mx-4 bg-gradient-to-r from-[#234BDA] to-[#6499FF] px-4 py-2 rounded-[15px] flex justify-between items-center text-white my-2">
-                    <div class=""><i class='bx bxs-dashboard '></i> Overview </i></div>
-                    <i class='bx bxs-circle'></i>
-                </a>
-
-                <nav class="relative">
-                    <div class="dropdown" data-dropdown>
-
-
-                        <a class="dropdown-button mx-4 cursor-pointer hover:bg-[#EAF0FF]  px-4 py-2 rounded-[15px] flex justify-between items-center text-[#718297] my-2"
-                            data-dropdown-button>
-                            <div class="pointer-events-none"><i class='bx bxs-user pr-2'></i>Applicant</div><i
-                                class='caret-icon pointer-events-none  bx bx-caret-right'></i>
-                        </a>
-
-                        <div class="dropdown-menu  pointer-events-none opacity-0 " data-dropdown-content>
-                            <a href="#WVSDA"
-                                class=" mx-4 px-4 py-2 hover:cursor-pointer hover:bg-[#EAF0FF] rounded-[15px] flex justify-between items-center text-[#718297] my-2">
-                                <div class=""><i class='bx bx-radio-circle pr-2 '></i>View
-                                    Applicant
-                                </div>
-                            </a>
-
-                            <a href="#WVSDA"
-                                class=" mx-4 px-4 py-2 hover:cursor-pointer hover:bg-[#EAF0FF] rounded-[15px] flex justify-between items-center text-[#718297] my-2">
-                                <div class=""><i class='bx bx-radio-circle pr-2 '></i>Add
-                                    Applicant
-                                </div>
-                            </a>
-                        </div>
-
-
-                    </div>
-
-                    <div class="dropdown" data-dropdown>
-
-                        <a class="dropdown-button mx-4 cursor-pointer hover:bg-[#EAF0FF]  px-4 py-2 rounded-[15px] flex justify-between items-center text-[#718297] my-2"
-                            data-dropdown-button>
-                            <div class="pointer-events-none"><i class='bx bxs-user pr-2'></i>User</div><i
-                                class='caret-icon pointer-events-none  bx bx-caret-right'></i>
-                        </a>
-
-                        <div class="dropdown-menu  pointer-events-none opacity-0 " data-dropdown-content>
-                            <a href="#test"
-                                class=" mx-4 px-4 py-2 hover:cursor-pointer hover:bg-[#EAF0FF] rounded-[15px] flex justify-between items-center text-[#718297] my-2">
-                                <div class=""><i class='bx bx-radio-circle pr-2 '></i>View
-                                    User
-                                </div>
-                            </a>
-
-                            <a href="#test"
-                                class=" mx-4 px-4 py-2 hover:cursor-pointer hover:bg-[#EAF0FF] rounded-[15px] flex justify-between items-center text-[#718297] my-2">
-                                <div class=""><i class='bx bx-radio-circle pr-2 '></i>Add
-                                    User
-                                </div>
-                            </a>
-                        </div>
-                    </div>
-
-                    <div class="dropdown" data-dropdown>
-
-
-                        <a class="dropdown-button mx-4 cursor-pointer hover:bg-[#EAF0FF]  px-4 py-2 rounded-[15px] flex justify-between items-center text-[#718297] my-2"
-                            data-dropdown-button>
-                            <div class="pointer-events-none"><i class='bx bxs-user pr-2'></i>Question Bank</div><i
-                                class='caret-icon pointer-events-none  bx bx-caret-right'></i>
-                        </a>
-
-                        <div class="dropdown-menu  pointer-events-none opacity-0 " data-dropdown-content>
-                            <a href="#test"
-                                class=" mx-4 px-4 py-2 hover:cursor-pointer hover:bg-[#EAF0FF] rounded-[15px] flex justify-between items-center text-[#718297] my-2">
-                                <div class=""><i class='bx bx-radio-circle pr-2 '></i>View
-                                    Question
-                                </div>
-                            </a>
-
-                            <a href="#test"
-                                class=" mx-4 px-4 py-2 hover:cursor-pointer hover:bg-[#EAF0FF] rounded-[15px] flex justify-between items-center text-[#718297] my-2">
-                                <div class=""><i class='bx bx-radio-circle  pr-2 '></i>
-                                    Add Question
-                                </div>
-                            </a>
-                        </div>
-                    </div>
-                </nav>
-            </div>
-
-
-
-
-
-
-
-
-
-
-        </aside>
+        @include('layout.sidenav');
         <div class="ml-[218px] w-auto  text-black flex justify-between ">
             <div class="my-4">
                 <h1 class="text-[#1D489A] font-poppins font-medium text-[24px] mx-8">Welcome, Name Here👋</h1>
@@ -176,7 +70,7 @@
 
 
         <section class="ml-[218px] main ">
-            <div class="bg-white mx-4 p-2">
+            <div class="bg-white mx-4 m-2 p-4">
                 <div class="flex justify-end">
 
 
@@ -317,21 +211,53 @@
                                                 </div>
                                             @endif
                                         </td>
-                                        <td class="px-3 py-2 w-4/12 text-[#626B7F] mx-auto  flex justify-evenly">
-                                            <a href="{{ route('admin.dashboard.edit-applicant', $user->id) }}"><i
-                                                    class='bx bxs-edit'></i></a>
+                                        <td
+                                            class="px-3 py-2 w-4/12 text-[#626B7F] mx-auto  flex justify-evenly gap-1 items-center ">
+
+
+
+                                            {{-- <form action="{{ route('admin.dashboard.approve-applicant', $user->id) }}"
+                                                method="POST" style="display: inline-block;">
+                                                <button type="submit">
+                                                    <i class='bx bx-user-check bx-sm hover:text-green-400'></button>
+
+                                            </form> --}}
+
+                                            <form action="{{ route('admin.dashboard.approve-applicant', $user->id) }}"
+                                                method="POST" style="display: inline-block;">
+                                                @csrf
+
+                                                <button type="submit" title="Approve Applicant"
+                                                    class="mx-2   hover:text-green-400"
+                                                    onclick="return confirm('Are you sure you want to approve this user?')"><i
+                                                        class='bx bx-user-check bx-sm'></i></button>
+
+                                            </form>
+                                            <a href="#" title="Reject Applicant" class="mx-1"><i
+                                                    class='bx bx-user-x bx-sm hover:text-red-400'></i></a>
+                                            <a href="{{ route('admin.dashboard.edit-applicant', $user->id) }}"
+                                                class="mx-1 hover:text-green-400" title="Edit"><i
+                                                    class='bx bxs-edit '></i></a>
 
                                             <form action="{{ route('admin.dashboard.delete-applicant', $user->id) }}"
                                                 method="POST" style="display: inline-block;">
                                                 @csrf
                                                 @method('DELETE')
-                                                <button type="submit" class="mx-2  hover:text-indigo-900"
+                                                <button type="submit" title="Delete"
+                                                    class="mx-2   hover:text-red-400"
                                                     onclick="return confirm('Are you sure you want to delete this user?')"><i
-                                                        class='bx bxs-trash'></i></button>
+                                                        class='bx bxs-trash '></i></button>
 
                                             </form>
-                                            <a href=""><i class='bx bx-dots-vertical'></i></a>
+
+
+
+
+
+
                                         </td>
+
+
                                     </tr>
                                 @endforeach
                             </div>
@@ -345,7 +271,7 @@
         </section>
 
     </div>
-    <script src="{{ asset('js/dropdown.js') }}"></script>
+
     <script src="{{ asset('js/add-applicant.js') }}"></script>
 </body>
 
