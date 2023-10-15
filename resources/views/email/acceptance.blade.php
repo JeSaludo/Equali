@@ -17,10 +17,10 @@
 </head>
 
 <body>
-    <h1>Hello you have been approved , vincent ikaw na bahala dito </h1>
-    <p>{{ $get_last_name }}, {{ $get_first_name }}</p>
-    <p>Your password is : {{ $get_user_password }}</p>
-    <p>please wait for schedule</p>
+    <h1>You're Approved: Welcome to Our Platform!</h1>
+    <p> Hello {{ $get_last_name }} {{ $get_first_name }}</p>
+    <p>Your Account Password: {{ $get_user_password }}</p>
+    <p>Kindly await your schedule, which will be sent to you via email.</p>
 
 </body>
 
