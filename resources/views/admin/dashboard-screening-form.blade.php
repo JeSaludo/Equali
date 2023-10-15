@@ -141,20 +141,84 @@
                             <input class="ml-[440px]" type="checkbox">
                             <label class="" for="none">None</label>
                         </div>
+                        <div class="flex mt-8">
+                            <h2 class="font-poppins mr-96 text-xl">Interview Guide:</h2>
+                            <h2 class="font-poppins ml-80 text-xl">Score</h2>
+                        </div>
+                        <div class="flex mt-8">
+                            <h3 class="font-poppins mr-96">1. Background and Interest to the program</h3>
+                            <input class="border-2 rounded-[4px] ml-[75px] text-center" type="text"
+                                placeholder="">
+                        </div>
+                        <div class="flex mt-8">
+                            <h3 class="font-poppins mr-96">2. Ability to express one self</h3>
+                            <input class="border-2 rounded-[4px] ml-[194px] text-center" type="text"
+                                placeholder="">
+                        </div>
+                        <div class="flex mt-8">
+                            <h3 class="font-poppins mr-96">3. Academic Potential</h3>
+                            <input class="border-2 rounded-[4px] ml-[237px] text-center" type="text"
+                                placeholder="">
+                        </div>
+                        <div class="flex mt-8">
+                            <h3 class="font-poppins mr-96">4. Extra Curricular Potential</h3>
+                            <input class="border-2 rounded-[4px] ml-[197px] text-center" type="text"
+                                placeholder="">
+                        </div>
+                        <div class="flex mt-8">
+                            <h3 class="font-poppins mr-96">5. Potential to support Learning</h3>
+                            <input class="border-2 rounded-[4px] ml-[163px] text-center" type="text"
+                                placeholder="">
+                        </div>
+                        <div class="mt-8">
+                            <table class="table-auto border border-solid border-black w-full">
+                                <thead>
+                                    <tr class="justify-between">
+                                        <th class="border border-solid border-black text-center font-poppins w-1/5">5
+                                        </th>
+                                        <th class="border border-solid border-black text-center font-poppins w-1/5">4
+                                        </th>
+                                        <th class="border border-solid border-black text-center font-poppins w-1/5">3
+                                        </th>
+                                        <th class="border border-solid border-black text-center font-poppins w-1/5">2
+                                        </th>
+                                        <th class="border border-solid border-black text-center font-poppins w-1/5">1
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr class="justify-between">
+                                        <td class="border border-solid border-black text-center font-poppins w-1/5">
+                                            Excellent</td>
+                                        <td class="border border-solid border-black text-center font-poppins w-1/5">
+                                            Very Satisfactory</td>
+                                        <td class="border border-solid border-black text-center font-poppins w-1/5">
+                                            Satisfactory</td>
+                                        <td class="border border-solid border-black text-center font-poppins w-1/5">
+                                            Less Satisfactory</td>
+                                        <td class="border border-solid border-black text-center font-poppins w-1/5">
+                                            Limited Potential</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div>
+                            <h1 class="font-poppins text-lg mt-8">Remarks</h1>
+                        </div>
+                        <div class="flex">
+                            <textarea class="p-4 w-full border border-solid border-black text-left font-poppins" name="" id=""
+                                cols="30" rows="10" style="resize: none;"></textarea>
+                        </div>
                         <div class="flex justify-end mt-10 ">
                             <button id=""
                                 class="font-bold text-white bg-[#2B6CE6] hover:bg-[#134197] rounded-[8px] font-poppins text-lg py-3 px-12 transition-colors duration-200"
-                                type="button">Next</button>
+                                type="button">Submit</button>
                         </div>
                     </form>
-
                 </div>
             </div>
-
         </section>
-
     </div>
-
 </body>
 
 </html>
