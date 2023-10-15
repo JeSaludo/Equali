@@ -178,5 +178,8 @@ class ExamController extends Controller
         return redirect()->back()->with('success', 'Question added successfully!');       
             
     }
+    public function ShowExamResult(){
+        return view ('student.exam-result');
+    }
 }
 

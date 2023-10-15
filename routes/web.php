@@ -69,3 +69,4 @@ Route::put('/dashboard/exam/{id}', [ExamController::class, 'UpdateExam'])->name(
 Route::post('/dashboard/exam/{id}/add-random', [ExamController::class, 'StoreRandomExam'])->name('admin.dashboard.store-random');
 Route::post('/dashboard/exam/store', [ExamController::class, 'StoreExam'])->name('admin.dashboard.store-exam');
 Route::delete('/dashboard/exam/{id}', [ExamController::class, 'DeleteExam'])->name('admin.dashboard.delete-exam');
+Route::get('/exam/result', [ExamController::class, 'ShowExamResult'])->name('student.exam-result');
