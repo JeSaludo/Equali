@@ -6,6 +6,7 @@ use App\Http\Controllers\auth\AuthController;
 use App\Http\Controllers\ExamController;
 use App\Http\Controllers\InterviewController;
 use App\Http\Controllers\QuestionController;
+use App\Http\Controllers\UserController;
 use Illuminate\Auth\Events\Login;
 use Illuminate\Support\Facades\Route;
 
@@ -31,6 +32,10 @@ $rndRoute = "31dsda943dasd4azx2Qesd2123";
 Route::get('/register/admin/' . $rndRoute, [AuthController::class, 'ShowAdminRegistration'])->name("auth.show.admin.registration");
 Route::post('/register/store/admin/' . $rndRoute, [AuthController::class, 'CreateAccountAdmin'])->name("auth.store.admin.registration");
 
+
+Route::get('/logout', [AuthController::class, 'Logout'])->name('auth.logout');
+
+
 //link  register/admin/31dsda943dasd4azx2Qesd2123
 
 Route::middleware(['admin'])->group(function () {
@@ -54,6 +59,16 @@ Route::middleware(['admin'])->group(function () {
     Route::put('/dashboard/applicant/{id}', [ApplicantController::class, 'UpdateApplicant'])->name('admin.dashboard.update-applicant');
     Route::delete('/dashboard/applicant/{id}/delete', [ApplicantController::class, 'DeleteApplicant'])->name('admin.dashboard.delete-applicant');
 
+    //Qualified 
+    Route::get('/dashboard/accepted-applicant/view', [ApplicantController::class, 'ShowAcceptedApplicant'])->name('admin.dashboard.show-accepted-appplicant');
+    Route::get('/dashboard/accepted-applicant/{id}/edit', [ApplicantController::class, 'EditAcceptedApplicant'])->name('admin.dashboard.edit-accepted-appplicant');
+    Route::get('/dashboard/accepted-applicant/store', [ApplicantController::class, 'StoreAcceptedApplicant'])->name('admin.dashboard.store-accepted-appplicant');
+    Route::get('/dashboard/accepted-applicant/{id}/delete', [ApplicantController::class, 'DeleteAcceptedApplicant'])->name('admin.dashboard.delete-accepted-appplicant');
+
+    Route::post('/dashboard/applcant/{id}/approved', [ApplicantController::class, 'ApproveApplicant'])->name('admin.dashboard.approve-applicant');
+    
+    
+    
 
 });
 
@@ -69,4 +84,6 @@ Route::put('/dashboard/exam/{id}', [ExamController::class, 'UpdateExam'])->name(
 Route::post('/dashboard/exam/{id}/add-random', [ExamController::class, 'StoreRandomExam'])->name('admin.dashboard.store-random');
 Route::post('/dashboard/exam/store', [ExamController::class, 'StoreExam'])->name('admin.dashboard.store-exam');
 Route::delete('/dashboard/exam/{id}', [ExamController::class, 'DeleteExam'])->name('admin.dashboard.delete-exam');
+
 Route::get('/exam/result', [ExamController::class, 'ShowExamResult'])->name('student.exam-result');
+
