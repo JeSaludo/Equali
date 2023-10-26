@@ -159,8 +159,8 @@
 
 
 
-            <div class="w-4/12 justify-between flex">
-                <div class="w-3/12">
+            <div class="w-1/2 flex">
+                <div class="w-1/2">
                     <i
                         class='bx bxs-circle
                     @if ($examQuestion->question->choices->get(0)->is_correct) text-green-600 @else text-red-600 @endif '></i>
@@ -179,8 +179,8 @@
             </div>
 
 
-            <div class="w-4/12 justify-between flex">
-                <div class="w-3/12">
+            <div class="w-1/2 flex">
+                <div class="w-1/2">
                     <i
                         class='bx bxs-circle
                     @if ($examQuestion->question->choices->get(2)->is_correct) text-green-600 @else text-red-600 @endif '></i>

@@ -69,34 +69,41 @@
 
         <section class="ml-[218px] main ">
             <div class="bg-white mx-4 rounded-[20px]">
-                <h1 class="mx-4 py-2 text-left text-2xl font-semibold">List of Student Applicants</h1>
-                <table class="table-auto border border-solid border-black mx-4">
+                <h1 class="mx-4 py-2 text-left text-2xl font-bold">List of Student Applicants</h1>
+                <table class="table-auto mx-4">
                     <thead>
                         <tr class="justify-between">
-                            <th class="border border-solid border-black text-center font-poppins w-1/5">5
+                            <th class="text-center font-poppins w-12">No.
                             </th>
-                            <th class="border border-solid border-black text-center font-poppins w-1/5">4
+                            <th class="text-center font-poppins w-2/6">Name
                             </th>
-                            <th class="border border-solid border-black text-center font-poppins w-1/5">3
+                            <th class="text-center font-poppins w-1/6">Admission
+                                Results
                             </th>
-                            <th class="border border-solid border-black text-center font-poppins w-1/5">2
+                            <th class="text-center font-poppins w-1/6">Interview
+                                Result
                             </th>
-                            <th class="border border-solid border-black text-center font-poppins w-1/5">1
+                            <th class="text-center font-poppins w-1/6">Qualifying
+                                Result
+                            </th>
+                            <th class="text-center font-poppins w-1/6">Weighted Average
                             </th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr class="justify-between">
-                            <td class="border border-solid border-black text-center font-poppins w-1/5">
-                                Excellent</td>
-                            <td class="border border-solid border-black text-center font-poppins w-1/5">
-                                Very Satisfactory</td>
-                            <td class="border border-solid border-black text-center font-poppins w-1/5">
-                                Satisfactory</td>
-                            <td class="border border-solid border-black text-center font-poppins w-1/5">
-                                Less Satisfactory</td>
-                            <td class="border border-solid border-black text-center font-poppins w-1/5">
-                                Limited Potential</td>
+                            <td class="text-center font-poppins">
+                                1</td>
+                            <td class="text-center font-poppins">
+                                John Doe</td>
+                            <td class="text-center font-poppins">
+                                80/100</td>
+                            <td class="text-center font-poppins">
+                                4.2</td>
+                            <td class="text-center font-poppins">
+                                32</td>
+                            <td class="text-center font-poppins">
+                                4</td>
                         </tr>
                     </tbody>
                 </table>
