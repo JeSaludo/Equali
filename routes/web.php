@@ -9,6 +9,7 @@ use App\Http\Controllers\QuestionController;
 use App\Http\Controllers\UserController;
 use Illuminate\Auth\Events\Login;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\ReportController;
 
 /*
 |--------------------------------------------------------------------------
@@ -87,3 +88,5 @@ Route::delete('/dashboard/exam/{id}', [ExamController::class, 'DeleteExam'])->na
 
 Route::get('/exam/result', [ExamController::class, 'ShowExamResult'])->name('student.exam-result');
 
+//Added New Route for Applicant Ranking paayos na lang I'm having doubts ==============================
+Route::get('dashboard/applicant-ranking', [ReportController::class, 'ShowApplicantRanking'])->name('admin.dashboard.applicant-ranking');
