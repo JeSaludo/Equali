@@ -17,10 +17,13 @@
 </head>
 
 <body>
-    <h1>You're Approved: Welcome to Our Platform!</h1>
-    <p> Hello {{ $get_last_name }} {{ $get_first_name }}</p>
-    <p><strong>Your Account Password:</strong> {{ $get_user_password }}</p>
-    <p>Kindly await your schedule, which will be sent to you via email.</p>
+
+    <h1>Schedule Information</h1>
+
+    <p><strong>Date:</strong> {{ \Carbon\Carbon::parse($get_date)->format('F j, Y') }}</p>
+    <p><strong>Start Time:</strong> {{ \Carbon\Carbon::parse($get_start_time)->format('h:i A') }}</p>
+    <p><strong>End Time:</strong> {{ \Carbon\Carbon::parse($get_end_time)->format('h:i A') }}</p>
+
 
 </body>
 

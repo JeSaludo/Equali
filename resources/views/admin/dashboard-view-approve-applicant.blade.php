@@ -71,7 +71,16 @@
 
         <section class="ml-[218px] main ">
             <div class="bg-white mx-4 m-2 p-4">
+                <div class="flex justify-end">
 
+
+                    <div class="w-2/12">
+                        <button id="addApplicantBtn"
+                            class="px-4 py-2 text-lg font-poppins font-normal mr-2 w-full  rounded-[15px]  bg-[#2B6CE6] hover:bg-[#134197] transition-colors duration-200 text-white">
+                            <i id="icon" class='bx bx-plus-medical pr-2'></i> Add
+                            Applicant</button>
+                    </div>
+                </div>
 
 
 
@@ -83,9 +92,8 @@
                                     class="py-2
                         px-4 font-poppins text-[22px] text-[#26386A] uppercase">
                                     Applicant</th>
-                                <th class="py-2 px-4 font-poppins text-[22px] whitespace-nowrap text-[#26386A]">
-                                    Interview & Exam Schedule</th>
-
+                                <th class="py-2 px-4 font-poppins text-[22px] text-[#26386A]">Score</th>
+                                <th class="py-2 px-4 font-poppins text-[22px] text-[#26386A]">Status</th>
                                 <th class="py-2 px-4 font-poppins text-[22px] text-[#26386A]">Action</th>
                             </tr>
                         </thead>
@@ -97,45 +105,59 @@
                                         <td class="px-3 py-2 w-4/12 whitespace-nowrap">
                                             {{ $user->last_name }}, {{ $user->first_name }}
                                         </td>
-                                        @if ($user->qualifiedStudent->exam_schedule_date != null)
+                                        @if ($user->admissionExam)
                                             <td class="px-3 py-2 w-2/12 text-center  whitespace-nowrap">
-
-                                                {{ $user->qualifiedStudent->exam_schedule_date }}
+                                                {{ $user->admissionExam->score }} /
+                                                {{ $user->admissionExam->total_score }}
                                             </td>
                                         @else
-                                            <td class="px-3 py-2 w-2/12 text-center  whitespace-nowrap">
-                                                Not yet scheduled
-                                            </td>
+                                            No Admission Exam Score
                                         @endif
 
+                                        <td class="px-3 py-2  whitespace-nowrap ">
+                                            @if ($user->admissionExam->status === 'Failed')
+                                                <div
+                                                    class="w-4/12  item-center mx-auto rounded-lg bg-[#FFC7C7] text-[#A25656] ">
+                                                    <p class="py-1 ">Failed</p>
+                                                </div>
+                                            @else
+                                                <div
+                                                    class="w-4/12  item-center mx-auto rounded-lg bg-[#C7FFD7] text-[#56A26B]">
+                                                    <p class="py-1">Passed</p>
+                                                </div>
+                                            @endif
+                                        </td>
                                         <td
                                             class="px-3 py-2 w-4/12 text-[#626B7F] mx-auto  flex justify-evenly gap-1 items-center ">
 
-                                            <div class="relative">
-                                                <a href="" class="mx-2"><i
-                                                        class='bx bx-calendar-check'></i></a>
-                                                <div class="absolute bg-red-900 mx-4">
-                                                    <form action="">
-                                                        <input type="date" name="" id="">
-                                                        <button>lol</button>
-                                                    </form>
-                                                </div>
-                                            </div>
 
 
-                                            <a href="{{ route('admin.dashboard.edit-accepted-appplicant', $user->id) }}"
+                                            {{-- <form action="{{ route('admin.dashboard.approve-applicant', $user->id) }}"
+                                                method="POST" style="display: inline-block;">
+                                                <button type="submit">
+                                                    <i class='bx bx-user-check bx-sm hover:text-green-400'></button>
+
+                                            </form> --}}
+
+                                            <a href="{{ route('admin.dashboard.edit-applicant', $user->id) }}"
                                                 class="mx-1 hover:text-green-400" title="Edit"><i
                                                     class='bx bxs-edit '></i></a>
 
-                                            <form
-                                                action="{{ route('admin.dashboard.delete-accepted-appplicant', $user->id) }}"
+                                            <form action="{{ route('admin.dashboard.delete-applicant', $user->id) }}"
                                                 method="POST" style="display: inline-block;">
                                                 @csrf
                                                 @method('DELETE')
                                                 <button type="submit" title="Delete" class="mx-2   hover:text-red-400"
                                                     onclick="return confirm('Are you sure you want to delete this user?')"><i
                                                         class='bx bxs-trash '></i></button>
+
                                             </form>
+
+
+
+
+
+
                                         </td>
 
 

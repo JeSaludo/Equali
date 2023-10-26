@@ -20,9 +20,12 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->string('contact_number')->nullable();
             $table->timestamp('email_verified_at')->nullable();
-            $table->string('password');
+            $table->string('password')->nullable();
+            $table->enum('role', ['ProgramHead','Proctor', 'Dean', 'Tester', 'Student'])->default('Student');
+            $table->enum('status', ['Pending', 'Approved', 'Qualified', 'Unqualified', 'Active', 'Inactive'])->nullable();
+            
+        
            
-            $table->string('role')->default("User");
             $table->rememberToken();
             $table->timestamps();
         });

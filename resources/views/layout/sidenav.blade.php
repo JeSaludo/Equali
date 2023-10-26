@@ -38,13 +38,14 @@
 
 
                     </a>
+                    <a href="{{ route('admin.dashboard.show-approved-applicant') }}"
+                        class=" mx-4 px-4 py-2 hover:cursor-pointer hover:bg-[#EAF0FF] rounded-[15px] flex items-center text-[#718297] my-2">
+                        <i class='bx bx-radio-circle pr-2 '></i> Approve
 
-
-                    <a href="{{ route('admin.dashboard.show-accepted-appplicant') }}"
-                        class=" mx-4 px-4 py-2 hover:cursor-pointer hover:bg-[#EAF0FF] rounded-[15px] flex  items-center text-[#718297] my-2">
-                        <i class='bx bx-radio-circle pr-2 '></i>Approved
 
                     </a>
+
+
                 </div>
 
 
@@ -85,11 +86,18 @@
                 </a>
 
                 <div class="dropdown-menu  pointer-events-none opacity-0 " data-dropdown-content>
-                    <a href="{{ route('admin.dashboard.view-question') }}"
+
+                    <a href="{{ route('admin.dashboard.show-qualified-appplicant') }}"
                         class=" mx-4 px-4 py-2 hover:cursor-pointer hover:bg-[#EAF0FF] rounded-[15px] flex  items-center text-[#718297] my-2">
-                        <div class=""><i class='bx bx-radio-circle pr-2 '></i>Pending
+                        <i class='bx bx-radio-circle pr-2 '></i>Schedule
+
+                    </a>
+                    <a href="{{ route('admin.dashboard.pending-interview') }}"
+                        class=" mx-4 px-4 py-2 hover:cursor-pointer hover:bg-[#EAF0FF] rounded-[15px] flex  items-center text-[#718297] my-2">
+                        <div class=""><i class='bx bx-radio-circle pr-2 '></i>Interview Now
                         </div>
                     </a>
+
                     <a href="{{ route('admin.dashboard.view-question') }}"
                         class=" mx-4 px-4 py-2 hover:cursor-pointer hover:bg-[#EAF0FF] rounded-[15px] flex  items-center text-[#718297] my-2">
                         <div class=""><i class='bx bx-radio-circle pr-2 '></i>Result

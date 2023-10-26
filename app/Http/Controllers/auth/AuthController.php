@@ -31,9 +31,9 @@ class AuthController extends Controller
             $request->session()->regenerate();
             //add redirect for admin and users || condition
 
-            if (Auth::user()->role === "Program Head" || Auth::user()->role === "Dean" || Auth::user()->role === "Proctor") {
+            if (Auth::user()->role === "ProgramHead" || Auth::user()->role === "Dean" || Auth::user()->role === "Proctor") {
                 return redirect()->route('admin.dashboard.overview');
-            } else if (Auth::user()->role === "User") {
+            } else if (Auth::user()->role === "Student") {
                 return redirect()->route('home');
             }
             return redirect()->intended('/')->with('status', 'Login Successfull');
@@ -74,7 +74,7 @@ class AuthController extends Controller
 
         $validatedData = $request->validate([
 
-            'role' => 'required',
+            'role' => 'required|in:ProgramHead,Proctor,Dead,Tester,Student',
             'email' => 'required|unique:users,email',
             'password' => 'required|confirmed|min:6',
         ]);
@@ -83,6 +83,7 @@ class AuthController extends Controller
         $user->email = $validatedData['email'];
         $user->password = Hash::make($validatedData['password']);
         $user->role = $validatedData['role'];
+        $user->status = "Active";
         $user->save();
 
         return redirect()->route('auth.login')->with('status', 'Registration Successfull');

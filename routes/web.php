@@ -50,24 +50,33 @@ Route::middleware(['admin'])->group(function () {
     Route::delete('/dashboard/questions/{id}/delete', [QuestionController::class, 'DeleteQuestion'])->name('admin.dashboard.delete-question');
 
     //Interview 
-    Route::get('/dashboard/interview-pending',[InterviewController::class, 'ShowPendingInterview']);
-    Route::get('/dashboard/screening-form',[InterviewController::class, 'ShowScreeningForm']);
-
+    Route::get('/dashboard/interview-pending',[InterviewController::class, 'ShowPendingInterview'])->name('admin.dashboard.pending-interview');
+    Route::get('/dashboard/interview/screening-form/{id}',[InterviewController::class, 'ShowScreeningForm'])->name('admin.dashboard.interview-now');
+    Route::post('/dashboard/interview/store', [InterviewController::class, 'StoreInterview'])->name('admin.dashboard.store-interview');
+   
+   
+   
     //Applicant
     Route::get('/dashboard/view-applicant', [ApplicantController::class, 'ShowApplicant'])->name('admin.dashboard.show-applicant');
     Route::get('/dashboard/applicant/{id}/edit', [ApplicantController::class, "EditApplicant"])->name('admin.dashboard.edit-applicant');
     Route::post('/dashboard/add-applicant/store', [ApplicantController::class, 'StoreApplicant'])->name('admin.dashboard.store-applicant');
     Route::put('/dashboard/applicant/{id}', [ApplicantController::class, 'UpdateApplicant'])->name('admin.dashboard.update-applicant');
     Route::delete('/dashboard/applicant/{id}/delete', [ApplicantController::class, 'DeleteApplicant'])->name('admin.dashboard.delete-applicant');
-
-    //Qualified 
-    Route::get('/dashboard/accepted-applicant/view', [ApplicantController::class, 'ShowAcceptedApplicant'])->name('admin.dashboard.show-accepted-appplicant');
-    Route::get('/dashboard/accepted-applicant/{id}/edit', [ApplicantController::class, 'EditAcceptedApplicant'])->name('admin.dashboard.edit-accepted-appplicant');
-    Route::get('/dashboard/accepted-applicant/store', [ApplicantController::class, 'StoreAcceptedApplicant'])->name('admin.dashboard.store-accepted-appplicant');
-    Route::get('/dashboard/accepted-applicant/{id}/delete', [ApplicantController::class, 'DeleteAcceptedApplicant'])->name('admin.dashboard.delete-accepted-appplicant');
-
-    Route::post('/dashboard/applcant/{id}/approved', [ApplicantController::class, 'ApproveApplicant'])->name('admin.dashboard.approve-applicant');
     
+    //rename this   //Qualified can be considered a qualfied 
+    Route::get('/dashboard/approved-applicant', [ApplicantController::class, 'ShowApprovedApplicant'])->name('admin.dashboard.show-approved-applicant');
+   
+    //Qualified 
+    Route::get('/dashboard/qualified-applicant', [ApplicantController::class, 'ShowQualifiedApplicant'])->name('admin.dashboard.show-qualified-appplicant');
+    Route::get('/dashboard/qualified-applicant/{id}/edit', [ApplicantController::class, 'EditQualifiedApplicant'])->name('admin.dashboard.edit-qualified-appplicant');
+    Route::get('/dashboard/qualified-applicant/store', [ApplicantController::class, 'StoreQualifiedApplicant'])->name('admin.dashboard.store-qualifiedpted-appplicant');
+    Route::get('/dashboard/qualified-applicant/{id}/delete', [ApplicantController::class, 'DeleteQualifiedApplicant'])->name('admin.dashboard.delete-qualified-appplicant');
+
+    Route::put('/dashboard/qualified-applicant/{id}', [ApplicantController::class, 'UpdateQualifiedApplicant'])->name('admin.dashboard.update-qualified-applicant');
+    
+    Route::post('/dashboard/qualified-applicant/{id}/approved', [ApplicantController::class, 'ApproveApplicant'])->name('admin.dashboard.approve-applicant');
+    
+    Route::post('/dashboard/qualified-applicant/set-schedule', [ApplicantController::class, 'Schedule'])->name('admin.dashboard.schedule-applicant'); 
     
     
 
