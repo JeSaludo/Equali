@@ -47,7 +47,7 @@
                         <h2 class="uppercase font-bold font-poppins">Your Score:</h2>
                     </div>
                     <div>
-                        <h1 class="my-11 font-bold font-poppins text-5xl text-center uppercase">70/100</h1>
+                        <h1 class="my-11 font-bold font-poppins text-5xl text-center uppercase">{{$score}}/{{$sizeOfScore}}</h1>
                     </div>
                     <div>
                         <h1 class="text-[#2CCAAA] font-bold font-poppins text-5xl text-center uppercase">passed</h1>

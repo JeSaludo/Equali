@@ -9,7 +9,7 @@ use Illuminate\Http\Request;
 
 class QuestionController extends Controller
 {
-    function StoreQuestion(Request $request){
+   function StoreQuestion(Request $request){
 
         $request->validate([
             'question_text' => 'required',
@@ -36,7 +36,7 @@ class QuestionController extends Controller
         }
         return redirect()->back()->with('success', 'Question added successfully!');
     }
-
+    
 
     function ShowQuestions(){
         $questions  = Question::paginate(10);

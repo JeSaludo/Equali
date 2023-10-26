@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Mail\AcceptanceMail;
+use App\Mail\ScheduleMail;
 use App\Models\AdmissionExam;
 use App\Models\QualifiedStudent;
 use Illuminate\Support\Facades\DB;
@@ -134,20 +135,82 @@ class ApplicantController extends Controller
         return redirect()->back()->with('success', 'Question added successfully!');       
     }
 
-    function ShowAcceptedApplicant(){
+    function ShowQualifiedApplicant(){
         $users = User::where('role', 'Student')->where('status', 'Approved')->with('qualifiedStudent')->get();
-        return view('admin.dashboard-view-accepted-applicant', compact('users'));
+        return view('admin.dashboard-view-qualified-applicant', compact('users'));
     }   
 
-    function EditAcceptedApplicant(){
+    function EditQualifiedApplicant($id){
+
+        $user = User::where('role', 'Student')->with('qualifiedStudent')->findOrFail($id);
+        
+        return view('admin.dashboard-edit-qualified-applicant', compact('user'));
+    }
+
+    function UpdateQualifiedApplicant(Request $request, $id){
+        $request->validate([
+            'firstName' => 'required',
+            'lastName' => 'required',
+            'email' => 'required|email|unique:users,email,' . $id, 
+           
+        ]);
+        
+        $user = User::where('role', 'Student')->with('qualifiedStudent')->findOrFail($id);
+        $user->first_name = $request->firstName;
+        $user->last_name = $request->lastName;
+        $user->email = $request->email;         
+        $user->status = $request->status;       
+        $user->save();
+        // $user->qualifiedStudent->exam_schedule_date = $request->date;
+        // $user->qualifiedStudent->start_time = $request->start_time;
+        // $user->qualifiedStudent->end_time = $request->end_time;
+        // $user->qualifiedStudent->save();
+       
+       
+        return redirect()->route('admin.dashboard.show-qualified-appplicant');       
+    }
+
+    function StoreQualifiedApplicant(){
+
+    }
+
+    function DeleteQualifiedApplicant(){
         
     }
 
-    function StoreAcceptedApplicant(){
 
-    }
+    function Schedule(Request $request){
+        $validate = $request->validate([
+            'date' => 'required',
+            'selectedUsers' => 'required|array|min:1',
+            'start_time' => 'required',
+            'end_time' => 'required',
+        
+        ]);
 
-    function DeleteAcceptedApplicant(){
+
+        $selectedUserIds = $request->input('selectedUsers');
+
+        foreach ($selectedUserIds as $userId) {
+           $user = QualifiedStudent::where('user_id', $userId)->with('user')->first();
+
+           $user->exam_schedule_date = $request->date;
+           $user->start_time = $request->start_time;
+           $user->end_time = $request->end_time;
+           $user->save();                   
+      
+           Mail::to($user->user->email)->send(new ScheduleMail($user->exam_schedule_date, $user->start_time, $user->end_time));
+        }
+
+      
+        
+        return redirect()->route('admin.dashboard.show-qualified-appplicant');
+       
         
     }
+
+    function ShowApprovedApplicant(){
+        $users = User::where('role', 'Student')->where('status', 'Approved')->with('qualifiedStudent')->get();
+        return view('admin.dashboard-view-approve-applicant', compact('users'));
+    } 
 }

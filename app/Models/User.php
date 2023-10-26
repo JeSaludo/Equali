@@ -24,6 +24,7 @@ class User extends Authenticatable
         'email',
         'contact_number',
         'password',
+        'address',
     ];
 
     /**
@@ -59,5 +60,11 @@ class User extends Authenticatable
     {
         return $this->hasOne(QualifiedStudent::class);
     }
+
+    public function studentInfo(){
+        return $this->hasOne(studentInfo::class);
+    }
+
+
     
 }

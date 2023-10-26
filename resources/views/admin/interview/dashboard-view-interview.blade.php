@@ -78,39 +78,14 @@
 
             </div>
 
-            <div class="absolute bottom-5 right-0">
-                <a href="#" id="openPopup"
-                    class="px-4 py-2 text-lg font-poppins font-normal mr-2 w-full rounded-[15px] bg-[#2B6CE6] hover:bg-[#134197] transition-colors duration-200 text-white">Schedule</a>
-            </div>
 
-            <div id="popup"
-                class="fixed top-0 left-0 w-full h-full flex justify-center items-center bg-gray-500 bg-opacity-50 z-50 hidden">
-                <div class="bg-white rounded-lg p-4">
-                    <span class="cursor-pointer absolute top-2 right-2 text-gray-600" id="closePopup">&times;</span>
-                    <h2 class="text-lg font-semibold mb-4">Schedule Event</h2>
-                    <form id="scheduleForm">
-                        <div class="mb-4">
-                            <label for="event" class="block text-sm font-medium text-gray-600">Event:</label>
-                            <input type="date" name="date" class="w-full px-3 py-2 border rounded-md">
-
-                        </div>
-                        <button type="button" id="submitSchedule"
-                            class="bg-[#2B6CE6] text-white px-4 py-2 rounded-md hover:bg-[#134197] transition-colors duration-200">Submit</button>
-                        <button type="button" id="cancelSchedule"
-                            class="bg-gray-300 text-gray-600 px-4 py-2 rounded-md hover:bg-gray-400 transition-colors duration-200 ml-2">Cancel</button>
-                    </form>
-                </div>
-            </div>
 
 
             <div class="bg-white   mx-4 rounded-[12px] ">
-
-
                 <div id="applicantContent" class="app-content">
-
                     <table class="w-full ">
-                        <thead class="border-b-2 border-[#718297]">
-                            <tr>
+                        <thead class="border-b-2 border-[#718297] ">
+                            <tr class="">
                                 <th>
                                     <input type="checkbox" id="selectAllCheckbox">
                                 </th>
@@ -118,70 +93,89 @@
                                     class="py-2
                         px-4 font-poppins text-[22px] text-[#26386A] uppercase">
                                     Applicant</th>
-                                <th class="py-2 px-4 font-poppins text-[22px] whitespace-nowrap text-[#26386A]">
+                                <th class="py-2 px-4 font-poppins text-[22px]  text-[#26386A]">
                                     Interview & Exam Schedule</th>
+                                <th class="py-2 px-4 font-poppins text-[22px] whitespace-nowrap text-[#26386A]">
+                                    Time</th>
 
                                 <th class="py-2 px-4 font-poppins text-[22px] text-[#26386A]">Action</th>
                             </tr>
                         </thead>
-                        <tbody class="text-center font-poppins text-[18px] w-full  ">
-                            <div class="flex justify-between">
-                                @foreach ($users as $index => $user)
-                                    <tr
-                                        class="{{ $index % 2 == 0 ? 'bg-[#aecafd30]' : 'bg-white' }} border-b-2 border-gray-100 ">
-                                        <td>
-                                            <input type="checkbox" name="selectedUsers[]" value="{{ $user->id }}">
-                                        </td>
-                                        <td class="px-3 py-2 w-4/12 whitespace-nowrap">
-                                            {{ $user->last_name }}, {{ $user->first_name }}
-                                        </td>
-                                        @if ($user->qualifiedStudent->exam_schedule_date != null)
-                                            <td class="px-3 py-2 w-2/12 text-center  whitespace-nowrap">
+                        <tbody class="text-center font-poppins text-[18px] w-full">
 
-                                                {{ $user->qualifiedStudent->exam_schedule_date }}
+                            <form id="scheduleForm" action="{{ route('admin.dashboard.schedule-applicant') }}"
+                                method="POST">
+                                @csrf
+                                <div class="flex justify-between">
+                                    @foreach ($users as $index => $user)
+                                        <tr
+                                            class="{{ $index % 2 == 0 ? 'bg-[#aecafd30]' : 'bg-white' }} border-b-2 border-gray-100 ">
+                                            <td>
+                                                <input type="checkbox" name="selectedUsers[]"
+                                                    value="{{ $user->id }}">
                                             </td>
-                                        @else
-                                            <td class="px-3 py-2 w-2/12 text-center  whitespace-nowrap">
-                                                Not yet scheduled
+                                            <td class="px-3 py-2 w-4/12 whitespace-nowrap">
+                                                {{ $user->last_name }}, {{ $user->first_name }}
                                             </td>
-                                        @endif
+                                            @if ($user->qualifiedStudent->exam_schedule_date != null)
+                                                <td class="px-3 py-2 w-2/12 text-center  whitespace-nowrap">
+                                                    {{ \Carbon\Carbon::parse($user->qualifiedStudent->exam_schedule_date)->format('F j, Y') }}
+                                                </td>
 
-                                        <td
-                                            class="px-3 py-2 w-4/12 text-[#626B7F] mx-auto  flex justify-evenly gap-1 items-center ">
+                                                <td class="px-3 py-2 w-2/12 text-center  whitespace-nowrap">
+
+                                                    {{ \Carbon\Carbon::parse($user->qualifiedStudent->start_time)->format('h:i A') }}
+                                                    -
+                                                    {{ \Carbon\Carbon::parse($user->qualifiedStudent->end_time)->format('h:i A') }}
+
+                                                </td>
+                                            @else
+                                                <td class="px-3 py-2 w-2/12 text-center  whitespace-nowrap">
+                                                    Not yet scheduled
+                                                </td>
+
+                                                <td>Not yet scheduled</td>
+                                            @endif
 
 
-                                            {{-- <a href="" class="mx-2" title="Schedule"><i
+
+                                            <td
+                                                class="px-3 py-2 w-4/12 text-[#626B7F] mx-auto  flex justify-evenly gap-1 items-center ">
+                                                {{-- <a href="" class="mx-2" title="Schedule"><i
                                                     class='bx bx-calendar-check'></i></a> --}}
+                                                <a href="{{ route('admin.dashboard.interview-now', $user->id) }}"
+                                                    title="Interview Now">
+                                                    <i class='bx bx-conversation'></i>
+                                                </a>
+
+                                                <a href="{{ route('admin.dashboard.edit-qualified-appplicant', $user->id) }}"
+                                                    class="mx-1 hover:text-green-400" title="Edit"><i
+                                                        class='bx bxs-edit '></i></a>
+                                            </td>
+
+
+                                        </tr>
+                                    @endforeach
+                                </div>
 
 
 
 
-                                            <a href="{{ route('admin.dashboard.edit-accepted-appplicant', $user->id) }}"
-                                                class="mx-1 hover:text-green-400" title="Edit"><i
-                                                    class='bx bxs-edit '></i></a>
 
-                                            <form
-                                                action="{{ route('admin.dashboard.delete-accepted-appplicant', $user->id) }}"
-                                                method="POST" style="display: inline-block;">
-                                                @csrf
-                                                @method('DELETE')
-                                                <button type="submit" title="Delete"
-                                                    class="mx-2   hover:text-red-400"
-                                                    onclick="return confirm('Are you sure you want to delete this user?')"><i
-                                                        class='bx bxs-trash '></i></button>
-                                            </form>
-                                        </td>
-
-
-                                    </tr>
-                                @endforeach
-                            </div>
                         </tbody>
 
                     </table>
                 </div>
             </div>
-
+            @if ($errors->any())
+                <div class="text-red-900 my-8 my-4">
+                    <ul>
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
 
         </section>
 

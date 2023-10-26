@@ -46,8 +46,13 @@ class ExamController extends Controller
                 }
             }
         }
-    
-        return "Your result is " .$score . "/" . sizeOf($userAnswers); 
+ 
+        $sizeOfScore = sizeOf($userAnswers);
+
+        
+
+        return view ('student.exam-result', compact('score', 'sizeOfScore'));
+      
         
     }
 
@@ -134,7 +139,7 @@ class ExamController extends Controller
 
         return redirect()->back()->with('success', 'Exam deleted successfully!');      
     }
-
+    
     public function StoreRandomExam(Request $request, $id){
  
         $existingQuestionIds = ExamQuestion::where('exam_id', $id)->pluck('question_id')->toArray();
@@ -178,8 +183,37 @@ class ExamController extends Controller
         return redirect()->back()->with('success', 'Question added successfully!');       
             
     }
-    public function ShowExamResult(){
-        return view ('student.exam-result');
+
+
+    
+   function StoreQuestionAndAddToExam(Request $request){
+
+        $request->validate([
+            'question_text' => 'required',
+            'choice_text' => 'required|array',
+            'choice_text.*' => 'required|string',
+            'correct_choice' => 'required|numeric',           
+
+        ]);
+    
+
+        $question = new Question();
+        $question->question_text = $request->question_text;  
+    
+        $question->save();
+
+        foreach ($request->choice_text as $key => $choiceText) {
+            $isCorrect = ($request->correct_choice == ($key + 1));
+
+            $choice = new Choice();
+            $choice->question_id = $question->id;
+            $choice->choice_text = $choiceText;
+            $choice->is_correct = $isCorrect;
+            $choice->save();
+        }
+        return redirect()->back()->with('success', 'Question added successfully!');
     }
+
+    
 }
 
