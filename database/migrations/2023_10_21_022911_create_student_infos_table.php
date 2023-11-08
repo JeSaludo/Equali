@@ -43,7 +43,8 @@ return new class extends Migration
 
             $table->boolean('interview')->default(false);          
             $table->dateTime('interview_date')->nullable();
-            $table->decimal('average_score', 5, 2);
+            $table->decimal('average_score', 5, 2)->nullable();
+            
             $table->string('remarks')->nullable();
             
         });

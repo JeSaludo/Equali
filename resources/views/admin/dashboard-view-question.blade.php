@@ -69,7 +69,7 @@
 
         <section class="ml-[218px] ">
 
-            <div class="bg-white mx-4 rounded-[12px]  mb-2 p-4  ">
+            <div class="bg-white mx-4 rounded-[12px] h-[600px] mb-2 p-4  ">
 
                 <div class="flex justify-end">
 
@@ -186,37 +186,50 @@
 
                         <tbody class="text-center font-poppins text-[18px] w-full  ">
                             <div class="flex justify-between">
-                                @foreach ($questions as $index => $question)
-                                    <tr
-                                        class="{{ $index % 2 == 0 ? 'bg-[#aecafd30]' : 'bg-white' }} border-b-2 border-gray-100 ">
-                                        <td class="px-3 py-2 w-2/12">Question {{ $index + 1 }}</td>
-                                        <td class="px-3 py-2 w-6/12 text-center  whitespace-nowrap">
-                                            @if (strlen($question->question_text) >= 36)
-                                                {{ substr($question->question_text, 0, 36) }}...
-                                            @else
-                                                {{ $question->question_text }}
-                                            @endif
 
+                                @if ($questions->isEmpty())
 
-
-                                        </td>
-                                        <td class="px-3 py-2 w-5/12 text-[#626B7F] mx-auto  flex justify-evenly">
-                                            <a href="{{ route('admin.dashboard.edit-question', $question) }}"><i
-                                                    class='bx bxs-edit'></i></a>
-
-                                            <form action="{{ route('admin.dashboard.delete-question', $question) }}"
-                                                method="POST" style="display: inline-block;">
-                                                @csrf
-                                                @method('DELETE')
-                                                <button type="submit" class="mx-2  hover:text-indigo-900"
-                                                    onclick="return confirm('Are you sure you want to delete this question?')"><i
-                                                        class='bx bxs-trash'></i></button>
-
-                                            </form>
-                                            <a href=""><i class='bx bx-dots-vertical'></i></a>
-                                        </td>
+                                    <tr class=>
+                                        <td></td>
+                                        <td class="py-3">There is no question in the database</td>
+                                        <td></td>
                                     </tr>
-                                @endforeach
+                                @else
+                                    @foreach ($questions as $index => $question)
+                                        <tr
+                                            class="{{ $index % 2 == 0 ? 'bg-[#aecafd30]' : 'bg-white' }} border-b-2 border-gray-100 ">
+                                            <td class="px-3 py-2 w-2/12">Question {{ $index + 1 }}</td>
+                                            <td class="px-3 py-2 w-6/12 text-center  whitespace-nowrap">
+                                                @if (strlen($question->question_text) >= 36)
+                                                    {{ substr($question->question_text, 0, 36) }}...
+                                                @else
+                                                    {{ $question->question_text }}
+                                                @endif
+
+
+
+                                            </td>
+                                            <td class="px-3 py-2 w-5/12 text-[#626B7F] mx-auto  flex justify-evenly">
+                                                <a href="{{ route('admin.dashboard.edit-question', $question) }}"><i
+                                                        class='bx bxs-edit'></i></a>
+
+                                                <form
+                                                    action="{{ route('admin.dashboard.delete-question', $question) }}"
+                                                    method="POST" style="display: inline-block;">
+                                                    @csrf
+                                                    @method('DELETE')
+                                                    <button type="submit" class="mx-2  hover:text-indigo-900"
+                                                        onclick="return confirm('Are you sure you want to delete this question?')"><i
+                                                            class='bx bxs-trash'></i></button>
+
+                                                </form>
+                                                <a href=""><i class='bx bx-dots-vertical'></i></a>
+                                            </td>
+                                        </tr>
+                                    @endforeach
+
+
+                                @endif
                             </div>
 
 

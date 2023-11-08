@@ -55,19 +55,19 @@
                         </div>
 
                         <div class=" mt-3">
-                            @foreach ($randomExam->examQuestion as $index => $examQuestion)
+                            @foreach ($exam->examQuestion as $index => $examQuestion)
                                 <div class="mx-16">
                                     <h1 class="font-bold  text-lg text-[#2B6BE6]">
                                         {{-- Question {{ $index + 1 }} --}}
                                     </h1>
 
                                     <p class="text-[#626B7F]">
-                                    <h2>{{ $examQuestion->question->question_text }}</h2>
+                                    <h2>{{ $index + 1 }}. {{ $examQuestion->question->question_text }}</h2>
                                     </p>
                                     <div>
                                         <div class="border-t-2 border-x-2 rounded-t-lg flex  w-6/12  items-center">
                                             <input class="py-2 px-4 ml-2" type="radio"
-                                                name="answer[{{ $index + 1 }}]" id="" required
+                                                name="answer[{{ $index + 1 }}]" id=""
                                                 value="{{ $examQuestion->question->choices->get(0)->choice_text }}">
                                             <p class="ml-2 py-1">
                                                 {{ $examQuestion->question->choices->get(0)->choice_text }}
@@ -75,21 +75,21 @@
                                         </div>
                                         <div class="border-x-2 border-t-2 flex w-6/12  items-center">
                                             <input class="py-2 px-4 ml-2" type="radio"
-                                                name="answer[{{ $index + 1 }}]" id="" required
+                                                name="answer[{{ $index + 1 }}]" id=""
                                                 value="{{ $examQuestion->question->choices->get(1)->choice_text }}">
                                             <p class="ml-2">
                                                 {{ $examQuestion->question->choices->get(1)->choice_text }}</p>
                                         </div>
                                         <div class="border-x-2 border-t-2 flex w-6/12  items-center">
                                             <input class="py-2 px-4 ml-2" type="radio"
-                                                name="answer[{{ $index + 1 }}]" id="" required
+                                                name="answer[{{ $index + 1 }}]" id=""
                                                 value="{{ $examQuestion->question->choices->get(2)->choice_text }}">
                                             <p class="ml-2">
                                                 {{ $examQuestion->question->choices->get(2)->choice_text }}</p>
                                         </div>
                                         <div class="border-2 rounded-b-lg flex  w-6/12  items-center">
                                             <input class="py-2 px-4 ml-2" type="radio"
-                                                name="answer[{{ $index + 1 }}]" id="" required
+                                                name="answer[{{ $index + 1 }}]" id=""
                                                 value="{{ $examQuestion->question->choices->get(3)->choice_text }}">
                                             <p class="ml-2">
                                                 {{ $examQuestion->question->choices->get(3)->choice_text }}</p>
@@ -102,11 +102,46 @@
                         </div>
 
                     </div>
-                    <input type="hidden" name="exam_id" value="{{ $randomExam->id }}">
+                    <input type="hidden" name="user_id" value="{{ auth()->user()->id }}">
+                    <input type="hidden" name="exam_id" value="{{ $exam->id }}">
+
                 </form>
             </div>
         </div>
     </div>
+    <script>
+        // Add event listeners to all radio inputs to save the user's selection
+        const radioInputs = document.querySelectorAll('input[type="radio"]');
+        radioInputs.forEach(input => {
+            input.addEventListener('change', () => {
+                sessionStorage.setItem(input.name, input.value);
+            });
+        });
+
+        // Load saved answers from session storage when the page loads
+        radioInputs.forEach(input => {
+            const savedValue = sessionStorage.getItem(input.name);
+            if (savedValue) {
+                if (input.value === savedValue) {
+                    input.checked = true;
+                }
+            }
+        });
+
+        const form = document.querySelector('form');
+        form.addEventListener('submit', () => {
+            // Clear the session storage when the form is submitted
+            sessionStorage.clear();
+        });
+    </script>
+
+
+
+
+
+
+
+</html>
 
 
 

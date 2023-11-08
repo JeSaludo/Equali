@@ -26,7 +26,9 @@
         @include('layout.sidenav');
         <div class="ml-[218px] w-auto  text-black flex justify-between ">
             <div class="my-4">
-                <h1 class="text-[#1D489A] font-poppins font-medium text-[24px] mx-8">Welcome, Name Here👋</h1>
+                <h1 class="text-[#1D489A] font-poppins font-medium text-[24px] mx-8">Welcome, @auth
+                        {{ Auth::user()->role }}
+                    @endauth👋</h1>
                 <p class="text-[#718297] text-[12px] font-raleway font-normal mx-8 mb-4">Check your info here</p>
             </div>
 
@@ -51,7 +53,7 @@
             </div>
 
             <div class="my-6">
-                <h1>September 22, 2023</h1>
+                <h1>{{ now()->format('F j, Y') }}</h1>
             </div>
 
             <div class="my-6 mx-4">
@@ -66,28 +68,29 @@
 
             </div>
 
+
         </div>
 
 
         <section class="ml-[218px] main ">
-            <div class="bg-white mx-4 m-2 p-4">
+            <div class="bg-white mx-4 my-2  h-[600px] ">
                 <div class="flex justify-end">
 
 
-                    <div class="w-2/12">
+                    <div class="w-[200px] my-2 mx-2">
                         <button id="addApplicantBtn"
-                            class="px-4 py-2 text-lg font-poppins font-normal mr-2 w-full  rounded-[15px]  bg-[#2B6CE6] hover:bg-[#134197] transition-colors duration-200 text-white">
+                            class="px-4 py-2   text-lg font-poppins font-normal  w-full  rounded-[15px]  bg-[#2B6CE6] hover:bg-[#134197] transition-colors duration-200 text-white">
                             <i id="icon" class='bx bx-plus-medical pr-2'></i> Add
                             Applicant</button>
                     </div>
                 </div>
 
-                <div class="relative">
+                <div class="relative ">
                     <div id="addApplicantContent"
-                        class="absolute   w-5/12  z-10  opacity-0 pointer-events-none top-6  left-0 right-0 mx-auto   translate-y-[-15px] transition-all transform  delay-150 ease-linear">
+                        class="absolute    w-5/12  z-10  opacity-0 pointer-events-none top-6  left-0 right-0 mx-auto   translate-y-[-15px] transition-all transform  delay-150 ease-linear">
                         <form action="{{ route('admin.dashboard.store-applicant') }}" method="POST">
                             @csrf
-                            <div class="bg-white mx-4 rounded-[12px]  h-[470px] p-4 border-gray-600 border-2">
+                            <div class="bg-white mx-4 rounded-[12px]  h-[380px] p-4 border-gray-600 border-2">
                                 <div
                                     class="text-center mx-auto font-poppins text-[28px] font-semibold  text-[#26386A] uppercase">
                                     <h1>Add Applicant</h1>
@@ -121,12 +124,12 @@
 
                                 </div>
 
-                                <div class="relative px-8 my-4 w-full">
+                                {{-- <div class="relative px-8 my-4 w-full">
                                     <input type="text" name="contactNumber"
                                         class="h-[50px] w-full rounded placeholder:text-[#4E4E4E] placeholder:font-poppins placeholder:text-[16px] px-[40px] border-2 border-[#D7D8D0] "
                                         placeholder="Contact Number" required autocomplete="off">
 
-                                </div>
+                                </div> --}}
 
 
                                 <div class=" px-8 flex justify-between gap-4 my-4">
@@ -141,7 +144,7 @@
                                     <div class="relative  w-full">
                                         <input type="number" name="totalScore"
                                             class="h-[50px] w-full rounded placeholder:text-[#4E4E4E] placeholder:font-poppins placeholder:text-[16px] px-[40px] border-2 border-[#D7D8D0] "
-                                            placeholder="Full Score" required autocomplete="off" value=70>
+                                            placeholder="Full Score" required autocomplete="off" value=60>
                                         {{-- Change for auto  --}}
                                     </div>
                                 </div>
@@ -168,15 +171,16 @@
                         </ul>
                     </div>
                 @endif
-                <div id="applicantContent" class="app-content">
-                    <table class="w-full ">
+                <div id="applicantContent" class="app-content overflow-auto">
+                    <table class="w-full  ">
                         <thead class="border-b-2 border-[#718297]">
                             <tr>
                                 <th
                                     class="py-2
                         px-4 font-poppins text-[22px] text-[#26386A] uppercase">
                                     Applicant</th>
-                                <th class="py-2 px-4 font-poppins text-[22px] text-[#26386A]">Score</th>
+                                <th class="py-2 px-4 font-poppins text-[22px] whitespace-nowrap text-[#26386A]">
+                                    Admission Score</th>
                                 <th class="py-2 px-4 font-poppins text-[22px] text-[#26386A]">Status</th>
                                 <th class="py-2 px-4 font-poppins text-[22px] text-[#26386A]">Action</th>
                             </tr>

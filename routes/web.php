@@ -3,9 +3,11 @@
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\ApplicantController;
 use App\Http\Controllers\auth\AuthController;
+use App\Http\Controllers\DeveloperController;
 use App\Http\Controllers\ExamController;
 use App\Http\Controllers\InterviewController;
 use App\Http\Controllers\QuestionController;
+use App\Http\Controllers\ReportController;
 use App\Http\Controllers\UserController;
 use Illuminate\Auth\Events\Login;
 use Illuminate\Support\Facades\Route;
@@ -83,8 +85,8 @@ Route::middleware(['admin'])->group(function () {
 
 
 
-Route::get('/exam', [ExamController::class,'ShowExam']);
-Route::post('/exam/store', [ExamController::class, 'SubmitExam'])->name('submit-exam');
+Route::get('/exam', [ExamController::class,'ShowExam'])->name('student.show-exam');
+Route::post('/exam/result', [ExamController::class, 'SubmitExam'])->name('submit-exam');
 
 Route::get('/dashboard/exam', [ExamController::class, 'ShowAdminExam'])->name('admin.dashboard.show-exam');
 Route::get('/dashboard/exam/{id}/edit', [ExamController::class, 'EditExam'])->name('admin.dashboard.edit-exam');
@@ -95,4 +97,8 @@ Route::post('/dashboard/exam/store', [ExamController::class, 'StoreExam'])->name
 Route::delete('/dashboard/exam/{id}', [ExamController::class, 'DeleteExam'])->name('admin.dashboard.delete-exam');
 
 Route::get('/exam/result', [ExamController::class, 'ShowExamResult'])->name('student.exam-result');
+Route::get('/exam/already-responded', [ExamController::class, 'ShowAlreadyResponded'])->name('student.already-responded');
+
+Route::get('/dashboard/report/qualified-exam-result', [ReportController::class, 'ShowQualifyingExamResult'])->name('admin.report.qualified-exam');
+
 

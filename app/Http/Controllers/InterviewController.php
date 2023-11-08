@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Result;
 use App\Models\StudentInfo;
 use App\Models\User;
 use Carbon\Carbon;
@@ -25,21 +26,26 @@ class InterviewController extends Controller
 
     function StoreInterview(Request $request){
       
-        // $request->validate([
-
-            
-        //     'date' => 'required',
-        //     'home_address' => 'required',
-        //     'course' => 'required',
-        //     'school_last_attended' => 'required',
-        //     'school_address' => 'required',
-        //     'year_graduated' => 'required',
-        //     'gpa' => 'required',
-        //     'academic_track' => 'required',
-        //     'connectivity' => 'required',
-        // ]);
+     
+        $request->validate([            
+            'date' => 'required',
+            'home_address' => 'required',
+            'course' => 'required',
+            'school_last_attended' => 'required',
+            'school_address' => 'required',
+            'year_graduated' => 'required',
+            'gpa' => 'required',
+            'academic_track' => 'required',
+            'connectivity' => 'required',
+        ]);
         
-
+        $academicTrack = null;
+        if($request->academic_track === "other"){
+            $academicTrack = $request->other_academic_track;
+        }
+        else{
+            $academicTrack = $request->academic_track;
+        }
         $averageScore = ($request->interview1 + $request->interview2 + $request->interview3 + $request->interview4 + $request->interview5) / 5;
 
       
@@ -52,17 +58,11 @@ class InterviewController extends Controller
        $studentInfo->year_graduated = $request->year_graduate;
        $studentInfo->gpa = $request->gpa;
 
-       if($request->academic_track === ""){
-            $studentInfo->academic_track = $request->other;
-       }
-       $studentInfo->academic_track = $request->academic_track;
+       $studentInfo->academic_track = $academicTrack;
        $studentInfo->internet_status = $request->connectivity;
 
        $studentInfo->interview = true;
        $studentInfo->interview_date = Carbon::now()->toDateString();
-
-
-       
 
        $studentInfo->has_laptop =  $request->has('hasLaptop') ? 1 : 0;
        $studentInfo->has_computer =  $request->has('hasDesktop') ? 1 : 0;
@@ -74,11 +74,16 @@ class InterviewController extends Controller
        $studentInfo->interviewNo4 = $request->interview4;
        $studentInfo->interviewNo5 = $request->interview5;
        $studentInfo->year_graduated = $request->year_graduated;
-       $studentInfo->average_score = $averageScore;
+       $studentInfo->average_score = $averageScore;//either make a new score db or fix this 
        $studentInfo->remarks =$request->remarks;
        $studentInfo->save();
-       // dd($request->request, $averageScore);
 
+       $result = Result::where('user_id', $studentInfo->user->id)->first();
+       $result->measure_a_score = $studentInfo->average_score * 0.30;
+       $result->save();
+
+    
+      
         return redirect()->route('admin.dashboard.pending-interview');
     }
 }

@@ -72,23 +72,16 @@
 
 
         <section class="ml-[218px] main  ">
-            <div class="absolute bottom-5 right-0 ">
-                <a href=""
-                    class="px-4 py-2  text-lg font-poppins font-normal mr-2 w-full  rounded-[15px]  bg-[#2B6CE6] hover:bg-[#134197] transition-colors duration-200 text-white">Schedule</a>
-
-            </div>
 
 
 
 
-            <div class="bg-white   mx-4 rounded-[12px] ">
+            <div class="bg-white   mx-4 rounded-[12px] h-[600px] ">
                 <div id="applicantContent" class="app-content">
                     <table class="w-full ">
                         <thead class="border-b-2 border-[#718297] ">
                             <tr class="">
-                                <th>
-                                    <input type="checkbox" id="selectAllCheckbox">
-                                </th>
+
                                 <th
                                     class="py-2
                         px-4 font-poppins text-[22px] text-[#26386A] uppercase">
@@ -110,12 +103,12 @@
                                     @foreach ($users as $index => $user)
                                         <tr
                                             class="{{ $index % 2 == 0 ? 'bg-[#aecafd30]' : 'bg-white' }} border-b-2 border-gray-100 ">
-                                            <td>
-                                                <input type="checkbox" name="selectedUsers[]"
-                                                    value="{{ $user->id }}">
-                                            </td>
+
                                             <td class="px-3 py-2 w-4/12 whitespace-nowrap">
+
                                                 {{ $user->last_name }}, {{ $user->first_name }}
+
+
                                             </td>
                                             @if ($user->qualifiedStudent->exam_schedule_date != null)
                                                 <td class="px-3 py-2 w-2/12 text-center  whitespace-nowrap">
@@ -181,58 +174,8 @@
 
     </div>
 
-    <script src="{{ asset('js/add-applicant.js') }}"></script>
-
-    <script>
-        const selectAllCheckbox = document.getElementById('selectAllCheckbox');
-        const checkboxes = document.querySelectorAll('tbody input[type="checkbox"]');
-
-        function updateSelectAllCheckbox() {
-            selectAllCheckbox.checked = Array.from(checkboxes).every(checkbox => checkbox.checked);
-        }
-
-        selectAllCheckbox.addEventListener('click', function() {
-            checkboxes.forEach(checkbox => {
-                checkbox.checked = selectAllCheckbox.checked;
-            });
-        });
 
 
-        checkboxes.forEach(checkbox => {
-            checkbox.addEventListener('click', function() {
-                updateSelectAllCheckbox();
-            });
-        });
-
-
-        // Open the popup
-        document.getElementById("openPopup").addEventListener("click", function() {
-            document.getElementById("popup").classList.remove("hidden");
-        });
-
-        // Close the popup when the close button is clicked
-        document.getElementById("closePopup").addEventListener("click", function() {
-            document.getElementById("popup").classList.add("hidden");
-        });
-
-        // Close the popup when the cancel button is clicked
-        document.getElementById("cancelSchedule").addEventListener("click", function() {
-            document.getElementById("popup").classList.add("hidden");
-        });
-
-        // Handle the submit button
-        document.getElementById("submitSchedule").addEventListener("click", function() {
-            // You can add your submit logic here
-            // For example, you can retrieve the event name from the input field
-            var eventName = document.getElementById("event").value;
-
-            // Close the popup
-            document.getElementById("popup").classList.add("hidden");
-
-            // You can do something with the event name, e.g., save it to a database
-            console.log("Event Name: " + eventName);
-        });
-    </script>
 </body>
 
 </html>

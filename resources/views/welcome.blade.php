@@ -13,6 +13,7 @@
         href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;500;600;700&family=Poppins:wght@100;300;400;500;600;700&family=Raleway:wght@300;400;500;600;700&display=swap"
         rel="stylesheet">
     @vite('resources/css/app.css')
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
     <link rel="stylesheet" href="{{ asset('css/style.css') }}">
 </head>
 
@@ -40,8 +41,14 @@
                         <li class="text-28px hover:cursor-pointer hover:text-[#1363DF]">FAQs</li>
                     </ul>
                 </div>
-                <a href="{{ route('auth.login') }}"
-                    class=" bg-[#2B6BE6]  text-white mx-[4px] px-8 py-2 rounded-[18px] hover:bg-[#134197] ">Login</a>
+
+                @if (Auth::check())
+                    <a href="" class="text-[#403838] text-[16px]">{{ Auth::user()->first_name }}</a>
+                @else
+                    <a href="{{ route('auth.login') }}"
+                        class=" bg-[#2B6BE6]  text-white mx-[4px] px-8 py-2 rounded-[18px] hover:bg-[#134197] ">Login</a>
+                @endif
+
             </div>
         </nav>
 
@@ -55,13 +62,22 @@
                     Qualifying Exams</p>
 
 
-                <div class="my-8 w-10/12 flex justiffy-start ">
-                    <button
-                        class="text-lg font-poppins font-normal mr-2 w-full h-[50px] rounded-[18px] bg-[#1E5CD1] hover:bg-[#134197] transition-colors duration-200 text-white">Take
-                        Exam</button>
-                    <button
-                        class="text-lg font-poppins font-normal ml-2 w-full h-[50px] rounded-[18px] bg-transparent hover:bg-[#cccccc] transition-colors duration-200 border-[#cccccc] border-2">Learn
-                        More</button>
+                <div class="my-8 w-10/12 flex justify-start  ">
+
+
+
+                    @if (auth()->check())
+                        <a href="{{ route('student.show-exam') }}"
+                            class="flex items-center justify-center text-lg font-poppins font-normal mr-2 w-full h-[50px] rounded-[18px] bg-[#1E5CD1] hover:bg-[#134197] transition-colors duration-200 text-white">Take
+                            Exam</a>
+                    @else
+                        <a href="{{ route('auth.login') }}"
+                            class="flex items-center justify-center text-lg font-poppins font-normal mr-2 w-full h-[50px] rounded-[18px] bg-[#1E5CD1] hover:bg-[#134197] transition-colors duration-200 text-white">Take
+                            Exam</a>
+                    @endif
+                    <a
+                        class="flex items-center justify-center text-lg font-poppins font-normal ml-2 w-full h-[50px] rounded-[18px] bg-transparent hover:bg-[#cccccc] transition-colors duration-200 border-[#cccccc] border-2">Learn
+                        More</a>
                 </div>
             </div>
 

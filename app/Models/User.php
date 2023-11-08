@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use PDO;
 
 class User extends Authenticatable
 {
@@ -65,6 +66,16 @@ class User extends Authenticatable
         return $this->hasOne(studentInfo::class);
     }
 
+    public function qualifyingExam(){
+        return $this->hasOne(QualifyingExam::class);
+    }
 
+    public function result(){
+        return $this->hasOne(Result::class);
+    }
+
+    public function examResponse(){
+        return $this->hasMany(ExamResponse::class);
+    }
     
 }

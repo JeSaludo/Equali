@@ -5,19 +5,18 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class AdmissionExam extends Model
+class Result extends Model
 {
     use HasFactory;
 
-    protected $fillable = [
-       'score',
-       'status',
-       'total_score',
-       
+    public $fillable = [
+        'measure_a_score',
+        'measure_b_score',
+        'measure_c_score',
     ];
 
-    public function user()
-    {
+    public function result(){
         return $this->belongsTo(User::class);
     }
 }
+
