@@ -28,4 +28,9 @@ class Question extends Model
         return $this->hasMany(Question::class, 'question_id');
     }
 
+    public function exam()
+    {
+        return $this->belongsTo(Exam::class);
+    }
+
 }

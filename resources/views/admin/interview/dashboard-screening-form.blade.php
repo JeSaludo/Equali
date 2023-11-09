@@ -140,27 +140,43 @@
                     <div class="flex mx-4 justify-between  gap-2 ">
 
 
-                        <div class=" px-4 my-2 w-full">
+                        <div class="px-4 my-2 w-full">
                             <select
-                                class="h-[50px] w-full rounded placeholder:text-[#4E4E4E] placeholder:font-poppins placeholder:text-[16px] px-[20px] border-2 border-[#D7D8D0] "
-                                placeholder="" required autocomplete="off" name="academic_track">
+                                class="h-[50px] w-full rounded placeholder:text-[#4E4E4E] placeholder:font-poppins placeholder:text-[16px] px-[20px] border-2 border-[#D7D8D0]"
+                                placeholder="" required autocomplete="off" name="academic_track"
+                                id="academic-track">
                                 <option value="" disabled selected>Academic Track:</option>
-                                <option value="ABM">Accountancy, Business, and Management </option>
+                                <option value="ABM">Accountancy, Business, and Management</option>
                                 <option value="HUMSS">Humanities and Social Sciences</option>
                                 <option value="STEM">Science, Technology, Engineering, and Mathematics</option>
                                 <option value="GAS">General Academic Strand</option>
                                 <option value="TVL">Technical Vocational Livelihood (TVL) Track</option>
                                 <option value="ST">Sports Track</option>
                                 <option value="ADT">Arts and Design Track</option>
-                                <option value="">Other</option>
+                                <option value="other">Other</option>
                             </select>
                         </div>
 
-                        <div class=" px-4 my-2  w-full">
-                            <input type="text" name="other"
-                                class="h-[50px] w-full rounded placeholder:text-[#4E4E4E] placeholder:font-poppins placeholder:text-[16px] px-[20px] border-2 border-[#D7D8D0] "
-                                placeholder="Other:" autocomplete="off">
+                        <div class="px-4 my-2 w-full" id="otherTrackInput" style="display:none;">
+                            <input type="text"
+                                class="h-[50px] w-full rounded placeholder:text-[#4E4E4E] placeholder:font-poppins placeholder:text-[16px] px-[20px] border-2 border-[#D7D8D0]"
+                                placeholder="Specify Academic Track" name="other_academic_track"
+                                id="other-academic-track">
                         </div>
+
+                        <script>
+                            const academicTrackSelect = document.getElementById('academic-track');
+                            const otherTrackInput = document.getElementById('otherTrackInput');
+
+                            academicTrackSelect.addEventListener('change', function() {
+                                if (academicTrackSelect.value === 'other') {
+                                    otherTrackInput.style.display = 'block';
+                                } else {
+                                    otherTrackInput.style.display = 'none';
+                                }
+                            });
+                        </script>
+
                     </div>
                     <div class="mx-8 my-2 font-poppins">
                         <h1 class="text-[18px]">Do you have any of the Following:</h1>
@@ -251,8 +267,6 @@
                             <h1 class="text-center w-[200px]" id="averageScore">Average Score:</h1>
                             <h1 id="averageScoreValue" class="w-[208px] border-2 border-[#D7D8D0] text-center"></h1>
                         </div>
-
-
 
                     </div>
 

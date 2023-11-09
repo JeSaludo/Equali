@@ -6,13 +6,14 @@ use App\Mail\AcceptanceMail;
 use App\Mail\ScheduleMail;
 use App\Models\AdmissionExam;
 use App\Models\QualifiedStudent;
+use App\Models\Result;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Database\QueryException;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Mail;
-
+use Illuminate\Support\Str;
 class ApplicantController extends Controller
 {
     
@@ -25,12 +26,12 @@ class ApplicantController extends Controller
     }
 
     function StoreApplicant(Request $request){
-        try{
+        try{           
             $request->validate([
                 'firstName' => 'required',   
                 'lastName' => 'required',          
                 'email' => 'required|email|unique:users,email',  
-                'contactNumber' => 'required|min:11|unique:users,contact_number|numeric',
+                // 'contactNumber' => 'required|min:11|unique:users,contact_number|numeric',
                
             ]);
             
@@ -45,14 +46,21 @@ class ApplicantController extends Controller
             $user->save();
 
             $tempPassword = $user->last_name . $user->first_name . "12345";
+            $tempPassword = preg_replace('/\s+/u', '', $tempPassword);
+            $tempPassword = strtolower($tempPassword);
             $user->password = $tempPassword;
+            
+
+
             $user->save();
 
             $admissionExam = new AdmissionExam();
             $admissionExam->user_id = $user->id;
             $admissionExam->score = $request->score;
             
-            $passingScore = 30;
+            $passingPercentage =40;
+
+            $passingScore = ($passingPercentage / 100) * $request->totalScore;
     
             if($request->score >= $passingScore){
                 $admissionExam->status = "Passed";
@@ -60,19 +68,43 @@ class ApplicantController extends Controller
             else{
                 $admissionExam->status = "Failed";
             }
-    
+            
+
+            
             $admissionExam->total_score = $request->totalScore;
             $admissionExam->save();
+            
+            $score = $request->score;
+
+            $result = new Result();
+            $result->user_id = $user->id;            
+            $minScore = 0;    
+            $maxScore = $user->admissionExam->total_score; 
+            $minValue = 1;    
+            $maxValue = 5;  
+
+            $score = min(max($score, $minScore), $maxScore);        
+            
+            $range = $maxValue - $minValue;
+            $scoreFraction = ($score - $minScore) / ($maxScore - $minScore);
+            $scaledValue = $minValue + $range * $scoreFraction;
+            $scaledValue = intval($scaledValue);
+
+            $result->measure_b_score = $scaledValue;
+           
     
+            $result->save();
     
             DB::commit();
+          
+           
         }
         catch (\Exception $e) {        
             DB::rollback(); 
             return redirect()->back()->with('error', 'Failed to add the applicant. Please try again later.');
         }
-        
-       return redirect()->back()->with('success', 'Question added successfully!');       
+       
+      return redirect()->back()->with('success', 'Question added successfully!');       
        
     }
 
@@ -88,7 +120,7 @@ class ApplicantController extends Controller
             'firstName' => 'required',
             'lastName' => 'required',
             'email' => 'required|email|unique:users,email,' . $id, 
-            'contactNumber' => 'required|min:11|unique:users,contact_number,' . $id, 
+            // 'contactNumber' => 'required|min:11|unique:users,contact_number,' . $id, 
         ]);
         
         $user = User::where('role', 'Student')->with('admissionExam')->findOrFail($id);
@@ -99,7 +131,9 @@ class ApplicantController extends Controller
         
 
         $user->admissionExam->score = $request->score;        
-        $passingScore = 30;
+        $passingPercentage =40;
+
+        $passingScore = ($passingPercentage / 100) * $user->admissionExam->total_score;
         if($request->score >= $passingScore){
             $user->admissionExam->status = "Passed";
         }
@@ -108,7 +142,29 @@ class ApplicantController extends Controller
         }
         $user->admissionExam->save();
         $user->save();
+
+        $result = new Result();
+        $result->user_id = $user->id;          
+
+        $score= $user->admissionExam->score;
+
+        $minScore = 0;    // Minimum score
+        $maxScore = $user->admissionExam->total_score;  // Maximum score
+        $minValue = 1;    // Minimum value
+        $maxValue = 5;  
+
+        $score = min(max($score, $minScore), $maxScore);        
+        
+        $range = $maxValue - $minValue;
+        $scoreFraction = ($score - $minScore) / ($maxScore - $minScore);
+        $scaledValue = $minValue + $range * $scoreFraction;
+        $scaledValue = intval($scaledValue);
+        $result->measure_b_score = $scaledValue;
+      
+
+
        
+        $result->save();
        
         return redirect()->route('admin.dashboard.show-applicant');       
     }
@@ -122,6 +178,8 @@ class ApplicantController extends Controller
         $approveUser->user_id = $user->id;
         $approveUser->save();
         $tempPassword = $user->last_name . $user->first_name . "12345";
+        $tempPassword = preg_replace('/\s+/u', '', $tempPassword);
+        $tempPassword = strtolower($tempPassword);
         Mail::to($user->email)->send(new AcceptanceMail($user->email, $user->first_name,  $user->last_name, $tempPassword));           
         return redirect()->back()->with('success', 'Approved Applicant successfully!');       
         
@@ -132,7 +190,7 @@ class ApplicantController extends Controller
         $user->admissionExam->delete();
         $user->delete();
         
-        return redirect()->back()->with('success', 'Question added successfully!');       
+        return redirect()->back()->with('success', 'Applicant deleted successfully!');       
     }
 
     function ShowQualifiedApplicant(){

@@ -73,7 +73,7 @@
                 <form action="{{ route('admin.dashboard.update-applicant', $user->id) }}" method="POST">
                     @csrf
                     @method('put')
-                    <div class="bg-white mx-4 rounded-[12px]  h-[470px] p-4 border-gray-600 border-2">
+                    <div class="bg-white mx-4 rounded-[12px]  h-[380px] p-4 border-gray-600 border-2">
                         <div
                             class="text-center mx-auto font-poppins text-[28px] font-semibold  text-[#26386A] uppercase">
                             <h1>Edit Applicant</h1>
@@ -107,13 +107,13 @@
 
                         </div>
 
-                        <div class="relative px-8 my-4 w-full">
+                        {{-- <div class="relative px-8 my-4 w-full">
                             <input type="text" name="contactNumber"
                                 class="h-[50px] w-full rounded placeholder:text-[#4E4E4E] placeholder:font-poppins placeholder:text-[16px] px-[40px] border-2 border-[#D7D8D0] "
                                 placeholder="Contact Number" required autocomplete="off"
                                 value="{{ $user->contact_number }}">
 
-                        </div>
+                        </div> --}}
 
 
                         <div class=" px-8 flex justify-between gap-4 my-4">
@@ -129,7 +129,7 @@
                             <div class="relative  w-full">
                                 <input type="number" name="totalScore"
                                     class="h-[50px] w-full rounded placeholder:text-[#4E4E4E] placeholder:font-poppins placeholder:text-[16px] px-[40px] border-2 border-[#D7D8D0] "
-                                    placeholder="Full Score" required autocomplete="off" value=70>
+                                    placeholder="Full Score" required autocomplete="off" value=60>
                                 {{-- Change for auto  --}}
                             </div>
                         </div>

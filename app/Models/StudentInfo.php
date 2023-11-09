@@ -18,7 +18,9 @@ class StudentInfo extends Model
         'year_graduated',
         'gpa',
         'academic_track',
-         'average_score',
+        'average_score',
+      
+         
          'remarks'
 
     ];
