@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+
 use App\Models\User;
 
 class ReportController extends Controller
@@ -22,6 +23,7 @@ class ReportController extends Controller
 
     
 }
+
 
 
 

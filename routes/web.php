@@ -11,6 +11,7 @@ use App\Http\Controllers\ReportController;
 use App\Http\Controllers\UserController;
 use Illuminate\Auth\Events\Login;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\ReportController;
 
 /*
 |--------------------------------------------------------------------------
@@ -102,3 +103,5 @@ Route::get('/exam/already-responded', [ExamController::class, 'ShowAlreadyRespon
 Route::get('/dashboard/report/qualified-exam-result', [ReportController::class, 'ShowQualifyingExamResult'])->name('admin.report.qualified-exam');
 
 
+//Added New Route for Applicant Ranking paayos na lang I'm having doubts ==============================
+Route::get('dashboard/applicant-ranking', [ReportController::class, 'ShowApplicantRanking'])->name('admin.dashboard.applicant-ranking');
