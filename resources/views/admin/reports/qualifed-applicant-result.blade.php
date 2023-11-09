@@ -143,7 +143,7 @@
 
                                     <td class="px-6 py-2  whitespace-nowrap">
                                         <p class="font-medium font-poppins text-[#617388]">
-                                            @if (empty($user->result->measure_b_score))
+                                            @if (empty($user->result->measure_c_score))
                                                 N/A
                                             @else
                                                 {{ $user->result->measure_c_score }}
@@ -153,7 +153,8 @@
 
                                     <td class="px-6 py-2  whitespace-nowrap">
                                         <p class="font-medium font-poppins text-[#617388]">
-                                            @if ($user->result)
+                                            @if ($user->result->weighted_average)
+                                            
                                             @else
                                                 N/A
                                             @endif

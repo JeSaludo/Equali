@@ -16,7 +16,7 @@ class ExamController extends Controller
 {
     function ShowExam()
     {
-       
+        
         $exam = session('assigned_exam');
 
         if (!$exam) {

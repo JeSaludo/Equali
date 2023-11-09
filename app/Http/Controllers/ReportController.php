@@ -14,7 +14,7 @@ class ReportController extends Controller
         $users = User::where('role', 'Student')
         ->with('result')
         ->get();
-       
+        
         
         return view('admin.reports.qualifed-applicant-result', compact('users'));
     }

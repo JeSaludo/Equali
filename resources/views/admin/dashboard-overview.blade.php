@@ -37,7 +37,7 @@
 
                     <div class="flex items-end gap-3 text-[#718297] mb-8">
                         <i class='bx bxs-user-detail text-[45px] pb-2'></i>
-                        <p class="text-[50px] py-0">{{ $recentApplicants->count() }}</p>
+                        <p class="text-[50px] py-0">{{ $user->count() }}</p>
                     </div>
 
                     <div class="bg-[#5587F7] w-full  h-[24px] absolute bottom-0 left-0 px-0 mx-0 rounded-b-lg"></div>
@@ -50,7 +50,7 @@
 
                     <div class="flex items-end gap-3 px-2 text-[#718297]">
                         <i class='bx bxs-user-check text-[45px] pb-2'></i>
-                        <p class="text-[50px] py-0">{{ $recentApplicants->where('status', 'Approved')->count() }}</p>
+                        <p class="text-[50px] py-0">{{ $user->where('status', 'Approved')->count() }}</p>
                     </div>
                     <div class="bg-[#5587F7] w-full  h-[24px] absolute bottom-0 left-0 px-0 mx-0 rounded-b-lg"></div>
 
@@ -63,7 +63,7 @@
 
                     <div class="flex items-end gap-3 px-2 text-[#718297]">
                         <i class='bx bxs-archive-in text-[40px] pb-2'></i>
-                        <p class="text-[50px] py-0">{{ $recentApplicants->where('status', 'Archived')->count() }}</p>
+                        <p class="text-[50px] py-0">{{ $user->where('status', 'Archived')->count() }}</p>
 
 
                     </div>

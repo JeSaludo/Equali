@@ -187,7 +187,18 @@
                         </thead>
                         <tbody class="text-center font-poppins text-[18px] w-full  ">
                             <div class="flex justify-between">
-                                @foreach ($users as $index => $user)
+                                @if ($users->count() == 0)
+                                <tr >
+                                    <td></td>
+                                    <td class="">
+    
+                                        <p class="my-3">No Data found in the database</p>
+    
+                                    </td>
+                                    <td></td>
+                                </tr>
+                                @else
+                                    @foreach ($users as $index => $user)                               
                                     <tr
                                         class="{{ $index % 2 == 0 ? 'bg-[#aecafd30]' : 'bg-white' }} border-b-2 border-gray-100 ">
                                         <td class="px-3 py-2 w-4/12 whitespace-nowrap">
@@ -263,7 +274,8 @@
 
 
                                     </tr>
-                                @endforeach
+                                    @endforeach
+                                @endif
                             </div>
                         </tbody>
 

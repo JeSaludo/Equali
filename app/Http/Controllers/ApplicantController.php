@@ -20,7 +20,7 @@ class ApplicantController extends Controller
 
     function ShowApplicant(){
         $users  = User::where('role', 'Student')->where('status', 'Pending')->with('admissionExam')->paginate(10);
-
+        
         return view('admin.dashboard-view-applicant', compact('users'));
 
     }
@@ -212,6 +212,8 @@ class ApplicantController extends Controller
             'email' => 'required|email|unique:users,email,' . $id, 
            
         ]);
+
+
         
         $user = User::where('role', 'Student')->with('qualifiedStudent')->findOrFail($id);
         $user->first_name = $request->firstName;

@@ -32,35 +32,40 @@
                     </div>
 
                 </nav>
-                <form action="{{ route('submit-exam') }}" method="POST" class=" mt-4">
-                    <div class="w-full">
-                        @csrf
-                        <div class="mx-16">
-                            <div class="w-full  h-10 bg-[#E0DFE7] rounded-lg flex justify-between">
-                                <div class="p-2 ">
-                                    <h1 class="text-[#2B6BE6] font-poppins font-bold text-lg">Qualifying Exam</h1>
-                                </div>
-                                <div class="p-2 ">
-                                    <h1 class="text-[#2B6BE6] font-poppins  text-lg">Time: 00:02:00/ 01:00:00</h1>
-                                </div>
-                                <div class="">
-                                    <button type="submit"
-                                        class="bg-[#2B6CE6] text-white p-2 px-8 rounded-lg hover:bg-[#134197]">Submit</button>
-                                </div>
 
 
+                @if($exam){
+                    <form action="{{ route('submit-exam') }}" method="POST" class=" mt-4">
+                        <div class="w-full">
+                            @csrf
+                            <div class="mx-16">
+                                <div class="w-full  h-10 bg-[#E0DFE7] rounded-lg flex justify-between">
+                                    <div class="p-2 ">
+                                        <h1 class="text-[#2B6BE6] font-poppins font-bold text-lg">Qualifying Exam</h1>
+                                    </div>
+                                    <div class="p-2 ">
+                                        <h1 class="text-[#2B6BE6] font-poppins  text-lg">Time: 00:02:00/ 01:00:00</h1>
+                                    </div>
+                                    <div class="">
+                                        <button type="submit"
+                                            class="bg-[#2B6CE6] text-white p-2 px-8 rounded-lg hover:bg-[#134197]">Submit</button>
+                                    </div>
+    
+    
+                                </div>
+    
+    
                             </div>
-
-
-                        </div>
-
-                        <div class=" mt-3">
-                            @foreach ($exam->examQuestion as $index => $examQuestion)
+    
+                            <div class=" mt-3">
+    
+                               
+                                @foreach ($exam->examQuestion as $index => $examQuestion)
                                 <div class="mx-16">
                                     <h1 class="font-bold  text-lg text-[#2B6BE6]">
                                         {{-- Question {{ $index + 1 }} --}}
                                     </h1>
-
+    
                                     <p class="text-[#626B7F]">
                                     <h2>{{ $index + 1 }}. {{ $examQuestion->question->question_text }}</h2>
                                     </p>
@@ -96,16 +101,26 @@
                                         </div>
                                     </div>
                                 </div>
-
+    
                                 <div class="mx-0 border-b-2 my-8"></div>
-                            @endforeach
+                                @endforeach
+                               
+                             
+                            </div>
+    
                         </div>
+                        <input type="hidden" name="user_id" value="{{ auth()->user()->id }}">
+                        <input type="hidden" name="exam_id" value="{{ $exam->id }}">
+    
+                    </form>
+                }
+                @else
+                <div><h1 class="text-center text-black font-bold text-[48px]">No Exam Found</h1></div>
 
-                    </div>
-                    <input type="hidden" name="user_id" value="{{ auth()->user()->id }}">
-                    <input type="hidden" name="exam_id" value="{{ $exam->id }}">
+                <div class="mx-auto text-center"><a href="{{route('home')}}" class="text-center border-2 px-4 rounded-lg text-[24px]">Back</a></div>
 
-                </form>
+                 @endif
+               
             </div>
         </div>
     </div>

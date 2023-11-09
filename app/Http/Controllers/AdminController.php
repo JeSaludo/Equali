@@ -15,10 +15,15 @@ class AdminController extends Controller
         ->latest('created_at')
         ->limit(5)
         ->get();
-    
-        return view('admin.dashboard-overview', compact('recentApplicants'));
+        
+
+        $user = User::where('role', 'Student')->get();
+
+        return view('admin.dashboard-overview', compact('recentApplicants', 'user'));
     }
 
+
+    
     
 
    
