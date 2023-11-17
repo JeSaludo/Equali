@@ -1,4 +1,4 @@
-<aside class="fixed top-0 left-0 w-[218px] h-screen bg-white">
+<aside class="fixed top-0 left-0 w-[218px] h-screen bg-white"> 
     <div class="mx-auto text-center py-2  ">
         <h1 class=" text-[36px] font-raleway font-semibold"><span class="text-[#2217D0]">e</span>quali.</h1>
         <div class="border-b-2 w-6/12 mx-auto"></div>
@@ -25,22 +25,22 @@
                 <div class="dropdown-menu  pointer-events-none opacity-0 whitespace-nowrap " data-dropdown-content>
                     <a href="{{ route('admin.dashboard.show-applicant') }}"
                         class="mx-4 px-4 py-2 hover:cursor-pointer hover:bg-[#EAF0FF] rounded-[15px] flex items-center text-[#718297] my-2">
-                        <i class='bx bx-radio-circle pr-2 '></i> Pending
+                        <div class="px-4 whitespace-nowrap"> Pending </div>
 
 
                     </a>
 
 
 
-                    <a href="#WVSDA"
+                    <a href="{{route('admin.dashboard.show-archive-applicant')}}"
                         class=" mx-4 px-4 py-2 hover:cursor-pointer hover:bg-[#EAF0FF] rounded-[15px] flex items-center text-[#718297] my-2">
-                        <i class='bx bx-radio-circle pr-2 '></i> Archive
+                        <div class="px-4 whitespace-nowrap"> Archive </div>
 
 
                     </a>
                     <a href="{{ route('admin.dashboard.show-approved-applicant') }}"
                         class=" mx-4 px-4 py-2 hover:cursor-pointer hover:bg-[#EAF0FF] rounded-[15px] flex items-center text-[#718297] my-2">
-                        <i class='bx bx-radio-circle pr-2 '></i> Approve
+                        <div class="px-4 whitespace-nowrap">Approve</div>
 
 
                     </a>
@@ -52,88 +52,90 @@
             </div>
 
 
-            <div class="dropdown" data-dropdown>
+           
 
 
-                <a class="dropdown-button mx-4 cursor-pointer hover:bg-[#EAF0FF]  px-4 py-2 rounded-[15px] flex justify-between  items-center text-[#718297] my-2"
-                    data-dropdown-button>
-                    <div class="pointer-events-none"><i class='bx bxs-user pr-2'></i>Exam</div><i
-                        class='caret-icon pointer-events-none  bx bx-caret-right'></i>
-                </a>
-
-                <div class="dropdown-menu  pointer-events-none opacity-0 " data-dropdown-content>
-                    <a href="{{ route('admin.dashboard.view-question') }}"
-                        class=" mx-4 px-4 py-2 hover:cursor-pointer hover:bg-[#EAF0FF] rounded-[15px] flex   items-center text-[#718297] my-2">
-                        <div class=""><i class='bx bx-radio-circle pr-2 '></i>Question
-                        </div>
-                    </a>
-
-                    <a href="{{ route('admin.dashboard.show-exam') }}"
-                        class=" mx-4 px-4 py-2 hover:cursor-pointer hover:bg-[#EAF0FF] rounded-[15px] flex  items-center text-[#718297] my-2">
-                        <div class=""><i class='bx bx-radio-circle pr-2 '></i>Exam
-                        </div>
-                    </a>
-                </div>
-            </div>
 
             <div class="dropdown" data-dropdown>
 
 
                 <a class="dropdown-button mx-4 cursor-pointer hover:bg-[#EAF0FF]  px-4 py-2 rounded-[15px] flex justify-between  items-center text-[#718297] my-2"
                     data-dropdown-button>
-                    <div class="pointer-events-none"><i class='bx bxs-user pr-2'></i>Interview</div><i
+                    <div class="pointer-events-none"><i class='bx bxs-file-blank pr-2'></i>Interview</div><i
                         class='caret-icon pointer-events-none  bx bx-caret-right'></i>
                 </a>
 
                 <div class="dropdown-menu  pointer-events-none opacity-0 " data-dropdown-content>
 
-                    <a href="{{ route('admin.dashboard.show-qualified-appplicant') }}"
-                        class=" mx-4 px-4 py-2 hover:cursor-pointer hover:bg-[#EAF0FF] rounded-[15px] flex  items-center text-[#718297] my-2">
-                        <i class='bx bx-radio-circle pr-2 '></i>Schedule
-
-                    </a>
                     <a href="{{ route('admin.dashboard.pending-interview') }}"
                         class=" mx-4 px-4 py-2 hover:cursor-pointer hover:bg-[#EAF0FF] rounded-[15px] flex  items-center text-[#718297] my-2">
-                        <div class=""><i class='bx bx-radio-circle pr-2 '></i>Interview Now
+                        <div class="px-4 whitespace-nowrap">Pending 
                         </div>
                     </a>
-
-                    <a href="{{ route('admin.dashboard.view-question') }}"
+                    <a href="{{ route('admin.dashboard.show-qualified-appplicant') }}"
                         class=" mx-4 px-4 py-2 hover:cursor-pointer hover:bg-[#EAF0FF] rounded-[15px] flex  items-center text-[#718297] my-2">
-                        <div class=""><i class='bx bx-radio-circle pr-2 '></i>Review
+                        <div class="px-4 whitespace-nowrap">
+                            Schedule 
+                        </div>
+
+                    </a>
+                    
+
+                    <a href="{{ route('admin.dashboard.show-review') }}"
+                        class=" mx-4 px-4 py-2 hover:cursor-pointer hover:bg-[#EAF0FF] rounded-[15px] flex  items-center text-[#718297] my-2">
+                        <div class="px-4 whitespace-nowrap">Review 
                         </div>
                     </a>
 
                 </div>
             </div>
 
+
+            <div>
+                <a href="{{ route('admin.dashboard.show-exam') }}" class="mx-4 cursor-pointer hover:bg-[#EAF0FF]  px-4 py-2 rounded-[15px] flex justify-between  items-center text-[#718297] my-2">
+                    <div class="pointer-events-none"><i class='bx bx-file pr-2'></i>Exam</div>
+                </a>
+            </div>
+
+            <div>
+                <a href="{{ route('admin.dashboard.view-question') }}" class="mx-4 cursor-pointer hover:bg-[#EAF0FF]  px-4 py-2 rounded-[15px] flex justify-between  items-center text-[#718297] my-2">
+                    <div class="pointer-events-none"><i class='bx bxs-data pr-2'></i>Question Bank</div>
+                </a>
+            </div>
+            
+            
+
+           
             <div class="dropdown" data-dropdown>
 
 
                 <a class="dropdown-button mx-4 cursor-pointer hover:bg-[#EAF0FF]  px-4 py-2 rounded-[15px] flex justify-between  items-center text-[#718297] my-2"
                     data-dropdown-button>
-                    <div class="pointer-events-none"><i class='bx bxs-user pr-2'></i>Reports</div><i
-                        class='caret-icon pointer-events-none  bx bx-caret-right'></i>
+                    <div class="pointer-events-none"><i class='bx bxs-report pr-2'></i>Reports</div>
+                    <i class='caret-icon pointer-events-none  bx bx-caret-right'></i>
                 </a>
 
                 <div class="dropdown-menu  pointer-events-none opacity-0 " data-dropdown-content>
 
                     <a href="{{ route('admin.report.qualified-exam') }}"
                         class=" mx-4 px-4 py-2 hover:cursor-pointer hover:bg-[#EAF0FF] rounded-[15px] flex  items-center text-[#718297] my-2">
-                        <i class='bx bx-radio-circle pr-2 '></i>Qualifying Exam
+                        <div class="px-4 whitespace-nowrap">Weighted Average</div>
 
                     </a>
-                    <a href="{{ route('admin.dashboard.pending-interview') }}"
+                    <a href="{{ route('admin.dashboard.item-analysis') }}"
                         class=" mx-4 px-4 py-2 hover:cursor-pointer hover:bg-[#EAF0FF] rounded-[15px] flex  items-center text-[#718297] my-2">
-                        <div class=""><i class='bx bx-radio-circle pr-2 '></i>Report 2
+                        <div class="px-4 whitespace-nowrap">Item Analysis
                         </div>
                     </a>
 
-                    <a href="{{ route('admin.dashboard.view-question') }}"
+                    <a href="{{ route('admin.report.qualified-exam') }}"
                         class=" mx-4 px-4 py-2 hover:cursor-pointer hover:bg-[#EAF0FF] rounded-[15px] flex  items-center text-[#718297] my-2">
-                        <div class=""><i class='bx bx-radio-circle pr-2 '></i>Report 3
-                        </div>
+                        <div class="px-4 whitespace-nowrap">Qualifying Exam</div>
+
                     </a>
+
+                    
+                    
 
                 </div>
 

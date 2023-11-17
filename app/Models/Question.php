@@ -33,4 +33,25 @@ class Question extends Model
         return $this->belongsTo(Exam::class);
     }
 
+    public function examResponse()
+    {
+        return $this->hasMany(ExamResponse::class);
+    }
+
+    public function getResponseCounts()
+    {
+        $responseCounts = [];
+
+        foreach ($this->choices as $choice) {
+            $responseCounts[] = $this->examResponse->where('choice_id', $choice->id)->count();
+        }
+
+        return $responseCounts;
+    }
+
+    public function getChoiceLabels()
+    {
+        return $this->choices->pluck('choice_text')->toArray();
+    }
+
 }

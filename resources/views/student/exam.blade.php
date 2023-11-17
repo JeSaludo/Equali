@@ -34,7 +34,7 @@
                 </nav>
 
 
-                @if($exam){
+                @if($exam)
                     <form action="{{ route('submit-exam') }}" method="POST" class=" mt-4">
                         <div class="w-full">
                             @csrf
@@ -62,9 +62,7 @@
                                
                                 @foreach ($exam->examQuestion as $index => $examQuestion)
                                 <div class="mx-16">
-                                    <h1 class="font-bold  text-lg text-[#2B6BE6]">
-                                        {{-- Question {{ $index + 1 }} --}}
-                                    </h1>
+                                    
     
                                     <p class="text-[#626B7F]">
                                     <h2>{{ $index + 1 }}. {{ $examQuestion->question->question_text }}</h2>
@@ -73,7 +71,7 @@
                                         <div class="border-t-2 border-x-2 rounded-t-lg flex  w-6/12  items-center">
                                             <input class="py-2 px-4 ml-2" type="radio"
                                                 name="answer[{{ $index + 1 }}]" id=""
-                                                value="{{ $examQuestion->question->choices->get(0)->choice_text }}">
+                                                value="{{ $examQuestion->question->choices->get(0)->id }}">
                                             <p class="ml-2 py-1">
                                                 {{ $examQuestion->question->choices->get(0)->choice_text }}
                                             </p>
@@ -81,21 +79,21 @@
                                         <div class="border-x-2 border-t-2 flex w-6/12  items-center">
                                             <input class="py-2 px-4 ml-2" type="radio"
                                                 name="answer[{{ $index + 1 }}]" id=""
-                                                value="{{ $examQuestion->question->choices->get(1)->choice_text }}">
+                                                value="{{ $examQuestion->question->choices->get(1)->id }}">
                                             <p class="ml-2">
                                                 {{ $examQuestion->question->choices->get(1)->choice_text }}</p>
                                         </div>
                                         <div class="border-x-2 border-t-2 flex w-6/12  items-center">
                                             <input class="py-2 px-4 ml-2" type="radio"
                                                 name="answer[{{ $index + 1 }}]" id=""
-                                                value="{{ $examQuestion->question->choices->get(2)->choice_text }}">
+                                                value="{{ $examQuestion->question->choices->get(2)->id }}">
                                             <p class="ml-2">
                                                 {{ $examQuestion->question->choices->get(2)->choice_text }}</p>
                                         </div>
                                         <div class="border-2 rounded-b-lg flex  w-6/12  items-center">
                                             <input class="py-2 px-4 ml-2" type="radio"
                                                 name="answer[{{ $index + 1 }}]" id=""
-                                                value="{{ $examQuestion->question->choices->get(3)->choice_text }}">
+                                                value="{{ $examQuestion->question->choices->get(3)->id }}">
                                             <p class="ml-2">
                                                 {{ $examQuestion->question->choices->get(3)->choice_text }}</p>
                                         </div>
@@ -113,7 +111,7 @@
                         <input type="hidden" name="exam_id" value="{{ $exam->id }}">
     
                     </form>
-                }
+                
                 @else
                 <div><h1 class="text-center text-black font-bold text-[48px]">No Exam Found</h1></div>
 

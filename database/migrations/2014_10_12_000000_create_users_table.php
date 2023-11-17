@@ -22,7 +22,7 @@ return new class extends Migration
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password')->nullable();
             $table->enum('role', ['ProgramHead','Proctor', 'Dean', 'Tester', 'Student'])->default('Student');
-            $table->enum('status', ['Pending', 'Approved', 'Qualified', 'Unqualified', 'Active', 'Inactive'])->nullable();
+            $table->string('status')->nullable();
             
         
            

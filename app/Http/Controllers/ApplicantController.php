@@ -18,9 +18,21 @@ class ApplicantController extends Controller
 {
     
 
-    function ShowApplicant(){
-        $users  = User::where('role', 'Student')->where('status', 'Pending')->with('admissionExam')->paginate(10);
+    function ShowApplicant(Request $request){
         
+        $users  = User::where('role', 'Student')->where('status', 'Pending')->with('admissionExam');
+
+        $searchTerm = $request->searchTerm;
+        
+       
+        
+        if(isset($searchTerm)){
+            $users->where('first_name', 'like', '%' . $searchTerm . '%');
+        }
+
+       
+
+        $users = $users->paginate(10);
         return view('admin.dashboard-view-applicant', compact('users'));
 
     }
@@ -185,6 +197,15 @@ class ApplicantController extends Controller
         
     }
 
+    function ArchiveApplicant($id){
+        $user = User::where('role', 'Student')->findOrFail($id);
+        $user->status = "Archived";
+        $user->save();
+
+      
+        return redirect()->back()->with('success', 'Archive Applicant successfully!');       
+    }
+
     function DeleteApplicant($id){
         $user = User::where('role', 'Student')->with('admissionExam')->findOrFail($id);
         $user->admissionExam->delete();
@@ -194,7 +215,10 @@ class ApplicantController extends Controller
     }
 
     function ShowQualifiedApplicant(){
-        $users = User::where('role', 'Student')->where('status', 'Approved')->with('qualifiedStudent')->get();
+        $users = User::where('role', 'Student')->where('status', 'Approved')
+        
+        ->doesntHave('studentInfo')
+        ->with('qualifiedStudent')->get();
         return view('admin.dashboard-view-qualified-applicant', compact('users'));
     }   
 
@@ -273,4 +297,10 @@ class ApplicantController extends Controller
         $users = User::where('role', 'Student')->where('status', 'Approved')->with('qualifiedStudent')->get();
         return view('admin.dashboard-view-approve-applicant', compact('users'));
     } 
+
+
+    function ShowArchiveApplicant(){
+        $users = User::where('role', 'Student')->where('status', 'Archived')->get();
+        return view('admin.dashboard-view-archive', compact('users'));
+    }
 }

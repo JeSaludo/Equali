@@ -12,20 +12,29 @@ use App\Models\StudentResponse;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Auth;
 class ExamController extends Controller
 {
     function ShowExam()
     {
-        
-        $exam = session('assigned_exam');
+        $user = User::where('id', Auth::user()->id)->with('studentInfo')->first();
 
-        if (!$exam) {
-            // If not, randomly select an exam and store its identifier in the session
-            $exam = Exam::inRandomOrder()->with('examQuestion.question.choices')->first();
-            session(['assigned_exam' => $exam]);
+
+        if($user->studentInfo){
+            $exam = session('assigned_exam');
+
+            if (!$exam) {
+                // If not, randomly select an exam and store its identifier in the session
+                $exam = Exam::inRandomOrder()->with('examQuestion.question.choices')->first();
+                session(['assigned_exam' => $exam]);
+            }            
+            return view('student.exam', compact('exam'));
         }
-        
-        return view('student.exam', compact('exam'));
+        else{
+            return redirect()->route('home')->with("error", "Error");
+        }
+       
+       
     }
 
     function ShowAlreadyResponded(){
@@ -39,7 +48,8 @@ class ExamController extends Controller
             return redirect()->route('student.already-responded');
         }
         $userAnswers = $request->answer;
-       
+        
+        
         
         $score = 0;
 
@@ -47,17 +57,27 @@ class ExamController extends Controller
       
          $currentExam = ExamQuestion::where('exam_id', $request->exam_id)->with('question.choices')->get();        
         
-       
+         $choices = Choice::all();
         foreach ($currentExam as $index => $exam) {
             $correctAnswer = $exam->question->correctAnswer(); // Make sure this method returns the correct answer 
 
+
+           
             ExamResponse::create([
+                'user_id' => auth()->id(),
                 'question_id' => $exam->question->id,
-                'answer' => $userAnswers[$index + 1],
+                'choice_id' => $userAnswers[$index + 1],
             ]);
         
-            if (isset($userAnswers[$index + 1]) && $userAnswers[$index + 1] === $correctAnswer) {
+
+          
+            $choices = $choices->find($userAnswers[$index + 1]);
+
+           
+            
+            if(isset($userAnswers[$index + 1]) && $choices->choice_text === $correctAnswer){
                 $score++;
+                
             }
 
         }
@@ -83,16 +103,19 @@ class ExamController extends Controller
         $result->measure_c_score = $scaledValue;
       
         $result->save();
-
+        
         $result->weighted_average = ($result->measure_a_score + $result->measure_b_score + $result->measure_c_score) / 3;
         $result->save();
-        $request->session()->put('form_submitted', true);
+       $request->session()->put('form_submitted', true);
+
+
+        $user = User::where('id', $request->user_id)->first();
+        $user->status = "WaitListed";
+        $user->save();
        // $request->session()->forget('form_submitted');
-        return $this->showExamResult($score, $sizeOfScore);
+       return view('student.exam-result', compact('score', 'sizeOfScore'));
     }
-    public function ShowExamResult($score, $sizeOfScore) {
-        return view('student.exam-result', compact('score', 'sizeOfScore'));
-    }
+  
     
 
     public function ShowAdminExam(){
@@ -186,6 +209,7 @@ class ExamController extends Controller
         // Check if there are any available questions to add.
         $availableQuestionsCount = Question::whereNotIn('id', $existingQuestionIds)->count();
 
+        ////change 
         if ($availableQuestionsCount < 5) {
             return "Not enough available questions to add.";
         }

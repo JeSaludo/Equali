@@ -10,8 +10,9 @@ class ExamResponse extends Model
     use HasFactory;
 
     public $fillable = [
+        'user_id',
         'question_id',
-        'answer',
+        'choice_id',
     ];
     public function user()
      {

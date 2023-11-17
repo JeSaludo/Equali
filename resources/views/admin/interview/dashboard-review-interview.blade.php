@@ -62,11 +62,6 @@
 
 
         <section class="ml-[218px] main  ">
-            <div class="absolute bottom-5 right-0 ">
-                <a href=""
-                    class="px-4 py-2  text-lg font-poppins font-normal mr-2 w-full  rounded-[15px]  bg-[#2B6CE6] hover:bg-[#134197] transition-colors duration-200 text-white">Schedule</a>
-
-            </div>
 
 
 
@@ -76,9 +71,7 @@
                     <table class="w-full ">
                         <thead class="border-b-2 border-[#718297] ">
                             <tr class="">
-                                <th>
-                                    <input type="checkbox" id="selectAllCheckbox">
-                                </th>
+
                                 <th
                                     class="py-2
                         px-4 font-poppins text-[22px] text-[#26386A] uppercase">
@@ -87,6 +80,7 @@
                                     Interview & Exam Schedule</th>
                                 <th class="py-2 px-4 font-poppins text-[22px] whitespace-nowrap text-[#26386A]">
                                     Time</th>
+
                                 <th class="py-2 px-4 font-poppins text-[22px] text-[#26386A]">Action</th>
                             </tr>
                         </thead>
@@ -99,16 +93,15 @@
                                     @foreach ($users as $index => $user)
                                         <tr
                                             class="{{ $index % 2 == 0 ? 'bg-[#aecafd30]' : 'bg-white' }} border-b-2 border-gray-100 ">
-                                            <td>
-                                                <input type="checkbox" name="selectedUsers[]"
-                                                    value="{{ $user->id }}">
-                                            </td>
+
                                             <td class="px-3 py-2 w-4/12 whitespace-nowrap">
+
                                                 {{ $user->last_name }}, {{ $user->first_name }}
+
+
                                             </td>
                                             @if ($user->qualifiedStudent->exam_schedule_date != null)
                                                 <td class="px-3 py-2 w-2/12 text-center  whitespace-nowrap">
-
                                                     {{ \Carbon\Carbon::parse($user->qualifiedStudent->exam_schedule_date)->format('F j, Y') }}
                                                 </td>
 
@@ -124,21 +117,23 @@
                                                     Not yet scheduled
                                                 </td>
 
-                                                <td class="px-3 py-2 w-2/12 text-center  whitespace-nowrap">
-                                                    Not yet scheduled
-                                                </td>
+                                                <td>Not yet scheduled</td>
                                             @endif
+
+
 
                                             <td
                                                 class="px-3 py-2 w-4/12 text-[#626B7F] mx-auto  flex justify-evenly gap-1 items-center ">
                                                 {{-- <a href="" class="mx-2" title="Schedule"><i
                                                     class='bx bx-calendar-check'></i></a> --}}
+                                                <a href=""
+                                                    title="Interview Now">
+                                                    <i class='bx  bxs-edit'></i>
+                                                </a>
 
-
-                                                <a href="{{ route('admin.dashboard.edit-qualified-appplicant', $user->id) }}"
+                                                {{-- <a href="{{ route('admin.dashboard.edit-qualified-appplicant', $user->id) }}"
                                                     class="mx-1 hover:text-green-400" title="Edit"><i
-                                                        class='bx bxs-edit '></i></a>
-
+                                                        class='bx bxs-edit '></i></a> --}}
                                             </td>
 
 
@@ -146,47 +141,10 @@
                                     @endforeach
                                 </div>
 
-                                <div class="absolute bottom-5 right-0">
-                                    <a href="#" id="openPopup"
-                                        class="px-4 py-2 text-lg font-poppins font-normal mr-2 w-full rounded-[15px] bg-[#2B6CE6] hover:bg-[#134197] transition-colors duration-200 text-white">Schedule</a>
-                                </div>
-
-                                <!-- Create the popup for scheduling -->
-                                <div id="popup"
-                                    class="fixed top-0 left-0 w-full h-full flex justify-center items-center bg-gray-500 bg-opacity-50 z-50 hidden">
-                                    <div class="bg-white rounded-lg p-4">
-                                        <span class="cursor-pointer absolute top-2 right-2 text-gray-600"
-                                            id="closePopup">&times;</span>
-                                        <h2 class="text-lg font-semibold mb-4">Schedule Exam and Interview</h2>
-
-                                        <div>
-                                            <div class="mb-4">
-                                                <label for="date"
-                                                    class="block text-sm font-medium text-gray-600">Date:</label>
-                                                <input type="date" name="date"
-                                                    class="w-full px-3 py-2 border rounded-md" required>
-
-
-                                                <div>
-                                                    <label for="start_time">Start Time:</label>
-                                                    <input type="time" id="start_time" name="start_time" required>
-
-                                                    <label for="end_time">End Time:</label>
-                                                    <input type="time" id="end_time" name="end_time" required>
-                                                </div>
 
 
 
 
-                                            </div>
-                                            <button type="submit"
-                                                class="bg-[#2B6CE6] text-white px-4 py-2 rounded-md hover:bg-[#134197] transition-colors duration-200">Submit</button>
-                                            <button type="button" id="cancelSchedule"
-                                                class="bg-gray-300 text-gray-600 px-4 py-2 rounded-md hover:bg-gray-400 transition-colors duration-200 ml-2">Cancel</button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </form>
                         </tbody>
 
                     </table>
@@ -206,58 +164,8 @@
 
     </div>
 
-    <script src="{{ asset('js/add-applicant.js') }}"></script>
-
-    <script>
-        const selectAllCheckbox = document.getElementById('selectAllCheckbox');
-        const checkboxes = document.querySelectorAll('tbody input[type="checkbox"]');
-
-        function updateSelectAllCheckbox() {
-            selectAllCheckbox.checked = Array.from(checkboxes).every(checkbox => checkbox.checked);
-        }
-
-        selectAllCheckbox.addEventListener('click', function() {
-            checkboxes.forEach(checkbox => {
-                checkbox.checked = selectAllCheckbox.checked;
-            });
-        });
 
 
-        checkboxes.forEach(checkbox => {
-            checkbox.addEventListener('click', function() {
-                updateSelectAllCheckbox();
-            });
-        });
-
-
-        // Open the popup
-        document.getElementById("openPopup").addEventListener("click", function() {
-            document.getElementById("popup").classList.remove("hidden");
-        });
-
-        // Close the popup when the close button is clicked
-        document.getElementById("closePopup").addEventListener("click", function() {
-            document.getElementById("popup").classList.add("hidden");
-        });
-
-        // Close the popup when the cancel button is clicked
-        document.getElementById("cancelSchedule").addEventListener("click", function() {
-            document.getElementById("popup").classList.add("hidden");
-        });
-
-        // Handle the submit button
-        document.getElementById("submitSchedule").addEventListener("click", function() {
-            // You can add your submit logic here
-            // For example, you can retrieve the event name from the input field
-            var eventName = document.getElementById("event").value;
-
-            // Close the popup
-            document.getElementById("popup").classList.add("hidden");
-
-            // You can do something with the event name, e.g., save it to a database
-            console.log("Event Name: " + eventName);
-        });
-    </script>
 </body>
 
 </html>

@@ -52,13 +52,15 @@
                     <div>
                         <h1 class="text-[#2CCAAA] font-bold font-poppins text-5xl text-center uppercase">passed</h1>
                     </div>
-                    <div>
-                        <a class="mx-[215px] font-poppins text-center uppercase font-bold" href="">back</a>
-                    </div>
+                   
                 </div>
 
-
-
+                
+                <div class="relative my-6 mx-4">
+                    <form action="{{route('home')}}" method="get"> <input type="submit" value="Back"
+                        class="text-lg font-poppins font-normal mr-2 w-full h-[50px] rounded-[18px] bg-[#1E5CD1] hover:bg-[#134197] transition-colors duration-200 text-white">
+               </form>
+                    </div>
 
             </div>
             <div class="relative mt-[171px]">

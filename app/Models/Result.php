@@ -15,7 +15,7 @@ class Result extends Model
         'measure_c_score',
     ];
 
-    public function result(){
+    public function user(){
         return $this->belongsTo(User::class);
     }
 }

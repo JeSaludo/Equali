@@ -61,7 +61,7 @@ class AuthController extends Controller
         $user->username = substr($validatedData['firstName'], 0, 1) . $validatedData['lastName'];;
         $user->email = $validatedData['email'];
         $user->password = Hash::make($validatedData['password']);
-        $user->role = 'User';
+        $user->role = 'User';        
         $user->save();
 
         return redirect()->route('home')->with('status', 'Registration Successfull');

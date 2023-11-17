@@ -11,7 +11,14 @@ use Illuminate\Http\Request;
 class InterviewController extends Controller
 {
     function ShowPendingInterview(){
-        $users = User::where('role', 'Student')->where('status', 'Approved')->with('qualifiedStudent')->get();
+
+
+        $users = User::where('role', 'Student')->where('status', 'Approved')
+        ->with('qualifiedStudent')
+        ->doesntHave('studentInfo')
+        ->latest('created_at')->get();
+
+        
         return view('admin.interview.dashboard-view-interview', compact('users'));
     } 
    
@@ -23,6 +30,14 @@ class InterviewController extends Controller
         return view('admin.interview.dashboard-screening-form', compact('user'));
     }
 
+    function ShowReview(){
+        $users = User::where('role', 'Student')->where('status', 'Approved')
+        ->with('qualifiedStudent')
+        ->has('studentInfo')
+        ->latest('created_at')->get();
+
+        return view('admin.interview.dashboard-review-interview', compact('users'));
+    }
 
     function StoreInterview(Request $request){
       
