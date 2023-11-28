@@ -11,22 +11,18 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('users', function (Blueprint $table) {
-            $table->tinyInteger('exam_taken')->nullable();
+        Schema::table('questions', function (Blueprint $table) {
+            $table->string("image_path")->nullable();
         });
-    
     }
-    
 
-
- 
     /**
      * Reverse the migrations.
      */
     public function down(): void
     {
-        Schema::table('users', function (Blueprint $table) {
-            $table->dropColumn('exam_taken');
+        Schema::table('questions', function (Blueprint $table) {
+            $table->dropColumn('image_path');
         });
     }
 };

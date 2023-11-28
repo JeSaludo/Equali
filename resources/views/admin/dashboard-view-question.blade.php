@@ -61,105 +61,26 @@
         </div>
 
         <section class="ml-[218px] ">
-            <div class="flex justify-between items-center mb-2 mx-4">
+            <div class="flex justify-between items-center mb-2 mx-4 ">
 
                 <h1 class="text-[#26386A] font-bold text-lg mt-4 py-2 px-4">Question Bank </h1>
                 <div class="w-2/12">
-                    <button id="addQuestionBtn"
+                    <a id="addQuestionBtn"  href="{{route('admin.dashboard.add-question')}}"
                         class="px-4 py-2 text-lg font-poppins font-normal mr-2 w-full  rounded-[15px]  bg-[#2B6CE6] hover:bg-[#134197] transition-colors duration-200 text-white">
-                        <i id="icon" class='bx bx-plus-medical pr-2'></i> Add
-                        Question</button>
+                        <i  id="icon" class='bx bx-plus-medical pr-2'></i> Add
+                        Question</a>
+
+                        
                 </div>
             </div>
+
+            
+           
+                                   
             <div class="bg-white mx-4 rounded-[12px] h-[600px] mb-2 p-4  ">
 
                 
-
-                <div class="relative  ">
-                    <div id="addQuestionContent"
-                        class="absolute  w-full  z-10 top-0 right-0 mx-auto left-0 opacity-0  pointer-events-none translate-y-[-15px] transition-all transform  delay-150 ease-linear">
-                        <form action="{{ route('admin.dashboard.store-question') }}" method="POST">
-                            @csrf
-                            <div class="bg-white mx-4 rounded-[12px]  h-[500] p-4 border-2 border-gray-500 ">
-                                <div class="bg-[#4c4a67] h-[163px]  rounded-[8px] ">
-                                    <input type="text"
-                                        class="bg-transparent text-[28px] mx-auto text-center w-full h-full placeholder:text-[#EBEFF9] caret-white text-white"
-                                        placeholder="Type Question Here" name="question_text" required
-                                        autocomplete="off">
-                                </div>
-
-                                <div class="h-[163px] my-7 flex justify-evenly gap-4 ">
-                                    <div class="w-full bg-[#4c4a67] rounded-lg relative">
-                                        <input type="text"
-                                            class="bg-transparent text-[16px]  placeholder:font-poppins mx-auto text-center w-full h-full placeholder:text-[#EBEFF9] caret-white text-white"
-                                            placeholder="Type Question Here" name="choice_text[]" required
-                                            autocomplete="off">
-                                        <div>
-                                            <input
-                                                class="absolute top-0 right-0 m-1 w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 "
-                                                type="radio" name="correct_choice" value="1" checked />
-                                        </div>
-
-                                    </div>
-                                    <div class="w-full bg-[#4c4a67] rounded-lg relative">
-                                        <input type="text"
-                                            class="bg-transparent text-[16px]  placeholder:font-poppins mx-auto text-center w-full h-full placeholder:text-[#EBEFF9] caret-white text-white"
-                                            placeholder="Type Question Here" name="choice_text[]" required required
-                                            autocomplete="off">
-                                        <div>
-                                            <input
-                                                class="absolute top-0 right-0 m-1 w-4 h-4 text-blue-600 bg-gray-100 border-gray-300"
-                                                type="radio" name="correct_choice" value="2" />
-                                        </div>
-                                    </div>
-                                    <div class="w-full bg-[#4c4a67] rounded-lg relative">
-                                        <input type="text"
-                                            class="bg-transparent text-[16px]  placeholder:font-poppins mx-auto text-center w-full h-full placeholder:text-[#EBEFF9] caret-white text-white"
-                                            placeholder="Type Question Here" name="choice_text[]" required required
-                                            autocomplete="off">
-                                        <div>
-                                            <input
-                                                class="absolute top-0 right-0 m-1 w-4 h-4 text-blue-600 bg-gray-100 border-gray-300"
-                                                type="radio" name="correct_choice" value="3" />
-                                        </div>
-                                    </div>
-                                    <div class="w-full bg-[#4c4a67] rounded-lg relative">
-                                        <input type="text"
-                                            class="bg-transparent text-[16px]  placeholder:font-poppins mx-auto text-center w-full h-full placeholder:text-[#EBEFF9] caret-white text-white"
-                                            placeholder="Type Question Here" name="choice_text[]" required required
-                                            autocomplete="off">
-                                        <div>
-                                            <input
-                                                class="absolute top-0 right-0 m-1 w-4 h-4 text-blue-600 bg-gray-100 border-gray-300"
-                                                type="radio" name="correct_choice" value="4" />
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="flex justify-end w-full">
-                                    <div class="w-2/12">
-                                        <input type="submit" value="Save Question"
-                                            class="text-lg font-poppins font-normal mr-2 w-full h-[50px] rounded-[18px] bg-[#2B6CE6] hover:bg-[#134197] transition-colors duration-200 text-white">
-                                    </div>
-
-                                </div>
-
-
-
-                            </div>
-
-                        </form>
-                        @if ($errors->any())
-                            <div class="text-red-900">
-                                <ul>
-                                    @foreach ($errors->all() as $error)
-                                        <li>{{ $error }}</li>
-                                    @endforeach
-                                </ul>
-                            </div>
-                        @endif
-                    </div>
-                </div>
+               
                 {{ $questions->links() }}
 
                 <div id="questionContent" class="mb-4 ">
@@ -198,9 +119,6 @@
                                                 @else
                                                     {{ $question->question_text }}
                                                 @endif
-
-
-
                                             </td>
                                             <td class="px-3 py-2 w-5/12 text-[#626B7F] mx-auto  flex justify-evenly">
                                                 <a href="{{ route('admin.dashboard.edit-question', $question) }}"><i
@@ -226,7 +144,9 @@
                             </div>
 
 
-
+                            
+                        </div>
+        
 
 
                            
@@ -236,15 +156,8 @@
                     </table>
                   
 
-                </div>
+                </div>              
               
-
-
-
-
-
-
-
             </div>
            
 
@@ -257,8 +170,47 @@
         </section>
 
     </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const imageInput = document.getElementById('imageInput');
+            const imagePreview = document.getElementById('imagePreview');
+    
+            imageInput.addEventListener('change', function () {
+                const file = imageInput.files[0];
+    
+                if (file) {
+                    const reader = new FileReader();
+    
+                    reader.onload = function (e) {
+                        imagePreview.src = e.target.result;
+                        imagePreview.classList.remove('hidden');
+                        document.getElementById("preview").classList.remove("hidden");
+                    };
+    
+                    reader.readAsDataURL(file);
+                } else {
+                    
+                    imagePreview.src = '';
+                    imagePreview.classList.add('hidden');
+                }
+            });
 
-    <script src="{{ asset('js/scripts.js') }}"></script>
+        });
+      
+
+        let imgPreview = document.getElementById("preview")           
+                     
+           document.getElementById('openPopup').onclick = () => {
+            document.getElementById("popup").classList.remove("hidden");
+           }
+           document.getElementById("cancelSchedule").addEventListener("click", function() {
+            document.getElementById("popup").classList.add("hidden");
+           });
+        
+    </script>
+
+    
+
 </body>
 
 </html>

@@ -156,7 +156,8 @@
 
 
                                     <td class="px-6 py-2  whitespace-nowrap font-poppins text-[#617388] ">
-                                        {{ $recentApplicant->admissionExam->created_at }}
+                                      
+                                        {{ $recentApplicant->admissionExam->created_at  ?? 'N/A' }}
 
                                     </td>
 

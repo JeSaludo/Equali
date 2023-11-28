@@ -100,7 +100,7 @@
                                         <tr
                                             class="{{ $index % 2 == 0 ? 'bg-[#aecafd30]' : 'bg-white' }} border-b-2 border-gray-100 ">
                                             <td>
-                                                <input type="checkbox" name="selectedUsers[]"
+                                                <input type="checkbox" name="selectedUsers[]"                                              
                                                     value="{{ $user->id }}">
                                             </td>
                                             <td class="px-3 py-2 w-4/12 whitespace-nowrap">

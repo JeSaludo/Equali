@@ -17,7 +17,7 @@ return new class extends Migration
             
             $table->unsignedBigInteger('question_id');
              
-            $table->unsignedBigInteger('choice_id');
+            $table->unsignedBigInteger('choice_id')->nullable();
             $table->timestamps();
          
                  

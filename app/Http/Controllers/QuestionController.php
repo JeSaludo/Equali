@@ -6,10 +6,14 @@ use App\Models\Choice;
 use App\Models\Question;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class QuestionController extends Controller
 {
    function StoreQuestion(Request $request){
+
+        $img = $request->img;
+       
 
         $request->validate([
             'question_text' => 'required',
@@ -19,22 +23,43 @@ class QuestionController extends Controller
 
         ]);
       
-
+            
         $question = new Question();
         $question->question_text = $request->question_text;  
        
         $question->save();
 
+        if(!is_null($img)){                        
+
+            if ($question->image_path) {
+                Storage::delete('public/questions/' . $question->image_path);
+            }
+            
+            $extension = $img->getClientOriginalExtension();
+            $newFileName = 'question-image_' . $question->id . '.' . $extension;
+
+            $path = $request->file('img')->storeAs('public/questions', $newFileName);           
+               
+            $question->image_path = $newFileName;
+            $question->save();
+        }
+
         foreach ($request->choice_text as $key => $choiceText) {
            $isCorrect = ($request->correct_choice == ($key + 1));
-
            $choice = new Choice();
            $choice->question_id = $question->id;
            $choice->choice_text = $choiceText;
            $choice->is_correct = $isCorrect;
            $choice->save();
         }
-        return redirect()->back()->with('success', 'Question added successfully!');
+
+        $choice = new Choice();
+        $choice->question_id = $question->id;
+        $choice->choice_text = "No Answer";
+        $choice->is_correct = false;
+        $choice->save();
+        
+        return redirect()->route('admin.dashboard.view-question');
     }
     
 
@@ -45,7 +70,7 @@ class QuestionController extends Controller
 
     }
 
-    function ShowAddQuestion()
+    public function ShowAddQuestion()
     {
         return view('admin.dashboard-add-question');
     }
@@ -71,7 +96,16 @@ class QuestionController extends Controller
         $question = Question::findOrFail($id);
         $question->question_text = $request->question_text;
         $question->save();
-    
+
+        if ($request->hasFile('img')) {
+            $img = $request->file('img');
+            $newFileName = 'question-image_' . $question->id . '.' . $img->getClientOriginalExtension();
+            
+            // Store the new image and replace the existing image
+            $path = $img->storeAs('public/questions', $newFileName);
+            $question->image_path = $newFileName;
+        }
+        $question->save();
         // Delete existing choices for this question (optional)
         $question->choices()->delete();
     

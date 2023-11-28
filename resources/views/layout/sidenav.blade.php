@@ -18,7 +18,7 @@
 
                 <a class="dropdown-button mx-4 cursor-pointer hover:bg-[#EAF0FF]  px-4 py-2 rounded-[15px] flex justify-between items-center text-[#718297] my-2"
                     data-dropdown-button>
-                    <div class="pointer-events-none"><i class='bx bxs-user pr-2'></i>Admittance</div><i
+                    <div class="pointer-events-none"><i class='bx bxs-user pr-2'></i>Admission</div><i
                         class='caret-icon pointer-events-none  bx bx-caret-right'></i>
                 </a>
 
@@ -26,8 +26,6 @@
                     <a href="{{ route('admin.dashboard.show-applicant') }}"
                         class="mx-4 px-4 py-2 hover:cursor-pointer hover:bg-[#EAF0FF] rounded-[15px] flex items-center text-[#718297] my-2">
                         <div class="px-4 whitespace-nowrap"> Pending </div>
-
-
                     </a>
 
 

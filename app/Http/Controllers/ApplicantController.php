@@ -24,7 +24,7 @@ class ApplicantController extends Controller
 
         $searchTerm = $request->searchTerm;
         
-       
+       $recentUser = User::where('role', 'Student')->get();
         
         if(isset($searchTerm)){
             $users->where('first_name', 'like', '%' . $searchTerm . '%');
@@ -33,7 +33,7 @@ class ApplicantController extends Controller
        
 
         $users = $users->paginate(10);
-        return view('admin.dashboard-view-applicant', compact('users'));
+        return view('admin.dashboard-view-applicant', compact('users', 'recentUser'));
 
     }
 
@@ -281,8 +281,7 @@ class ApplicantController extends Controller
            $user->exam_schedule_date = $request->date;
            $user->start_time = $request->start_time;
            $user->end_time = $request->end_time;
-           $user->save();                   
-      
+           $user->save();
            Mail::to($user->user->email)->send(new ScheduleMail($user->exam_schedule_date, $user->start_time, $user->end_time));
         }
 

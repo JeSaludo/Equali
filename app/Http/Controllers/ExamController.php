@@ -13,10 +13,14 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Database\QueryException;
 class ExamController extends Controller
 {
     function ShowExam()
     {
+       
+     
         $user = User::where('id', Auth::user()->id)->with('studentInfo')->first();
 
 
@@ -33,7 +37,7 @@ class ExamController extends Controller
         else{
             return redirect()->route('home')->with("error", "Error");
         }
-       
+       //$request->session()->forget('form_submitted');
        
     }
 
@@ -41,82 +45,90 @@ class ExamController extends Controller
         return view('student.already-responded');
     }
     function SubmitExam(Request $request){
-
-        
         if ($request->session()->get('form_submitted')) {
             // Form has already been submitted, handle the case
             return redirect()->route('student.already-responded');
         }
-        $userAnswers = $request->answer;
-        
-        
-        
-        $score = 0;
 
-        $currentExamId = $request->exam_id;
-      
-         $currentExam = ExamQuestion::where('exam_id', $request->exam_id)->with('question.choices')->get();        
-        
-         $choices = Choice::all();
-        foreach ($currentExam as $index => $exam) {
-            $correctAnswer = $exam->question->correctAnswer(); // Make sure this method returns the correct answer 
-
-
-           
-            ExamResponse::create([
-                'user_id' => auth()->id(),
-                'question_id' => $exam->question->id,
-                'choice_id' => $userAnswers[$index + 1],
-            ]);
-        
-
-          
-            $choices = $choices->find($userAnswers[$index + 1]);
-
-           
+        try{     
+            $userAnswers = $request->answer;
             
-            if(isset($userAnswers[$index + 1]) && $choices->choice_text === $correctAnswer){
-                $score++;
+        
+            //also add exam question and send to admin?
+            
+           
+            $score = 0;
+
+            $currentExamId = $request->exam_id;
+        
+            $currentExam = ExamQuestion::where('exam_id', $request->exam_id)->with('question.choices')->get();        
+            $choices = Choice::all();
+            
+            foreach ($currentExam as $index => $exam) {
+                $correctAnswer = $exam->question->correctAnswer(); // Make sure this method returns the correct answer 
+
+
+                if (isset($userAnswers[$index + 1]) && $userAnswers[$index + 1] != "No Answer") {
+                    ExamResponse::create([
+                        'user_id' => auth()->id(),
+                        'question_id' => $exam->question->id,
+                        'choice_id' => $userAnswers[$index + 1],
+                    ]);          
                 
-            }
+                    $choices = $choices->find($userAnswers[$index + 1]);
+                }
+                
+            
+                
+                if(isset($userAnswers[$index + 1]) && $choices->choice_text === $correctAnswer){
+                    $score++;                
+                }
 
+
+            }       
+        
+            $examScore = $score;
+
+            $minScore = 0;    // Minimum score
+            $maxScore = count($userAnswers);  // Maximum score
+            $minValue = 1;    // Minimum value
+            $maxValue = 5;  
+
+            $score = min(max($score, $minScore), $maxScore);        
+            $sizeOfScore = sizeOf($userAnswers);
+
+            $range = $maxValue - $minValue;
+            $scoreFraction = ($score - $minScore) / ($maxScore - $minScore);
+            $scaledValue = $minValue + $range * $scoreFraction;
+            $scaledValue = intval($scaledValue);        
+            
+            $result = Result::where('user_id', $request->user_id)->first();
+            $result->measure_c_score = $scaledValue;
+            
+            $result->save();
+            
+            $result->weighted_average = ($result->measure_a_score + $result->measure_b_score + $result->measure_c_score) / 3;
+            $result->save();
+            $request->session()->put('form_submitted', true);
+
+            $user = User::where('id', $request->user_id)->first();
+            $user->status = "WaitListed";
+            $user->save();
+
+
+            DB::commit();
+        // $request->session()->forget('form_submitted');
+            
         }
-        $examScore = $score;
+        catch (\Exception $e) {        
+            DB::rollback(); 
+            return redirect()->back()->with('error', 'Failed to add the applicant. Please try again later.');
+        }
 
-
-        $minScore = 0;    // Minimum score
-        $maxScore = count($userAnswers);  // Maximum score
-        $minValue = 1;    // Minimum value
-        $maxValue = 5;  
-
-        $score = min(max($score, $minScore), $maxScore);        
-        $sizeOfScore = sizeOf($userAnswers);
-
-
-        $range = $maxValue - $minValue;
-        $scoreFraction = ($score - $minScore) / ($maxScore - $minScore);
-        $scaledValue = $minValue + $range * $scoreFraction;
-        $scaledValue = intval($scaledValue);
-      
-        
-        $result = Result::where('user_id', $request->user_id)->first();
-        $result->measure_c_score = $scaledValue;
-      
-        $result->save();
-        
-        $result->weighted_average = ($result->measure_a_score + $result->measure_b_score + $result->measure_c_score) / 3;
-        $result->save();
-       $request->session()->put('form_submitted', true);
-
-
-        $user = User::where('id', $request->user_id)->first();
-        $user->status = "WaitListed";
-        $user->save();
-       // $request->session()->forget('form_submitted');
-       return view('student.exam-result', compact('score', 'sizeOfScore'));
+        return view('student.exam-result', compact('score', 'sizeOfScore'));
     }
   
-    
+
 
     public function ShowAdminExam(){
 

@@ -10,7 +10,7 @@ class Question extends Model
     use HasFactory;
 
 
-    protected $fillable = ['question_text','category']; 
+    protected $fillable = ['question_text','category', 'image_path']; 
 
 
 
@@ -50,8 +50,8 @@ class Question extends Model
     }
 
     public function getChoiceLabels()
-    {
-        return $this->choices->pluck('choice_text')->toArray();
+    {       
+        return $this->choices->where('choice_text', '!=', 'No Answer')->pluck('choice_text')->toArray();
     }
 
 }

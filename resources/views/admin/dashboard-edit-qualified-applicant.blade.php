@@ -110,7 +110,7 @@
                             <select name="status"
                                 class="h-[50px] w-full  placeholder:text-[#4E4E4E]  px-[40px] rounded-r border-y-2 border-r-2 border-[#D7D8D0]"
                                 autocomplete="off">
-                                <option value="{{ $user->status }}"" selected>{{ $user->status }}</option>
+                                <option value="{{ $user->status }}" selected>{{ $user->status }}</option>
                                 <option value="Unqualified">Unqualified</option>
                                 <option value="Qualified">Qualified</option>
                                 <option value="Pending">Pending</option>

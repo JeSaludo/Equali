@@ -30,18 +30,7 @@
                 <p class="text-[#718297] text-[12px] font-raleway font-normal mx-8 mb-4">Check your info here</p>
             </div>
         
-            <div class="mt-4">
-                <form class="w-[400px]" method="get" action="{{route('admin.dashboard.show-applicant')}}">
-                    @csrf
-        
-                   
-                    <div class="relative w-full">
-                    <input type="text" name="searchTerm" placeholder="Search Here" class="px-12 py-2 pl-10 pr-10 w-full rounded-[16px]">
-                    <i class='bx bx-search text-gray-500 bx-sm absolute left-3 top-1/2 transform -translate-y-1/2'></i>
-                    <i class='bx bx-category-alt bx-sm text-gray-500 bx-sm absolute right-3 top-1/2 transform -translate-y-1/2'></i>
-                    </div>
-                </form>
-            </div>
+          
             
             <div class="mt-6">
                 <h1>{{ now()->format('F j, Y') }}</h1>
@@ -61,96 +50,82 @@
 
         <section class="ml-[218px] main ">
            
-            <div class="flex justify-between ">
-                <h1 class="text-[#26386A] font-bold text-lg pt-4 px-4">List of Applicants</h1>
+            <div>
 
-                <div class="w-[200px]  mx-2">
-                    <button id="addApplicantBtn"
-                        class="px-4 py-2   text-lg font-poppins font-normal  w-full  rounded-[15px]  bg-[#2B6CE6] hover:bg-[#134197] transition-colors duration-200 text-white">
-                        <i id="icon" class='bx bx-plus-medical pr-2'></i> Add
-                        Applicant</button>
-                </div>
-            </div>
-            <div class="bg-white mx-4 my-2  h-[600px] ">
-              
-
-                <div class="relative ">
-                    <div id="addApplicantContent"
-                        class="absolute    w-5/12  z-10  opacity-0 pointer-events-none top-6  left-0 right-0 mx-auto   translate-y-[-15px] transition-all transform  delay-150 ease-linear">
-                        <form action="{{ route('admin.dashboard.store-applicant') }}" method="POST">
-                            @csrf
-                            <div class="bg-white mx-4 rounded-[12px]  h-[380px] p-4 border-gray-600 border-2">
-                                <div
-                                    class="text-center mx-auto font-poppins text-[28px] font-semibold  text-[#26386A] uppercase">
-                                    <h1>Add Applicant</h1>
-
-                                </div>
-
-                                <div class=" px-8 flex justify-between gap-4 mt-6 ">
-                                    <div class="relative   w-full">
-                                        <input type="text" name="firstName"
-                                            class="h-[50px] w-full rounded placeholder:text-[#4E4E4E] placeholder:font-poppins placeholder:text-[16px] px-[40px] border-2 border-[#D7D8D0] "
-                                            placeholder="First Name" required autocomplete="off">
-
-                                    </div>
-
-                                    <div class="relative  w-full">
-                                        <input type="text" name="lastName"
-                                            class="h-[50px] w-full rounded placeholder:text-[#4E4E4E] placeholder:font-poppins placeholder:text-[16px] px-[40px] border-2 border-[#D7D8D0] "
-                                            placeholder="Last Name" required autocomplete="off">
-
-                                    </div>
+                <div class="flex justify-evenly my-4">
 
 
-
-                                </div>
-
-
-                                <div class="relative px-8 my-4 w-full">
-                                    <input type="text" name="email"
-                                        class="h-[50px] w-full rounded placeholder:text-[#4E4E4E] placeholder:font-poppins placeholder:text-[16px] px-[40px] border-2 border-[#D7D8D0] "
-                                        placeholder="Email Address" required autocomplete="off">
-
-                                </div>
-
-                                {{-- <div class="relative px-8 my-4 w-full">
-                                    <input type="text" name="contactNumber"
-                                        class="h-[50px] w-full rounded placeholder:text-[#4E4E4E] placeholder:font-poppins placeholder:text-[16px] px-[40px] border-2 border-[#D7D8D0] "
-                                        placeholder="Contact Number" required autocomplete="off">
-
-                                </div> --}}
-
-
-                                <div class=" px-8 flex justify-between gap-4 my-4">
-                                    <div class="relative  w-full">
-                                        <input type="number" name="score"
-                                            class="h-[50px] w-full rounded placeholder:text-[#4E4E4E] placeholder:font-poppins placeholder:text-[16px] px-[40px] border-2 border-[#D7D8D0] "
-                                            placeholder="Score" required autocomplete="off">
-
-                                    </div>
-
-
-                                    <div class="relative  w-full">
-                                        <input type="number" name="totalScore"
-                                            class="h-[50px] w-full rounded placeholder:text-[#4E4E4E] placeholder:font-poppins placeholder:text-[16px] px-[40px] border-2 border-[#D7D8D0] "
-                                            placeholder="Full Score" required autocomplete="off" value=60>
-                                        {{-- Change for auto  --}}
-                                    </div>
-                                </div>
-                                <div class="px-8 my-6">
-                                    <input type="submit" value="Submit"
-                                        class="text-lg font-poppins font-normal mr-2 w-full h-[50px] rounded-[18px] bg-[#1E5CD1] hover:bg-[#134197] transition-colors duration-200 text-white">
-                                </div>
-
-                            </div>
-
-
-
-                        </form>
-
-
+                    <div class="bg-white mx-4 px-6 w-full relative rounded-lg">
+                        <h1 class="text-[20px] pt-2 font-poppins font-bold text-[#26386A] ">No. of Pending Applicants</h1>
+    
+    
+                        <div class="flex items-end gap-3 text-[#718297] mb-8">
+                            <i class='bx bxs-user-detail text-[45px] pb-2'></i>
+                            <p class="text-[50px] py-0">{{ $recentUser->where('status', 'Pending')->count() }}</p>
+                        </div>
+    
+                        <div class="bg-[#5587F7] w-full  h-[24px] absolute bottom-0 left-0 px-0 mx-0 rounded-b-lg"></div>
+    
+                    </div>
+    
+                    <div class="bg-white mx-4 px-6 w-full relative rounded-lg">
+                        <h1 class="text-[20px] pt-2 font-poppins font-bold text-[#26386A] ">Approve Application</h1>
+    
+    
+                        <div class="flex items-end gap-3 px-2 text-[#718297]">
+                            <i class='bx bxs-user-check text-[45px] pb-2'></i>
+                            <p class="text-[50px] py-0">{{ $recentUser->where('status', 'Approved')->count() + $recentUser->where('status', 'WaitListed')->count() }} </p>
+                        </div>
+                        <div class="bg-[#5587F7] w-full  h-[24px] absolute bottom-0 left-0 px-0 mx-0 rounded-b-lg"></div>
+    
+    
+                    </div>
+    
+                    <div class="bg-white mx-4 px-6 w-full relative rounded-lg">
+                        <h1 class="text-[20px] pt-2 font-poppins font-bold text-[#26386A] ">Archive Application</h1>
+    
+    
+                        <div class="flex items-end gap-3 px-2 text-[#718297]">
+                            <i class='bx bxs-archive-in text-[40px] pb-2'></i>
+                            <p class="text-[50px] py-0">{{ $recentUser->where('status', 'Archived')->count() }}</p>
+    
+    
+                        </div>
+    
+                        <div class="bg-[#5587F7] w-full  h-[24px] absolute bottom-0 left-0 px-0 mx-0 rounded-b-lg"></div>
+    
                     </div>
                 </div>
+            </div>
+
+       
+            <div class="bg-white mx-4 my-2  h-[600px] ">
+               
+                <div class="flex justify-between ">
+                    <h1 class="text-[#26386A] font-bold text-xl uppercase  px-4 flex items-center" >List of Applicants</h1>
+                    
+                    <div class="flex items-center">
+                        <form class="w-[400px]" method="get" action="{{route('admin.dashboard.show-applicant')}}">
+                            @csrf
+                
+                           
+                            <div class="relative w-full border-2 rounded-xl">
+                            <input type="text" name="searchTerm" placeholder="Search Here" class="px-12 py-2 pl-10 pr-10 w-full rounded-[16px]">
+                            <i class='bx bx-search text-gray-500 bx-sm absolute left-3 top-1/2 transform -translate-y-1/2'></i>
+                            <i class='bx bx-category-alt bx-sm text-gray-500 bx-sm absolute right-3 top-1/2 transform -translate-y-1/2'></i>
+                            </div>
+                        </form>
+                    </div>
+
+                    <div class="w-[140px]  mx-2 py-4">
+                        <button id="addApplicantBtn"
+                            class="px-2 py-2     w-full  rounded-[8px]  bg-[#2B6CE6] hover:bg-[#134197] transition-colors duration-200 text-white">
+                            <div class="flex items-center justify-center"><i id="icon" class='bx bx-plus pr-1'></i><span class="text-[14px] font-poppins font-normal"> Add
+                                Applicant</span></div>
+                                </button>
+                    </div>
+                </div>
+                
                 @if ($errors->any())
                     <div class="text-red-900">
                         <ul>
@@ -288,7 +263,89 @@
                     </table>
                 </div>
             </div>
+            
+            <div class="">
+                <div id="addApplicantContent"
+                    class="fixed top-0 left-0 w-full h-full flex justify-center items-center bg-gray-500 bg-opacity-50 z-50 hidden">
+                    <div>
 
+                    </div>
+                   
+                    
+                    <form action="{{ route('admin.dashboard.store-applicant') }}" method="POST">
+                        @csrf
+                        <div class="bg-white mx-auto text-center rounded-[12px] w-9/12 h-[380px] p-4 border-gray-600 border-2">
+                            <div
+                                class="relative text-center mx-auto font-poppins text-[28px] font-semibold  text-[#26386A] uppercase">
+                                <h1>Add Applicant</h1>
+                                <button id="closePopup" class="absolute top-0 right-0"><i class='bx bx-x bx-sm text-[#26386A]'></i></button>
+                            </div>
+
+                            <div class=" px-8 flex justify-between gap-4 mt-6 ">
+                                <div class="relative   w-full">
+                                    <input type="text" name="firstName"
+                                        class="h-[50px] w-full rounded placeholder:text-[#4E4E4E] placeholder:font-poppins placeholder:text-[16px] px-[40px] border-2 border-[#D7D8D0] "
+                                        placeholder="First Name" required autocomplete="off">
+
+                                </div>
+
+                                <div class="relative  w-full">
+                                    <input type="text" name="lastName"
+                                        class="h-[50px] w-full rounded placeholder:text-[#4E4E4E] placeholder:font-poppins placeholder:text-[16px] px-[40px] border-2 border-[#D7D8D0] "
+                                        placeholder="Last Name" required autocomplete="off">
+
+                                </div>
+
+
+
+                            </div>
+
+
+                            <div class="relative px-8 my-4 w-full">
+                                <input type="text" name="email"
+                                    class="h-[50px] w-full rounded placeholder:text-[#4E4E4E] placeholder:font-poppins placeholder:text-[16px] px-[40px] border-2 border-[#D7D8D0] "
+                                    placeholder="Email Address" required autocomplete="off">
+
+                            </div>
+
+                            {{-- <div class="relative px-8 my-4 w-full">
+                                <input type="text" name="contactNumber"
+                                    class="h-[50px] w-full rounded placeholder:text-[#4E4E4E] placeholder:font-poppins placeholder:text-[16px] px-[40px] border-2 border-[#D7D8D0] "
+                                    placeholder="Contact Number" required autocomplete="off">
+
+                            </div> --}}
+
+
+                            <div class=" px-8 flex justify-between gap-4 my-4">
+                                <div class="relative  w-full">
+                                    <input type="number" name="score"
+                                        class="h-[50px] w-full rounded placeholder:text-[#4E4E4E] placeholder:font-poppins placeholder:text-[16px] px-[40px] border-2 border-[#D7D8D0] "
+                                        placeholder="Score" required autocomplete="off">
+
+                                </div>
+
+
+                                <div class="relative  w-full">
+                                    <input type="number" name="totalScore"
+                                        class="h-[50px] w-full rounded placeholder:text-[#4E4E4E] placeholder:font-poppins placeholder:text-[16px] px-[40px] border-2 border-[#D7D8D0] "
+                                        placeholder="Full Score" required autocomplete="off" value=60>
+                                    {{-- Change for auto  --}}
+                                </div>
+                            </div>
+                            <div class="px-8 my-6">
+                                <input type="submit" value="Submit"
+                                    class="text-lg font-poppins font-normal mr-2 w-full h-[50px] rounded-[18px] bg-[#1E5CD1] hover:bg-[#134197] transition-colors duration-200 text-white">
+                            </div>
+
+                        </div>
+
+
+
+                    </form>
+
+
+                </div>
+            </div>
 
         </section>
 
