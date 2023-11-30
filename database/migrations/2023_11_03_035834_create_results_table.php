@@ -18,6 +18,7 @@ return new class extends Migration
             $table->decimal('measure_b_score', 5, 2)->nullable();
             $table->decimal('measure_c_score', 5, 2)->nullable();
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+       
             $table->timestamps();
         });
     }

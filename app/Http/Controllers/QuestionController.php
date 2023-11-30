@@ -52,7 +52,7 @@ class QuestionController extends Controller
            $choice->is_correct = $isCorrect;
            $choice->save();
         }
-
+        
         $choice = new Choice();
         $choice->question_id = $question->id;
         $choice->choice_text = "No Answer";

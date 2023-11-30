@@ -42,10 +42,10 @@ class Question extends Model
     {
         $responseCounts = [];
 
-        foreach ($this->choices as $choice) {
+        foreach ($this->choices->where('choice_text', '!=', 'No Answer') as $choice) {
             $responseCounts[] = $this->examResponse->where('choice_id', $choice->id)->count();
         }
-
+        
         return $responseCounts;
     }
 
@@ -53,5 +53,9 @@ class Question extends Model
     {       
         return $this->choices->where('choice_text', '!=', 'No Answer')->pluck('choice_text')->toArray();
     }
+
+   
+    
+
 
 }

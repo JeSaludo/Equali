@@ -215,8 +215,7 @@ class ApplicantController extends Controller
     }
 
     function ShowQualifiedApplicant(){
-        $users = User::where('role', 'Student')->where('status', 'Approved')
-        
+        $users = User::where('role', 'Student')->where('status', 'Approved')        
         ->doesntHave('studentInfo')
         ->with('qualifiedStudent')->get();
         return view('admin.dashboard-view-qualified-applicant', compact('users'));
@@ -293,7 +292,10 @@ class ApplicantController extends Controller
     }
 
     function ShowApprovedApplicant(){
-        $users = User::where('role', 'Student')->where('status', 'Approved')->with('qualifiedStudent')->get();
+        $users = User::where('role', 'Student')->where(function ($query) {
+            $query->where('status', 'Approved')
+                ->orWhere('status', 'WaitListed');
+        })->with('qualifiedStudent')->get();
         return view('admin.dashboard-view-approve-applicant', compact('users'));
     } 
 

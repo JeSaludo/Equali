@@ -44,12 +44,12 @@ class ExamController extends Controller
     function ShowAlreadyResponded(){
         return view('student.already-responded');
     }
+
     function SubmitExam(Request $request){
         if ($request->session()->get('form_submitted')) {
             // Form has already been submitted, handle the case
             return redirect()->route('student.already-responded');
         }
-
         try{     
             $userAnswers = $request->answer;
             
@@ -206,9 +206,6 @@ class ExamController extends Controller
 
     public function DeleteExam($id){
         $exam = Exam::findOrFail($id);
-       
-
-
         $exam->delete();
 
         return redirect()->back()->with('success', 'Exam deleted successfully!');      
