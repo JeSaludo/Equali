@@ -52,7 +52,10 @@ class ReportController extends Controller
         return view('admin.reports.item-analysis', compact('questions'));
     }
 
+    public function ShowItemAnalysisReport(){
 
+        return view('admin.reports.item-analysis-report');
+    }
     
 }
 
