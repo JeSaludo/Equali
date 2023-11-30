@@ -109,3 +109,4 @@ Route::middleware(['admin'])->group(function () {
 
     Route::get('/dashboard/report/qualified-exam-result', [ReportController::class, 'ShowQualifyingExamResult'])->name('admin.report.qualified-exam');
 
+    Route::get('/dashboard/report/item-analysis-report', [ReportController::class, 'ShowItemAnalysisReport'])->name('admin.report.item-analysis-report');
