@@ -55,98 +55,99 @@ class ReportController extends Controller
 
     public function Test(){
 
-       // Assuming you have a 'User' model for students, a 'Result' model, a 'Question' model, and an 'ExamResponse' model
+            // Assuming you have a 'User' model for students, a 'Result' model, a 'Question' model, and an 'ExamResponse' model
 
-// Assuming you have a 'User' model for students, a 'Result' model, a 'Question' model, and an 'ExamResponse' model
+        // Assuming you have a 'User' model for students, a 'Result' model, a 'Question' model, and an 'ExamResponse' model
 
-$DI = [];
-$DS = [];
-$questions = Question::all();
+        $DI = [];
+        $DS = [];
+        $questions = Question::all();
 
-foreach ($questions as $index => $question) {
-    // Check if there are exam responses for the current question
-    $hasResponses = $question->examResponse()->exists();
+        foreach ($questions as $index => $question) {
+            // Check if there are exam responses for the current question
+            $hasResponses = $question->examResponse()->exists();
 
-    if ($hasResponses) {
-        $choices = $question->choices;
+            if ($hasResponses) {
+                $choices = $question->choices;
 
-        $correctChoice = $choices->where('is_correct', true)->first();
-        $correctChoiceId = $correctChoice->id;
+                $correctChoice = $choices->where('is_correct', true)->first();
+                $correctChoiceId = $correctChoice->id;
 
-        $responses = ExamResponse::where('question_id', $question->id)->get();
+                $responses = ExamResponse::where('question_id', $question->id)->get();
 
-        $totalResponses = $responses->count();
-        $correctResponses = $responses->where('choice_id', $correctChoiceId)->count();
+                $totalResponses = $responses->count();
+                $correctResponses = $responses->where('choice_id', $correctChoiceId)->count();
 
-        // Calculate the percentage of correct responses
-        $percentageCorrect = ($totalResponses > 0) ? ($correctResponses / $totalResponses) * 100 : 0;
+                // Calculate the percentage of correct responses
+                $percentageCorrect = ($totalResponses > 0) ? ($correctResponses / $totalResponses) * 100 : 0;
 
-        $totalStudents = User::where("Role", "Student")->count();
+                $totalStudents = User::where("Role", "Student")->count();
 
-        $percentileThreshold = 27; // Change this to the desired percentile
+                $percentileThreshold = 27; // Change this to the desired percentile
 
-        // Calculate the number of users required for each percentile
-        $upperPercentileCount = ceil(($percentileThreshold / 100) * $totalResponses);
-        $lowerPercentileCount = ceil(($percentileThreshold / 100) * $totalResponses); // Set the lower count to the same as the upper count
-        $middlePercentileCount = $totalResponses - 2 * $upperPercentileCount; // Remaining for the middle
+                // Calculate the number of users required for each percentile
+                $upperPercentileCount = ceil(($percentileThreshold / 100) * $totalResponses);
+                $lowerPercentileCount = ceil(($percentileThreshold / 100) * $totalResponses); // Set the lower count to the same as the upper count
+                $middlePercentileCount = $totalResponses - 2 * $upperPercentileCount; // Remaining for the middle
 
-        // Retrieve upper threshold users based on the weighted average
-        $upperThresholdUsers = Result::join('users', 'results.user_id', '=', 'users.id')
-            ->orderByDesc('results.measure_c_score')
-            ->select('users.*', 'results.measure_c_score')
-            ->take($upperPercentileCount)
-            ->get();
+                // Retrieve upper threshold users based on the weighted average
+                $upperThresholdUsers = Result::join('users', 'results.user_id', '=', 'users.id')
+                    ->orderByDesc('results.measure_c_score')
+                    ->select('users.*', 'results.measure_c_score')
+                    ->take($upperPercentileCount)
+                    ->get();
 
-        // Retrieve middle threshold users based on the weighted average
-        $middleThresholdUsers = Result::join('users', 'results.user_id', '=', 'users.id')
-            ->orderByDesc('results.measure_c_score')
-            ->skip($upperPercentileCount)
-            ->take($middlePercentileCount)
-            ->select('users.*', 'results.measure_c_score')
-            ->get();
+                // Retrieve middle threshold users based on the weighted average
+                $middleThresholdUsers = Result::join('users', 'results.user_id', '=', 'users.id')
+                    ->orderByDesc('results.measure_c_score')
+                    ->skip($upperPercentileCount)
+                    ->take($middlePercentileCount)
+                    ->select('users.*', 'results.measure_c_score')
+                    ->get();
 
-        // Retrieve lower threshold users based on the weighted average
-        $lowerThresholdUsers = Result::join('users', 'results.user_id', '=', 'users.id')
-            ->orderBy('results.measure_c_score')  // Order in ascending order for lower threshold
-            ->take($lowerPercentileCount)
-            ->select('users.*', 'results.measure_c_score')
-            ->get();
+                // Retrieve lower threshold users based on the weighted average
+                $lowerThresholdUsers = Result::join('users', 'results.user_id', '=', 'users.id')
+                    ->orderBy('results.measure_c_score')  // Order in ascending order for lower threshold
+                    ->take($lowerPercentileCount)
+                    ->select('users.*', 'results.measure_c_score')
+                    ->get();
 
-        // Separate responses of the threshold users
-        $upperThresholdUserResponses = $responses->whereIn('user_id', $upperThresholdUsers->pluck('id'));
-        $middleThresholdUserResponses = $responses->whereIn('user_id', $middleThresholdUsers->pluck('id'));
-        $lowerThresholdUserResponses = $responses->whereIn('user_id', $lowerThresholdUsers->pluck('id'));
+                // Separate responses of the threshold users
+                $upperThresholdUserResponses = $responses->whereIn('user_id', $upperThresholdUsers->pluck('id'));
+                $middleThresholdUserResponses = $responses->whereIn('user_id', $middleThresholdUsers->pluck('id'));
+                $lowerThresholdUserResponses = $responses->whereIn('user_id', $lowerThresholdUsers->pluck('id'));
 
-        // Count correct responses for upper threshold users
-        $totalUpperCorrectResponses = $upperThresholdUserResponses->where('choice_id', $correctChoiceId)->count();
+                // Count correct responses for upper threshold users
+                $totalUpperCorrectResponses = $upperThresholdUserResponses->where('choice_id', $correctChoiceId)->count();
 
-        // Count correct responses for middle threshold users
-        $totalMiddleCorrectResponses = $middleThresholdUserResponses->where('choice_id', $correctChoiceId)->count();
+                // Count correct responses for middle threshold users
+                $totalMiddleCorrectResponses = $middleThresholdUserResponses->where('choice_id', $correctChoiceId)->count();
 
-        // Count correct responses for lower threshold users
-        $totalLowerCorrectResponses = $lowerThresholdUserResponses->where('choice_id', $correctChoiceId)->count();
+                // Count correct responses for lower threshold users
+                $totalLowerCorrectResponses = $lowerThresholdUserResponses->where('choice_id', $correctChoiceId)->count();
 
-       
-        // Calculate Discrimination Index for the upper, middle, and lower threshold users
-        // $totalUpperThresholdUserResponses = $upperThresholdUserResponses->count();
-        // $totalMiddleThresholdUserResponses = $middleThresholdUserResponses->count();
-        // $totalLowerThresholdUserResponses = $lowerThresholdUserResponses->count();
-        // $totalOtherUsersResponses = $totalResponses - $totalUpperThresholdUserResponses - $totalMiddleThresholdUserResponses - $totalLowerThresholdUserResponses;
+            
+                // Calculate Discrimination Index for the upper, middle, and lower threshold users
+                // $totalUpperThresholdUserResponses = $upperThresholdUserResponses->count();
+                // $totalMiddleThresholdUserResponses = $middleThresholdUserResponses->count();
+                // $totalLowerThresholdUserResponses = $lowerThresholdUserResponses->count();
+                // $totalOtherUsersResponses = $totalResponses - $totalUpperThresholdUserResponses - $totalMiddleThresholdUserResponses - $totalLowerThresholdUserResponses;
 
-        // Calculate the discrimination index
-        $di = round(($correctResponses) / $totalResponses);
+                // Calculate the discrimination index
+                $di = round(($correctResponses) / $totalResponses);
 
-        $N = round(($totalUpperCorrectResponses - $totalLowerCorrectResponses) / $totalResponses, 2);
-        $DI[$index] = $di;
-        $DS[$index] = $N;
-    }
-}
+                $N = round(($totalUpperCorrectResponses - $totalLowerCorrectResponses) / $totalResponses, 2);
+                $DI[$index] = $di;
+                $DS[$index] = $N;
+            }
+        }
 
 
         return view('admin.reports.test', compact('questions', 'DI', 'DS'));
     }
 
 
+   
     
 }
 
