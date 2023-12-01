@@ -20,7 +20,7 @@ class ApplicantController extends Controller
 
     function ShowApplicant(Request $request){
         
-        $users  = User::where('role', 'Student')->with('admissionExam')->where('Status', 'Pending');
+        $users  = User::where('role', 'Student')->with('admissionExam');
 
         $searchTerm = $request->searchTerm;
         
@@ -31,9 +31,6 @@ class ApplicantController extends Controller
            
             $users->where('first_name', 'like', "%$searchTerm%")
                 ->orWhere('last_name', 'like', "%$searchTerm%");
-        
-    
-                
         }
 
         $users = $users->paginate(10);
@@ -299,27 +296,56 @@ class ApplicantController extends Controller
            $user->save();
            Mail::to($user->user->email)->send(new ScheduleMail($user->exam_schedule_date, $user->start_time, $user->end_time));
         }
-
-      
-        
         return redirect()->route('admin.dashboard.show-qualified-appplicant');
        
         
     }
 
+    //Schedule
     function ShowApprovedApplicant133(){
         $users = User::where('role', 'Student')->where(function ($query) {
             $query->where('status', 'Approved')
                 ->orWhere('status', 'WaitListed');
         })->with('qualifiedStudent')->get();
-        return view('admin.dashboard-view-approve-applicant', compact('users'));
+        return view('admin.dashboard-view-approved-applicant', compact('users'));
     } 
 
 
-    function ShowArchiveApplicant(){
-        $users = User::where('role', 'Student')->where('status', 'Archived')->get();
+    function ShowArchiveApplicant(Request $request){
+
+        $users = User::where('role', 'Student')->with('admissionExam')->where('Status', 'Archived')->paginate(10);
+       
+        $searchTerm = $request->searchTerm;
+        
+        $recentUser = User::where('role', 'Student')->get();
+        
+        if(isset($searchTerm)){            
+           
+            $users->where('first_name', 'like', "%$searchTerm%")
+                ->orWhere('last_name', 'like', "%$searchTerm%");
+        
+        }
 
         
-        return view('admin.dashboard-view-archive', compact('users'));
+        return view('admin.dashboard-view-archive', compact('users', 'recentUser'));
+    }
+
+    function ShowPendingApplicant(Request $request){
+
+        $users = User::where('role', 'Student')->with('admissionExam')->where('Status', 'Pending')->paginate(10);
+       
+        $searchTerm = $request->searchTerm;
+        
+        $recentUser = User::where('role', 'Student')->get();
+        
+        if(isset($searchTerm)){            
+           
+            $users->where('first_name', 'like', "%$searchTerm%")
+                ->orWhere('last_name', 'like', "%$searchTerm%");
+        
+        }
+
+        
+        return view('admin.dashboard-view-archive', compact('users', 'recentUser'));
     }
 }

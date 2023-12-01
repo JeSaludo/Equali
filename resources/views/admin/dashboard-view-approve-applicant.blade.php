@@ -101,24 +101,20 @@
 
                 </div>
             </div>
-            <div class="flex justify-between mx-4 mt-4 mb-4"> 
+            <div class="flex  mx-4 mt-4 mb-4"> 
                     
                 <h1 class="text-[#26386A] text-[18px]  font-bold font-raleway ">List of Applicants</h1>
                   
                 
               
-                <div>
-                    <button id="addApplicantBtn" class="bg-[#365EFF] hover:bg-[#384b94] font-poppins text-white py-1 px-4 rounded-lg">
-                        <i id="icon" class='bx bx-plus pr-1'></i>Add Applicant
-                    </button>
-                </div>
+                
             </div>
 
             <div class="flex mx-4 my-4" id="navLinks">
-                <a href="{{route('admin.dashboard.show-applicant')}}"  class="font-poppins  text-slate-500 nav-link ">All</a>
-                <a href="#" class="font-poppins  text-slate-500 nav-link ">Pending</a>
-                <a href="#" class="font-poppins  text-slate-500 nav-link active">Approved</a>
-                <a href="#" class="font-poppins  text-slate-500 nav-link">Archived</a>
+                <a href="{{route('admin.dashboard.show-applicant')}}" class="font-poppins  text-slate-500 nav-link ">All</a>
+                <a href="{{route('admin.dashboard.show-pending-applicant')}}" class="font-poppins  text-slate-500 nav-link ">Pending</a>
+                <a href="{{route('admin.dashboard.show-approved-applicant')}}" class="font-poppins  text-slate-500 nav-link active">Approved</a>
+                <a href="{{route('admin.dashboard.show-archive-applicant')}}" class="font-poppins  text-slate-500 nav-link">Archived</a>
                 <a href="#" class="font-poppins  text-slate-500 w-full no-hover-underline"></a>
             </div>
 
@@ -176,8 +172,26 @@
                                             @endif
                                         </td>
                                         <td class="px-4 py-3 flex items-center justify-start">
-                                            @if($user->status != "Archived")
-                                                <form
+                                            @if($user->status == "Archived")
+                                                
+                                             
+                                                    <a href="{{ route('admin.dashboard.edit-applicant', $user->id) }}"
+                                                        class="mx-1 hover:text-green-400" title="Edit"><i
+                                                            class='bx bxs-edit '></i></a>
+
+                                                    <form
+                                                        action="{{ route('admin.dashboard.delete-applicant', $user->id) }}"
+                                                        method="POST" style="display: inline-block;">
+                                                        @csrf
+                                                        @method('DELETE')
+                                                        <button type="submit" title="Delete"
+                                                            class="mx-2   hover:text-red-400"
+                                                            onclick="return confirm('Are you sure you want to delete this user?')"><i
+                                                                class='bx bxs-trash '></i></button> 
+                                                                
+                                            @else
+
+                                            <form
                                                     action="{{ route('admin.dashboard.approve-applicant', $user->id) }}"
                                                     method="POST" style="display: inline-block;">
                                                     @csrf
@@ -216,21 +230,7 @@
                                                             class='bx bxs-trash '></i></button>
 
                                                 </form>
-                                                @else
-                                                    <a href="{{ route('admin.dashboard.edit-applicant', $user->id) }}"
-                                                        class="mx-1 hover:text-green-400" title="Edit"><i
-                                                            class='bx bxs-edit '></i></a>
-
-                                                    <form
-                                                        action="{{ route('admin.dashboard.delete-applicant', $user->id) }}"
-                                                        method="POST" style="display: inline-block;">
-                                                        @csrf
-                                                        @method('DELETE')
-                                                        <button type="submit" title="Delete"
-                                                            class="mx-2   hover:text-red-400"
-                                                            onclick="return confirm('Are you sure you want to delete this user?')"><i
-                                                                class='bx bxs-trash '></i></button>
-                                                @endif
+                                            @endif
                                         </td>
                                     </tr>
                                 @endforeach

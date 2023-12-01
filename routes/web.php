@@ -59,18 +59,24 @@ Route::middleware(['admin'])->group(function () {
    
    
     //Applicant
-    Route::get('/dashboard/view-applicant', [ApplicantController::class, 'ShowApplicant'])->name('admin.dashboard.show-applicant');
-    Route::get('/dashboard/applicant/{id}/edit', [ApplicantController::class, "EditApplicant"])->name('admin.dashboard.edit-applicant');
+   Route::get('/dashboard/applicant/{id}/edit', [ApplicantController::class, "EditApplicant"])->name('admin.dashboard.edit-applicant');
     Route::post('/dashboard/add-applicant/store', [ApplicantController::class, 'StoreApplicant'])->name('admin.dashboard.store-applicant');
     Route::put('/dashboard/applicant/{id}', [ApplicantController::class, 'UpdateApplicant'])->name('admin.dashboard.update-applicant');
     Route::delete('/dashboard/applicant/{id}/delete', [ApplicantController::class, 'DeleteApplicant'])->name('admin.dashboard.delete-applicant');
-    Route::get('/dashboard/archive-applicant', [ApplicantController::class, 'ShowArchiveApplicant'])->name('admin.dashboard.show-archive-applicant');
+    
+    
+    Route::get('/dashboard/view-applicant', [ApplicantController::class, 'ShowApplicant'])->name('admin.dashboard.show-applicant');
+    
+    Route::get('/dashboard/view-archive-applicant', [ApplicantController::class, 'ShowArchiveApplicant'])->name('admin.dashboard.show-archive-applicant');
+    Route::get('/dashboard/view-pending-applicant', [ApplicantController::class, 'ShowPendingApplicant'])->name('admin.dashboard.show-pending-applicant');
+    Route::get('/dashboard/view-approved-applicant', [ApplicantController::class, 'ShowApprovedApplicant'])->name('admin.dashboard.show-approved-applicant');
+    
+   
     Route::post('/dashboard/qualified-applicant/{id}/archived', [ApplicantController::class, 'ArchiveApplicant'])->name('admin.dashboard.archive-applicant');
 
 
     //rename this   // can be considered a qualified 
-    Route::get('/dashboard/approved-applicant', [ApplicantController::class, 'ShowApprovedApplicant'])->name('admin.dashboard.show-approved-applicant');
-   
+    
     //Qualified 
     Route::get('/dashboard/list-of-scheduled-applicant', [ApplicantController::class, 'ShowApprovedApplicant133'])->name('admin.dashboard.show-qualified-appplicant');
     Route::get('/dashboard/qualified-applicant/{id}/edit', [ApplicantController::class, 'EditQualifiedApplicant'])->name('admin.dashboard.edit-qualified-appplicant');
