@@ -72,7 +72,7 @@ Route::middleware(['admin'])->group(function () {
     Route::get('/dashboard/approved-applicant', [ApplicantController::class, 'ShowApprovedApplicant'])->name('admin.dashboard.show-approved-applicant');
    
     //Qualified 
-    Route::get('/dashboard/list-of-scheduled-applicant', [ApplicantController::class, 'ShowQualifiedApplicant'])->name('admin.dashboard.show-qualified-appplicant');
+    Route::get('/dashboard/list-of-scheduled-applicant', [ApplicantController::class, 'ShowApprovedApplicant133'])->name('admin.dashboard.show-qualified-appplicant');
     Route::get('/dashboard/qualified-applicant/{id}/edit', [ApplicantController::class, 'EditQualifiedApplicant'])->name('admin.dashboard.edit-qualified-appplicant');
     Route::get('/dashboard/qualified-applicant/store', [ApplicantController::class, 'StoreQualifiedApplicant'])->name('admin.dashboard.store-qualifiedpted-appplicant');
     Route::get('/dashboard/qualified-applicant/{id}/delete', [ApplicantController::class, 'DeleteQualifiedApplicant'])->name('admin.dashboard.delete-qualified-appplicant');
@@ -83,10 +83,11 @@ Route::middleware(['admin'])->group(function () {
     
     Route::post('/dashboard/qualified-applicant/set-schedule', [ApplicantController::class, 'Schedule'])->name('admin.dashboard.schedule-applicant'); 
     
-    Route::get('/dashboard/report/item-analysis', [ReportController::class, 'ShowItemAnalysis'])->name('admin.dashboard.item-analysis');
+    Route::get('/dashboard/report/item-analysis-chart', [ReportController::class, 'ShowItemAnalysisChart'])->name('admin.dashboard.item-analysis-chart');
     
+    Route::get('/dashboard/report/item-analysis', [ReportController::class, 'ShowItemAnalysis'])->name('admin.dashboard.item-analysis');
 
-
+    Route::get('dashboard/report/list-of-qualifying-exam', [ReportController::class, 'ShowQualifyingExam'])->name('admin.dashboard.report.qualifying-exam');
 });
 
 
@@ -109,4 +110,5 @@ Route::middleware(['admin'])->group(function () {
 
     Route::get('/dashboard/report/qualified-exam-result', [ReportController::class, 'ShowQualifyingExamResult'])->name('admin.report.qualified-exam');
 
-    Route::get('/test', [ReportController::class, 'Test'])->name('test');
+ 
+   Route::get('/dashboard/report/qualified-exam-result/export', [ReportController::class, 'ExportQualifyingExam'])->name("export.qualified-exam-result");

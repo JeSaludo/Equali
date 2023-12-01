@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Equali | Applicant </title>
+    <title>Equali | Overview </title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
@@ -20,112 +20,153 @@
 </head>
 
 <body>
-    <div class="min-h-screen  bg-[#EEF4F6]">
-
+    <div class="min-h-screen  bg-[#F7F7F7]">
 
         @include('layout.sidenav')
-        <div class="ml-[218px] w-auto  text-black flex justify-between ">
-            <div class="mt-4">
-                <h1 class="text-[#1D489A] font-poppins font-medium text-[24px] mx-8">Welcome, Name Here👋</h1>
-                <p class="text-[#718297] text-[12px] font-raleway font-normal mx-8 mb-4">Check your info here</p>
+        <nav class="ml-[218px] flex justify-between items-center border-b border-[#D9DBE3] h-[60px] bg-white px-4">
+
+            <div class="flex items-center  ">
+                <form method="get" action="{{route('admin.dashboard.report.qualifying-exam')}}" class="relative w-[300px]">
+                    @csrf
+                    <input type="text" name="searchTerm" placeholder="Search Here"   value="{{ request('searchTerm') }}" class="border border-[#D9DBE3] bg-[#F7F7F7] placeholder:text-[#8B8585] px-12 py-2 pl-10 pr-10 w-full rounded-[16px]">
+                    <i class='bx bx-search text-[#8B8585] bx-sm absolute left-3 top-1/2 transform -translate-y-1/2'></i>
+                    </form>
             </div>
         
+            <div class="my-2">
+                <i class='bx bx-cog bx-sm text-[#8B8585]' ></i>
+                <i class='bx bx-bell text-[#8B8585] bx-sm'></i>
+                <i class='bx bx-user-circle bx-sm text-[#8B8585]' ></i>
+            </div>
+         
+        </nav>    
+
+
+
+
+
+        <section class="ml-[218px] main ">
+
           
+
+            <div class="bg-white mx-4  rounded-lg  overflow-x-auto h-[380px]">
+
+
+                <table class="min-w-full  table-auto mx-auto text-center ">
+                    <thead class="">
+                        <tr class="border-b-2 border-[#617388] bg-slate-100 ">
+                            <th
+                                class="text-center px-6 py-4 text-xl font-poppins font-bold text-[#26386A] uppercase tracking-wider">
+                                Item
+                            </th>
+
+                            <th
+                                class="px-6 py-4 text-center text-xl font-poppins font-bold  text-[#26386A] uppercase tracking-wider">
+                                Difficulty Index</th>
+
+                            <th
+                                class="px-6 py-4 text-center text-xl font-poppins font-bold  text-[#26386A] uppercase tracking-wider">
+                                Discrimination Index</th>
+                            
+                            <th
+                                class="px-6 py-4 text-center text-xl font-poppins font-bold  text-[#26386A] uppercase tracking-wider">
+                                Action</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        
+                        @if ($questions->count() == 0)
+                            <tr class="">
+                                <td></td>   
+                               
+                                <td class=" py-2">
+                                    <p>No data found in the database</p>
+                                </td>
+                                <td></td>
+                            </tr>
+                        @else
+                            @foreach ($questions as $index => $question)
+                                <tr class="">
+                                    <td class="px-6 py-2  whitespace-nowrap">                                        
+                                        {{$question->id}}
+                                    </td>
+
+                                    <td class="text-center px-6 py-2 whitespace-nowrap font-poppins w-2/6  text-[#617388] ">
+                                        <div class="flex">
+                                             <div class="w-6/12">
+                                                 {{$DI[$index]}}
+                                             </div>
+                                             <div class="w-6/12">
+                                                @if($DS[$index] >= 0.86 )
+                                                Very Easy
+                                                @elseif ($DS[$index] <= 0.85 && $DS[$index] >= 0.71 )
+                                                    Easy
+                                                @elseif ($DS[$index] <= 0.70 && $DS[$index] >= 0.30 )
+                                                    Moderate
+                                                @elseif ($DS[$index] <= 0.29 && $DS[$index] >= 0.15 )
+                                                    Difficult
+                                                @elseif ($DS[$index] <= 0.14 && $DS[$index] >= 0)
+                                                    Very Difficult
+                                                @endif
+                                            </div>
+                                            
+                                        </div>
+                                     </td>
+
+
+                                    <td class="px-6 py-2 whitespace-nowrap font-poppins w-2/6  text-[#617388]  text-center">
+                                       <div class="flex">
+                                            <div class="w-6/12">
+                                                {{$DS[$index]}}
+                                            </div>
+                                        
+                                            <div class="w-6/12">
+                                                @if($DS[$index] >= 0.86 )
+                                                    To be discarded 
+                                                @elseif ($DS[$index] <= 0.85 && $DS[$index] >= 0.71 )
+                                                    To  be revised
+                                                @elseif ($DS[$index] <= 0.70 && $DS[$index] >= 0.30 )
+                                                    Very Good items
+                                                @elseif ($DS[$index] <= 0.29 && $DS[$index] >= 0.15 )
+                                                    To be revised
+                                                @elseif ($DS[$index] <= 0.14 && $DS[$index] >= 0)
+                                                    To be discarded
+                                                @endif
+                                            </div>
+                                            
+                                       </div>
+                                    </td>
+                                    
+                                    <td class="px-6 py-2 whitespace-nowrap font-poppins w-full  text-[#617388]  text-center">                                      
+                                      <form action="">
+                                            <button >
+                                                Revise
+                                            </button>
+                                      </form>
+                                    </td>
+                                   
+                                   
+
+                                    
+                                </tr>
+                            @endforeach
+                        @endif       
+                    </tbody>
+                </table>
+                <div>
+
+                </div>
+            </div>
             
-            <div class="mt-6">
-                <h1>{{ now()->format('F j, Y') }}</h1>
-              
-            </div>
-        
-            <div class="mt-6 mx-4">
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
-                    <path
-                        d="M19 13.586V10C19 6.783 16.815 4.073 13.855 3.258C13.562 2.52 12.846 2 12 2C11.154 2 10.438 2.52 10.145 3.258C7.185 4.074 5 6.783 5 10V13.586L3.293 15.293C3.19996 15.3857 3.12617 15.4959 3.07589 15.6172C3.0256 15.7386 2.99981 15.8687 3 16V18C3 18.2652 3.10536 18.5196 3.29289 18.7071C3.48043 18.8946 3.73478 19 4 19H20C20.2652 19 20.5196 18.8946 20.7071 18.7071C20.8946 18.5196 21 18.2652 21 18V16C21.0002 15.8687 20.9744 15.7386 20.9241 15.6172C20.8738 15.4959 20.8 15.3857 20.707 15.293L19 13.586ZM19 17H5V16.414L6.707 14.707C6.80004 14.6143 6.87383 14.5041 6.92412 14.3828C6.9744 14.2614 7.00019 14.1313 7 14V10C7 7.243 9.243 5 12 5C14.757 5 17 7.243 17 10V14C17 14.266 17.105 14.52 17.293 14.707L19 16.414V17ZM12 22C12.6193 22.0008 13.2235 21.8086 13.7285 21.4502C14.2335 21.0917 14.6143 20.5849 14.818 20H9.182C9.38566 20.5849 9.76648 21.0917 10.2715 21.4502C10.7765 21.8086 11.3807 22.0008 12 22Z"
-                        fill="#626B7F" />
-                    <circle cx="18" cy="8" r="4" fill="#EA3332" />
-                </svg>
-            </div>
-        </div>
+            
+        </section>
 
-        <section class="ml-[218px] main">
-    <div class="bg-white p-6 mx-4 rounded-[12px] h-[600px]">
-        <div class="grid grid-cols-4 gap-6">
-            <div class="col-span-1">
-                <h2 class="text-[#26386A] text-center py-2 rounded-t bg-white font-poppins font-bold text-2xl">Item</h2>
-                <div class="font-poppins ml-2">
-                    <ul class="pl-4 ml-[-20px]">
-                        <li class="text-[#617388] text-center py-2 bg-white font-semibold text-lg">1</li>
-                        <li class="text-[#617388] text-center py-2 bg-white font-semibold text-lg">2</li>
-                        <li class="text-[#617388] text-center py-2 bg-white font-semibold text-lg">3</li>
-                        <li class="text-[#617388] text-center py-2 bg-white font-semibold text-lg">4</li>
-                        <li class="text-[#617388] text-center py-2 bg-white font-semibold text-lg">5</li>
-                        <li class="text-[#617388] text-center py-2 bg-white font-semibold text-lg">6</li>
-                        <li class="text-[#617388] text-center py-2 bg-white font-semibold text-lg">7</li>
-                    </ul>
-                </div>
-            </div>
-            <div class="col-span-1">
-                <h2 class="text-[#26386A] text-center py-2 rounded-t bg-white font-poppins font-bold text-2xl">Difficulty Index</h2>
-                <div class="flex justify-between">
-                    <div class="grid grid-cols-1">
-                        <span class="text-[#617388] text-center py-2 bg-white font-semibold text-lg">70/80</span>
-                        <span class="text-[#617388] text-center py-2 bg-white font-semibold text-lg">10/80</span>
-                        <span class="text-[#617388] text-center py-2 bg-white font-semibold text-lg">70/80</span>
-                        <span class="text-[#617388] text-center py-2 bg-white font-semibold text-lg">15/80</span>
-                        <span class="text-[#617388] text-center py-2 bg-white font-semibold text-lg">31/80</span>
-                        <span class="text-[#617388] text-center py-2 bg-white font-semibold text-lg">31/80</span>
-                        <span class="text-[#617388] text-center py-2 bg-white font-semibold text-lg">31/80</span>
-                    </div>
-                    <div class="col-span-1 grid grid-cols-1">
-                        <span class="text-[#617388] text-center py-2 bg-white font-semibold text-lg">Revise/Discard</span>
-                        <span class="text-[#617388] text-center py-2 bg-white font-semibold text-lg">Retain</span>
-                        <span class="text-[#617388] text-center py-2 bg-white font-semibold text-lg">Retain</span>
-                        <span class="text-[#617388] text-center py-2 bg-white font-semibold text-lg">Revise/Discard</span>
-                        <span class="text-[#617388] text-center py-2 bg-white font-semibold text-lg">Revise/Discard</span>
-                        <span class="text-[#617388] text-center py-2 bg-white font-semibold text-lg">Revise/Discard</span>
-                        <span class="text-[#617388] text-center py-2 bg-white font-semibold text-lg">Revise/Discard</span>
-                    </div>
-                </div>
-            </div>
-            <div class="col-span-1">
-                <h2 class="text-[#26386A] text-center py-2 rounded-t bg-white font-poppins font-bold text-2xl">Difficulty Index</h2>
-                <div class="flex justify-between">
-                    <div class="flex flex-col gap-2">
-                        <span class="text-[#617388] text-center py-2 bg-white font-semibold text-base">Non-Discriminating</span>
-                        <span class="text-[#617388] text-center py-2 bg-white font-semibold text-base">Non-Discriminating</span>
-                        <span class="text-[#617388] text-center py-2 bg-white font-semibold text-base">Non-Discriminating</span>
-                        <span class="text-[#617388] text-center py-2 bg-white font-semibold text-base">Discriminating</span>
-                        <span class="text-[#617388] text-center py-2 bg-white font-semibold text-base">Discriminating</span>
-                        <span class="text-[#617388] text-center py-2 bg-white font-semibold text-base">Discriminating</span>
-                        <span class="text-[#617388] text-center py-2 bg-white font-semibold text-base">Discriminating</span>
-                    </div>
-                    <div class="col-span-1 grid grid-cols-1">
-                        <span class="text-[#617388] text-center py-2 bg-white font-semibold text-base">Revise</span>
-                        <span class="text-[#617388] text-center py-2 bg-white font-semibold text-base">Revise</span>
-                        <span class="text-[#617388] text-center py-2 bg-white font-semibold text-base">Revise</span>
-                        <span class="text-[#617388] text-center py-2 bg-white font-semibold text-base">Include</span>
-                        <span class="text-[#617388] text-center py-2 bg-white font-semibold text-base">Include</span>
-                        <span class="text-[#617388] text-center py-2 bg-white font-semibold text-base">Include</span>
-                        <span class="text-[#617388] text-center py-2 bg-white font-semibold text-base">Include</span>
-                    </div>
-                </div>
-            </div>
-            <div class="col-span-1">
-                <h2 class="text-[#26386A] text-center py-2 rounded-t bg-white font-poppins font-bold text-2xl">Action to Take</h2>
-                <div class="flex flex-col gap-2">
-                    <span class="text-[#617388] text-center py-2 bg-white font-semibold text-base">Revise</span>
-                    <span class="text-[#617388] text-center py-2 bg-white font-semibold text-base">Revise</span>
-                    <span class="text-[#617388] text-center py-2 bg-white font-semibold text-base">Revise</span>
-                    <span class="text-[#617388] text-center py-2 bg-white font-semibold text-base">Revise</span>
-                    <span class="text-[#617388] text-center py-2 bg-white font-semibold text-base">Revise</span>
-                    <span class="text-[#617388] text-center py-2 bg-white font-semibold text-base">Revise</span>
-                    <span class="text-[#617388] text-center py-2 bg-white font-semibold text-base">Revise</span>
-                 </div>
-            </div>
     </div>
-</section>
 
+</body>
 
-    
+</html>
+
 
 

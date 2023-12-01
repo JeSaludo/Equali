@@ -20,17 +20,21 @@ class ApplicantController extends Controller
 
     function ShowApplicant(Request $request){
         
-        $users  = User::where('role', 'Student')->where('status', 'Pending')->with('admissionExam');
+        $users  = User::where('role', 'Student')->with('admissionExam')->where('Status', 'Pending');
 
         $searchTerm = $request->searchTerm;
         
-       $recentUser = User::where('role', 'Student')->get();
+        $recentUser = User::where('role', 'Student')->get();
         
         if(isset($searchTerm)){
-            $users->where('first_name', 'like', '%' . $searchTerm . '%');
+            
+           
+            $users->where('first_name', 'like', "%$searchTerm%")
+                ->orWhere('last_name', 'like', "%$searchTerm%");
+        
+    
+                
         }
-
-       
 
         $users = $users->paginate(10);
         return view('admin.dashboard-view-applicant', compact('users', 'recentUser'));
@@ -214,11 +218,23 @@ class ApplicantController extends Controller
         return redirect()->back()->with('success', 'Applicant deleted successfully!');       
     }
 
-    function ShowQualifiedApplicant(){
-        $users = User::where('role', 'Student')->where('status', 'Approved')        
-        ->doesntHave('studentInfo')
-        ->with('qualifiedStudent')->get();
-        return view('admin.dashboard-view-qualified-applicant', compact('users'));
+    function ShowApprovedApplicant(Request $request){
+
+        $users = User::where('role', 'Student')->with('admissionExam')->where('Status', 'Approved')->paginate(10);
+        // ->doesntHave('studentInfo');
+        // ->with('qualifiedStudent')->get();
+        $searchTerm = $request->searchTerm;
+        
+        $recentUser = User::where('role', 'Student')->get();
+        
+        if(isset($searchTerm)){            
+           
+            $users->where('first_name', 'like', "%$searchTerm%")
+                ->orWhere('last_name', 'like', "%$searchTerm%");
+        
+        }
+      
+        return view('admin.dashboard-view-approve-applicant', compact('users','recentUser'));
     }   
 
     function EditQualifiedApplicant($id){
@@ -291,7 +307,7 @@ class ApplicantController extends Controller
         
     }
 
-    function ShowApprovedApplicant(){
+    function ShowApprovedApplicant133(){
         $users = User::where('role', 'Student')->where(function ($query) {
             $query->where('status', 'Approved')
                 ->orWhere('status', 'WaitListed');
@@ -302,6 +318,8 @@ class ApplicantController extends Controller
 
     function ShowArchiveApplicant(){
         $users = User::where('role', 'Student')->where('status', 'Archived')->get();
+
+        
         return view('admin.dashboard-view-archive', compact('users'));
     }
 }

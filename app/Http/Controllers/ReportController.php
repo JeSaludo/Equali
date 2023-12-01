@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\ResultExport;
 use Illuminate\Http\Request;
 
 use App\Models\User;
@@ -10,8 +11,10 @@ use App\Models\Question;
 use App\Models\Choice;
 use App\Models\ExamQuestion;
 use App\Models\ExamResponse;
-
+use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Support\Facades\DB;
+
+
 
 class ReportController extends Controller
 {
@@ -32,7 +35,7 @@ class ReportController extends Controller
         return view('admin.reports.qualifed-applicant-result', compact('results'));
     }
 
-    public function ShowItemAnalysis(){
+    public function ShowItemAnalysisChart(){
        
         // $examResponses = ExamResponse::all();
         // $groupedResponses = $examResponses->groupBy(['question_id', 'selected_answer']);
@@ -53,14 +56,14 @@ class ReportController extends Controller
         return view('admin.reports.item-analysis', compact('questions'));
     }
 
-    public function Test(){
 
-            // Assuming you have a 'User' model for students, a 'Result' model, a 'Question' model, and an 'ExamResponse' model
 
-        // Assuming you have a 'User' model for students, a 'Result' model, a 'Question' model, and an 'ExamResponse' model
+
+   public function ShowItemAnalysis(){    
 
         $DI = [];
         $DS = [];
+        
         $questions = Question::all();
 
         foreach ($questions as $index => $question) {
@@ -141,14 +144,45 @@ class ReportController extends Controller
                 $DS[$index] = $N;
             }
         }
+        return view('admin.reports.item-analysis-report', compact('questions', 'DI', 'DS'));
+   } 
+
+    public function ShowQualifyingExam(Request $request){
 
 
-        return view('admin.reports.test', compact('questions', 'DI', 'DS'));
-    }
+        $results = Result::with('user')->whereNotNull('weighted_average')->orderByDesc('measure_c_score');
+        
+        $searchTerm = $request->input('searchTerm');
+        if (!empty($searchTerm)) {
+            $results->join('users', 'results.user_id', '=', 'users.id')
+                ->where(function ($query) use ($searchTerm) {
+                    $query->where('users.first_name', 'like', '%' . $searchTerm . '%')
+                        ->orWhere('users.last_name', 'like', '%' . $searchTerm . '%')
+                        ->orWhere('measure_c_score', 'like', '%' . $searchTerm . '%');
+                   
+                });
+        }      
 
+      
 
-   
+        $results = $results->get();
+
+        
+
+        return view('admin.reports.list-of-qualifying-exam', compact('results'));
+   }
+
     
+   public function GenerateReport(){
+        $excelFileName = 'qualifying_exam_report_' . now()->format('YmdHis') . '.xlsx';
+        //return Excel::download(new YourExportClass($results), $excelFileName);
+
+   }
+
+   public function ExportQualifyingExam() 
+   {
+       return Excel::download(new ResultExport, 'result.xlsx');
+   }
 }
 
 

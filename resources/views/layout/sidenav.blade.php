@@ -1,4 +1,4 @@
-<aside class="fixed top-0 left-0 w-[218px] h-screen bg-white"> 
+<aside class="fixed top-0 left-0 w-[218px] h-screen bg-white border-r border-[#D9DBE3]"> 
     <div class="mx-auto text-center py-2  ">
         <h1 class=" text-[36px] font-raleway font-semibold"><span class="text-[#2217D0]">e</span>quali.</h1>
         <div class="border-b-2 w-6/12 mx-auto"></div>
@@ -120,13 +120,13 @@
                         <div class="px-4 whitespace-nowrap">Weighted Average</div>
 
                     </a>
-                    <a href="{{ route('admin.dashboard.item-analysis') }}"
+                    <a href="{{ route('admin.dashboard.item-analysis-chart') }}"
                         class=" mx-4 px-4 py-2 hover:cursor-pointer hover:bg-[#EAF0FF] rounded-[15px] flex  items-center text-[#718297] my-2">
                         <div class="px-4 whitespace-nowrap">Item Analysis
                         </div>
                     </a>
 
-                    <a href="{{ route('admin.report.qualified-exam') }}"
+                    <a href="{{ route('admin.dashboard.report.qualifying-exam') }}"
                         class=" mx-4 px-4 py-2 hover:cursor-pointer hover:bg-[#EAF0FF] rounded-[15px] flex  items-center text-[#718297] my-2">
                         <div class="px-4 whitespace-nowrap">Qualifying Exam</div>
 

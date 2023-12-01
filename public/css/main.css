@@ -32,3 +32,52 @@
 .dropdown.active .dropdown-button {
     background-color: #eaf0ff;
 }
+
+.nav-link {
+    position: relative;
+    padding: 8px 16px;
+    color: #26386a;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.nav-link::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: -2px; /* Adjust the value to control the distance of the underline from the text */
+    height: 2px; /* Adjust the value to control the thickness of the underline */
+    background-color: #d9dbe3; /* Set the default underline color */
+    transition: background-color 0.3s ease; /* Add transition for smooth color change */
+}
+
+.nav-link:hover,
+.nav-link:focus {
+    color: #1e3a8a;
+}
+
+.nav-link:hover::after,
+.nav-link:focus::after {
+    background-color: #1e3a8a;
+}
+.no-hover-underline {
+    position: relative;
+    padding: 8px 16px;
+
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+.no-hover-underline::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: -2px; /* Adjust the value to control the distance of the underline from the text */
+    height: 2px; /* Adjust the value to control the thickness of the underline */
+    background-color: #d9dbe3; /* Set the default underline color */
+}
+
+.nav-link.active::after {
+    background-color: #1e3a8a; /* Set the active underline color */
+}

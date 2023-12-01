@@ -20,7 +20,7 @@
 </head>
 
 <body>
-    <div class="min-h-screen  bg-[#EEF4F6]">
+    <div class="min-h-screen  bg-[#F7F7F7]">
 
 
         @include('layout.sidenav')

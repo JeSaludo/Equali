@@ -20,7 +20,7 @@
 </head>
 
 <body>
-    <div class="min-h-screen  bg-[#EEF4F6]">
+    <div class="min-h-screen  bg-[#F7F7F7]">
 
         @include('layout.sidenav')
         <div class="ml-[218px] w-auto  text-black flex justify-between ">
