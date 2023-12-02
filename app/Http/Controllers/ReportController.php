@@ -46,13 +46,6 @@ class ReportController extends Controller
         // Eager load choices and student responses for all questions to avoid N+1 queries
         $questions->load('choices', 'examResponse');
 
-       
-     
-
-
-        
-
-
         return view('admin.reports.item-analysis', compact('questions'));
     }
 

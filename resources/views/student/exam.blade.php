@@ -177,9 +177,7 @@
             
             sessionStorage.clear();
         });
-    </script>
-
-    <script>
+   
         document.getElementById("toggleTimer").addEventListener("click", function () {
             const timerContainer = document.getElementById("timerContainer");
             const buttonText = document.getElementById("toggleTimer");
@@ -193,7 +191,7 @@
             }
         });
         // Set your exam duration in seconds
-        let timer = 10; // 1 hour in seconds
+        let timer = 30; // 1 hour in seconds
         let countdown = setInterval(updateTimer, 1000);
 
         function updateTimer() {

@@ -183,6 +183,10 @@ class ApplicantController extends Controller
     }
     
     function ApproveApplicant($id){
+
+       
+
+
         $user = User::where('role', 'Student')->findOrFail($id);
         $user->status = "Approved";
         $user->save();
@@ -198,6 +202,28 @@ class ApplicantController extends Controller
         
     }
 
+    function ApproveApplicantMultiple(Request $request){
+        $selectedUserIds = $request->input('selectedUsers');
+                
+        foreach ($selectedUserIds as $userId) {
+        
+            $user = User::where('role', 'Student')->findOrFail($userId);
+            $user->status = "Approved";
+            $user->save();
+    
+            $approveUser = new QualifiedStudent();
+            $approveUser->user_id = $user->id;
+            $approveUser->save();
+            $tempPassword = $user->last_name . $user->first_name . "12345";
+            $tempPassword = preg_replace('/\s+/u', '', $tempPassword);
+            $tempPassword = strtolower($tempPassword);
+            Mail::to($user->email)->send(new AcceptanceMail($user->email, $user->first_name,  $user->last_name, $tempPassword));           
+           
+        }
+        return redirect()->back()->with('success', 'Approved Applicant successfully!');       
+       
+
+    }
     function ArchiveApplicant($id){
         $user = User::where('role', 'Student')->findOrFail($id);
         $user->status = "Archived";
@@ -338,6 +364,8 @@ class ApplicantController extends Controller
 
     function ShowPendingApplicant(Request $request){
 
+
+        
         $users = User::where('role', 'Student')->with('admissionExam')->where('Status', 'Pending');
        
         $searchTerm = $request->searchTerm;

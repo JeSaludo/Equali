@@ -150,43 +150,8 @@
     </section>
 
     </div>
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const imageInput = document.getElementById('imageInput');
-            const imagePreview = document.getElementById('imagePreview');
-
-            imageInput.addEventListener('change', function() {
-                const file = imageInput.files[0];
-
-                if (file) {
-                    const reader = new FileReader();
-
-                    reader.onload = function(e) {
-                        imagePreview.src = e.target.result;
-                        imagePreview.classList.remove('hidden');
-                        document.getElementById("preview").classList.remove("hidden");
-                    };
-
-                    reader.readAsDataURL(file);
-                } else {
-
-                    imagePreview.src = '';
-                    imagePreview.classList.add('hidden');
-                }
-            });
-
-        });
 
 
-        let imgPreview = document.getElementById("preview")
-
-        document.getElementById('openPopup').onclick = () => {
-            document.getElementById("popup").classList.remove("hidden");
-        }
-        document.getElementById("cancelSchedule").addEventListener("click", function() {
-            document.getElementById("popup").classList.add("hidden");
-        });
-    </script>
 
 
 

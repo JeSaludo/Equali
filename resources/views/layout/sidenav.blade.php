@@ -92,11 +92,19 @@
                             </div>
                         </a>
 
+                        <a href="{{ route('admin.dashboard.item-analysis') }}"
+                            class=" mx-4 px-4 py-2 hover:cursor-pointer hover:bg-[#EAF0FF] rounded-[15px] flex  items-center text-[#718297] my-2">
+                            <div class="px-4 whitespace-nowrap">Item Analysis
+                            </div>
+                        </a>
+
                         <a href="{{ route('admin.dashboard.report.qualifying-exam') }}"
                             class=" mx-4 px-4 py-2 hover:cursor-pointer hover:bg-[#EAF0FF] rounded-[15px] flex  items-center text-[#718297] my-2">
-                            <div class="px-4 whitespace-nowrap">Qualifying Exam</div>
+                            <div class="px-4 whitespace-nowrap"> Qualifying Exam</div>
 
                         </a>
+
+                       
                     </div>
               
         </nav>

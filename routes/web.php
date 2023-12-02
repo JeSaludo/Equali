@@ -73,10 +73,13 @@ Route::middleware(['admin'])->group(function () {
     Route::get('/dashboard/view-qualified-applicant', [ApplicantController::class, 'ShowQualifiedApplicant'])->name('admin.dashboard.show-qualified-applicant');
     Route::get('/dashboard/view-unqualified-applicant', [ApplicantController::class, 'ShowUnqualifiedApplicant'])->name('admin.dashboard.show-unqualified-applicant');
    
-    Route::post('/dashboard/applicant/{id}/archived', [ApplicantController::class, 'ArchiveApplicant'])->name('admin.dashboard.archive-applicant');
-    Route::post('/dashboard/applicant/{id}/approved', [ApplicantController::class, 'ApproveApplicant'])->name('admin.dashboard.approve-applicant');
-    Route::post('/dashboard/applicant/{id}/unqualified', [ApplicantController::class, 'UnqualifyApplicant'])->name('admin.dashboard.unqualify-applicant');
-    Route::post('/dashboard/applicant/{id}/qualified', [ApplicantController::class, 'QualifyApplicant'])->name('admin.dashboard.qualify-applicant');
+    Route::get('/dashboard/applicant/{id}/archived', [ApplicantController::class, 'ArchiveApplicant'])->name('admin.dashboard.archive-applicant');
+    Route::get('/dashboard/applicant/{id}/approved', [ApplicantController::class, 'ApproveApplicant'])->name('admin.dashboard.approve-applicant');
+    Route::post('/dashboard/applicant/approve-users', [ApplicantController::class, 'ApproveApplicantMultiple'])->name('admin.dashboard.approve-applicant-multiple');
+    
+    
+    Route::get('/dashboard/applicant/{id}/unqualified', [ApplicantController::class, 'UnqualifyApplicant'])->name('admin.dashboard.unqualify-applicant');
+    Route::get('/dashboard/applicant/{id}/qualified', [ApplicantController::class, 'QualifyApplicant'])->name('admin.dashboard.qualify-applicant');
     
 
     //
