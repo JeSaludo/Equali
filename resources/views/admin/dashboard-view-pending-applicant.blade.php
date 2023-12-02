@@ -104,7 +104,7 @@
 
                 </div>
             </div>
-            <div class="flex  m-4 justify-between"> 
+            <div class="flex  mx-4 mt-2 justify-between"> 
                     
                 <h1 class="text-[#26386A] text-[18px]  font-bold font-raleway ">List of Applicants</h1>
                
@@ -119,7 +119,15 @@
                 
             </div>
 
-            <div class="flex mx-4 my-4" id="navLinks">
+            <form action="{{route('admin.dashboard.approve-applicant-multiple')}}" method="POST">
+                @csrf
+                <div class="mx-4 my-2">
+                    <button id="approveBtn"  class="border border-[#D9DBE3] hover:border-slate-400 flex items-center text-[14px] tezt-poppin hover:text-[#384b94] font-poppins text-slate-600 py-1 px-4 rounded-lg">
+                        <i class='bx bx-user-check text-[16px] pr-1'></i></i>Approve
+                    </button>
+                </div>
+               
+            <div class="flex mx-4 mb-4" id="navLinks">
                 <a href="{{route('admin.dashboard.show-applicant')}}" class="font-poppins  text-slate-500 nav-link  ">All</a>
                 <a href="{{route('admin.dashboard.show-pending-applicant')}}" class="font-poppins  text-slate-500 nav-link active ">Pending</a>
                 <a href="{{route('admin.dashboard.show-approved-applicant')}}" class="font-poppins  text-slate-500 nav-link">Approved</a>
@@ -137,12 +145,12 @@
                     <table class="w-full font-poppins border-collapse   text-md text-left rtl:text-right text-gray-500 table-auto ">
                         <thead class="border-b text-[#26386A] border-[#D9DBE3] font-semibold text-left whitespace-nowrap">
                             <tr>
-                                {{-- <td class="px-6 py-2 ">
+                                <td class="px-6 py-2 ">
                                     <div class="flex items-center">
                                         <input id="default-checkbox" type="checkbox" value="" name="akk" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded">
                                       
                                     </div>
-                                </td> --}}
+                                </td>
                                 <td class="px-6 py-2">ID</td>
                                 <td class="px-6 py-2">Applicant Name</td>
                                 <td class="px-6 py-2">Admission Exam Score</td>
@@ -167,11 +175,11 @@
                                 @foreach ($users as $index => $user)
                             
                                     <tr class="{{ $index % 2 == 0 ? 'bg-[#F6F8FF]' : 'bg-white' }} border-b border-gray-100">
-                                        {{-- <td class="px-6 py-3">
+                                        <td class="px-6 py-3">
                                             <div class="flex items-center">
                                                 <input id="default-checkbox" name="selectedUsers[]" type="checkbox" value="{{$user->id}}" class="user-checkbox w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded">
                                             </div>
-                                        </td> --}}
+                                        </td>
                                         <td class="px-6 py-3">{{$user->id}}</td>
                                         <td class="px-6 py-3">{{$user->last_name . ", " . $user->first_name}}</td>
                                         <td class="px-6 py-3">{{$user->admissionExam->score . "/" . $user->admissionExam->total_score}}</td>
@@ -201,35 +209,22 @@
                                         <td class="px-4 py-3 flex items-center justify-start">
                                             
 
-                                            <a href="{{ route('admin.dashboard.approve-applicant', $user->id) }}" 
+                                            <a href="{{ route('admin.dashboard.approve-applicant', $user->id) }}" class="mx-1 hover:text-green-400" 
                                                 onclick="return confirm('Are you sure you want to approve this user?')">
                                                 <i class='bx bx-user-check bx-sm'></i>
                                             
                                             </a>
                                           
-                                            <a href="{{ route('admin.dashboard.archive-applicant', $user->id) }}"
+                                            <a href="{{ route('admin.dashboard.archive-applicant', $user->id) }}" class="mx-1 hover:text-red-400"
                                                 onclick="return confirm('Are you sure you want to archive this user?')">
                                                 <i class='bx bx-user-x bx-sm '></i>
                                             </a>
 
-                                               
+                                            <a href="{{ route('admin.dashboard.edit-applicant', $user->id) }}"
+                                                class="mx-1 hover:text-green-400" title="Edit"><i
+                                                class='bx bxs-edit '></i>
+                                            </a>
 
-
-                                                <a href="{{ route('admin.dashboard.edit-applicant', $user->id) }}"
-                                                    class="mx-1 hover:text-green-400" title="Edit"><i
-                                                        class='bx bxs-edit '></i></a>
-
-                                                <form
-                                                    action="{{ route('admin.dashboard.delete-applicant', $user->id) }}"
-                                                    method="POST" style="display: inline-block;">
-                                                    @csrf
-                                                    @method('DELETE')
-                                                    <button type="submit" title="Delete"
-                                                        class="mx-2   hover:text-red-400"
-                                                        onclick="return confirm('Are you sure you want to delete this user?')"><i
-                                                            class='bx bxs-trash '></i></button>
-
-                                                </form>
                                             
                                         </td>
                                     </tr>
@@ -268,11 +263,10 @@
                 </div>
                
             </div>
+        </form>
             <div class="">
                 <div id="addApplicantContent"
                     class="fixed top-0 left-0 w-full h-full flex justify-center items-center bg-gray-500 bg-opacity-50 z-50 hidden">
-                    
-                   
                     
                     <form action="{{ route('admin.dashboard.store-applicant') }}" method="POST">
                         @csrf
@@ -352,7 +346,46 @@
     </div>
 
    
-   
+    <script>
+
+
+        document.addEventListener('DOMContentLoaded', function () {
+                // Get the checkboxes and the button
+                const checkboxes = document.querySelectorAll('input[name="selectedUsers[]"]');
+                const approveBtn = document.getElementById('approveBtn');
+
+                // Add a change event listener to each checkbox
+                checkboxes.forEach(function (checkbox) {
+                    checkbox.addEventListener('change', function () {
+                        // Check if any checkbox is selected
+                        const anyCheckboxSelected = Array.from(checkboxes).some(checkbox => checkbox.checked);
+
+                        // Update the button's disabled state
+                        approveBtn.disabled = !anyCheckboxSelected;
+                    });
+                });
+        });
+
+
+        const selectAllCheckbox = document.getElementById('default-checkbox');
+        const checkboxes = document.querySelectorAll('tbody input[type="checkbox"]');
+
+        function updateSelectAllCheckbox() {
+            selectAllCheckbox.checked = Array.from(checkboxes).every(checkbox => checkbox.checked);
+        }
+
+        selectAllCheckbox.addEventListener('click', function() {
+            checkboxes.forEach(checkbox => {
+                checkbox.checked = selectAllCheckbox.checked;
+            });
+        });
+
+        checkboxes.forEach(checkbox => {
+            checkbox.addEventListener('click', function() {
+                updateSelectAllCheckbox();
+            });
+        });
+    </script>
 
     
     
