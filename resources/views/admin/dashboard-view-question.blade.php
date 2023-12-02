@@ -25,7 +25,7 @@
 
        
 
-        @include('layout.sidenav')
+        @include('layout.sidenav', ['active' => 0])
         <div class="ml-[218px] w-auto  text-black flex justify-between ">
             <div class="mt-4">
                 <h1 class="text-[#1D489A] font-poppins font-medium text-[24px] mx-8">Welcome, Name Here👋</h1>

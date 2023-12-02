@@ -23,7 +23,7 @@
     <div class="min-h-screen  bg-[#F7F7F7]">
 
 
-        @include('layout.sidenav')
+        @include('layout.sidenav', ['active' => 0])
         <nav class="ml-[218px] flex justify-between items-center border-b border-[#D9DBE3] h-[60px] bg-white px-4">
 
             <div class="flex items-center  ">
@@ -219,7 +219,7 @@
 
                                                 </form>
 
-                                                <form
+                                            <form
                                                 action="{{ route('admin.dashboard.delete-applicant', $user->id) }}"
                                                 method="POST" style="display: inline-block;">
                                                 @csrf
@@ -228,6 +228,7 @@
                                                     class="mx-2   hover:text-red-400"
                                                     onclick="return confirm('Are you sure you want to delete this user?')"><i
                                                         class='bx bxs-trash '></i></button>
+                                            </form>
                                             @elseif($user->status == "Approved")
                                             <a href="{{ route('admin.dashboard.edit-applicant', $user->id) }}"
                                                 class="mx-1 hover:text-green-400" title="Edit"><i
@@ -278,6 +279,7 @@
                                                         class="mx-2   hover:text-red-400"
                                                         onclick="return confirm('Are you sure you want to delete this user?')"><i
                                                             class='bx bxs-trash '></i></button>
+                                                </form>
                                             @elseif($user->status == "Pending")
                                                 <form
                                                 action="{{ route('admin.dashboard.approve-applicant', $user->id) }}"
@@ -308,13 +310,14 @@
 
                                                 <form
                                                     action="{{ route('admin.dashboard.delete-applicant', $user->id) }}"
-                                                    method="POST" style="display: inline-block;">
+                                                    method="POST" style="display: inline-block;" id="">
                                                     @csrf
                                                     @method('DELETE')
                                                     <button type="submit" title="Delete"
                                                         class="mx-2   hover:text-red-400"
                                                         onclick="return confirm('Are you sure you want to delete this user?')"><i
                                                             class='bx bxs-trash '></i></button>
+                                                </form>
                                             @endif
                                                
 
@@ -380,7 +383,7 @@
                     
                     <form action="{{ route('admin.dashboard.store-applicant') }}" method="POST">
                         @csrf
-                        <div class="bg-white mx-auto text-center rounded-[12px] w-9/12 h-[380px] p-4 border   border-[#D9DBE3]  ">
+                        <div class="bg-white mx-auto text-center rounded-[12px] w-[520px] h-[380px] p-4 border   border-[#D9DBE3]  ">
                             <div
                                 class="relative text-center mx-auto font-poppins text-[24px] font-semibold  text-[#26386A] uppercase">
                                 <h1>Add Applicant</h1>

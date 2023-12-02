@@ -12,14 +12,14 @@
         <nav class="relative">
 
             <a href="{{ route('admin.dashboard.overview') }}"
-                class="mx-4 bg-gradient-to-r from-[#234BDA] to-[#6499FF] px-4 py-2 rounded-[15px] flex justify-between items-center text-white my-2">
+                class="mx-4 {{$active == 0 ? 'bg-gradient-to-r from-[#234BDA] to-[#6499FF] text-white' : 'hover:bg-[#EAF0FF] text-[#718297]'}} px-4 py-2 rounded-[15px] flex justify-between items-center  my-2">
                 <div class=""><i class='bx bxs-dashboard '></i> Overview </i></div>
-                <i class='bx bxs-circle'></i>
+                <i class='bx bxs-circle {{$active == 0 ? 'opacity-100' : 'opacity-0'}}'></i>
             </a>
            
 
             <div>
-                <a href="{{ route('admin.dashboard.show-applicant') }}" class="mx-4 cursor-pointer hover:bg-[#EAF0FF]  px-4 py-2 rounded-[15px] flex justify-between  items-center text-[#718297] my-2">
+                <a href="{{ route('admin.dashboard.show-applicant') }}" class="mx-4 cursor-pointer {{$active == 1 ? 'bg-gradient-to-r from-[#234BDA] to-[#6499FF] text-white' : 'hover:bg-[#EAF0FF] text-[#718297]'}}  px-4 py-2 rounded-[15px] flex justify-between  items-center text-[#718297] my-2">
                     <div class="pointer-events-none"><i class='bx bxs-user pr-2'></i>Admission</div>
                 </a>
             </div>
