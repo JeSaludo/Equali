@@ -170,7 +170,7 @@
         </section>
 
     </div>
-    <script>
+    {{-- <script>
         document.addEventListener('DOMContentLoaded', function () {
             const imageInput = document.getElementById('imageInput');
             const imagePreview = document.getElementById('imagePreview');
@@ -207,7 +207,7 @@
             document.getElementById("popup").classList.add("hidden");
            });
         
-    </script>
+    </script> --}}
 
     
 
