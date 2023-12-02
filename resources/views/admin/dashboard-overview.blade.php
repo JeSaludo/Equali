@@ -22,7 +22,7 @@
 <body>
     <div class="min-h-screen  bg-[#F7F7F7]">
 
-        @include('layout.sidenav')
+        @include('layout.sidenav', ['active' => 0]  )
         <nav class="ml-[218px] flex justify-between items-center border-b border-[#D9DBE3] h-[60px] bg-white px-4">
 
         
@@ -137,16 +137,19 @@
                                     <td class="px-6 py-3">{{ $recentApplicant->created_at }}</td>
                                 <td class="px-6 py-3">
                                     @if($recentApplicant->status == "WaitListed")
-                                        <span class="bg-blue-200  text-[14px] text-blue-700 py-1 px-2 rounded-md ">Waitlisted</span>                                   
+                                        <span class="bg-sky-200  text-[14px] text-sky-700 py-1 px-2 rounded-md ">Waitlisted</span>
                                     @elseif($recentApplicant->status == "Qualified")
                                         <span class="bg-blue-200  text-[14px] text-blue-700 py-1 px-2 rounded-md ">Qualified</span>
                                     @elseif($recentApplicant->status == "Approved")
-                                        <span class="bg-green-200  text-[14px] text-green-700 py-1 px-2 rounded-md ">Approved</span>
-                                    @elseif($recentApplicant->status == "Pending")
-                                    <span class="bg-orange-200  text-[14px] text-orange-700 py-1 px-2 rounded-md ">Pending</span>
+                                        <span class="bg-emerald-200  text-[14px] text-emerald-700 py-1 px-2 rounded-md ">Approved</span>
+                                    @elseif($recentApplicant->status == "Unqualified")
+                                        <span class="bg-rose-200  text-[14px] text-rose-700 py-1 px-2 rounded-md ">Unqualified</span>
                                     @elseif($recentApplicant->status == "Archived")
-                                    <span class="bg-rose-200  text-[14px] text-rose-700 py-1 px-2 rounded-md ">Archived</span>
-                                @endif
+                                        <span class="bg-rose-200  text-[14px] text-rose-700 py-1 px-2 rounded-md ">Archived</span>
+                                    @elseif($recentApplicant->status == "Pending")
+                                        <span class="bg-orange-200  text-[14px] text-orange-700 py-1 px-2 rounded-md ">Pending</span>
+                                    @endif  
+                                    
                                     
                                 </td>
                             </tr>
