@@ -224,13 +224,13 @@
                                         <td class="px-4 py-3 flex items-center justify-start">
 
 
-                                            <a class="hover:text-green-400" title="Approve"
+                                            <a class="hover:text-green-400 mx-1" title="Approve"
                                                 href="{{ route('admin.dashboard.approve-applicant', $user->id) }}"
                                                 onclick="return confirm('Are you sure you want to approve this user?')">
                                                 <i class='bx bx-user-check bx-sm'></i>
                                             </a>
 
-                                            <a class="hover:text-red-400" title="Reject"
+                                            <a class="hover:text-red-400 mx-1" title="Reject"
                                                 href="{{ route('admin.dashboard.archive-applicant', $user->id) }}"
                                                 onclick="return confirm('Are you sure you want to archive this user?')">
                                                 <i class='bx bx-user-x bx-sm '></i>
