@@ -243,7 +243,7 @@
                                                 </a>
 
 
-                                                <a href="{{ route('admin.dashboard.archive-applicant', $user->id) }}"
+                                                <a class="" href="{{ route('admin.dashboard.archive-applicant', $user->id) }}"
                                                     onclick="return confirm('Are you sure you want to archive this user?')">
                                                     <i class='bx bx-archive-in '></i>
                                                 </a>
