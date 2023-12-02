@@ -201,11 +201,24 @@ class ApplicantController extends Controller
     function ArchiveApplicant($id){
         $user = User::where('role', 'Student')->findOrFail($id);
         $user->status = "Archived";
-        $user->save();
-
-      
+        $user->save();      
         return redirect()->back()->with('success', 'Archive Applicant successfully!');       
     }
+
+    function UnqualifyApplicant($id){
+        $user = User::where('role', 'Student')->findOrFail($id);
+        $user->status = "Unqualified";
+        $user->save();      
+        return redirect()->back()->with('success', 'Unqualify Applicant successfully!');       
+    }
+
+    function QualifyApplicant($id){
+        $user = User::where('role', 'Student')->findOrFail($id);
+        $user->status = "Qualified";
+        $user->save();      
+        return redirect()->back()->with('success', 'Qualify Applicant successfully!');       
+    }
+
 
     function DeleteApplicant($id){
         $user = User::where('role', 'Student')->with('admissionExam')->findOrFail($id);
@@ -217,7 +230,7 @@ class ApplicantController extends Controller
 
     function ShowApprovedApplicant(Request $request){
 
-        $users = User::where('role', 'Student')->with('admissionExam')->where('Status', 'Approved')->paginate(10);
+        $users = User::where('role', 'Student')->with('admissionExam')->where('Status', 'Approved');
         // ->doesntHave('studentInfo');
         // ->with('qualifiedStudent')->get();
         $searchTerm = $request->searchTerm;
@@ -230,7 +243,7 @@ class ApplicantController extends Controller
                 ->orWhere('last_name', 'like', "%$searchTerm%");
         
         }
-      
+        $users = $users->paginate(10);
         return view('admin.dashboard-view-approve-applicant', compact('users','recentUser'));
     }   
 
@@ -266,14 +279,7 @@ class ApplicantController extends Controller
         return redirect()->route('admin.dashboard.show-qualified-appplicant');       
     }
 
-    function StoreQualifiedApplicant(){
-
-    }
-
-    function DeleteQualifiedApplicant(){
-        
-    }
-
+    
 
     function Schedule(Request $request){
         $validate = $request->validate([
@@ -313,7 +319,7 @@ class ApplicantController extends Controller
 
     function ShowArchiveApplicant(Request $request){
 
-        $users = User::where('role', 'Student')->with('admissionExam')->where('Status', 'Archived')->paginate(10);
+        $users = User::where('role', 'Student')->with('admissionExam')->where('Status', 'Archived');
        
         $searchTerm = $request->searchTerm;
         
@@ -325,27 +331,70 @@ class ApplicantController extends Controller
                 ->orWhere('last_name', 'like', "%$searchTerm%");
         
         }
-
+        $users = $users->paginate(10);
         
-        return view('admin.dashboard-view-archive', compact('users', 'recentUser'));
+        return view('admin.dashboard-view-archive-applicant', compact('users', 'recentUser'));
     }
 
     function ShowPendingApplicant(Request $request){
 
-        $users = User::where('role', 'Student')->with('admissionExam')->where('Status', 'Pending')->paginate(10);
+        $users = User::where('role', 'Student')->with('admissionExam')->where('Status', 'Pending');
        
         $searchTerm = $request->searchTerm;
         
         $recentUser = User::where('role', 'Student')->get();
         
-        if(isset($searchTerm)){            
-           
+        if(isset($searchTerm)){                       
             $users->where('first_name', 'like', "%$searchTerm%")
-                ->orWhere('last_name', 'like', "%$searchTerm%");
-        
-        }
-
-        
-        return view('admin.dashboard-view-archive', compact('users', 'recentUser'));
+                ->orWhere('last_name', 'like', "%$searchTerm%");        
+        }        
+        $users = $users->paginate(10);
+        return view('admin.dashboard-view-pending-applicant', compact('users', 'recentUser'));
     }
+
+    function ShowWaitListedApplicant(Request $request){
+        $users = User::where('role', 'Student')->with('admissionExam')->where('Status', 'WaitListed');
+       
+        $searchTerm = $request->searchTerm;
+        
+        $recentUser = User::where('role', 'Student')->get();
+        
+        if(isset($searchTerm)){                       
+            $users->where('first_name', 'like', "%$searchTerm%")
+                ->orWhere('last_name', 'like', "%$searchTerm%");        
+        }        
+        $users = $users->paginate(10);
+        return view('admin.dashboard-view-waitlisted-applicant', compact('users', 'recentUser'));
+    }
+
+    function ShowQualifiedApplicant(Request $request){
+        $users = User::where('role', 'Student')->with('admissionExam')->where('Status', 'Qualified');
+       
+        $searchTerm = $request->searchTerm;
+        
+        $recentUser = User::where('role', 'Student')->get();
+        
+        if(isset($searchTerm)){                       
+            $users->where('first_name', 'like', "%$searchTerm%")
+                ->orWhere('last_name', 'like', "%$searchTerm%");        
+        }        
+        $users = $users->paginate(10);
+        return view('admin.dashboard-view-qualified-applicant', compact('users', 'recentUser'));
+    }
+
+    function ShowUnqualifiedApplicant(Request $request){
+        $users = User::where('role', 'Student')->with('admissionExam')->where('Status', 'Unqualified');
+       
+        $searchTerm = $request->searchTerm;
+        
+        $recentUser = User::where('role', 'Student')->get();
+        
+        if(isset($searchTerm)){                       
+            $users->where('first_name', 'like', "%$searchTerm%")
+                ->orWhere('last_name', 'like', "%$searchTerm%");        
+        }        
+        $users = $users->paginate(10);
+        return view('admin.dashboard-view-unqualified-applicant', compact('users', 'recentUser'));
+    }
+   
 }

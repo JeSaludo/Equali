@@ -63,29 +63,34 @@ Route::middleware(['admin'])->group(function () {
     Route::post('/dashboard/add-applicant/store', [ApplicantController::class, 'StoreApplicant'])->name('admin.dashboard.store-applicant');
     Route::put('/dashboard/applicant/{id}', [ApplicantController::class, 'UpdateApplicant'])->name('admin.dashboard.update-applicant');
     Route::delete('/dashboard/applicant/{id}/delete', [ApplicantController::class, 'DeleteApplicant'])->name('admin.dashboard.delete-applicant');
-    
-    
+        
     Route::get('/dashboard/view-applicant', [ApplicantController::class, 'ShowApplicant'])->name('admin.dashboard.show-applicant');
     
     Route::get('/dashboard/view-archive-applicant', [ApplicantController::class, 'ShowArchiveApplicant'])->name('admin.dashboard.show-archive-applicant');
     Route::get('/dashboard/view-pending-applicant', [ApplicantController::class, 'ShowPendingApplicant'])->name('admin.dashboard.show-pending-applicant');
     Route::get('/dashboard/view-approved-applicant', [ApplicantController::class, 'ShowApprovedApplicant'])->name('admin.dashboard.show-approved-applicant');
-    
+    Route::get('/dashboard/view-waitlisted-applicant', [ApplicantController::class, 'ShowWaitListedApplicant'])->name('admin.dashboard.show-waitlisted-applicant');
+    Route::get('/dashboard/view-qualified-applicant', [ApplicantController::class, 'ShowQualifiedApplicant'])->name('admin.dashboard.show-qualified-applicant');
+    Route::get('/dashboard/view-unqualified-applicant', [ApplicantController::class, 'ShowUnqualifiedApplicant'])->name('admin.dashboard.show-unqualified-applicant');
    
-    Route::post('/dashboard/qualified-applicant/{id}/archived', [ApplicantController::class, 'ArchiveApplicant'])->name('admin.dashboard.archive-applicant');
+    Route::post('/dashboard/applicant/{id}/archived', [ApplicantController::class, 'ArchiveApplicant'])->name('admin.dashboard.archive-applicant');
+    Route::post('/dashboard/applicant/{id}/approved', [ApplicantController::class, 'ApproveApplicant'])->name('admin.dashboard.approve-applicant');
+    Route::post('/dashboard/applicant/{id}/unqualified', [ApplicantController::class, 'UnqualifyApplicant'])->name('admin.dashboard.unqualify-applicant');
+    Route::post('/dashboard/applicant/{id}/qualified', [ApplicantController::class, 'QualifyApplicant'])->name('admin.dashboard.qualify-applicant');
+    
 
+    //
+    Route::get('/dashboard/qualified-applicant/{id}/edit', [ApplicantController::class, 'EditQualifiedApplicant'])->name('admin.dashboard.edit-qualified-appplicant');
+    Route::get('/dashboard/qualified-applicant/store', [ApplicantController::class, 'StoreQualifiedApplicant'])->name('admin.dashboard.store-qualifiedpted-appplicant');
+    Route::get('/dashboard/qualified-applicant/{id}/delete', [ApplicantController::class, 'DeleteQualifiedApplicant'])->name('admin.dashboard.delete-qualified-appplicant');
 
     //rename this   // can be considered a qualified 
     
     //Qualified 
     Route::get('/dashboard/list-of-scheduled-applicant', [ApplicantController::class, 'ShowApprovedApplicant133'])->name('admin.dashboard.show-qualified-appplicant');
-    Route::get('/dashboard/qualified-applicant/{id}/edit', [ApplicantController::class, 'EditQualifiedApplicant'])->name('admin.dashboard.edit-qualified-appplicant');
-    Route::get('/dashboard/qualified-applicant/store', [ApplicantController::class, 'StoreQualifiedApplicant'])->name('admin.dashboard.store-qualifiedpted-appplicant');
-    Route::get('/dashboard/qualified-applicant/{id}/delete', [ApplicantController::class, 'DeleteQualifiedApplicant'])->name('admin.dashboard.delete-qualified-appplicant');
-
+    
     Route::put('/dashboard/qualified-applicant/{id}', [ApplicantController::class, 'UpdateQualifiedApplicant'])->name('admin.dashboard.update-qualified-applicant');
     
-    Route::post('/dashboard/qualified-applicant/{id}/approved', [ApplicantController::class, 'ApproveApplicant'])->name('admin.dashboard.approve-applicant');
     
     Route::post('/dashboard/qualified-applicant/set-schedule', [ApplicantController::class, 'Schedule'])->name('admin.dashboard.schedule-applicant'); 
     

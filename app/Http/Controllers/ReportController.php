@@ -32,7 +32,7 @@ class ReportController extends Controller
         ->orderByDesc('weighted_average')
         ->get();
         
-        return view('admin.reports.qualifed-applicant-result', compact('results'));
+        return view('admin.reports.qualified-applicants-ranking', compact('results'));
     }
 
     public function ShowItemAnalysisChart(){
