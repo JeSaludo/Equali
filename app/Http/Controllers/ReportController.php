@@ -5,12 +5,13 @@ namespace App\Http\Controllers;
 use App\Exports\ResultExport;
 use Illuminate\Http\Request;
 
-use App\Models\User;
+
 use App\Models\Result;
 use App\Models\Question;
 use App\Models\Choice;
 use App\Models\ExamQuestion;
 use App\Models\ExamResponse;
+use App\Models\User;
 use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Support\Facades\DB;
 
@@ -25,7 +26,7 @@ class ReportController extends Controller
         // $users = User::where('role', 'Student')
         // ->with('result')
         // ->get();//can use result with student so it easy to use order by
-        
+       
 
         $results = Result::with('user')
         ->whereNotNull('weighted_average')
@@ -175,6 +176,34 @@ class ReportController extends Controller
    public function ExportQualifyingExam() 
    {
        return Excel::download(new ResultExport, 'result.xlsx');
+   }
+
+   public function ShowUnqualifiedApplicants()
+   {
+   
+    $results = Result::with('user')
+    ->whereHas('user', function ($query) {
+        $query->where('status', 'Unqualified');
+    })
+    ->whereNotNull('weighted_average')
+    ->orderByDesc('weighted_average')
+    ->get();
+
+    return view('admin.reports.list-unqualified-applicant', compact('results'));
+   }
+
+   public function ShowQualifiedApplicants()
+   {
+   
+    $results = Result::with('user')
+    ->whereHas('user', function ($query) {
+        $query->where('status', 'Qualified');
+    })
+    ->whereNotNull('weighted_average')
+    ->orderByDesc('weighted_average')
+    ->get();
+
+    return view('admin.reports.list-qualified-applicant', compact('results'));
    }
 }
 
