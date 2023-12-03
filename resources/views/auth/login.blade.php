@@ -51,7 +51,7 @@
                 <form class="mx-14 mt-8" action="{{ route('auth.authenticate') }}" method="post">
                     @csrf
                     <div class="relative my-4">
-                        <input type="text" name="email"
+                        <input type="text" name="email" value="{{ old('email') }}"
                             class="h-[50px] w-full rounded placeholder:text-[#4E4E4E] placeholder:font-poppins placeholder:text-[16px] px-[40px] border-2 border-[#D7D8D0]"
                             placeholder="Email Address" required autocomplete="off">
                         <i class='bx bx-user  text-[#4E4E4E] absolute left-0 py-4 px-4'></i>

@@ -75,7 +75,7 @@
 
                 </div>
 
-              
+
 
                 <div class="bg-white mx-4 px-6 w-full relative rounded-lg  border  border-[#D9DBE3] shadow-sm">
                     <h1 class="text-[18px] pt-2 font-poppins font-bold text-[#26386A] ">Finished Interviews</h1>
@@ -103,21 +103,22 @@
             <form action="{{route('admin.dashboard.schedule-applicant')}}" method="POST">
                 @csrf
                 <div class="mx-4 my-2 ">
-                    <a disabled id="openPopup"   class="w-[120px] border border-[#D9DBE3] hover:border-slate-400 flex items-center text-[14px] tezt-poppin hover:text-[#384b94] font-poppins text-slate-600 py-1 px-4 rounded-lg">
+                    <a disabled id="openPopup"
+                        class="w-[120px] border border-[#D9DBE3] hover:border-slate-400 flex items-center text-[14px] tezt-poppin hover:text-[#384b94] font-poppins text-slate-600 py-1 px-4 rounded-lg">
                         <i class='bx bx-user-check text-[16px] pr-1'></i></i>Schedule
                     </a>
                 </div>
 
             <div class="flex mx-4 mb-4" id="navLinks">
 
-                <a href=""
-                class="font-poppins  text-slate-500 active nav-link whitespace-nowrap">Schedule Interview</a>
-                <a href=""
-                    class="font-poppins  text-slate-500 nav-link   whitespace-nowrap">Pending Interview</a>
-                <a href=""
-                    class="font-poppins  text-slate-500 nav-link whitespace-nowrap">Review Interview</a>
-               
                 
+                <a href="{{route('admin.dashboard.show-interview')}}"
+                class="font-poppins active  text-slate-500  nav-link whitespace-nowrap">Schedule Interview</a>
+                <a href="{{route('admin.dashboard.pending-interview')}}"
+                    class="font-poppins  text-slate-500 nav-link   whitespace-nowrap">Pending Interview</a>
+                <a href="{{route('admin.dashboard.show-review')}}"
+                class="font-poppins   text-slate-500 nav-link whitespace-nowrap">Review Interview</a>
+               
 
                 <a href="#" class="font-poppins  text-slate-500 w-full no-hover-underline"></a>
             </div>
@@ -227,47 +228,46 @@
                     </nav>
                 </div>
 
-            </div>
-             <!-- Create the popup for scheduling -->
-             <div id="popup"
-             class="fixed top-0 left-0 w-full h-full flex justify-center items-center bg-gray-500 bg-opacity-50 z-50 hidden">
-             <div class="bg-white rounded-lg p-4">
-                 <span class="cursor-pointer absolute top-2 right-2 text-gray-600"
-                     id="closePopup">&times;</span>
-                 <h2 class="text-lg font-semibold mb-4">Schedule Exam and Interview</h2>
+              
+                <!-- Create the popup for scheduling -->
+                <div id="popup"
+                    class="fixed top-0 left-0 w-full h-full flex justify-center items-center bg-gray-500 bg-opacity-50 z-50 hidden">
+                    <div class="bg-white rounded-lg p-4">
+                        <span class="cursor-pointer absolute top-2 right-2 text-gray-600"
+                            id="closePopup">&times;</span>
+                        <h2 class="text-lg font-semibold mb-4">Schedule Exam and Interview</h2>
 
-                 <div>
-                     <div class="mb-4">
-                         <label for="date"
-                             class="block text-sm font-medium text-gray-600">Date:</label>
-                         <input type="date" name="date"
-                             class="w-full px-3 py-2 border rounded-md" required>
+                        <div>
+                            <div class="mb-4">
+                                <label for="date" class="block text-sm font-medium text-gray-600">Date:</label>
+                                <input type="date" name="date" class="w-full px-3 py-2 border rounded-md"
+                                    required>
 
 
-                         <div>
-                             <label for="start_time">Start Time:</label>
-                             <input type="time" id="start_time" name="start_time" required>
+                                <div>
+                                    <label for="start_time">Start Time:</label>
+                                    <input type="time" id="start_time" name="start_time" required>
 
-                             <label for="end_time">End Time:</label>
-                             <input type="time" id="end_time" name="end_time" required>
-                         </div>
-
+                                    <label for="end_time">End Time:</label>
+                                    <input type="time" id="end_time" name="end_time" required>
+                                </div>
 
 
 
-                     </div>
-                     <button type="submit"
-                         class="bg-[#2B6CE6] text-white px-4 py-2 rounded-md hover:bg-[#134197] transition-colors duration-200">Submit</button>
-                     <button type="button" id="cancelSchedule"
-                         class="bg-gray-300 text-gray-600 px-4 py-2 rounded-md hover:bg-gray-400 transition-colors duration-200 ml-2">Cancel</button>
-                 </div>
-             </div>
-         </div>
-         </form>
+
+                            </div>
+                            <button type="submit"
+                                class="bg-[#2B6CE6] text-white px-4 py-2 rounded-md hover:bg-[#134197] transition-colors duration-200">Submit</button>
+                            <button type="button" id="cancelSchedule"
+                                class="bg-gray-300 text-gray-600 px-4 py-2 rounded-md hover:bg-gray-400 transition-colors duration-200 ml-2">Cancel</button>
+                        </div>
+                    </div>
+                </div>
+            </form>
 
 
 
-          
+
 
         </section>
 
@@ -275,25 +275,24 @@
 
 
     <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Get the checkboxes and the button
+            const checkboxes = document.querySelectorAll('input[name="selectedUsers[]"]');
+            const approveBtn = document.getElementById('approveBtn');
 
+            // Add a change event listener to each checkbox
+            checkboxes.forEach(function(checkbox) {
+                checkbox.addEventListener('change', function() {
+                    // Check if any checkbox is selected
+                    const anyCheckboxSelected = Array.from(checkboxes).some(checkbox => checkbox
+                        .checked);
 
-        document.addEventListener('DOMContentLoaded', function () {
-                // Get the checkboxes and the button
-                const checkboxes = document.querySelectorAll('input[name="selectedUsers[]"]');
-                const approveBtn = document.getElementById('approveBtn');
-
-                // Add a change event listener to each checkbox
-                checkboxes.forEach(function (checkbox) {
-                    checkbox.addEventListener('change', function () {
-                        // Check if any checkbox is selected
-                        const anyCheckboxSelected = Array.from(checkboxes).some(checkbox => checkbox.checked);
-
-                        // Update the button's disabled state
-                        approveBtn.disabled = !anyCheckboxSelected;
-                    });
+                    // Update the button's disabled state
+                    approveBtn.disabled = !anyCheckboxSelected;
                 });
+            });
 
-                selectAllCheckbox.addEventListener('click', function() {
+            selectAllCheckbox.addEventListener('click', function() {
                 checkboxes.forEach(checkbox => {
                     checkbox.checked = selectAllCheckbox.checked;
                 });
@@ -309,7 +308,7 @@
             selectAllCheckbox.checked = Array.from(checkboxes).every(checkbox => checkbox.checked);
         }
 
-     
+
 
         checkboxes.forEach(checkbox => {
             checkbox.addEventListener('click', function() {
@@ -346,10 +345,10 @@
         });
     </script>
 
-    
-  
-    
-    
+
+
+
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.2.0/flowbite.min.js"></script>
     <script src="{{ asset('js/nav-link.js') }}"></script>
     <script src="{{ asset('js/add-applicant.js') }}"></script>

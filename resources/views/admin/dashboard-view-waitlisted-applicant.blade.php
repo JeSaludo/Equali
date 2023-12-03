@@ -202,21 +202,13 @@
                                         <td class="px-4 py-3 flex items-center justify-start">
 
 
-                                            <form action="{{ route('admin.dashboard.qualify-applicant', $user->id) }}"
-                                                method="POST" style="display: inline-block;">
-                                                @csrf
-
-                                                <button type="submit" title="Qualify Applicant"
-                                                    class="mx-1  hover:text-green-400"
-                                                    onclick="return confirm('Are you sure you want to qualified this user?')"><i
-                                                        class='bx bx-user-check bx-sm'></i></button>
-                                            </form>
+                                            
 
                                             <a class="hover:text-green-400 mx-1"
                                             href="{{ route('admin.dashboard.qualify-applicant', $user->id) }}"
                                             onclick="return confirm('Are you sure you want to qualified this user?')">
                                             <i class='bx bx-user-check bx-sm'></i>
-                                        </a>
+                                            </a>
 
                                         <a class="hover:text-red-400 mx-1"
                                             href="{{ route('admin.dashboard.unqualify-applicant', $user->id) }}"

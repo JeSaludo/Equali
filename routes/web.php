@@ -51,7 +51,7 @@ Route::middleware(['admin'])->group(function () {
     Route::put('/dashboard/questions/{id}', [QuestionController::class, 'UpdateQuestion'])->name('admin.dashboard.update-question');
     Route::delete('/dashboard/questions/{id}/delete', [QuestionController::class, 'DeleteQuestion'])->name('admin.dashboard.delete-question');
     //Interview 
-    Route::get('/dashboard/interview-pending',[InterviewController::class, 'ShowPendingInterview'])->name('admin.dashboard.pending-interview');
+    Route::get('/dashboard/pending-interview',[InterviewController::class, 'ShowPendingInterview'])->name('admin.dashboard.pending-interview');
     Route::get('/dashboard/interview/screening-form/{id}',[InterviewController::class, 'ShowScreeningForm'])->name('admin.dashboard.interview-now');
     Route::post('/dashboard/interview/store', [InterviewController::class, 'StoreInterview'])->name('admin.dashboard.store-interview');
    

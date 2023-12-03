@@ -125,7 +125,7 @@
                                                 </td>
 
                                                 <td class="px-3 py-2 w-2/12 text-center  whitespace-nowrap">
-                                                    Not yet scheduled
+                                                    
                                                 </td>
                                             @endif
 

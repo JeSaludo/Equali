@@ -46,12 +46,71 @@
             </div>
         </nav>
         <section class="ml-[218px] main  ">
+
+            <div class="flex-row md:flex justify-evenly my-4 ">
+
+                <div class="bg-white mx-4 px-6 w-full relative rounded-lg border  border-[#D9DBE3] shadow-sm ">
+                    <h1 class="text-[18px] pt-2 font-poppins font-bold text-[#26386A] ">No. of Interviews</h1>
+
+
+                    <div class="flex items-end gap-3 text-[#718297] mb-8">
+                        <i class='bx bxs-user-detail text-[30px] pb-2'></i>
+                        <p class="text-[36px] py-0">{{ $users->count() }}</p>
+                    </div>
+
+                    <div class="bg-[#5587F7] w-full  h-[24px] absolute bottom-0 left-0 px-0 mx-0 rounded-b-lg"></div>
+
+                </div>
+                <div class="bg-white mx-4 px-6 w-full relative rounded-lg  border  border-[#D9DBE3] shadow-sm">
+                    <h1 class="text-[18px] pt-2 font-poppins font-bold text-[#26386A] ">Pending Interviews</h1>
+
+
+                    <div class="flex items-end gap-3 px-2 text-[#718297] ">
+                        <i class='bx bxs-user-check text-[30px] pb-2'></i>
+                        <p class="text-[36px] py-0">{{ $users->count() }} </p>
+                    </div>
+                    <div class="bg-[#5587F7] w-full  h-[24px] absolute bottom-0 left-0 px-0 mx-0 rounded-b-lg"></div>
+
+
+                </div>
+
+
+
+                <div class="bg-white mx-4 px-6 w-full relative rounded-lg  border  border-[#D9DBE3] shadow-sm">
+                    <h1 class="text-[18px] pt-2 font-poppins font-bold text-[#26386A] ">Finished Interviews</h1>
+
+
+                    <div class="flex items-end gap-3 px-2 text-[#718297]">
+                        <i class='bx bxs-archive-in text-[30px] pb-2'></i>
+                        <p class="text-[36px] py-0">{{ $users->count() }}</p>
+
+
+                    </div>
+
+                    <div class="bg-[#5587F7] w-full  h-[24px] absolute bottom-0 left-0 px-0 mx-0 rounded-b-lg"></div>
+
+                </div>
+            </div>
             <div class="flex justify-between mx-4 my-2">
 
                 <h1 class="text-[#26386A] text-[18px]  font-bold font-raleway">Review Interviews</h1>
 
 
 
+            </div>
+
+            <div class="flex mx-4 mb-4" id="navLinks">
+
+                <a href="{{route('admin.dashboard.show-interview')}}"
+                class="font-poppins  text-slate-500  nav-link whitespace-nowrap">Schedule Interview</a>
+                <a href="{{route('admin.dashboard.pending-interview')}}"
+                    class="font-poppins  text-slate-500 nav-link   whitespace-nowrap">Pending Interview</a>
+                <a href="{{route('admin.dashboard.show-review')}}"
+                class="font-poppins active  text-slate-500 nav-link whitespace-nowrap">Review Interview</a>
+               
+                
+
+                <a href="#" class="font-poppins  text-slate-500 w-full no-hover-underline"></a>
             </div>
             <div class="bg-white mx-4 relative  border   border-[#D9DBE3] shadow-md rounded-lg ">
                 <div class="overflow-x-auto">
@@ -82,8 +141,7 @@
                             @else
                                 @foreach ($users as $index => $user)
                                     <tr
-                                        class="{{ $index % 2 == 0 ? 'bg-[#aecafd30]' : 'bg-white' }} border-b-2 border-gray-100 ">
-
+                                        class="{{ $index % 2 == 0 ? 'bg-[#F6F8FF]' : 'bg-white' }} border-b border-gray-100">
                                         <td class="px-6 py-3">{{ $user->id }}</td>
                                         <td class="px-6 py-3 ">{{ $user->last_name . ', ' . $user->first_name }} </td>
 

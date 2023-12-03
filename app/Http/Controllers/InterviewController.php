@@ -19,7 +19,7 @@ class InterviewController extends Controller
         ->latest('created_at')->get();
 
         
-        return view('admin.interview.dashboard-view-interview', compact('users'));
+        return view('admin.interview.dashboard-view-pending-interview', compact('users'));
     } 
    
 

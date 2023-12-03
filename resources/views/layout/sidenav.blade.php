@@ -24,39 +24,11 @@
                 </a>
             </div>
 
-            <div class="dropdown" data-dropdown>
-
-
-                <a class="dropdown-button mx-4 cursor-pointer hover:bg-[#EAF0FF]  px-4 py-2 rounded-[15px] flex justify-between  items-center text-[#718297] my-2"
-                    data-dropdown-button>
-                    <div class="pointer-events-none"><i class='bx bxs-file-blank pr-2'></i>Interview</div><i
-                        class='caret-icon pointer-events-none  bx bx-caret-right'></i>
+            <a  href="{{ route('admin.dashboard.show-interview') }}" class="mx-4 cursor-pointer hover:bg-[#EAF0FF]  px-4 py-2 rounded-[15px] flex justify-between  items-center text-[#718297] my-2"
+                    >
+                    <div class="pointer-events-none"><i class='bx bxs-file-blank pr-2'></i>Interview</div>
                 </a>
-
-                <div class="dropdown-menu  pointer-events-none opacity-0 " data-dropdown-content>
-
-                    <a href="{{ route('admin.dashboard.pending-interview') }}"
-                        class=" mx-4 px-4 py-2 hover:cursor-pointer hover:bg-[#EAF0FF] rounded-[15px] flex  items-center text-[#718297] my-2">
-                        <div class="px-4 whitespace-nowrap">Pending 
-                        </div>
-                    </a>
-                    <a href="{{ route('admin.dashboard.show-qualified-appplicant') }}"
-                        class=" mx-4 px-4 py-2 hover:cursor-pointer hover:bg-[#EAF0FF] rounded-[15px] flex  items-center text-[#718297] my-2">
-                        <div class="px-4 whitespace-nowrap">
-                            Schedule 
-                        </div>
-
-                    </a>
-                    
-
-                    <a href="{{ route('admin.dashboard.show-review') }}"
-                        class=" mx-4 px-4 py-2 hover:cursor-pointer hover:bg-[#EAF0FF] rounded-[15px] flex  items-center text-[#718297] my-2">
-                        <div class="px-4 whitespace-nowrap">Review 
-                        </div>
-                    </a>
-
-                </div>
-            </div>
+          
 
 
             <div>
