@@ -204,11 +204,7 @@ class ApplicantController extends Controller
 
     function ApproveApplicantMultiple(Request $request){
         $selectedUserIds = $request->input('selectedUsers');
-        
-        if(!isset($selectedUserIds)){
-            return redirect()->back()->with('failed', 'No Applicant is selected');   
-            
-        }
+                
         foreach ($selectedUserIds as $userId) {
         
             $user = User::where('role', 'Student')->findOrFail($userId);

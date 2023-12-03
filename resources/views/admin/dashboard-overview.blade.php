@@ -22,36 +22,37 @@
 <body>
     <div class="min-h-screen  bg-[#F7F7F7]">
 
-        @include('layout.sidenav', ['active' => 0]  )
+        @include('layout.sidenav', ['active' => 0])
         <nav class="ml-[218px] flex justify-between items-center border-b border-[#D9DBE3] h-[60px] bg-white px-4">
 
-        
+
             <div class="my-2 flex items-center">
                 <div class="block">
 
-                    <h1 class="text-[#1D489A] font-poppins font-bold text-[20px] ">Welcome, {{Auth::user()->role}}!</h1>
+                    <h1 class="text-[#1D489A] font-poppins font-bold text-[20px] ">Welcome, {{ Auth::user()->role }}!
+                    </h1>
                     <p class="text-slate-400 text-[14px] font-raleway font-medium "></p>
-                 
+
                 </div>
-            
+
             </div>
-            
-        
+
+
             <div class="my-2">
-                <i class='bx bx-cog bx-sm text-[#8B8585]' ></i>
+                <i class='bx bx-cog bx-sm text-[#8B8585]'></i>
                 <i class='bx bx-bell text-[#8B8585] bx-sm'></i>
-                <i class='bx bx-user-circle bx-sm text-[#8B8585]' ></i>
+                <i class='bx bx-user-circle bx-sm text-[#8B8585]'></i>
             </div>
-         
-        </nav>    
+
+        </nav>
 
 
 
 
 
         <section class="ml-[218px] main ">
-            
-            
+
+
             <div class="flex-row md:flex justify-evenly my-4 ">
 
                 <div class="bg-white mx-4 px-6 w-full relative rounded-lg border  border-[#D9DBE3] shadow-sm ">
@@ -73,23 +74,25 @@
 
                     <div class="flex items-end gap-3 px-2 text-[#718297] ">
                         <i class='bx bxs-user-check text-[30px] pb-2'></i>
-                        <p class="text-[36px] py-0">{{ $user->where('status', 'Approved')->count() + $user->where('status', 'WaitListed')->count() }} </p>
+                        <p class="text-[36px] py-0">
+                            {{ $user->where('status', 'Approved')->count() + $user->where('status', 'WaitListed')->count() }}
+                        </p>
                     </div>
                     <div class="bg-[#5587F7] w-full  h-[24px] absolute bottom-0 left-0 px-0 mx-0 rounded-b-lg"></div>
 
 
                 </div>
 
-                
+
 
                 <div class="bg-white mx-4 px-6 w-full relative rounded-lg  border  border-[#D9DBE3] shadow-sm">
                     <h1 class="text-[18px] pt-2 font-poppins font-bold text-[#26386A] ">Pending Applicants</h1>
 
 
                     <div class="flex items-end gap-3 px-2 text-[#718297] ">
-                     
+
                         <i class='bx bxs-time text-[30px] pb-2'></i>
-                        <p class="text-[36px] py-0">{{  $user->where('status', 'Pending')->count() }} </p>
+                        <p class="text-[36px] py-0">{{ $user->where('status', 'Pending')->count() }} </p>
                     </div>
                     <div class="bg-[#5587F7] w-full  h-[24px] absolute bottom-0 left-0 px-0 mx-0 rounded-b-lg"></div>
 
@@ -111,62 +114,73 @@
 
                 </div>
             </div>
-            <div class="my-4 text-left rtl:text-right bg-white mx-4 h-[385px]  border   border-[#D9DBE3]  shadow-md rounded-lg">                    
+            <div
+                class="my-4 text-left rtl:text-right bg-white mx-4 h-[385px]  border   border-[#D9DBE3]  shadow-md rounded-lg">
                 <div class="overflow-x-auto ">
-                    <table class="w-full font-poppins border-collapse   text-md text-left rtl:text-right text-gray-500 table-auto ">
+                    <table
+                        class="w-full font-poppins border-collapse   text-md text-left rtl:text-right text-gray-500 table-auto ">
                         <thead class="border-b text-[#26386A] border-[#D9DBE3] font-semibold  whitespace-nowrap">
                             <tr>
                                 <td class="px-6 py-2">ID</td>
                                 <td class="px-6 py-2">Applicant Name</td>
                                 <td class="px-6 py-2">Date Created</td>
                                 <td class="px-6 py-2">Status</td>
-                                
+
                             </tr>
                         </thead>
-                
+
                         <tbody class="text-md">
                             @foreach ($recentApplicants as $index => $recentApplicant)
-                            <tr class="{{ $index % 2 == 0 ? 'bg-[#F6F8FF]' : 'bg-white' }}  border-b   border-gray-100 text-left ">
-                                
-                                <td class="px-6 py-3 text-sm">{{$recentApplicant->id}}</td>
-                                <td class="px-6 py-3">
-                                    <p class="font-medium font-poppins text-[#617388]">
-                                        {{ $recentApplicant->last_name }}, {{ $recentApplicant->first_name }}</p>
-                                    <p class="text-[12px] font-poppins text-[#8898AC]"> {{ $recentApplicant->email }}                                       
-                                </td>
+                                <tr
+                                    class="{{ $index % 2 == 0 ? 'bg-[#F6F8FF]' : 'bg-white' }}  border-b   border-gray-100 text-left ">
+
+                                    <td class="px-6 py-3 text-sm">{{ $recentApplicant->id }}</td>
+                                    <td class="px-6 py-3">
+                                        <p class="font-medium font-poppins text-[#617388]">
+                                            {{ $recentApplicant->last_name }}, {{ $recentApplicant->first_name }}</p>
+                                        <p class="text-[12px] font-poppins text-[#8898AC]">
+                                            {{ $recentApplicant->email }}
+                                    </td>
                                     <td class="px-6 py-3">{{ $recentApplicant->created_at }}</td>
-                                <td class="px-6 py-3">
-                                    @if($recentApplicant->status == "WaitListed")
-                                        <span class="bg-sky-200  text-[14px] text-sky-700 py-1 px-2 rounded-md ">Waitlisted</span>
-                                    @elseif($recentApplicant->status == "Qualified")
-                                        <span class="bg-blue-200  text-[14px] text-blue-700 py-1 px-2 rounded-md ">Qualified</span>
-                                    @elseif($recentApplicant->status == "Approved")
-                                        <span class="bg-emerald-200  text-[14px] text-emerald-700 py-1 px-2 rounded-md ">Approved</span>
-                                    @elseif($recentApplicant->status == "Unqualified")
-                                        <span class="bg-rose-200  text-[14px] text-rose-700 py-1 px-2 rounded-md ">Unqualified</span>
-                                    @elseif($recentApplicant->status == "Archived")
-                                        <span class="bg-rose-200  text-[14px] text-rose-700 py-1 px-2 rounded-md ">Archived</span>
-                                    @elseif($recentApplicant->status == "Pending")
-                                        <span class="bg-orange-200  text-[14px] text-orange-700 py-1 px-2 rounded-md ">Pending</span>
-                                    @endif  
-                                    
-                                    
-                                </td>
-                            </tr>
+                                    <td class="px-6 py-3">
+                                        @if ($recentApplicant->status == 'WaitListed')
+                                            <span
+                                                class="bg-sky-200  text-[14px] text-sky-700 py-1 px-2 rounded-md ">Waitlisted</span>
+                                        @elseif($recentApplicant->status == 'Qualified')
+                                            <span
+                                                class="bg-blue-200  text-[14px] text-blue-700 py-1 px-2 rounded-md ">Qualified</span>
+                                        @elseif($recentApplicant->status == 'Approved')
+                                            <span
+                                                class="bg-emerald-200  text-[14px] text-emerald-700 py-1 px-2 rounded-md ">Ready
+                                                for Interview</span>
+                                        @elseif($recentApplicant->status == 'Unqualified')
+                                            <span
+                                                class="bg-rose-200  text-[14px] text-rose-700 py-1 px-2 rounded-md ">Unqualified</span>
+                                        @elseif($recentApplicant->status == 'Archived')
+                                            <span
+                                                class="bg-rose-200  text-[14px] text-rose-700 py-1 px-2 rounded-md ">Archived</span>
+                                        @elseif($recentApplicant->status == 'Pending')
+                                            <span
+                                                class="bg-orange-200  text-[14px] text-orange-700 py-1 px-2 rounded-md ">Pending</span>
+                                        @endif
+
+
+                                    </td>
+                                </tr>
                             @endforeach
                         </tbody>
                     </table>
-                    
-                    
+
+
                 </div>
-                
+
             </div>
 
-             
-           
 
 
-           
+
+
+
         </section>
 
     </div>

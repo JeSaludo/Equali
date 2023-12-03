@@ -243,7 +243,7 @@
                                                 </a>
 
 
-                                                <a class="" href="{{ route('admin.dashboard.archive-applicant', $user->id) }}"
+                                                <a href="{{ route('admin.dashboard.archive-applicant', $user->id) }}"
                                                     onclick="return confirm('Are you sure you want to archive this user?')">
                                                     <i class='bx bx-archive-in '></i>
                                                 </a>
@@ -274,13 +274,13 @@
                                                             class='bx bxs-trash '></i></button>
                                                 </form>
                                             @elseif($user->status == 'Pending')
-                                                <a class="hover:text-green-400" title="Approve"
+                                                <a class="hover:text-green-400 mx-1" title="Approve"
                                                     href="{{ route('admin.dashboard.approve-applicant', $user->id) }}"
                                                     onclick="return confirm('Are you sure you want to approve this user?')">
                                                     <i class='bx bx-user-check bx-sm'></i>
                                                 </a>
 
-                                                <a class="hover:text-red-400" title="Reject"
+                                                <a class="hover:text-red-400 mx-1" title="Reject"
                                                     href="{{ route('admin.dashboard.archive-applicant', $user->id) }}"
                                                     onclick="return confirm('Are you sure you want to archive this user?')">
                                                     <i class='bx bx-user-x bx-sm '></i>
@@ -297,7 +297,7 @@
                                                     @csrf
                                                     @method('DELETE')
                                                     <button type="submit" title="Delete"
-                                                        class="mx-2   hover:text-red-400"
+                                                        class="mx-1   hover:text-red-400"
                                                         onclick="return confirm('Are you sure you want to delete this user?')"><i
                                                             class='bx bxs-trash '></i></button>
 
