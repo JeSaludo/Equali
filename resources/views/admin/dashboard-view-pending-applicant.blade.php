@@ -107,12 +107,11 @@
 
                 </div>
             </div>
-            <<<<<<< HEAD <div class="flex  m-4 justify-between">
+           
 
-                =======
                 <div class="flex  mx-4 mt-2 justify-between">
 
-                    >>>>>>> ca650aac01a7d17bb7618b9222567542d8fb6981
+                
                     <h1 class="text-[#26386A] text-[18px]  font-bold font-raleway ">List of Applicants</h1>
 
                     <div>
@@ -163,12 +162,12 @@
                                 <thead
                                     class="border-b text-[#26386A] border-[#D9DBE3] font-semibold text-left whitespace-nowrap">
                                     <tr>
-                                        {{-- <td class="px-6 py-2 ">
+                                        <td class="px-6 py-2 ">
                                     <div class="flex items-center">
                                         <input id="default-checkbox" type="checkbox" value="" name="akk" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded">
                                       
                                     </div>
-                                </td> --}}
+                                </td>
                                         <td class="px-6 py-2">ID</td>
                                         <td class="px-6 py-2">Applicant Name</td>
                                         <td class="px-6 py-2">Admission Exam Score</td>
@@ -191,21 +190,7 @@
                                         </tr>
                                     @else
                                         @foreach ($users as $index => $user)
-                                            <<<<<<< HEAD <tr
-                                                class="{{ $index % 2 == 0 ? 'bg-[#F6F8FF]' : 'bg-white' }} border-b border-gray-100">
-                                                {{-- <td class="px-6 py-3">
-                                            <div class="flex items-center">
-                                                <input id="default-checkbox" name="selectedUsers[]" type="checkbox" value="{{$user->id}}" class="user-checkbox w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded">
-                                            </div>
-                                        </td> --}}
-                                                <td class="px-6 py-3">{{ $user->id }}</td>
-                                                <td class="px-6 py-3">
-                                                    {{ $user->last_name . ', ' . $user->first_name }}</td>
-                                                <td class="px-6 py-3">
-                                                    {{ $user->admissionExam->score . '/' . $user->admissionExam->total_score }}
-                                                </td>
-                                                =======
-
+                                           
                                                 <tr
                                                     class="{{ $index % 2 == 0 ? 'bg-[#F6F8FF]' : 'bg-white' }} border-b border-gray-100">
                                                     <td class="px-6 py-3">
@@ -221,7 +206,7 @@
                                                     <td class="px-6 py-3">
                                                         {{ $user->admissionExam->score . '/' . $user->admissionExam->total_score }}
                                                     </td>
-                                                    >>>>>>> ca650aac01a7d17bb7618b9222567542d8fb6981
+                                                   
                                                     <td class="px-6 py-3">
                                                         @if ($user->admissionExam->status == 'Passed')
                                                             <span
@@ -254,51 +239,32 @@
                                                         @endif
                                                     </td>
                                                     <td class="px-4 py-3 flex items-center justify-start">
-                                                        <<<<<<< HEAD <a class="hover:text-green-400 mx-1"
+                                                     <a class="hover:text-green-400 mx-1"
                                                             title="Approve"
-                                                            href="{{ route('admin.dashboard.approve-applicant', $user->id) }}"=======<a
+                                                            
                                                             href="{{ route('admin.dashboard.approve-applicant', $user->id) }}"
-                                                            class="mx-1 hover:text-green-400">>>>>>>
-                                                            ca650aac01a7d17bb7618b9222567542d8fb6981
+                                                            class="mx-1 hover:text-green-400"
                                                             onclick="return confirm('Are you sure you want to approve this user?')">
                                                             <i class='bx bx-user-check bx-sm'></i>
 
                                                             </a>
-                                                            <<<<<<< HEAD <a class="hover:text-red-400 mx-1"
+                                                          <a class="hover:text-red-400 mx-1"
                                                                 title="Reject"
-                                                                href="{{ route('admin.dashboard.archive-applicant', $user->id) }}"=======<a
+                                                           
                                                                 href="{{ route('admin.dashboard.archive-applicant', $user->id) }}"
-                                                                class="mx-1 hover:text-red-400">>>>>>>
-                                                                ca650aac01a7d17bb7618b9222567542d8fb6981
+                                                                class="mx-1 hover:text-red-400"
+                                                              
                                                                 onclick="return confirm('Are you sure you want to archive this user?')">
                                                                 <i class='bx bx-user-x bx-sm '></i>
                                                                 </a>
-
-                                                                <<<<<<< HEAD <a
-                                                                    href="{{ route('admin.dashboard.edit-applicant', $user->id) }}"
-                                                                    class="mx-1 hover:text-green-400" title="Edit">
-                                                                    <i class='bx bxs-edit '></i></a>
-
-                                                                    <form
-                                                                        action="{{ route('admin.dashboard.delete-applicant', $user->id) }}"
-                                                                        method="POST" style="display: inline-block;">
-                                                                        @csrf
-                                                                        @method('DELETE')
-                                                                        <button type="submit" title="Delete"
-                                                                            class="mx-2   hover:text-red-400"
-                                                                            onclick="return confirm('Are you sure you want to delete this user?')"><i
-                                                                                class='bx bxs-trash '></i></button>
-
-                                                                    </form>
-
-                                                                    =======
+ 
                                                                     <a href="{{ route('admin.dashboard.edit-applicant', $user->id) }}"
                                                                         class="mx-1 hover:text-green-400"
                                                                         title="Edit"><i class='bx bxs-edit '></i>
                                                                     </a>
 
 
-                                                                    >>>>>>> ca650aac01a7d17bb7618b9222567542d8fb6981
+                                                                
                                                     </td>
                                                 </tr>
                                         @endforeach
@@ -338,104 +304,105 @@
                         </div>
 
                     </div>
-                    <div class="">
-                        <div id="addApplicantContent"
-                            class="fixed top-0 left-0 w-full h-full flex justify-center items-center bg-gray-500 bg-opacity-50 z-50 hidden">
-                            <<<<<<< HEAD=======>>>>>>> ca650aac01a7d17bb7618b9222567542d8fb6981
-                                <form action="{{ route('admin.dashboard.store-applicant') }}" method="POST">
-                                    @csrf
+                </form>
+                <div class="">
+                    <div id="addApplicantContent"
+                        class="fixed top-0 left-0 w-full h-full flex justify-center items-center bg-gray-500 bg-opacity-50 z-50 hidden">
+                        
+                            <form action="{{ route('admin.dashboard.store-applicant') }}" method="POST">
+                                @csrf
+                                <div
+                                    class="bg-white mx-auto text-center rounded-[12px] w-[520px] h-[380px] p-4 border   border-[#D9DBE3]  ">
                                     <div
-                                        class="bg-white mx-auto text-center rounded-[12px] w-[520px] h-[380px] p-4 border   border-[#D9DBE3]  ">
-                                        <div
-                                            class="relative text-center mx-auto font-poppins text-[24px] font-semibold  text-[#26386A] uppercase">
-                                            <h1>Add Applicant</h1>
-                                            <button id="closePopup" class="absolute top-0 right-0"><i
-                                                    class='bx bx-x bx-sm text-[#26386A]'></i></button>
-                                        </div>
+                                        class="relative text-center mx-auto font-poppins text-[24px] font-semibold  text-[#26386A] uppercase">
+                                        <h1>Add Applicant</h1>
+                                        <button id="closePopup" class="absolute top-0 right-0"><i
+                                                class='bx bx-x bx-sm text-[#26386A]'></i></button>
+                                    </div>
 
-                                        <div class=" px-8 flex justify-between gap-4 mt-6 ">
-                                            <div class="relative   w-full">
-                                                <input type="text" name="firstName"
-                                                    class="h-[50px] w-full rounded placeholder:text-[#4E4E4E] placeholder:font-poppins placeholder:text-[16px] px-[40px] border-2 border-[#D7D8D0] "
-                                                    placeholder="First Name" required autocomplete="off">
-
-                                            </div>
-
-                                            <div class="relative  w-full">
-                                                <input type="text" name="lastName"
-                                                    class="h-[50px] w-full rounded placeholder:text-[#4E4E4E] placeholder:font-poppins placeholder:text-[16px] px-[40px] border-2 border-[#D7D8D0] "
-                                                    placeholder="Last Name" required autocomplete="off">
-
-                                            </div>
-
-
-
-                                        </div>
-
-
-                                        <div class="relative px-8 my-4 w-full">
-                                            <input type="text" name="email"
+                                    <div class=" px-8 flex justify-between gap-4 mt-6 ">
+                                        <div class="relative   w-full">
+                                            <input type="text" name="firstName"
                                                 class="h-[50px] w-full rounded placeholder:text-[#4E4E4E] placeholder:font-poppins placeholder:text-[16px] px-[40px] border-2 border-[#D7D8D0] "
-                                                placeholder="Email Address" required autocomplete="off">
+                                                placeholder="First Name" required autocomplete="off">
 
                                         </div>
 
-                                        {{-- <div class="relative px-8 my-4 w-full">
-                                <input type="text" name="contactNumber"
-                                    class="h-[50px] w-full rounded placeholder:text-[#4E4E4E] placeholder:font-poppins placeholder:text-[16px] px-[40px] border-2 border-[#D7D8D0] "
-                                    placeholder="Contact Number" required autocomplete="off">
+                                        <div class="relative  w-full">
+                                            <input type="text" name="lastName"
+                                                class="h-[50px] w-full rounded placeholder:text-[#4E4E4E] placeholder:font-poppins placeholder:text-[16px] px-[40px] border-2 border-[#D7D8D0] "
+                                                placeholder="Last Name" required autocomplete="off">
 
-                            </div> --}}
-
-
-                                        <div class=" px-8 flex justify-between gap-4 my-4">
-                                            <div class="relative  w-full">
-                                                <input type="number" name="score"
-                                                    class="h-[50px] w-full rounded placeholder:text-[#4E4E4E] placeholder:font-poppins placeholder:text-[16px] px-[40px] border-2 border-[#D7D8D0] "
-                                                    placeholder="Score" required autocomplete="off">
-
-                                            </div>
-
-
-                                            <div class="relative  w-full">
-                                                <input type="number" name="totalScore"
-                                                    class="h-[50px] w-full rounded placeholder:text-[#4E4E4E] placeholder:font-poppins placeholder:text-[16px] px-[40px] border-2 border-[#D7D8D0] "
-                                                    placeholder="Full Score" required autocomplete="off" value=60>
-                                                {{-- Change for auto  --}}
-                                            </div>
                                         </div>
-                                        <div class="px-8 my-6">
-                                            <input type="submit" value="Submit"
-                                                class="text-lg font-poppins font-normal mr-2 w-full h-[50px] rounded-[18px] bg-[#1E5CD1] hover:bg-[#134197] transition-colors duration-200 text-white">
-                                        </div>
+
+
 
                                     </div>
 
 
+                                    <div class="relative px-8 my-4 w-full">
+                                        <input type="text" name="email"
+                                            class="h-[50px] w-full rounded placeholder:text-[#4E4E4E] placeholder:font-poppins placeholder:text-[16px] px-[40px] border-2 border-[#D7D8D0] "
+                                            placeholder="Email Address" required autocomplete="off">
 
-                                </form>
+                                    </div>
 
-                        </div>
+                                    {{-- <div class="relative px-8 my-4 w-full">
+                            <input type="text" name="contactNumber"
+                                class="h-[50px] w-full rounded placeholder:text-[#4E4E4E] placeholder:font-poppins placeholder:text-[16px] px-[40px] border-2 border-[#D7D8D0] "
+                                placeholder="Contact Number" required autocomplete="off">
+
+                        </div> --}}
+
+
+                                    <div class=" px-8 flex justify-between gap-4 my-4">
+                                        <div class="relative  w-full">
+                                            <input type="number" name="score"
+                                                class="h-[50px] w-full rounded placeholder:text-[#4E4E4E] placeholder:font-poppins placeholder:text-[16px] px-[40px] border-2 border-[#D7D8D0] "
+                                                placeholder="Score" required autocomplete="off">
+
+                                        </div>
+
+
+                                        <div class="relative  w-full">
+                                            <input type="number" name="totalScore"
+                                                class="h-[50px] w-full rounded placeholder:text-[#4E4E4E] placeholder:font-poppins placeholder:text-[16px] px-[40px] border-2 border-[#D7D8D0] "
+                                                placeholder="Full Score" required autocomplete="off" value=60>
+                                            {{-- Change for auto  --}}
+                                        </div>
+                                    </div>
+                                    <div class="px-8 my-6">
+                                        <input type="submit" value="Submit"
+                                            class="text-lg font-poppins font-normal mr-2 w-full h-[50px] rounded-[18px] bg-[#1E5CD1] hover:bg-[#134197] transition-colors duration-200 text-white">
+                                    </div>
+
+                                </div>
+
+
+
+                            </form>
+
                     </div>
+                </div>
         </section>
 
     </div>
 
-    <<<<<<< HEAD=======<script>
-        document.addEventListener('DOMContentLoaded', function() {
-            // Get the checkboxes and the button
-            const checkboxes = document.querySelectorAll('input[name="selectedUsers[]"]');
-            const approveBtn = document.getElementById('approveBtn');
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+                // Get the checkboxes and the button
+                const checkboxes = document.querySelectorAll('input[name="selectedUsers[]"]');
+                const approveBtn = document.getElementById('approveBtn');
 
-            // Add a change event listener to each checkbox
-            checkboxes.forEach(function(checkbox) {
-                checkbox.addEventListener('change', function() {
-                    // Check if any checkbox is selected
-                    const anyCheckboxSelected = Array.from(checkboxes).some(checkbox => checkbox
-                        .checked);
+                // Add a change event listener to each checkbox
+                checkboxes.forEach(function (checkbox) {
+                    checkbox.addEventListener('change', function () {
+                        // Check if any checkbox is selected
+                        const anyCheckboxSelected = Array.from(checkboxes).some(checkbox => checkbox.checked);
 
-                    // Update the button's disabled state
-                    approveBtn.disabled = !anyCheckboxSelected;
+                        // Update the button's disabled state
+                        approveBtn.disabled = !anyCheckboxSelected;
+                    });
                 });
 
                 selectAllCheckbox.addEventListener('click', function() {
@@ -461,6 +428,7 @@
                 updateSelectAllCheckbox();
             });
         });
+
     </script>
 
     
