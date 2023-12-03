@@ -75,7 +75,7 @@
 
                 </div>
 
-              
+
 
                 <div class="bg-white mx-4 px-6 w-full relative rounded-lg  border  border-[#D9DBE3] shadow-sm">
                     <h1 class="text-[18px] pt-2 font-poppins font-bold text-[#26386A] ">Finished Interviews</h1>
@@ -100,169 +100,171 @@
 
             </div>
 
-            <form action="{{route('admin.dashboard.approve-applicant-multiple')}}" method="POST">
+            <form action="{{ route('admin.dashboard.approve-applicant-multiple') }}" method="POST">
                 @csrf
                 <div class="mx-4 my-2 ">
-                    <a disabled id="openPopup"   class="w-[120px] border border-[#D9DBE3] hover:border-slate-400 flex items-center text-[14px] tezt-poppin hover:text-[#384b94] font-poppins text-slate-600 py-1 px-4 rounded-lg">
+                    <a disabled id="openPopup"
+                        class="w-[120px] border border-[#D9DBE3] hover:border-slate-400 flex items-center text-[14px] tezt-poppin hover:text-[#384b94] font-poppins text-slate-600 py-1 px-4 rounded-lg">
                         <i class='bx bx-user-check text-[16px] pr-1'></i></i>Schedule
                     </a>
                 </div>
 
-            <div class="flex mx-4 my-4" id="navLinks">
+                <div class="flex mx-4 my-4" id="navLinks">
 
-                <a href=""
-                class="font-poppins  text-slate-500 active nav-link whitespace-nowrap">Schedule Interview</a>
-                <a href=""
-                    class="font-poppins  text-slate-500 nav-link   whitespace-nowrap">Pending Interview</a>
-                <a href=""
-                    class="font-poppins  text-slate-500 nav-link whitespace-nowrap">Review Interview</a>
-               
-                
-
-                <a href="#" class="font-poppins  text-slate-500 w-full no-hover-underline"></a>
-            </div>
-
-            <div class="bg-white mx-4 relative  border   border-[#D9DBE3] shadow-md rounded-lg ">
-                <div class="overflow-x-auto">
-                    <table
-                        class="w-full font-poppins border-collapse   text-md text-left rtl:text-right text-gray-500 table-auto ">
-                        <thead
-                            class="border-b text-[#26386A] border-[#D9DBE3] font-semibold text-left whitespace-nowrap">
-                            <tr>
-                               <td class="px-6 py-2 ">
-                                    <div class="flex items-center">
-                                        <input id="default-checkbox" type="checkbox" value="" name="akk" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded">
-                                      
-                                    </div>
-                                </td>
-                                <td class="px-6 py-2">ID</td>
-                                <td class="px-6 py-2">Applicant Name</td>
-                                <td class="px-6 py-2">Interview & Exam Schedule</td>
-                                <td class="px-6 py-2">Time</td> 
-                            </tr>
-                        </thead>
-
-                        <tbody class="text-left ">
-                            @if ($users->count() == 0)
-                                <tr>
-                                    <td></td>
-                                    <td class="">
-
-                                        <p class="my-3">No Data found in the database</p>
-
-                                    </td>
-                                    <td></td>
-                                </tr>
-                            @else
-                                @foreach ($users as $index => $user)
-                                    <tr
-                                        class="{{ $index % 2 == 0 ? 'bg-[#F6F8FF]' : 'bg-white' }} border-b border-gray-100">
-                                        <td class="px-6 py-3">
-                                            <div class="flex items-center">
-                                                <input id="default-checkbox" name="selectedUsers[]" type="checkbox" value="{{$user->id}}" class="user-checkbox w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded">
-                                            </div>
-                                        </td>
-                                        
-                                        <td class="px-6 py-3">{{ $user->id }}</td>
-                                        <td class="px-6 py-3">{{ $user->last_name . ', ' . $user->first_name }}</td>
-                                        
-                                        @if($user->qualifiedStudent != null)
-
-                                            @if($user->qualifiedStudent->exam_schedule_data != null)
-                                                <td class="px-6 py-3">
-                                                    {{ $user->qualifiedStudent->exam_schedule_date}}
-                                                </td>
-
-                                                <td class="px-6 py-3">
-                                                    {{ $user->qualifiedStudent->start_time . "-" . $user->qualifiedStudent->end_time}}
-                                                </td>
-                                            @else
-                                                <td class="px-6 py-3">
-                                                    No Schedule Yet
-                                                </td>
-
-                                            @endif
-                                        @endif
-                                       
-                                     
-                                       
-                                    </tr>
-                                @endforeach
-                            @endif
-                        </tbody>
-                    </table>
-                    <nav
-                        class="bg-white border-t rounded-b-lg text-[14px] font-poppins border-[#D9DBE3] w-full py-2 flex justify-start pl-2 items-center">
-
-                        <a href="{{ $users->previousPageUrl() }}"
-                            class="flex items-center justify-center px-3 h-8 ms-0 leading-tight text-gray-500 bg-white border border-e-0 border-gray-300 rounded-s-lg hover:bg-gray-100 hover:text-[#26386A] {{ $users->currentPage() > 1 ? '' : 'opacity-50 cursor-not-allowed' }}">
-                            <span class="">Previous</span>
-
-                        </a>
+                    <a href="" class="font-poppins  text-slate-500 active nav-link whitespace-nowrap">Schedule
+                        Interview</a>
+                    <a href="" class="font-poppins  text-slate-500 nav-link   whitespace-nowrap">Pending
+                        Interview</a>
+                    <a href="" class="font-poppins  text-slate-500 nav-link whitespace-nowrap">Review
+                        Interview</a>
 
 
 
-
-                        <div class="flex">
-                            @for ($i = 1; $i <= $users->lastPage(); $i++)
-                                <a href="{{ $users->url($i) }}"
-                                    class="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-[#26386A]  {{ $i == $users->currentPage() ? 'bg-slate-100' : '' }}">
-                                    {{ $i }}
-                                </a>
-                            @endfor
-                        </div>
-                        <a href="{{ $users->nextPageUrl() }}"
-                            class="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 rounded-e-lg hover:bg-gray-100 hover:text-[#26386A] {{ $users->hasMorePages() ? '' : 'opacity-50 cursor-not-allowed' }}">
-                            <span class="">Next</span>
-
-                        </a>
-                        {{-- Next Page Link --}}
-
-
-                    </nav>
+                    <a href="#" class="font-poppins  text-slate-500 w-full no-hover-underline"></a>
                 </div>
 
-            </div>
-             <!-- Create the popup for scheduling -->
-             <div id="popup"
-             class="fixed top-0 left-0 w-full h-full flex justify-center items-center bg-gray-500 bg-opacity-50 z-50 hidden">
-             <div class="bg-white rounded-lg p-4">
-                 <span class="cursor-pointer absolute top-2 right-2 text-gray-600"
-                     id="closePopup">&times;</span>
-                 <h2 class="text-lg font-semibold mb-4">Schedule Exam and Interview</h2>
+                <div class="bg-white mx-4 relative  border   border-[#D9DBE3] shadow-md rounded-lg ">
+                    <div class="overflow-x-auto">
+                        <table
+                            class="w-full font-poppins border-collapse   text-md text-left rtl:text-right text-gray-500 table-auto ">
+                            <thead
+                                class="border-b text-[#26386A] border-[#D9DBE3] font-semibold text-left whitespace-nowrap">
+                                <tr>
+                                    <td class="px-6 py-2 ">
+                                        <div class="flex items-center">
+                                            <input id="default-checkbox" type="checkbox" value="" name="akk"
+                                                class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded">
 
-                 <div>
-                     <div class="mb-4">
-                         <label for="date"
-                             class="block text-sm font-medium text-gray-600">Date:</label>
-                         <input type="date" name="date"
-                             class="w-full px-3 py-2 border rounded-md" required>
+                                        </div>
+                                    </td>
+                                    <td class="px-6 py-2">ID</td>
+                                    <td class="px-6 py-2">Applicant Name</td>
+                                    <td class="px-6 py-2">Interview & Exam Schedule</td>
+                                    <td class="px-6 py-2">Time</td>
+                                </tr>
+                            </thead>
+
+                            <tbody class="text-left ">
+                                @if ($users->count() == 0)
+                                    <tr>
+                                        <td></td>
+                                        <td class="">
+
+                                            <p class="my-3">No Data found in the database</p>
+
+                                        </td>
+                                        <td></td>
+                                    </tr>
+                                @else
+                                    @foreach ($users as $index => $user)
+                                        <tr
+                                            class="{{ $index % 2 == 0 ? 'bg-[#F6F8FF]' : 'bg-white' }} border-b border-gray-100">
+                                            <td class="px-6 py-3">
+                                                <div class="flex items-center">
+                                                    <input id="default-checkbox" name="selectedUsers[]" type="checkbox"
+                                                        value="{{ $user->id }}"
+                                                        class="user-checkbox w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded">
+                                                </div>
+                                            </td>
+
+                                            <td class="px-6 py-3">{{ $user->id }}</td>
+                                            <td class="px-6 py-3">{{ $user->last_name . ', ' . $user->first_name }}
+                                            </td>
+
+                                            @if ($user->qualifiedStudent != null)
+                                                @if ($user->qualifiedStudent->exam_schedule_data != null)
+                                                    <td class="px-6 py-3">
+                                                        {{ $user->qualifiedStudent->exam_schedule_date }}
+                                                    </td>
+
+                                                    <td class="px-6 py-3">
+                                                        {{ $user->qualifiedStudent->start_time . '-' . $user->qualifiedStudent->end_time }}
+                                                    </td>
+                                                @else
+                                                    <td class="px-6 py-3">
+                                                        No Schedule Yet
+                                                    </td>
+                                                @endif
+                                            @endif
 
 
-                         <div>
-                             <label for="start_time">Start Time:</label>
-                             <input type="time" id="start_time" name="start_time" required>
 
-                             <label for="end_time">End Time:</label>
-                             <input type="time" id="end_time" name="end_time" required>
-                         </div>
+                                        </tr>
+                                    @endforeach
+                                @endif
+                            </tbody>
+                        </table>
+                        <nav
+                            class="bg-white border-t rounded-b-lg text-[14px] font-poppins border-[#D9DBE3] w-full py-2 flex justify-start pl-2 items-center">
 
+                            <a href="{{ $users->previousPageUrl() }}"
+                                class="flex items-center justify-center px-3 h-8 ms-0 leading-tight text-gray-500 bg-white border border-e-0 border-gray-300 rounded-s-lg hover:bg-gray-100 hover:text-[#26386A] {{ $users->currentPage() > 1 ? '' : 'opacity-50 cursor-not-allowed' }}">
+                                <span class="">Previous</span>
 
-
-
-                     </div>
-                     <button type="submit"
-                         class="bg-[#2B6CE6] text-white px-4 py-2 rounded-md hover:bg-[#134197] transition-colors duration-200">Submit</button>
-                     <button type="button" id="cancelSchedule"
-                         class="bg-gray-300 text-gray-600 px-4 py-2 rounded-md hover:bg-gray-400 transition-colors duration-200 ml-2">Cancel</button>
-                 </div>
-             </div>
-         </div>
-         </form>
+                            </a>
 
 
 
-          
+
+                            <div class="flex">
+                                @for ($i = 1; $i <= $users->lastPage(); $i++)
+                                    <a href="{{ $users->url($i) }}"
+                                        class="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-[#26386A]  {{ $i == $users->currentPage() ? 'bg-slate-100' : '' }}">
+                                        {{ $i }}
+                                    </a>
+                                @endfor
+                            </div>
+                            <a href="{{ $users->nextPageUrl() }}"
+                                class="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 rounded-e-lg hover:bg-gray-100 hover:text-[#26386A] {{ $users->hasMorePages() ? '' : 'opacity-50 cursor-not-allowed' }}">
+                                <span class="">Next</span>
+
+                            </a>
+                            {{-- Next Page Link --}}
+
+
+                        </nav>
+                    </div>
+
+                </div>
+                <!-- Create the popup for scheduling -->
+                <div id="popup"
+                    class="fixed top-0 left-0 w-full h-full flex justify-center items-center bg-gray-500 bg-opacity-50 z-50 hidden">
+                    <div class="bg-white rounded-lg p-4">
+                        <span class="cursor-pointer absolute top-2 right-2 text-gray-600"
+                            id="closePopup">&times;</span>
+                        <h2 class="text-lg font-semibold mb-4">Schedule Exam and Interview</h2>
+
+                        <div>
+                            <div class="mb-4">
+                                <label for="date" class="block text-sm font-medium text-gray-600">Date:</label>
+                                <input type="date" name="date" class="w-full px-3 py-2 border rounded-md"
+                                    required>
+
+
+                                <div>
+                                    <label for="start_time">Start Time:</label>
+                                    <input type="time" id="start_time" name="start_time" required>
+
+                                    <label for="end_time">End Time:</label>
+                                    <input type="time" id="end_time" name="end_time" required>
+                                </div>
+
+
+
+
+                            </div>
+                            <button type="submit"
+                                class="bg-[#2B6CE6] text-white px-4 py-2 rounded-md hover:bg-[#134197] transition-colors duration-200">Submit</button>
+                            <button type="button" id="cancelSchedule"
+                                class="bg-gray-300 text-gray-600 px-4 py-2 rounded-md hover:bg-gray-400 transition-colors duration-200 ml-2">Cancel</button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+
+
+
+
 
         </section>
 
@@ -270,25 +272,24 @@
 
 
     <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Get the checkboxes and the button
+            const checkboxes = document.querySelectorAll('input[name="selectedUsers[]"]');
+            const approveBtn = document.getElementById('approveBtn');
 
+            // Add a change event listener to each checkbox
+            checkboxes.forEach(function(checkbox) {
+                checkbox.addEventListener('change', function() {
+                    // Check if any checkbox is selected
+                    const anyCheckboxSelected = Array.from(checkboxes).some(checkbox => checkbox
+                        .checked);
 
-        document.addEventListener('DOMContentLoaded', function () {
-                // Get the checkboxes and the button
-                const checkboxes = document.querySelectorAll('input[name="selectedUsers[]"]');
-                const approveBtn = document.getElementById('approveBtn');
-
-                // Add a change event listener to each checkbox
-                checkboxes.forEach(function (checkbox) {
-                    checkbox.addEventListener('change', function () {
-                        // Check if any checkbox is selected
-                        const anyCheckboxSelected = Array.from(checkboxes).some(checkbox => checkbox.checked);
-
-                        // Update the button's disabled state
-                        approveBtn.disabled = !anyCheckboxSelected;
-                    });
+                    // Update the button's disabled state
+                    approveBtn.disabled = !anyCheckboxSelected;
                 });
+            });
 
-                selectAllCheckbox.addEventListener('click', function() {
+            selectAllCheckbox.addEventListener('click', function() {
                 checkboxes.forEach(checkbox => {
                     checkbox.checked = selectAllCheckbox.checked;
                 });
@@ -304,7 +305,7 @@
             selectAllCheckbox.checked = Array.from(checkboxes).every(checkbox => checkbox.checked);
         }
 
-     
+
 
         checkboxes.forEach(checkbox => {
             checkbox.addEventListener('click', function() {
@@ -341,10 +342,10 @@
         });
     </script>
 
-    
-  
-    
-    
+
+
+
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.2.0/flowbite.min.js"></script>
     <script src="{{ asset('js/nav-link.js') }}"></script>
     <script src="{{ asset('js/add-applicant.js') }}"></script>
