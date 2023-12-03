@@ -90,7 +90,7 @@ Route::middleware(['admin'])->group(function () {
     //rename this   // can be considered a qualified 
     
     //Qualified 
-    Route::get('/dashboard/list-of-scheduled-applicant', [ApplicantController::class, 'ShowApprovedApplicant133'])->name('admin.dashboard.show-qualified-appplicant');
+    Route::get('/dashboard/list-of-scheduled-applicant', [InterviewController::class, 'ShowScheduleForInterview'])->name('admin.dashboard.show-qualified-appplicant');
     
     Route::put('/dashboard/qualified-applicant/{id}', [ApplicantController::class, 'UpdateQualifiedApplicant'])->name('admin.dashboard.update-qualified-applicant');
     
@@ -110,6 +110,8 @@ Route::middleware(['admin'])->group(function () {
     Route::post('/exam/result', [ExamController::class, 'SubmitExam'])->name('submit-exam');
     });
 
+
+    Route::get('/dashboard/view-interview', [AdminController::class, 'ShowInterview'])->name('admin.dashboard.show-interview');
 
     Route::get('/dashboard/exam', [ExamController::class, 'ShowAdminExam'])->name('admin.dashboard.show-exam');
     Route::get('/dashboard/exam/{id}/edit', [ExamController::class, 'EditExam'])->name('admin.dashboard.edit-exam');

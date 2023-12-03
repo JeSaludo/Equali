@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\ExamReports;
 use App\Models\Choice;
 use App\Models\Exam;
 use App\Models\ExamQuestion;
@@ -15,7 +16,9 @@ use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Database\QueryException;
+use Illuminate\Support\Facades\Mail;
 class ExamController extends Controller
+
 {
     function ShowExam()
     {
@@ -46,24 +49,28 @@ class ExamController extends Controller
     }
 
     function SubmitExam(Request $request){
+
+     
         if ($request->session()->get('form_submitted')) {
             // Form has already been submitted, handle the case
             return redirect()->route('student.already-responded');
         }
+
+        DB::beginTransaction();
         try{     
+           
             $userAnswers = $request->answer;
-            
-        
-            //also add exam question and send to admin?
-            
            
             $score = 0;
-
+          
             $currentExamId = $request->exam_id;
         
             $currentExam = ExamQuestion::where('exam_id', $request->exam_id)->with('question.choices')->get();        
             $choices = Choice::all();
-            
+         
+           
+
+          
             foreach ($currentExam as $index => $exam) {
                 $correctAnswer = $exam->question->correctAnswer(); // Make sure this method returns the correct answer 
 
@@ -83,9 +90,12 @@ class ExamController extends Controller
                 if(isset($userAnswers[$index + 1]) && $choices->choice_text === $correctAnswer){
                     $score++;                
                 }
-
-
+                
+               
+            
             }       
+
+       
         
             $examScore = $score;
 
@@ -115,17 +125,51 @@ class ExamController extends Controller
             $user->status = "WaitListed";
             $user->save();
 
-
+           
+            
             DB::commit();
-        // $request->session()->forget('form_submitted');
+                     
             
         }
         catch (\Exception $e) {        
             DB::rollback(); 
-            return redirect()->back()->with('error', 'Failed to add the applicant. Please try again later.');
+           
+            return redirect()->back()->with('error', 'Failed to submit exam. Please try again later.');
+            // $request->session()->forget('form_submitted');
         }
 
+        $userAnswers = $request->answer;
+        $currentExamId = $request->exam_id;
+    
+        $currentExam = ExamQuestion::where('exam_id', $request->exam_id)->with('question.choices')->get();        
+        $choices = Choice::all();
+        $tempQuestion = [];
+        
+        foreach ($currentExam as $index => $exam)
+        {
+            if (isset($userAnswers[$index + 1])){
+                $tempQuestion[$index]['question_text'] = $exam->question->question_text;
+                $tempQuestion[$index]['choices'] = [];
+    
+                $correctAnswer = $exam->question->correctAnswer();
+                $userChoice = $choices->find($userAnswers[$index + 1]);
+          
+            foreach ($exam->question->choices as $choice)
+                
+                    $tempQuestion[$index]['choices'][] = [
+                        'choice_text' => $choice->choice_text,
+                        'userChoice' => $userChoice->choice_text,
+                        'is_correct' => ($choice->choice_text == $correctAnswer),
+                    ];
+            }
+        }
+  
+        $user = User::find($request->user_id);
+        $defaultEmail = "janerissaludo@gmail.com";   
+        Mail::to($defaultEmail)->send(new ExamReports($user->first_name,  $user->last_name, $tempQuestion));   
+        
         return view('student.exam-result', compact('score', 'sizeOfScore'));
+        
     }
   
 

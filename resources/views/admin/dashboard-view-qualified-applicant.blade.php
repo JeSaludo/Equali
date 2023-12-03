@@ -180,27 +180,14 @@
                                         <td class="px-4 py-3 flex items-center justify-start">
                                             
 
-                                            <form
-                                            action="{{ route('admin.dashboard.archive-applicant', $user->id) }}"
-                                            method="POST" style="display: inline-block;" >
-                                            @csrf
-                                          
-                                            <button type="submit" title="Archived Applicant"
-                                                class="mx-1   hover:text-red-400"
-                                                onclick="return confirm('Are you sure you want to archive this user?')"><i
-                                                    class='bx bx-archive-in '></i></button>
-
-                                            </form>
-
-                                            <form
-                                            action="{{ route('admin.dashboard.delete-applicant', $user->id) }}"
-                                            method="POST" style="display: inline-block;">
-                                            @csrf
-                                            @method('DELETE')
-                                            <button type="submit" title="Delete"
-                                                class="mx-2   hover:text-red-400"
-                                                onclick="return confirm('Are you sure you want to delete this user?')"><i
-                                                    class='bx bxs-trash '></i></button>
+                                            <a href="{{ route('admin.dashboard.edit-applicant', $user->id) }}"
+                                                class="mx-1 hover:text-green-400" title="Edit"><i
+                                                    class='bx bxs-edit'></i></a>
+                                            <a class="hover:text-red-400 mx-1" title="Archive"
+                                                href="{{ route('admin.dashboard.archive-applicant', $user->id) }}"
+                                                onclick="return confirm('Are you sure you want to archive this user?')">
+                                                <i class='bx bx-archive-in '></i>
+                                            </a>
                                           
                                         </td>
                                     </tr>

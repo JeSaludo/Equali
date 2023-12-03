@@ -73,7 +73,7 @@
 
                     <div class="flex items-end gap-3 px-2 text-[#718297] ">
                         <i class='bx bxs-user-check text-[30px] pb-2'></i>
-                        <p class="text-[36px] py-0">{{ $user->where('status', 'Approved')->count() + $user->where('status', 'WaitListed')->count() }} </p>
+                        <p class="text-[36px] py-0">{{ $user->where('status', 'Ready For Interview')->count() + $user->where('status', 'WaitListed')->count() }} </p>
                     </div>
                     <div class="bg-[#5587F7] w-full  h-[24px] absolute bottom-0 left-0 px-0 mx-0 rounded-b-lg"></div>
 
@@ -140,8 +140,12 @@
                                         <span class="bg-sky-200  text-[14px] text-sky-700 py-1 px-2 rounded-md ">Waitlisted</span>
                                     @elseif($recentApplicant->status == "Qualified")
                                         <span class="bg-blue-200  text-[14px] text-blue-700 py-1 px-2 rounded-md ">Qualified</span>
-                                    @elseif($recentApplicant->status == "Approved")
-                                        <span class="bg-emerald-200  text-[14px] text-emerald-700 py-1 px-2 rounded-md ">Approved</span>
+                                    @elseif($recentApplicant->status == "Ready For Interview")
+                                        <span class="bg-emerald-200  text-[14px] text-emerald-700 py-1 px-2 rounded-md ">Ready For Interview</span>
+                                    @elseif($recentApplicant->status == "Ready For Exam")
+                                        <span
+                                            class="bg-emerald-200  text-[14px] text-emerald-700 py-1 px-2 rounded-md ">Ready For Exam</span>
+
                                     @elseif($recentApplicant->status == "Unqualified")
                                         <span class="bg-rose-200  text-[14px] text-rose-700 py-1 px-2 rounded-md ">Unqualified</span>
                                     @elseif($recentApplicant->status == "Archived")

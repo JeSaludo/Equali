@@ -22,7 +22,16 @@ class AdminController extends Controller
         return view('admin.dashboard-overview', compact('recentApplicants', 'user'));
     }
 
+    function ShowInterview(Request $request){
+        
+        $users = User::where('role', 'Student')->where('status', 'Ready For Interview')
+        ->with('qualifiedStudent')
+        ->doesntHave('studentInfo')
+        ->latest('created_at');
 
+        $users = $users->paginate(10);
+        return view('admin.dashboard-view-interview', compact( 'users'));
+    }
     
     
 

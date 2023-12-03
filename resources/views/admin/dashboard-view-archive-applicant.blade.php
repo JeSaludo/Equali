@@ -65,7 +65,7 @@
 
                     <div class="flex items-end gap-3 px-2 text-[#718297] ">
                         <i class='bx bxs-user-check text-[30px] pb-2'></i>
-                        <p class="text-[36px] py-0">{{ $recentUser->where('status', 'Approved')->count()}} </p>
+                        <p class="text-[36px] py-0">{{ $recentUser->where('status', 'Ready For Interview')->count()}} </p>
                     </div>
                     <div class="bg-[#5587F7] w-full  h-[24px] absolute bottom-0 left-0 px-0 mx-0 rounded-b-lg"></div>
 

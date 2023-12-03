@@ -100,25 +100,30 @@
 
 
                                             </td>
-                                            @if ($user->qualifiedStudent->exam_schedule_date != null)
-                                                <td class="px-3 py-2 w-2/12 text-center  whitespace-nowrap">
-                                                    {{ \Carbon\Carbon::parse($user->qualifiedStudent->exam_schedule_date)->format('F j, Y') }}
-                                                </td>
 
-                                                <td class="px-3 py-2 w-2/12 text-center  whitespace-nowrap">
+                                           
+                                                @if ($user->qualifiedStudent->exam_schedule_date == null)
+                                                    <td class="px-3 py-2 w-2/12 text-center  whitespace-nowrap">
+                                                        Not yet scheduled
+                                                    </td>
 
-                                                    {{ \Carbon\Carbon::parse($user->qualifiedStudent->start_time)->format('h:i A') }}
-                                                    -
-                                                    {{ \Carbon\Carbon::parse($user->qualifiedStudent->end_time)->format('h:i A') }}
+                                                    <td>Not yet scheduled</td>
+                                                 @else                                              
 
-                                                </td>
-                                            @else
-                                                <td class="px-3 py-2 w-2/12 text-center  whitespace-nowrap">
-                                                    Not yet scheduled
-                                                </td>
+                                                    <td class="px-3 py-2 w-2/12 text-center  whitespace-nowrap">
+                                                        {{ \Carbon\Carbon::parse($user->qualifiedStudent->exam_schedule_date)->format('F j, Y') }}
+                                                    </td>
 
-                                                <td>Not yet scheduled</td>
-                                            @endif
+                                                    <td class="px-3 py-2 w-2/12 text-center  whitespace-nowrap">
+
+                                                        {{ \Carbon\Carbon::parse($user->qualifiedStudent->start_time)->format('h:i A') }}
+                                                        -
+                                                        {{ \Carbon\Carbon::parse($user->qualifiedStudent->end_time)->format('h:i A') }}
+
+                                                    </td>
+                                                @endif
+                                           
+                                           
 
 
 

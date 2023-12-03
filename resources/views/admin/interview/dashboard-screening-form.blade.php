@@ -203,17 +203,17 @@
                                 <label class="text-[16px] whitespace-nowrap">Status of Internet Connectivity:</label>
 
                                 <div>
-                                    <input type="radio" name="connectivity" id="stable" value="Stable">
+                                    <input type="radio" required  name="connectivity" id="stable" value="Stable">
                                     <label for="stable">Stable</label>
                                 </div>
 
                                 <div>
-                                    <input type="radio" name="connectivity" id="not_stable" value="Not Stable">
+                                    <input type="radio" required  name="connectivity" id="not_stable" value="Not Stable">
                                     <label for="not_stable">Not Stable</label>
                                 </div>
 
                                 <div>
-                                    <input type="radio" name="connectivity" id="none" value="None">
+                                    <input type="radio" required name="connectivity" id="none" value="None">
                                     <label for="none">None</label>
                                 </div>
                             </div>

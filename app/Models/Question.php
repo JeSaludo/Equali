@@ -21,8 +21,11 @@ class Question extends Model
     public function correctAnswer()
     {
         return $this->choices()->where('is_correct', true)->value('choice_text');
-    }
+    }   
 
+    
+
+    
     public function examSubmission()
     {
         return $this->hasMany(Question::class, 'question_id');

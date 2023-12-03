@@ -188,7 +188,7 @@ class ApplicantController extends Controller
 
 
         $user = User::where('role', 'Student')->findOrFail($id);
-        $user->status = "Approved";
+        $user->status = "Ready For Interview";
         $user->save();
 
         $approveUser = new QualifiedStudent();
@@ -212,7 +212,7 @@ class ApplicantController extends Controller
         foreach ($selectedUserIds as $userId) {
         
             $user = User::where('role', 'Student')->findOrFail($userId);
-            $user->status = "Approved";
+            $user->status = "Ready For Interview";
             $user->save();
     
             $approveUser = new QualifiedStudent();
@@ -260,8 +260,10 @@ class ApplicantController extends Controller
 
     function ShowApprovedApplicant(Request $request){
 
-        $users = User::where('role', 'Student')->with('admissionExam')->where('Status', 'Approved');
-        // ->doesntHave('studentInfo');
+        $users = User::where('role', 'Student')->with('admissionExam')
+        ->where('status', 'Ready For Interview')
+        ->orWhere('status','Ready For Exam');
+        //->doesntHave('studentInfo');
         // ->with('qualifiedStudent')->get();
         $searchTerm = $request->searchTerm;
         
@@ -338,13 +340,7 @@ class ApplicantController extends Controller
     }
 
     //Schedule
-    function ShowApprovedApplicant133(){
-        $users = User::where('role', 'Student')->where(function ($query) {
-            $query->where('status', 'Approved')
-                ->orWhere('status', 'WaitListed');
-        })->with('qualifiedStudent')->get();
-        return view('admin.dashboard-view-approved-applicant', compact('users'));
-    } 
+ 
 
 
     function ShowArchiveApplicant(Request $request){

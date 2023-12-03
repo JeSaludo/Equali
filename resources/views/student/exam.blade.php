@@ -33,7 +33,7 @@
 
                 </nav>
 
-
+                
                 @if($exam)
                     <form id="form" action="{{ route('submit-exam') }}" method="POST" class=" mt-4">
                         <div class="w-full">
@@ -72,7 +72,7 @@
                                     </p>
                                     <div>
                                         <div class="border-t-2 border-x-2 rounded-t-lg flex  w-6/12  items-center">
-                                            <input class="py-2 px-4 ml-2" type="radio"
+                                            <input class="py-2 px-4 ml-2" type="radio" required
                                                 name="answer[{{ $index + 1 }}]" id=""
                                                 value="{{ $examQuestion->question->choices->get(0)->id }}">
                                             <p class="ml-2 py-1">
@@ -80,21 +80,21 @@
                                             </p>
                                         </div>
                                         <div class="border-x-2 border-t-2 flex w-6/12  items-center">
-                                            <input class="py-2 px-4 ml-2" type="radio"
+                                            <input class="py-2 px-4 ml-2" type="radio" required
                                                 name="answer[{{ $index + 1 }}]" id=""
                                                 value="{{ $examQuestion->question->choices->get(1)->id }}">
                                             <p class="ml-2">
                                                 {{ $examQuestion->question->choices->get(1)->choice_text }}</p>
                                         </div>
                                         <div class="border-x-2 border-t-2 flex w-6/12  items-center">
-                                            <input class="py-2 px-4 ml-2" type="radio"
+                                            <input class="py-2 px-4 ml-2" type="radio" required
                                                 name="answer[{{ $index + 1 }}]" id=""
                                                 value="{{ $examQuestion->question->choices->get(2)->id }}">
                                             <p class="ml-2">
                                                 {{ $examQuestion->question->choices->get(2)->choice_text }}</p>
                                         </div>
                                         <div class="border-2 rounded-b-lg flex  w-6/12  items-center">
-                                            <input class="py-2 px-4 ml-2" type="radio"
+                                            <input class="py-2 px-4 ml-2" type="radio" required
                                                 name="answer[{{ $index + 1 }}]" id=""
                                                 value="{{ $examQuestion->question->choices->get(3)->id }}">
                                             <p class="ml-2">
@@ -102,7 +102,7 @@
                                         </div>
 
                                         <div class="hidden">
-                                            <input class="py-2 px-4 ml-2" type="radio"
+                                            <input class="py-2 px-4 ml-2" type="radio" required
                                                 name="answer[{{ $index + 1 }}]"   id="noAnswer{{ $index + 1 }}"
                                                 value="{{ $examQuestion->question->choices->get(4)->id }}">
                                            
@@ -191,7 +191,7 @@
             }
         });
         // Set your exam duration in seconds
-        let timer = 30; // 1 hour in seconds
+        let timer = 10; // 1 hour in seconds
         let countdown = setInterval(updateTimer, 1000);
 
         function updateTimer() {

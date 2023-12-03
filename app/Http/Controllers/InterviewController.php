@@ -13,7 +13,7 @@ class InterviewController extends Controller
     function ShowPendingInterview(){
 
 
-        $users = User::where('role', 'Student')->where('status', 'Approved')
+        $users = User::where('role', 'Student')->where('status', 'Ready For Interview')
         ->with('qualifiedStudent')
         ->doesntHave('studentInfo')
         ->latest('created_at')->get();
@@ -31,7 +31,7 @@ class InterviewController extends Controller
     }
 
     function ShowReview(){
-        $users = User::where('role', 'Student')->where('status', 'Approved')
+        $users = User::where('role', 'Student')->where('status', 'Ready For Interview')
         ->with('qualifiedStudent')
         ->has('studentInfo')
         ->latest('created_at')->get();
@@ -62,8 +62,13 @@ class InterviewController extends Controller
             $academicTrack = $request->academic_track;
         }
         $averageScore = ($request->interview1 + $request->interview2 + $request->interview3 + $request->interview4 + $request->interview5) / 5;
+        
+        
+        $user = User::find($request->user_id);
+        $user->status = "Ready For Exam";
+        $user->save();
+       
 
-      
        $studentInfo = new StudentInfo();
        $studentInfo->user_id = $request->user_id; 
        $studentInfo->address = $request->home_address;
@@ -97,8 +102,18 @@ class InterviewController extends Controller
        $result->measure_a_score = $studentInfo->average_score * 0.30;
        $result->save();
 
-    
-      
-        return redirect()->route('admin.dashboard.pending-interview');
+       $user = User::find($request->user_id);
+       $user->status = "Ready For Exam";
+       $user->save;
+       
+
+       
+       return redirect()->route('admin.dashboard.pending-interview');
     }
+
+    function ShowScheduleForInterview(){
+        $users = User::where('role', 'Student')  ->where('status', 'Ready For Interview')
+        ->with('qualifiedStudent')->get();
+        return view('admin.interview.dashboard-view-schedule-applicant', compact('users'));
+    } 
 }

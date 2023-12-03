@@ -68,7 +68,7 @@
 
                     <div class="flex items-end gap-3 px-2 text-[#718297] ">
                         <i class='bx bxs-user-check text-[30px] pb-2'></i>
-                        <p class="text-[36px] py-0">{{ $recentUser->where('status', 'Approved')->count()}} </p>
+                        <p class="text-[36px] py-0">{{ $recentUser->where('status', 'Ready For Interview')->count()}} </p>
                     </div>
                     <div class="bg-[#5587F7] w-full  h-[24px] absolute bottom-0 left-0 px-0 mx-0 rounded-b-lg"></div>
 
@@ -364,6 +364,13 @@
                         approveBtn.disabled = !anyCheckboxSelected;
                     });
                 });
+
+                selectAllCheckbox.addEventListener('click', function() {
+                checkboxes.forEach(checkbox => {
+                    checkbox.checked = selectAllCheckbox.checked;
+                });
+                approveBtn.disabled = !selectAllCheckbox.checked;
+            });
         });
 
 
@@ -374,11 +381,7 @@
             selectAllCheckbox.checked = Array.from(checkboxes).every(checkbox => checkbox.checked);
         }
 
-        selectAllCheckbox.addEventListener('click', function() {
-            checkboxes.forEach(checkbox => {
-                checkbox.checked = selectAllCheckbox.checked;
-            });
-        });
+     
 
         checkboxes.forEach(checkbox => {
             checkbox.addEventListener('click', function() {
@@ -388,11 +391,7 @@
     </script>
 
     
-    
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.2.0/flowbite.min.js"></script>
-    <script src="{{asset('js/nav-link.js')}}"></script>
-     
-
+  
     
     
     <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.2.0/flowbite.min.js"></script>

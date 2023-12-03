@@ -65,7 +65,7 @@
 
                     <div class="flex items-end gap-3 px-2 text-[#718297] ">
                         <i class='bx bxs-user-check text-[30px] pb-2'></i>
-                        <p class="text-[36px] py-0">{{ $recentUser->where('status', 'Approved')->count()}} </p>
+                        <p class="text-[36px] py-0">{{ $recentUser->where('status', 'Ready For Interview')->count()}} </p>
                     </div>
                     <div class="bg-[#5587F7] w-full  h-[24px] absolute bottom-0 left-0 px-0 mx-0 rounded-b-lg"></div>
 
@@ -167,8 +167,12 @@
                                                 <span class="bg-sky-200  text-[14px] text-sky-700 py-1 px-2 rounded-md ">Waitlisted</span>
                                             @elseif($user->status == "Qualified")
                                                 <span class="bg-blue-200  text-[14px] text-blue-700 py-1 px-2 rounded-md ">Qualified</span>
-                                            @elseif($user->status == "Approved")
-                                                <span class="bg-emerald-200  text-[14px] text-emerald-700 py-1 px-2 rounded-md ">Approved</span>
+                                            @elseif($user->status == "Ready For Interview")
+                                                <span class="bg-emerald-200  text-[14px] text-emerald-700 py-1 px-2 rounded-md ">Ready For Interview</span>
+                                                @elseif($user->status == 'Ready For Exam')
+                                                <span
+                                                    class="bg-emerald-200  text-[14px] text-emerald-700 py-1 px-2 rounded-md ">Ready For Exam</span>
+    
                                             @elseif($user->status == "Unqualified")
                                                 <span class="bg-rose-200  text-[14px] text-rose-700 py-1 px-2 rounded-md ">Unqualified</span>
                                             @elseif($user->status == "Archived")
@@ -185,17 +189,12 @@
                                                         class="mx-1 hover:text-green-400" title="Edit"><i
                                                             class='bx bxs-edit '></i></a>
 
-                                                    <form
-                                                        action="{{ route('admin.dashboard.delete-applicant', $user->id) }}"
-                                                        method="POST" style="display: inline-block;">
-                                                        @csrf
-                                                        @method('DELETE')
-                                                        <button type="submit" title="Delete"
-                                                            class="mx-2   hover:text-red-400"
-                                                            onclick="return confirm('Are you sure you want to delete this user?')"><i
-                                                                class='bx bxs-trash '></i></button> 
-                                                                
-                                           
+                                                    <a class="hover:text-red-400 mx-1" title="Archive"
+                                                    href="{{ route('admin.dashboard.archive-applicant', $user->id) }}"
+                                                    onclick="return confirm('Are you sure you want to archive this user?')">
+                                                    <i class='bx bx-archive-in '></i>
+                                                </a>
+                                    
 
                                          
 
