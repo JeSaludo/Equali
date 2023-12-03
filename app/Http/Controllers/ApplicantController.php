@@ -205,6 +205,9 @@ class ApplicantController extends Controller
     function ApproveApplicantMultiple(Request $request){
         $selectedUserIds = $request->input('selectedUsers');
                 
+        if(isset($selectedUserIds) == null){
+            return redirect()->back();   
+        }
         foreach ($selectedUserIds as $userId) {
         
             $user = User::where('role', 'Student')->findOrFail($userId);
@@ -318,9 +321,9 @@ class ApplicantController extends Controller
         
         ]);
 
-
+        
         $selectedUserIds = $request->input('selectedUsers');
-
+       
         foreach ($selectedUserIds as $userId) {
            $user = QualifiedStudent::where('user_id', $userId)->with('user')->first();
 
@@ -330,7 +333,7 @@ class ApplicantController extends Controller
            $user->save();
            Mail::to($user->user->email)->send(new ScheduleMail($user->exam_schedule_date, $user->start_time, $user->end_time));
         }
-        return redirect()->route('admin.dashboard.show-qualified-appplicant');
+        return redirect()->route('admin.dashboard.show-interview');
        
         
     }

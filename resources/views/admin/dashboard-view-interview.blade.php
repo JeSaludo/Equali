@@ -100,7 +100,7 @@
 
             </div>
 
-            <form action="{{route('admin.dashboard.approve-applicant-multiple')}}" method="POST">
+            <form action="{{route('admin.dashboard.schedule-applicant')}}" method="POST">
                 @csrf
                 <div class="mx-4 my-2 ">
                     <a disabled id="openPopup"   class="w-[120px] border border-[#D9DBE3] hover:border-slate-400 flex items-center text-[14px] tezt-poppin hover:text-[#384b94] font-poppins text-slate-600 py-1 px-4 rounded-lg">
@@ -108,7 +108,7 @@
                     </a>
                 </div>
 
-            <div class="flex mx-4 my-4" id="navLinks">
+            <div class="flex mx-4 mb-4" id="navLinks">
 
                 <a href=""
                 class="font-poppins  text-slate-500 active nav-link whitespace-nowrap">Schedule Interview</a>
@@ -131,7 +131,7 @@
                             <tr>
                                <td class="px-6 py-2 ">
                                     <div class="flex items-center">
-                                        <input id="default-checkbox" type="checkbox" value="" name="akk" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded">
+                                        <input id="default-checkbox" type="checkbox" value="" name="" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded">
                                       
                                     </div>
                                 </td>
@@ -157,31 +157,34 @@
                                 @foreach ($users as $index => $user)
                                     <tr
                                         class="{{ $index % 2 == 0 ? 'bg-[#F6F8FF]' : 'bg-white' }} border-b border-gray-100">
-                                        <td class="px-6 py-3">
+                                        <td class="px-6 py-3 w-[40px]">
                                             <div class="flex items-center">
                                                 <input id="default-checkbox" name="selectedUsers[]" type="checkbox" value="{{$user->id}}" class="user-checkbox w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded">
                                             </div>
                                         </td>
                                         
                                         <td class="px-6 py-3">{{ $user->id }}</td>
-                                        <td class="px-6 py-3">{{ $user->last_name . ', ' . $user->first_name }}</td>
+                                        <td class="px-6 py-3 ">{{ $user->last_name . ', ' . $user->first_name }} </td>
                                         
-                                        @if($user->qualifiedStudent != null)
+                                        @if ($user->qualifiedStudent->exam_schedule_date != null)
+                                                <td class="px-6 py-3  whitespace-nowrap">
 
-                                            @if($user->qualifiedStudent->exam_schedule_data != null)
-                                                <td class="px-6 py-3">
-                                                    {{ $user->qualifiedStudent->exam_schedule_date}}
+                                                    {{ \Carbon\Carbon::parse($user->qualifiedStudent->exam_schedule_date)->format('F j, Y') }}
                                                 </td>
 
-                                                <td class="px-6 py-3">
-                                                    {{ $user->qualifiedStudent->start_time . "-" . $user->qualifiedStudent->end_time}}
+                                                <td class="px-6 py-3    whitespace-nowrap">
+
+                                                    {{ \Carbon\Carbon::parse($user->qualifiedStudent->start_time)->format('h:i A') }}
+                                                    -
+                                                    {{ \Carbon\Carbon::parse($user->qualifiedStudent->end_time)->format('h:i A') }}
+
                                                 </td>
-                                            @else
-                                                <td class="px-6 py-3">
-                                                    No Schedule Yet
+                                        @else
+                                                <td class="px-6 py-3 text-center  whitespace-nowrap">
+                                                    Not yet scheduled
                                                 </td>
 
-                                            @endif
+                                               
                                         @endif
                                        
                                      
