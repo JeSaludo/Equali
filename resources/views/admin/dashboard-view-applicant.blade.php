@@ -291,7 +291,7 @@
                                                     @csrf
                                                     @method('DELETE')
                                                     <button type="submit" title="Delete"
-                                                        class="mx-2   hover:text-red-400"
+                                                        class="mx-1   hover:text-red-400"
                                                         onclick="return confirm('Are you sure you want to delete this user?')"><i
                                                             class='bx bxs-trash '></i></button>
 
