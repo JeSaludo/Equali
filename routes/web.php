@@ -100,8 +100,13 @@ Route::middleware(['admin'])->group(function () {
     
     Route::get('/dashboard/report/item-analysis-chart', [ReportController::class, 'ShowItemAnalysisChart'])->name('admin.dashboard.item-analysis-chart');
     
-    Route::get('/dashboard/report/item-analysis', [ReportController::class, 'ShowItemAnalysis'])->name('admin.dashboard.item-analysis');
-
+    Route::get('/dashboard/item-analysis', [ReportController::class, 'ShowItemAnalysis'])->name('admin.dashboard.item-analysis');
+    Route::get('/dashboard/item-analysis/retain', [ReportController::class, 'ShowItemAnalysisRetain'])->name('admin.dashboard.item-analysis.retain');
+    Route::get('/dashboard/item-analysis/revise', [ReportController::class, 'ShowItemAnalysisRevise'])->name('admin.dashboard.item-analysis.revise');
+    Route::get('/dashboard/item-analysis/discard', [ReportController::class, 'ShowItemAnalysisDiscard'])->name('admin.dashboard.item-analysis.discard');
+   
+   
+   
     Route::get('dashboard/report/list-of-qualifying-exam', [ReportController::class, 'ShowQualifyingExam'])->name('admin.dashboard.report.qualifying-exam');
 });
 
@@ -119,6 +124,9 @@ Route::middleware(['admin'])->group(function () {
     Route::put('/dashboard/exam/{id}', [ExamController::class, 'UpdateExam'])->name('admin.dashboard.update-exam');
 
     Route::post('/dashboard/exam/{id}/add-random', [ExamController::class, 'StoreRandomExam'])->name('admin.dashboard.store-random');
+    Route::post('/dashboard/exam/add-question', [ExamController::class, 'StoreQuestionDirectly'])->name('admin.dashboard.store-question-directly');
+    Route::post('/dashboard/exam/{id}/add-question', [ExamController::class,'ShowQuestion'])->name("admin.dashboard.exam.show-question");
+
     Route::post('/dashboard/exam/store', [ExamController::class, 'StoreExam'])->name('admin.dashboard.store-exam');
     Route::delete('/dashboard/exam/{id}', [ExamController::class, 'DeleteExam'])->name('admin.dashboard.delete-exam');
 
@@ -129,5 +137,18 @@ Route::middleware(['admin'])->group(function () {
 
  
     Route::get('/dashboard/report/qualified-exam-result/export', [ReportController::class, 'ExportQualifyingExam'])->name("export.qualified-exam-result");
+    Route::get('/dashboard/report/item-analysis-result/report', [ReportController::class, 'ExportItemAnalysis'])->name('export.item-analysis-result');
+    
+    
+    
+    
+    Route::get('/dashboard/report/applicant-ranking-result', [ReportController::class, 'ExportApplicantRanking'])->name('export.applicant-ranking-result');
     Route::get('/dashboard/report/list-unqualified-applicants', [ReportController::class, 'ShowUnqualifiedApplicants'])->name("admin.reports.show.unqualified-applicants");
     Route::get('/dashboard/report/list-qualified-applicants', [ReportController::class, 'ShowQualifiedApplicants'])->name("admin.reports.show.qualified-applicants");
+
+
+    //IA 
+
+    Route::get('/dashboard/item-analysis/{id}/retain',[ReportController::class, 'RetainQuestion'])->name('admin.item-analysis.retain');
+    Route::get('/dashboard/item-analysis/{id}/revise',[ReportController::class, 'ReviseQuestion'])->name('admin.item-analysis.revise');
+    Route::get('/dashboard/item-analysis/{id}/discard',[ReportController::class, 'DiscardQuestion'])->name('admin.item-analysis.discard');

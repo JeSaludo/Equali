@@ -23,14 +23,14 @@ class AdminController extends Controller
     }
 
     function ShowInterview(Request $request){
-        
+        $userCount = User::all();
         $users = User::where('role', 'Student')->where('status', 'Ready For Interview')
         ->with('qualifiedStudent')
         ->doesntHave('studentInfo')
         ->latest('created_at');
 
         $users = $users->paginate(10);
-        return view('admin.dashboard-view-interview', compact( 'users'));
+        return view('admin.dashboard-view-interview', compact( 'users', 'userCount'));
     }
     
     

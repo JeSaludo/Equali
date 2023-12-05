@@ -66,10 +66,7 @@ class User extends Authenticatable
         return $this->hasOne(studentInfo::class);
     }
 
-    public function qualifyingExam(){
-        return $this->hasOne(QualifyingExam::class);
-    }
-
+   
     public function result(){
         return $this->hasOne(Result::class);
     }

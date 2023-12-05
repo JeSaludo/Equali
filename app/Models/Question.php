@@ -57,6 +57,8 @@ class Question extends Model
         return $this->choices->where('choice_text', '!=', 'No Answer')->pluck('choice_text')->toArray();
     }
 
+    
+
    
     
 

@@ -98,7 +98,7 @@
 
             <div class="flex justify-between mx-4 my-2">
 
-                <h1 class="text-[#26386A] text-[18px]  font-bold font-raleway">Item Analysis Reports</h1>
+                <h1 class="text-[#26386A] text-[18px]  font-bold font-raleway">Item Analysis</h1>
 
 
 
@@ -117,13 +117,13 @@
              <div class="flex mx-4 mb-4" id="navLinks">
 
                 <a href="{{route('admin.dashboard.item-analysis')}}"
-                class="font-poppins active  text-slate-500  nav-link whitespace-nowrap">All Item</a>
+                class="font-poppins active  text-slate-500  nav-link whitespace-nowrap">Pending Items</a>
                 <a href="{{route('admin.dashboard.item-analysis.revise')}}"
-                    class="font-poppins  text-slate-500 nav-link   whitespace-nowrap">Revise Item</a>
+                    class="font-poppins  text-slate-500 nav-link   whitespace-nowrap">Revise Items</a>
                 <a href="{{route('admin.dashboard.item-analysis.retain')}}"
-                class="font-poppins   text-slate-500 nav-link whitespace-nowrap">Retain Item</a>
+                class="font-poppins   text-slate-500 nav-link whitespace-nowrap">Retain Items</a>
                 <a href="{{route('admin.dashboard.item-analysis.discard')}}"
-                class="font-poppins   text-slate-500 nav-link whitespace-nowrap">Discard Item</a>
+                class="font-poppins   text-slate-500 nav-link whitespace-nowrap">Discard Items</a>
                 <a href="{{route('admin.dashboard.item-analysis.retain')}}"
                 class="font-poppins   text-slate-500  nav-link whitespace-nowrap">Item Analysis Chart</a>
                 

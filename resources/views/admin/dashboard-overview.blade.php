@@ -128,41 +128,54 @@
                         </thead>
 
                         <tbody class="text-md">
-                            @foreach ($recentApplicants as $index => $recentApplicant)
-                                <tr
-                                    class="{{ $index % 2 == 0 ? 'bg-[#F6F8FF]' : 'bg-white' }}  border-b   border-gray-100 text-left ">
+                            @if ($recentApplicants->count() == 0)
+                                <tr>
+                                    <td></td>
+                                    <td class="">
 
-                                    <td class="px-6 py-3 text-sm">{{ $recentApplicant->id }}</td>
-                                    <td class="px-6 py-3">
-                                        <p class="font-medium font-poppins text-[#617388]">
-                                            {{ $recentApplicant->last_name }}, {{ $recentApplicant->first_name }}</p>
-                                        <p class="text-[12px] font-poppins text-[#8898AC]">
-                                            {{ $recentApplicant->email }}
+                                        <p class="my-3">No Data found in the database</p>
+
                                     </td>
-                                    <td class="px-6 py-3">{{ $recentApplicant->created_at }}</td>
-                                <td class="px-6 py-3">
-                                    @if($recentApplicant->status == "WaitListed")
-                                        <span class="bg-sky-200  text-[14px] text-sky-700 py-1 px-2 rounded-md ">Waitlisted</span>
-                                    @elseif($recentApplicant->status == "Qualified")
-                                        <span class="bg-blue-200  text-[14px] text-blue-700 py-1 px-2 rounded-md ">Qualified</span>
-                                    @elseif($recentApplicant->status == "Ready For Interview")
-                                        <span class="bg-emerald-200  text-[14px] text-emerald-700 py-1 px-2 rounded-md ">Ready For Interview</span>
-                                    @elseif($recentApplicant->status == "Ready For Exam")
-                                        <span
-                                            class="bg-emerald-200  text-[14px] text-emerald-700 py-1 px-2 rounded-md ">Ready For Exam</span>
+                                    <td></td>
+                                </tr>
+                            @else
 
-                                    @elseif($recentApplicant->status == "Unqualified")
-                                        <span class="bg-rose-200  text-[14px] text-rose-700 py-1 px-2 rounded-md ">Unqualified</span>
-                                    @elseif($recentApplicant->status == "Archived")
-                                        <span class="bg-rose-200  text-[14px] text-rose-700 py-1 px-2 rounded-md ">Archived</span>
-                                    @elseif($recentApplicant->status == "Pending")
-                                        <span class="bg-orange-200  text-[14px] text-orange-700 py-1 px-2 rounded-md ">Pending</span>
-                                    @endif  
-                                    
-                                    
-                                </td>
-                            </tr>
-                            @endforeach
+                                @foreach ($recentApplicants as $index => $recentApplicant)
+                                    <tr
+                                        class="{{ $index % 2 == 0 ? 'bg-[#F6F8FF]' : 'bg-white' }}  border-b   border-gray-100 text-left ">
+
+                                        <td class="px-6 py-3 text-sm">{{ $recentApplicant->id }}</td>
+                                        <td class="px-6 py-3">
+                                            <p class="font-medium font-poppins text-[#617388]">
+                                                {{ $recentApplicant->last_name }}, {{ $recentApplicant->first_name }}</p>
+                                            <p class="text-[12px] font-poppins text-[#8898AC]">
+                                                {{ $recentApplicant->email }}
+                                        </td>
+                                        <td class="px-6 py-3">{{ $recentApplicant->created_at }}</td>
+                                    <td class="px-6 py-3">
+                                        @if($recentApplicant->status == "WaitListed")
+                                            <span class="bg-sky-200  text-[14px] text-sky-700 py-1 px-2 rounded-md ">Waitlisted</span>
+                                        @elseif($recentApplicant->status == "Qualified")
+                                            <span class="bg-blue-200  text-[14px] text-blue-700 py-1 px-2 rounded-md ">Qualified</span>
+                                        @elseif($recentApplicant->status == "Ready For Interview")
+                                            <span class="bg-emerald-200  text-[14px] text-emerald-700 py-1 px-2 rounded-md ">Ready For Interview</span>
+                                        @elseif($recentApplicant->status == "Ready For Exam")
+                                            <span
+                                                class="bg-emerald-200  text-[14px] text-emerald-700 py-1 px-2 rounded-md ">Ready For Exam</span>
+
+                                        @elseif($recentApplicant->status == "Unqualified")
+                                            <span class="bg-rose-200  text-[14px] text-rose-700 py-1 px-2 rounded-md ">Unqualified</span>
+                                        @elseif($recentApplicant->status == "Archived")
+                                            <span class="bg-rose-200  text-[14px] text-rose-700 py-1 px-2 rounded-md ">Archived</span>
+                                        @elseif($recentApplicant->status == "Pending")
+                                            <span class="bg-orange-200  text-[14px] text-orange-700 py-1 px-2 rounded-md ">Pending</span>
+                                        @endif  
+                                        
+                                        
+                                    </td>
+                                </tr>
+                                @endforeach
+                            @endif
                         </tbody>
                     </table>
 

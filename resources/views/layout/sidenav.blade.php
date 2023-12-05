@@ -42,6 +42,12 @@
                     <div class="pointer-events-none"><i class='bx bxs-data pr-2'></i>Question Bank</div>
                 </a>
             </div>
+
+            <div>
+                <a href="{{ route('admin.dashboard.item-analysis') }}" class="mx-4 cursor-pointer hover:bg-[#EAF0FF]  px-4 py-2 rounded-[15px] flex justify-between  items-center text-[#718297] my-2">
+                    <div class="pointer-events-none"><i class='bx bxs-data pr-2'></i>Item Analysis</div>
+                </a>
+            </div>
             
             <div class="dropdown" data-dropdown>
 
@@ -75,6 +81,18 @@
                             <div class="px-4 whitespace-nowrap"> Qualifying Exam</div>
 
                         </a>
+
+                        <a href="{{ route('admin.reports.show.unqualified-applicants') }}"
+                        class=" mx-4 px-4 py-2 hover:cursor-pointer hover:bg-[#EAF0FF] rounded-[15px] flex  items-center text-[#718297] my-2">
+                        <div class="px-4 whitespace-nowrap"> Unqualified</div>
+
+                    </a>
+
+                    <a href="{{ route('admin.reports.show.qualified-applicants') }}"
+                    class=" mx-4 px-4 py-2 hover:cursor-pointer hover:bg-[#EAF0FF] rounded-[15px] flex  items-center text-[#718297] my-2">
+                    <div class="px-4 whitespace-nowrap"> Qualified</div>
+
+                </a>
 
                        
                     </div>

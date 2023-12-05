@@ -151,32 +151,62 @@
         
         
     </div>
+
     <script>
-        
-        const radioInputs = document.querySelectorAll('input[type="radio"]');
-        radioInputs.forEach(input => {
-            input.addEventListener('change', () => {
-                sessionStorage.setItem(input.name, input.value);
+        document.addEventListener('DOMContentLoaded', function () {
+            // Check if choices are already stored in local storage
+            const storedChoices = JSON.parse(localStorage.getItem('examChoices')) || {};
+    
+            // Populate the radio inputs with stored choices
+            Object.keys(storedChoices).forEach(index => {
+                const choiceId = storedChoices[index];
+                const radioInput = document.querySelector(`input[name="answer[${index}]"][value="${choiceId}"]`);
+                if (radioInput) {
+                    radioInput.checked = true;
+                }
+            });
+    
+            // Listen for changes in radio inputs and update local storage
+            document.querySelectorAll('input[type="radio"]').forEach(input => {
+                input.addEventListener('change', function () {
+                    const index = this.name.match(/\d+/)[0];
+                    storedChoices[index] = this.value;
+                    localStorage.setItem('examChoices', JSON.stringify(storedChoices));
+                });
             });
         });
 
+        document.getElementById('form').addEventListener('submit', function () {
+            localStorage.removeItem('examChoices');
+        });
+    </script>
+    
+    <script>
+        
+        // const radioInputs = document.querySelectorAll('input[type="radio"]');
+        // radioInputs.forEach(input => {
+        //     input.addEventListener('change', () => {
+        //         sessionStorage.setItem(input.name, input.value);
+        //     });
+        // });
+
 
 
         
-        radioInputs.forEach(input => {
-            const savedValue = sessionStorage.getItem(input.name);
-            if (savedValue) {
-                if (input.value === savedValue) {
-                    input.checked = true;
-                }
-            }
-        });
+        // radioInputs.forEach(input => {
+        //     const savedValue = sessionStorage.getItem(input.name);
+        //     if (savedValue) {
+        //         if (input.value === savedValue) {
+        //             input.checked = true;
+        //         }
+        //     }
+        // });
 
-        const form = document.querySelector('form');
-        form.addEventListener('submit', () => {
+        // const form = document.querySelector('form');
+        // form.addEventListener('submit', () => {
             
-            sessionStorage.clear();
-        });
+        //     sessionStorage.clear();
+        // });
    
         document.getElementById("toggleTimer").addEventListener("click", function () {
             const timerContainer = document.getElementById("timerContainer");

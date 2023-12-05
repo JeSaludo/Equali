@@ -155,7 +155,7 @@
 
                     </div>
 
-                    <div class="bg-white mx-4 relative  border my-2   border-[#D9DBE3] shadow-md rounded-lg ">
+                    <div class="bg-white mx-4 relative   my-2  border border-[#D9DBE3] shadow-md rounded-lg ">
                         <div class="overflow-x-auto">
                             <table
                                 class="w-full font-poppins border-collapse   text-md text-left rtl:text-right text-gray-500 table-auto ">
@@ -341,7 +341,7 @@
 
 
                                     <div class="relative px-8 my-4 w-full">
-                                        <input type="text" name="email"
+                                        <input type="email" name="email"
                                             class="h-[50px] w-full rounded placeholder:text-[#4E4E4E] placeholder:font-poppins placeholder:text-[16px] px-[40px] border-2 border-[#D7D8D0] "
                                             placeholder="Email Address" required autocomplete="off">
 

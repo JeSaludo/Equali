@@ -81,12 +81,12 @@
                             <input
                                 class="h-[50px] w-full  placeholder:text-[#4E4E4E]  px-[40px] rounded-r border-y-2 border-r-2 border-[#D7D8D0]"
                                 type="date" name="date" class="" placeholder=":"
-                                value="{{ \Carbon\Carbon::now()->toDateString() }}">
+                                value="{{ old('date', \Carbon\Carbon::now()->toDateString()) }}">
                         </div>
                     </div>
                     <div class="flex mx-4 justify-between  gap-2 ">
                         <div class=" px-4 my-2  w-full">
-                            <input type="text" name="home_address"
+                            <input type="text" name="home_address" value="{{old('home_address')}}"
                                 class="h-[50px] w-full rounded placeholder:text-[#4E4E4E] placeholder:font-poppins placeholder:text-[16px] px-[20px] border-2 border-[#D7D8D0] "
                                 placeholder="Home Address" required autocomplete="off">
                         </div>
@@ -96,8 +96,8 @@
                                 class="h-[50px] w-full rounded placeholder:text-[#4E4E4E] placeholder:font-poppins placeholder:text-[16px] px-[20px] border-2 border-[#D7D8D0] "
                                 placeholder="" required autocomplete="off" name="course">
                                 <option value="" disabled selected>Course Applied:</option>
-                                <option value="IT">Bachelor in Science of Information Technology</option>
-                                <option value="IS">Bachelor in Science of Information Systems</option>
+                                <option value="IT" {{ old('course') == 'IT' ? 'selected' : '' }}>Bachelor in Science of Information Technology</option>
+                                <option value="IS" {{ old('course') == 'IS' ? 'selected' : '' }}>Bachelor in Science of Information Systems</option>
                             </select>
                         </div>
                     </div>

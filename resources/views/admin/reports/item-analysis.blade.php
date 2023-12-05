@@ -16,6 +16,9 @@
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
     <link rel="stylesheet" href="{{ asset('css/main.css') }}">
     <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+    
+    
+    <script src="https://www.gstatic.com/charts/loader.js"></script>
 
 </head>
 
@@ -136,24 +139,26 @@
                 </script>
             </div>
 
+                
 
-            <div class="bg-white mx-4 mt-4 rounded-t overflow-x-auto ">
+            {{-- <div class="bg-white mx-4 mt-4 rounded-t overflow-x-auto ">
                 <div class="px-4  text-[18px] font-semibold font-poppins bg-[#2B6CE6] text-white">
                     <h1 class="py-2">Multiple Choices</h1> 
                 </div>
 
                 @foreach ($questions as $question)
-                <div id="chart{{ $question->id }}"></div>
+                <div class="w-full " id="chart{{ $question->id }}"></div>
                 <script>
                     var options{{ $question->id }} = {
                         chart: {
                             type: 'bar',
-                            height: 350,
+                            height: 250,
                         },
                         plotOptions: {
                             bar: {
                                 borderRadius: 4,
-                                horizontal: true
+                                horizontal: true,
+                                barWidth: 40, // Set a fixed width for the bars (adjust as needed)
                             }
                         },
                         series: [
@@ -171,18 +176,17 @@
                     chart{{ $question->id }}.render();
                 </script>
             @endforeach
-                    
-            </div>
+            </div> --}}
 
-         
+            
+
         </section>
 
         
-        
-
+       
        
     </div>
-
+   
 </body>
 
 </html>

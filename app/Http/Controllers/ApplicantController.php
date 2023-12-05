@@ -14,6 +14,9 @@ use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
+use App\Jobs\SendScheduleEmail;
+use App\Jobs\SendAcceptanceEmail;
+
 class ApplicantController extends Controller
 {
     
@@ -39,6 +42,7 @@ class ApplicantController extends Controller
     }
 
     function StoreApplicant(Request $request){
+
         try{           
             $request->validate([
                 'firstName' => 'required',   
@@ -47,7 +51,6 @@ class ApplicantController extends Controller
                 // 'contactNumber' => 'required|min:11|unique:users,contact_number|numeric',
                
             ]);
-            
             DB::beginTransaction();
                 
             $user = new User();
@@ -197,8 +200,10 @@ class ApplicantController extends Controller
         $tempPassword = $user->last_name . $user->first_name . "12345";
         $tempPassword = preg_replace('/\s+/u', '', $tempPassword);
         $tempPassword = strtolower($tempPassword);
-        Mail::to($user->email)->send(new AcceptanceMail($user->email, $user->first_name,  $user->last_name, $tempPassword));           
-        return redirect()->back()->with('success', 'Approved Applicant successfully!');       
+       // Mail::to($user->email)->send(new AcceptanceMail($user->email, $user->first_name,  $user->last_name, $tempPassword));           
+        
+       dispatch(new SendAcceptanceEmail($user->email, $user->first_name, $user->last_name, $tempPassword));
+       return redirect()->back()->with('success', 'Approved Applicant successfully!');       
         
     }
 
@@ -220,8 +225,9 @@ class ApplicantController extends Controller
             $tempPassword = $user->last_name . $user->first_name . "12345";
             $tempPassword = preg_replace('/\s+/u', '', $tempPassword);
             $tempPassword = strtolower($tempPassword);
-            Mail::to($user->email)->send(new AcceptanceMail($user->email, $user->first_name,  $user->last_name, $tempPassword));           
-           
+            //Mail::to($user->email)->send(new AcceptanceMail($user->email, $user->first_name,  $user->last_name, $tempPassword));           
+            dispatch(new SendAcceptanceEmail($user->email, $user->first_name, $user->last_name, $tempPassword));
+            
         }
         return redirect()->back()->with('success', 'Approved Applicant successfully!');       
        
@@ -331,8 +337,9 @@ class ApplicantController extends Controller
            $user->start_time = $request->start_time;
            $user->end_time = $request->end_time;
            $user->save();
-           Mail::to($user->user->email)->send(new ScheduleMail($user->exam_schedule_date, $user->start_time, $user->end_time));
-        }
+           dispatch(new SendScheduleEmail($user->user->email, $user->exam_schedule_date, $user->start_time, $user->end_time));
+           //Mail::to($this->userEmail)->send(new AcceptanceMail($this->userEmail, $this->firstName, $this->lastName, $this->tempPassword));
+          }
         return redirect()->route('admin.dashboard.show-interview');
        
         

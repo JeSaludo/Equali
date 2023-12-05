@@ -12,14 +12,19 @@ class InterviewController extends Controller
 {
     function ShowPendingInterview(){
 
-
+        $userCount = User::all();
         $users = User::where('role', 'Student')->where('status', 'Ready For Interview')
         ->with('qualifiedStudent')
         ->doesntHave('studentInfo')
-        ->latest('created_at')->get();
+        ->whereDoesntHave('qualifiedStudent', function ($query) {
+            $query->where('exam_schedule_date', '=', null);
+        })
+        ->latest('created_at');
+
+        $users = $users->paginate(10);
 
         
-        return view('admin.interview.dashboard-view-pending-interview', compact('users'));
+        return view('admin.interview.dashboard-view-pending-interview', compact('users','userCount'));
     } 
    
 
@@ -31,16 +36,19 @@ class InterviewController extends Controller
     }
 
     function ShowReview(){
-        $users = User::where('role', 'Student')->where('status', 'Ready For Interview')
-        ->with('qualifiedStudent')
-        ->has('studentInfo')
-        ->latest('created_at')->get();
 
-        return view('admin.interview.dashboard-review-interview', compact('users'));
+        $userCount = User::all();
+        $users = User::where('role', 'Student')->where('status', '!=', 'Ready For Interview')
+        ->with('qualifiedStudent')
+        
+        ->latest('created_at');
+
+        $users = $users->paginate(10);
+
+        return view('admin.interview.dashboard-view-review', compact('users','userCount'));
     }
 
-    function StoreInterview(Request $request){
-      
+    function StoreInterview(Request $request){      
      
         $request->validate([            
             'date' => 'required',
@@ -48,12 +56,15 @@ class InterviewController extends Controller
             'course' => 'required',
             'school_last_attended' => 'required',
             'school_address' => 'required',
-            'year_graduated' => 'required',
-            'gpa' => 'required',
+            'year_graduated' => 'required|min:4|max:4',
+
+            'gpa' => 'required|max:3',
             'academic_track' => 'required',
             'connectivity' => 'required',
         ]);
         
+      
+    
         $academicTrack = null;
         if($request->academic_track === "other"){
             $academicTrack = $request->other_academic_track;
@@ -111,9 +122,5 @@ class InterviewController extends Controller
        return redirect()->route('admin.dashboard.pending-interview');
     }
 
-    function ShowScheduleForInterview(){
-        $users = User::where('role', 'Student')  ->where('status', 'Ready For Interview')
-        ->with('qualifiedStudent')->get();
-        return view('admin.interview.dashboard-view-schedule-applicant', compact('users'));
-    } 
+   
 }

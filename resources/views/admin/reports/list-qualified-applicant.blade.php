@@ -48,7 +48,7 @@
 
                 <div class="flex justify-between mx-4 my-2">
 
-                    <h1 class="text-[#26386A] text-[18px]  font-bold font-raleway">Ranking of Qualified Applicants
+                    <h1 class="text-[#26386A] text-[18px]  font-bold font-raleway">List of Qualified Applicants
                     </h1>
 
 
@@ -67,6 +67,7 @@
                             <thead
                                 class="border-b text-[#26386A] border-[#D9DBE3] font-semibold text-center whitespace-nowrap">
                                 <tr>
+                                    <td class="px-6 py-2">ID</td>
                                     <td class="px-6 py-2">Applicant Name</td>
                                     <td class="px-6 py-2">Interview Result</td>
                                     <td class="px-6 py-2">Admission Results</td>
@@ -76,58 +77,86 @@
                             </thead>
 
                             <tbody class="text-center ">
+                                @if($results->count() == 0)
+                                    <td></td>
+                                    <td class="px-6 py-3">No data found in database</td>
+                                @else
                                 @foreach ($results as $index => $result)
-                                    <tr
-                                        class="{{ $index % 2 == 0 ? 'bg-[#F6F8FF]' : 'bg-white' }} border-b border-gray-100">
-                                        <td class="px-6 py-2  whitespace-nowrap">{{ $result->user->first_name }},
-                                            {{ $result->user->last_name }}</td>
-                                        <td class="px-6 py-2  whitespace-nowrap">
-                                            <p class="font-medium font-poppins  text-[#617388]">
-                                                @if (empty($result->measure_a_score))
-                                                    N/A
-                                                @else
-                                                    {{ $result->measure_a_score }}
-                                                @endif
-                                            </p>
-                                        </td>
-                                        <td class="px-6 py-2  whitespace-nowrap">
-                                            <p class="font-medium font-poppins text-[#617388]">
-                                                @if (empty($result->measure_b_score))
-                                                    N/A
-                                                @else
-                                                    {{ $result->measure_b_score }}
-                                                @endif
-                                            </p>
-                                        </td>
-                                        <td class="px-6 py-2  whitespace-nowrap">
-                                            <p class="font-medium font-poppins text-[#617388]">
-                                                @if (empty($result->measure_c_score))
-                                                    N/A
-                                                @else
-                                                    {{ $result->measure_c_score }}
-                                                @endif
-                                            </p>
-                                        </td>
-                                        <td class="px-6 py-2  whitespace-nowrap">
-                                            <p class="font-medium font-poppins text-[#617388]">
-                                                @if ($result->weighted_average)
-                                                    {{ $result->weighted_average }}
-                                                @else
-                                                    N/A
-                                                @endif
-                                            </p>
-                                        </td>
-                                    </tr>
-                                @endforeach
+                                <tr
+                                    class="{{ $index % 2 == 0 ? 'bg-[#F6F8FF]' : 'bg-white' }} border-b border-gray-100">
+                                   
+                                    <td class="px-6 py-2">{{$result->user->id}}</td>
+                                    <td class="px-6 py-2  whitespace-nowrap">{{ $result->user->first_name }},
+                                        {{ $result->user->last_name }}</td>
+                                    <td class="px-6 py-2  whitespace-nowrap">
+                                        <p class="font-medium font-poppins  text-[#617388]">
+                                            @if (empty($result->measure_a_score))
+                                                N/A
+                                            @else
+                                                {{ $result->measure_a_score }}
+                                            @endif
+                                        </p>
+                                    </td>
+                                    <td class="px-6 py-2  whitespace-nowrap">
+                                        <p class="font-medium font-poppins text-[#617388]">
+                                            @if (empty($result->measure_b_score))
+                                                N/A
+                                            @else
+                                                {{ $result->measure_b_score }}
+                                            @endif
+                                        </p>
+                                    </td>
+                                    <td class="px-6 py-2  whitespace-nowrap">
+                                        <p class="font-medium font-poppins text-[#617388]">
+                                            @if (empty($result->measure_c_score))
+                                                N/A
+                                            @else
+                                                {{ $result->measure_c_score }}
+                                            @endif
+                                        </p>
+                                    </td>
+                                    <td class="px-6 py-2  whitespace-nowrap">
+                                        <p class="font-medium font-poppins text-[#617388]">
+                                            @if ($result->weighted_average)
+                                                {{ $result->weighted_average }}
+                                            @else
+                                                N/A
+                                            @endif
+                                        </p>
+                                    </td>
+                                </tr>
+                            @endforeach
 
+                                @endif
+
+
+                                
                             </tbody>
                         </table>
-                        <nav class="bg-white border-t rounded-b-lg border-[#D9DBE3] w-full py-2 flex justify-start">
-                            <a href=""
-                                class="text-[#626B7F] font-poppins px-4 py-2 border border-[#D9DBE3] hover:bg-[#e8e9ef] rounded-md mx-2">Previous</a>
-                            <a href=""
-                                class="text-[#626B7F] font-poppins px-4 py-2 border border-[#D9DBE3] hover:bg-[#e8e9ef] rounded-md mx-2">Next</a>
-                        </nav>
+                        <nav class="bg-white border-t rounded-b-lg text-[14px] font-poppins border-[#D9DBE3] w-full py-2 flex justify-start pl-2 items-center">
+                       
+                            <a href="{{ $results->previousPageUrl() }}"  class="flex items-center justify-center px-3 h-8 ms-0 leading-tight text-gray-500 bg-white border border-e-0 border-gray-300 rounded-s-lg hover:bg-gray-100 hover:text-[#26386A] {{ $results->currentPage() > 1 ? '' : 'opacity-50 cursor-not-allowed' }}">
+                                <span class="">Previous</span>
+                        
+                            </a>
+                        
+                
+                        
+                       
+                            <div class="flex">
+                                @for ($i = 1; $i <= $results->lastPage(); $i++)
+                            
+                                    <a href="{{ $results->url($i) }}" 
+                                    class="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-[#26386A]  {{ $i == $results->currentPage() ? 'bg-slate-100' : '' }}">
+                                    {{ $i }}
+                                    </a>
+                                @endfor
+                            </div>
+                            <a href="{{ $results->nextPageUrl() }}"  class="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 rounded-e-lg hover:bg-gray-100 hover:text-[#26386A] {{ $results->hasMorePages() ? '' : 'opacity-50 cursor-not-allowed' }}">
+                                <span class="">Next</span>
+                        
+                            </a>
+                        </nav>    
                     </div>
         </section>
     </div>

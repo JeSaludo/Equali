@@ -17,6 +17,9 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Database\QueryException;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Storage;
+use App\Jobs\SendExamReportEmail;
+
 class ExamController extends Controller
 
 {
@@ -166,8 +169,8 @@ class ExamController extends Controller
   
         $user = User::find($request->user_id);
         $defaultEmail = "janerissaludo@gmail.com";   
-        Mail::to($defaultEmail)->send(new ExamReports($user->first_name,  $user->last_name, $tempQuestion));   
-        
+        SendExamReportEmail::dispatch($defaultEmail, $user->first_name, $user->last_name, $tempQuestion);
+        //Mail::to($this->defaultEmail)->send(new ExamReports($this->firstName, $this->lastName, $this->tempQuestion));
         return view('student.exam-result', compact('score', 'sizeOfScore'));
         
     }
@@ -214,7 +217,8 @@ class ExamController extends Controller
         
         $request->validate([
             'examName' => 'max:30',
-            'description' => 'max:64',
+             'numOfQuestion' => 'required',
+             'description' => 'max:64',
         ]);
         
 
@@ -229,11 +233,11 @@ class ExamController extends Controller
             $exam->title =  $request->examName;
             $exam->description = $request->description;
         }
-        $totalPoint = 10;
+      
         $passingPercentage = 40;
-        $exam->num_of_question = $totalPoint;
+        $exam->num_of_question = $request->numOfQuestion;
 
-        $exam->passing_score = ($totalPoint * $passingPercentage) / 100;
+        $exam->passing_score = ($request->numOfQuestion * $passingPercentage) / 100;
         $exam->save();
         return redirect()->route('admin.dashboard.edit-exam', ['id' => $id]);
 
@@ -255,28 +259,43 @@ class ExamController extends Controller
         return redirect()->back()->with('success', 'Exam deleted successfully!');      
     }
     
-    public function StoreRandomExam(Request $request, $id){
- 
+    public function storeRandomExam(Request $request, $id) {
         $existingQuestionIds = ExamQuestion::where('exam_id', $id)->pluck('question_id')->toArray();
-
+    
         // Check if there are any available questions to add.
-        $availableQuestionsCount = Question::whereNotIn('id', $existingQuestionIds)->count();
-
-        ////change 
-        if ($availableQuestionsCount < 5) {
+        $availableQuestionsCount = Question::where('category','Discard')->whereNotIn('id', $existingQuestionIds)->count();
+    
+        // Change the limit for the total number of questions.
+        $exam = Exam::find($id);
+        $maxTotalQuestions = $exam->num_of_question;
+        $numOfQuestions = $request->numOfQuestions;
+    
+        // Check if there are enough available questions.
+        if ($availableQuestionsCount < $numOfQuestions) {
             return "Not enough available questions to add.";
         }
-
-        // Initialize an array to keep track of the added question IDs.
+    
+        // Get the current total questions added.
+        $totalQuestionsAdded = ExamQuestion::where('exam_id', $id)->count();
+    
+        // Calculate the remaining questions that can be added based on the maximum limit.
+        $remainingQuestions = $maxTotalQuestions - $totalQuestionsAdded;
+    
+        // Ensure that the desired number of questions does not exceed the remaining limit.
+        $numOfQuestionsToAdd = min($numOfQuestions, $remainingQuestions);
+    
+        // Initialize variables to keep track of the added question IDs.
         $addedQuestionIds = [];
-
-        // Loop until you have added 5 unique random questions or until no more questions are available.
-        while (count($addedQuestionIds) < 5) {
+    
+        // Loop until you have added the desired number of unique random questions or until the total limit is reached.
+        while (count($addedQuestionIds) < $numOfQuestionsToAdd) {
             // Get a random question that is not already in the exam.
-            $randomQuestion = Question::inRandomOrder()
-                ->whereNotIn('id', $existingQuestionIds)
-                ->first();
-
+            $randomQuestion = Question::where('category', '!=', 'Discard')
+            ->inRandomOrder()
+            ->whereNotIn('id', $existingQuestionIds)
+            ->first();
+        
+    
             // Check if a valid random question is found.
             if ($randomQuestion) {
                 // Create a new ExamQuestion record.
@@ -284,23 +303,111 @@ class ExamController extends Controller
                 $examQuestion->exam_id = $id;
                 $examQuestion->question_id = $randomQuestion->id;
                 $examQuestion->save();
-
+    
                 // Add the question ID to the list of added question IDs.
                 $addedQuestionIds[] = $randomQuestion->id;
-
+    
                 // Update the $existingQuestionIds array to avoid adding the same question multiple times.
                 $existingQuestionIds[] = $randomQuestion->id;
             } else {
                 // Handle the case where there are no more unique questions to add.
+                return "No Question to be added";
                 break;
             }
         }
+    
+        // Check if the desired number of questions couldn't be added due to reaching the maximum limit.
+        if (count($addedQuestionIds) < $numOfQuestions) {
+            return "Cannot add more questions. Maximum limit reached.";
+        }
+    
+        return redirect()->back()->with('success', 'Questions added successfully!');
+    }
+    
 
-        return redirect()->back()->with('success', 'Question added successfully!');       
+    function ShowQuestion($id){
+
+        $exam_id = $id;
+
+        $exam = Exam::find($id);
+        $maxTotalQuestions = $exam->num_of_question;
+        // Get the current total questions added.
+        $totalQuestionsAdded = ExamQuestion::where('exam_id', $id)->count();
             
+        // Calculate the remaining questions that can be added based on the maximum limit.
+        $remainingQuestions = $maxTotalQuestions - $totalQuestionsAdded;
+
+       
+
+        if($remainingQuestions >= 1){
+
+            return view('admin.dashboard-add-question-direct', compact('exam_id'));
+        }
+        else{
+            return "Cannot add more questions. Maximum limit reached.";
+        }
+
+
+       
     }
 
+    function StoreQuestionDirectly(Request $request){
 
+      
+        
+        $img = $request->img;
+        $request->validate([
+            'question_text' => 'required',
+            'choice_text' => 'required|array',
+            'choice_text.*' => 'required|string',
+            'correct_choice' => 'required|numeric',           
+
+        ]);
+      
+            
+        $question = new Question();
+        $question->question_text = $request->question_text;  
+       
+        $question->save();
+
+        if(!is_null($img)){                        
+
+            if ($question->image_path) {
+                Storage::delete('public/questions/' . $question->image_path);
+            }
+            
+            $extension = $img->getClientOriginalExtension();
+            $newFileName = 'question-image_' . $question->id . '.' . $extension;
+
+            $path = $request->file('img')->storeAs('public/questions', $newFileName);           
+               
+            $question->image_path = $newFileName;
+            $question->save();
+        }
+
+        foreach ($request->choice_text as $key => $choiceText) {
+           $isCorrect = ($request->correct_choice == ($key + 1));
+           $choice = new Choice();
+           $choice->question_id = $question->id;
+           $choice->choice_text = $choiceText;
+           $choice->is_correct = $isCorrect;
+           $choice->save();
+        }
+        
+        $choice = new Choice();
+        $choice->question_id = $question->id;
+        $choice->choice_text = "No Answer";
+        $choice->is_correct = false;
+        $choice->save();
+        
+
+        $examQuestion = new ExamQuestion();
+        $examQuestion->exam_id = $request->exam_id;
+        $examQuestion->question_id = $question->id;
+        $examQuestion->save();
+
+        return redirect()->route('admin.dashboard.edit-exam', $request->exam_id);
+    }
     
    function StoreQuestionAndAddToExam(Request $request){
 

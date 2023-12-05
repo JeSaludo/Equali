@@ -46,24 +46,29 @@
             </div>
         </nav>
 
-        <div class="flex flex-row  my-[70px]  w-full ">
-            <div class="mx-auto w-6/12 pl-[80px]">
+        <div class="flex justify-center  my-[70px]  w-full ">
 
-                <h1 class="text-[36px] text-[#2F2E41]  font-open font-bold">You already responded to the exam</h1>
-               
+            
+            <div class=" w-6/12 "> 
+                <div class="mx-auto text-center">
+                    <h1 class="text-[36px] text-[#2F2E41]  font-open font-bold">You already responded to the exam</h1>
+                   
+    
+                </div>
+                <div class="my-8  flex justify-center  ">
 
-                <div class="my-8 w-10/12 flex justify-start  ">
 
-
+                        <a href="{{ route('home') }}"
+                        class="flex items-center justify-center text-lg font-poppins font-normal mr-2 w-full h-[50px] rounded-[18px] bg-[#1E5CD1] hover:bg-[#134197] transition-colors duration-200 text-white">
+                        Back</a>
+             
+                    <a
+                    class="flex items-center justify-center text-lg font-poppins font-normal ml-2 w-full h-[50px] rounded-[18px] bg-transparent hover:bg-[#cccccc] transition-colors duration-200 border-[#cccccc] border-2">Learn
+                    More</a>
+                  
 
                     
-                        <a href="{{ route('home') }}"
-                            class="flex items-center justify-center text-lg font-poppins font-normal mr-2 w-full h-[50px] rounded-[18px] bg-[#1E5CD1] hover:bg-[#134197] transition-colors duration-200 text-white">
-                            Back</a>
-                 
-                        <a
-                        class="flex items-center justify-center text-lg font-poppins font-normal ml-2 w-full h-[50px] rounded-[18px] bg-transparent hover:bg-[#cccccc] transition-colors duration-200 border-[#cccccc] border-2">Learn
-                        More</a>
+                       
                  
                 </div>
             </div>

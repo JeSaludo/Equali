@@ -116,17 +116,17 @@
 
              <div class="flex mx-4 mb-4" id="navLinks">
 
-                <a href="{{route('admin.dashboard.item-analysis')}}"
-                class="font-poppins active  text-slate-500  nav-link whitespace-nowrap">All Item</a>
+             <a href="{{route('admin.dashboard.item-analysis')}}"
+                class="font-poppins   text-slate-500  nav-link whitespace-nowrap">Pending Items</a>
                 <a href="{{route('admin.dashboard.item-analysis.revise')}}"
-                    class="font-poppins  text-slate-500 nav-link   whitespace-nowrap">Revise Item</a>
+                    class="font-poppins active text-slate-500 nav-link   whitespace-nowrap">Revise Items</a>
                 <a href="{{route('admin.dashboard.item-analysis.retain')}}"
-                class="font-poppins   text-slate-500 nav-link whitespace-nowrap">Retain Item</a>
+                class="font-poppins   text-slate-500 nav-link whitespace-nowrap">Retain Items</a>
                 <a href="{{route('admin.dashboard.item-analysis.discard')}}"
-                class="font-poppins   text-slate-500 nav-link whitespace-nowrap">Discard Item</a>
+                class="font-poppins   text-slate-500 nav-link whitespace-nowrap">Discard Items</a>
                 <a href="{{route('admin.dashboard.item-analysis.retain')}}"
                 class="font-poppins   text-slate-500  nav-link whitespace-nowrap">Item Analysis Chart</a>
-                
+                 
 
                 <a href="#" class="font-poppins  text-slate-500 w-full no-hover-underline"></a>
             </div>
@@ -140,7 +140,7 @@
                                 <td class="px-6 py-2 text-center">Difficulty</td>
                                 <td class="px-6 py-2 text-center">Discrimination Index</td>
                                 <td class="px-6 py-2 text-center">Discrmination</td>
-                                <td class="px-6 py-2">Action </td>
+                                <td class="px-6 py-2">Action</td>
                                
                             </tr>
                         </thead>
@@ -219,20 +219,12 @@
                                                 <td class="px-6 py-3 text-left">
 
 
-                                                    @if($DS[$index] >= 0.86 )
-                                                    {{-- <a href="" onclick="return confirm('Are you sure you want to revise?')" class="text-[14px] py-1 px-2 rounded-md bg-emerald-300 text-emerald-700">Revise</a> --}}
-                                                    <a href="{{route('admin.item-analysis.discard',$question->id)}}" onclick="return confirm('Are you sure you want to discard?')" class="text-[14px] py-1 px-2 rounded-md bg-red-300 text-red-700">Discard</a>
-                                                @elseif ($DS[$index] <= 0.85 && $DS[$index] >= 0.71 )
-                                                    <a href="{{route('admin.item-analysis.revise',$question->id)}}" onclick="return confirm('Are you sure you want to revise?')" class="text-[14px] py-1 px-2 rounded-md bg-emerald-300 text-emerald-700">Revise</a>
-                                                @elseif ($DS[$index] <= 0.70 && $DS[$index] >= 0.30 )
+                                                 
+                                                   
                                                     <a href="{{route('admin.item-analysis.retain', $question->id)}}" onclick="return confirm('Are you sure you want to retain?')" class="text-[14px] py-1 px-2 rounded-md bg-blue-300 text-blue-700">Retain</a>
-                                                @elseif ($DS[$index] <= 0.29 && $DS[$index] >= 0.15 )
-                                                    <a href="{{route('admin.item-analysis.revise',$question->id)}}" onclick="return confirm('Are you sure you want to revise?')" class="text-[14px] py-1 px-2 rounded-md bg-emerald-300 text-emerald-700">Revise</a>
-                                                @elseif ($DS[$index] <= 0.14 && $DS[$index] >= 0)
-                                                    {{-- <a href="" onclick="return confirm('Are you sure you want to revise?')" class="text-[14px] py-1 px-2 rounded-md bg-emerald-300 text-emerald-700">Revise</a> --}}
                                                     <a href="{{route('admin.item-analysis.discard',$question->id)}}" onclick="return confirm('Are you sure you want to discard?')" class="text-[14px] py-1 px-2 rounded-md bg-red-300 text-red-700">Discard</a>
-                                                @endif
                                                 
+                                                   
                                                     
                                                     
 
@@ -282,7 +274,7 @@
                      
                      
                         
-                   </nav>   
+                   </nav>  
                     
                 </div>
                

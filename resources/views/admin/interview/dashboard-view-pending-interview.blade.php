@@ -48,7 +48,7 @@
 
 
         <section class="ml-[218px] main  ">
-             <div class="flex-row md:flex justify-evenly my-4 ">
+            <div class="flex-row md:flex justify-evenly my-4 ">
 
                 <div class="bg-white mx-4 px-6 w-full relative rounded-lg border  border-[#D9DBE3] shadow-sm ">
                     <h1 class="text-[18px] pt-2 font-poppins font-bold text-[#26386A] ">No. of Interviews</h1>
@@ -56,7 +56,7 @@
 
                     <div class="flex items-end gap-3 text-[#718297] mb-8">
                         <i class='bx bxs-user-detail text-[30px] pb-2'></i>
-                        <p class="text-[36px] py-0">{{ $users->count() }}</p>
+                        <p class="text-[36px] py-0">{{ $userCount->where('role','Student')->count() }}</p>
                     </div>
 
                     <div class="bg-[#5587F7] w-full  h-[24px] absolute bottom-0 left-0 px-0 mx-0 rounded-b-lg"></div>
@@ -68,7 +68,8 @@
 
                     <div class="flex items-end gap-3 px-2 text-[#718297] ">
                         <i class='bx bxs-user-check text-[30px] pb-2'></i>
-                        <p class="text-[36px] py-0">{{ $users->count() }} </p>
+                        <p class="text-[36px] py-0">{{ $userCount->where('role','Student')->where('status','Ready For Interview')->count() }}</p>
+                 
                     </div>
                     <div class="bg-[#5587F7] w-full  h-[24px] absolute bottom-0 left-0 px-0 mx-0 rounded-b-lg"></div>
 
@@ -83,7 +84,7 @@
 
                     <div class="flex items-end gap-3 px-2 text-[#718297]">
                         <i class='bx bxs-archive-in text-[30px] pb-2'></i>
-                        <p class="text-[36px] py-0">{{ $users->count() }}</p>
+                        <p class="text-[36px] py-0">{{ $userCount->where('role','Student')->where('status','Ready For Exam')->count() }}</p>
 
 
                     </div>
@@ -94,8 +95,7 @@
             </div>
             <div class="flex justify-between mx-4 my-2">
 
-                <h1 class="text-[#26386A] text-[18px]  font-bold font-raleway">Pending Interviews</h1>
-
+                <h1 class="text-[#26386A] text-[18px]  font-bold font-raleway ">List of Interviews</h1>
 
 
             </div>
@@ -189,7 +189,7 @@
                             @endif
                         </tbody>
                     </table>
-                    {{-- <nav
+                    <nav
                         class="bg-white border-t rounded-b-lg text-[14px] font-poppins border-[#D9DBE3] w-full py-2 flex justify-start pl-2 items-center">
 
                         <a href="{{ $users->previousPageUrl() }}"
@@ -210,7 +210,7 @@
                             class="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 rounded-e-lg hover:bg-gray-100 hover:text-[#26386A] {{ $users->hasMorePages() ? '' : 'opacity-50 cursor-not-allowed' }}">
                             <span class="">Next</span>
                         </a>
-                    </nav> --}}
+                    </nav>
                 </div>
 
             </div>

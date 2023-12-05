@@ -81,3 +81,8 @@
 .nav-link.active::after {
     background-color: #1e3a8a; /* Set the active underline color */
 }
+
+.chart-container {
+    max-width: 600px; /* Set a maximum width to limit the chart width */
+    margin: auto; /* Center the chart container */
+}
