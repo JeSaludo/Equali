@@ -128,8 +128,36 @@ class ExamController extends Controller
             $user->status = "WaitListed";
             $user->save();
 
-           
+            $userAnswers = $request->answer;
+            $currentExamId = $request->exam_id;
+        
+            $currentExam = ExamQuestion::where('exam_id', $request->exam_id)->with('question.choices')->get();        
+            $choices = Choice::all();
+            $tempQuestion = [];
             
+            foreach ($currentExam as $index => $exam)
+            {
+                if (isset($userAnswers[$index + 1])){
+                    $tempQuestion[$index]['question_text'] = $exam->question->question_text;
+                    $tempQuestion[$index]['choices'] = [];
+        
+                    $correctAnswer = $exam->question->correctAnswer();
+                    $userChoice = $choices->find($userAnswers[$index + 1]);
+            
+                foreach ($exam->question->choices as $choice)
+                    
+                        $tempQuestion[$index]['choices'][] = [
+                            'choice_text' => $choice->choice_text,
+                            'userChoice' => $userChoice->choice_text,
+                            'is_correct' => ($choice->choice_text == $correctAnswer),
+                        ];
+                }
+            }
+  
+            $user = User::find($request->user_id);
+            $defaultEmail = "janerissaludo@gmail.com";   
+            SendExamReportEmail::dispatch($defaultEmail, $user->first_name, $user->last_name, $tempQuestion);
+                
             DB::commit();
                      
             
@@ -141,35 +169,7 @@ class ExamController extends Controller
             // $request->session()->forget('form_submitted');
         }
 
-        $userAnswers = $request->answer;
-        $currentExamId = $request->exam_id;
-    
-        $currentExam = ExamQuestion::where('exam_id', $request->exam_id)->with('question.choices')->get();        
-        $choices = Choice::all();
-        $tempQuestion = [];
-        
-        foreach ($currentExam as $index => $exam)
-        {
-            if (isset($userAnswers[$index + 1])){
-                $tempQuestion[$index]['question_text'] = $exam->question->question_text;
-                $tempQuestion[$index]['choices'] = [];
-    
-                $correctAnswer = $exam->question->correctAnswer();
-                $userChoice = $choices->find($userAnswers[$index + 1]);
-          
-            foreach ($exam->question->choices as $choice)
-                
-                    $tempQuestion[$index]['choices'][] = [
-                        'choice_text' => $choice->choice_text,
-                        'userChoice' => $userChoice->choice_text,
-                        'is_correct' => ($choice->choice_text == $correctAnswer),
-                    ];
-            }
-        }
-  
-        $user = User::find($request->user_id);
-        $defaultEmail = "janerissaludo@gmail.com";   
-        SendExamReportEmail::dispatch($defaultEmail, $user->first_name, $user->last_name, $tempQuestion);
+       
         //Mail::to($this->defaultEmail)->send(new ExamReports($this->firstName, $this->lastName, $this->tempQuestion));
         return view('student.exam-result', compact('score', 'sizeOfScore'));
         
@@ -261,41 +261,45 @@ class ExamController extends Controller
     
     public function storeRandomExam(Request $request, $id) {
         $existingQuestionIds = ExamQuestion::where('exam_id', $id)->pluck('question_id')->toArray();
-    
+
         // Check if there are any available questions to add.
-        $availableQuestionsCount = Question::where('category','Discard')->whereNotIn('id', $existingQuestionIds)->count();
-    
+        $availableQuestionsCount = Question::whereNotIn('id', $existingQuestionIds)
+            ->where(function ($query) {
+                $query->whereNull('category')->orWhere('category', '!=', 'Discard');
+            })
+        ->count();
+        
         // Change the limit for the total number of questions.
         $exam = Exam::find($id);
         $maxTotalQuestions = $exam->num_of_question;
         $numOfQuestions = $request->numOfQuestions;
-    
+        
         // Check if there are enough available questions.
         if ($availableQuestionsCount < $numOfQuestions) {
             return "Not enough available questions to add.";
         }
-    
+        
         // Get the current total questions added.
         $totalQuestionsAdded = ExamQuestion::where('exam_id', $id)->count();
-    
+        
         // Calculate the remaining questions that can be added based on the maximum limit.
         $remainingQuestions = $maxTotalQuestions - $totalQuestionsAdded;
-    
+        
         // Ensure that the desired number of questions does not exceed the remaining limit.
         $numOfQuestionsToAdd = min($numOfQuestions, $remainingQuestions);
-    
+        
         // Initialize variables to keep track of the added question IDs.
         $addedQuestionIds = [];
-    
+        
         // Loop until you have added the desired number of unique random questions or until the total limit is reached.
         while (count($addedQuestionIds) < $numOfQuestionsToAdd) {
             // Get a random question that is not already in the exam.
-            $randomQuestion = Question::where('category', '!=', 'Discard')
-            ->inRandomOrder()
+            $randomQuestion = Question::where(function ($query) use ($existingQuestionIds) {
+                $query->whereNull('category')->orWhere('category', '!=', 'Discard');
+            })
             ->whereNotIn('id', $existingQuestionIds)
+            ->inRandomOrder()
             ->first();
-        
-    
             // Check if a valid random question is found.
             if ($randomQuestion) {
                 // Create a new ExamQuestion record.
@@ -303,23 +307,24 @@ class ExamController extends Controller
                 $examQuestion->exam_id = $id;
                 $examQuestion->question_id = $randomQuestion->id;
                 $examQuestion->save();
-    
+        
                 // Add the question ID to the list of added question IDs.
                 $addedQuestionIds[] = $randomQuestion->id;
-    
+        
                 // Update the $existingQuestionIds array to avoid adding the same question multiple times.
                 $existingQuestionIds[] = $randomQuestion->id;
             } else {
                 // Handle the case where there are no more unique questions to add.
-                return "No Question to be added";
                 break;
             }
         }
-    
+        
         // Check if the desired number of questions couldn't be added due to reaching the maximum limit.
         if (count($addedQuestionIds) < $numOfQuestions) {
             return "Cannot add more questions. Maximum limit reached.";
         }
+        
+        
     
         return redirect()->back()->with('success', 'Questions added successfully!');
     }

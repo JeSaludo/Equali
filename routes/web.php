@@ -99,24 +99,12 @@ Route::middleware(['admin'])->group(function () {
     Route::post('/dashboard/qualified-applicant/set-schedule', [ApplicantController::class, 'Schedule'])->name('admin.dashboard.schedule-applicant'); 
     
     Route::get('/dashboard/report/item-analysis-chart', [ReportController::class, 'ShowItemAnalysisChart'])->name('admin.dashboard.item-analysis-chart');
-    
+    Route::get('/dashboard/report/item-analysis', [ReportController::class , 'ShowItemAnalysisReport'])->name('admin.dashboard.item-analysis-report');
     Route::get('/dashboard/item-analysis', [ReportController::class, 'ShowItemAnalysis'])->name('admin.dashboard.item-analysis');
     Route::get('/dashboard/item-analysis/retain', [ReportController::class, 'ShowItemAnalysisRetain'])->name('admin.dashboard.item-analysis.retain');
     Route::get('/dashboard/item-analysis/revise', [ReportController::class, 'ShowItemAnalysisRevise'])->name('admin.dashboard.item-analysis.revise');
     Route::get('/dashboard/item-analysis/discard', [ReportController::class, 'ShowItemAnalysisDiscard'])->name('admin.dashboard.item-analysis.discard');
    
-   
-   
-    Route::get('dashboard/report/list-of-qualifying-exam', [ReportController::class, 'ShowQualifyingExam'])->name('admin.dashboard.report.qualifying-exam');
-});
-
-
-    Route::middleware('auth')->group(function(){
-    Route::get('/exam', [ExamController::class,'ShowExam'])->name('student.show-exam');
-    Route::post('/exam/result', [ExamController::class, 'SubmitExam'])->name('submit-exam');
-    });
-
-
     Route::get('/dashboard/view-interview', [AdminController::class, 'ShowInterview'])->name('admin.dashboard.show-interview');
 
     Route::get('/dashboard/exam', [ExamController::class, 'ShowAdminExam'])->name('admin.dashboard.show-exam');
@@ -152,3 +140,24 @@ Route::middleware(['admin'])->group(function () {
     Route::get('/dashboard/item-analysis/{id}/retain',[ReportController::class, 'RetainQuestion'])->name('admin.item-analysis.retain');
     Route::get('/dashboard/item-analysis/{id}/revise',[ReportController::class, 'ReviseQuestion'])->name('admin.item-analysis.revise');
     Route::get('/dashboard/item-analysis/{id}/discard',[ReportController::class, 'DiscardQuestion'])->name('admin.item-analysis.discard');
+
+    Route::get('/dashboard/item-analysis/refresh', [ReportController::class, 'GenerateItemAnalysis'])->name('admin.item-analysis-refresh');
+    Route::post('/dashboard/item-analysis/store-revise-question', [ReportController::class, 'StoreReviseQuestion'])->name('admin.item-analysis.store-revise');
+
+
+   
+    Route::get('dashboard/report/list-of-qualifying-exam', [ReportController::class, 'ShowQualifyingExam'])->name('admin.dashboard.report.qualifying-exam');
+});
+
+
+Route::middleware('auth')->group(function(){
+    Route::get('/exam', [ExamController::class,'ShowExam'])->name('student.show-exam');
+    Route::post('/exam/result', [ExamController::class, 'SubmitExam'])->name('submit-exam');
+});
+
+
+
+    Route::get('/dashboard/view-employee', [AdminController::class, 'ShowEmployee'])->name('admin.show-employee');
+    Route::get('/dashboard/profile', [AdminController::class,'ShowProfile'])->name('admin.show-profile');
+
+    Route::get('/dashboard/setting', [AdminController::class,'ShowSetting'])->name('admin.show-setting');

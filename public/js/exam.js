@@ -1,45 +1,42 @@
+document.addEventListener("DOMContentLoaded", function () {
+    // Check if choices are already stored in local storage
+    const storedChoices = JSON.parse(localStorage.getItem("examChoices")) || {};
 
-let addExamContent = document.querySelector("#addExamContent");
-let currrentAddExamBtn = document.querySelector("#addExamBtn");
-let examContent = document.querySelector("#examContent")
+    // Populate the radio inputs with stored choices
+    Object.keys(storedChoices).forEach((index) => {
+        const choiceId = storedChoices[index];
+        const radioInput = document.querySelector(
+            `input[name="answer[${index}]"][value="${choiceId}"]`
+        );
+        if (radioInput) {
+            radioInput.checked = true;
+        }
+    });
 
-let icon =  document.querySelector("#icon");
-let isActive = true
+    // Listen for changes in radio inputs and update local storage
+    document.querySelectorAll('input[type="radio"]').forEach((input) => {
+        input.addEventListener("change", function () {
+            const index = this.name.match(/\d+/)[0];
+            storedChoices[index] = this.value;
+            localStorage.setItem("examChoices", JSON.stringify(storedChoices));
+        });
+    });
 
+    // Listen for form submission
+    document
+        .getElementById("form")
+        .addEventListener("submit", function (event) {
+            // Disable the submit button
+            const submitButton = document.getElementById("submitBtn");
+            if (submitButton) {
+                submitButton.disabled = true;
+            }
 
+            // Additional logic or form submission code goes here...
 
-document.addEventListener("click", e =>{  
-    
-    if (e.target.closest("#addExamBtn") === currrentAddExamBtn) {
-        if(e.target.closest("#addExamBtn") ===null) return           
-        else
-        {           
-            if(isActive)
-            currrentAddExamBtn.innerHTML  = "BACK"
-            else
-            currrentAddExamBtn.innerHTML  = "CREATE"
-        } 
-        
-        isActive = !isActive; 
-        examContent.classList.toggle('blur-sm')
-        addExamContent.classList.toggle('opacity-0');        
-        addExamContent.classList.toggle('pointer-events-none');
-        addExamContent.classList.toggle('translate-y-[-15px]');
-      
-       
-    } else if (!addExamContent.contains(e.target)) {        
-        addExamContent.classList.add('opacity-0');
-        addExamContent.classList.add('pointer-events-none', 'translate-y-[-15px]');
-        examContent.classList.remove('blur-sm')
-        currrentAddExamBtn.innerHTML  = "CREATE"
-      
-    }
-})
+            // Clear 'examChoices' from local storage
+            localStorage.removeItem("examChoices");
 
-
-
-
-
-
-
-
+            // Prevent the default form submission behavior
+        });
+});

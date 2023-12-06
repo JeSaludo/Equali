@@ -25,23 +25,15 @@
         @include('layout.sidenav', ['active' => 0])
         <nav class="ml-[218px] flex justify-between items-center border-b border-[#D9DBE3] h-[60px] bg-white px-4">
 
-            <div class="flex items-center  ">
-                <form method="get" action="{{ route('admin.dashboard.report.qualifying-exam') }}"
-                    class="relative w-[300px]">
-                    @csrf
-                    <input type="text" name="searchTerm" placeholder="Search Here"
-                        value="{{ request('searchTerm') }}"
-                        class="border border-[#D9DBE3] bg-[#F7F7F7] placeholder:text-[#8B8585] px-12 py-2 pl-10 pr-10 w-full rounded-[16px]">
-                    <i class='bx bx-search text-[#8B8585] bx-sm absolute left-3 top-1/2 transform -translate-y-1/2'></i>
-                </form>
-            </div>
+            <h1 class="text-[#26386A] text-[18px]  font-bold font-raleway ">Reports </h1>
 
             <div class="my-2">
                 <i class='bx bx-cog bx-sm text-[#8B8585]'></i>
                 <i class='bx bx-bell text-[#8B8585] bx-sm'></i>
                 <i class='bx bx-user-circle bx-sm text-[#8B8585]'></i>
             </div>
-        </nav>
+
+        </nav>  
 
         <section class="ml-[218px] main ">
             <div class="mx-4 my-4">

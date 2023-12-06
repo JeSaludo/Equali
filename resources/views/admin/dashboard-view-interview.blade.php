@@ -105,7 +105,7 @@
                 @csrf
                 <div class="mx-4 my-2 ">
                     <a disabled id="openPopup"
-                        class="w-[120px] border border-[#D9DBE3] hover:border-slate-400 flex items-center text-[14px] tezt-poppin hover:text-[#384b94] font-poppins text-slate-600 py-1 px-4 rounded-lg">
+                        class="w-[120px] border border-[#D9DBE3] hover:cursor-pointer hover:border-slate-400 flex items-center text-[14px] tezt-poppin hover:text-[#384b94] font-poppins text-slate-600 py-1 px-4 rounded-lg">
                         <i class='bx bx-user-check text-[16px] pr-1'></i></i>Schedule
                     </a>
                 </div>
@@ -245,7 +245,7 @@
                                     required>
 
 
-                                <div>
+                                <div class="my-2">
                                     <label for="start_time">Start Time:</label>
                                     <input type="time" id="start_time" name="start_time" required>
 

@@ -63,6 +63,7 @@
                             <tr>
                                 <td class="px-6 py-2">Question No.</td>
                                 <td class="px-6 py-2">Question</td>
+                                <td class="px-6 py-2">Category</td>
                                 <td class="px-6 py-2">Action</td>
                             </tr>
                         </thead>
@@ -89,6 +90,26 @@
                                                 {{ $question->question_text }}
                                             @endif
                                         </td>
+                                        <td class="px-6 py-3 ">
+                                                @if($question->category == null)
+                                                    
+                                                   <span class="py-1 px-4 rounded-md bg-slate-200 text-slate-600">Not Yet analyzed </span>         
+
+                                                    
+                                                @elseif ($question->category == "Discard")
+
+                                                     <span class="py-1 px-4 rounded-md bg-red-200 text-red-600">Discarded</span>
+                                                @elseif ($question->category == "Retain")
+
+                                                <span class="py-1 px-4 rounded-md bg-blue-200 text-blue-600">Retained</span>
+                                        
+                                                @elseif ($question->category == "Revise")
+
+                                                <span class="py-1 px-4 rounded-md bg-green-200 text-green-600">Revised</span>
+                                         
+                                                @endif
+                                        </td>
+                                        
                                         <td class="px-6 py-3"><a
                                                 href="{{ route('admin.dashboard.edit-question', $question) }}"><i
                                                     class='bx bxs-edit'></i></a>

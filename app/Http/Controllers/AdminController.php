@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\Request;
-
+use App\Models\Question;
 class AdminController extends Controller
 {
     function ShowAdminOverview()
@@ -32,7 +32,22 @@ class AdminController extends Controller
         $users = $users->paginate(10);
         return view('admin.dashboard-view-interview', compact( 'users', 'userCount'));
     }
+
+    function ShowEmployee(){
+
+        $users = User::where('role', '!=', 'Student')->paginate(10);
+
+
+        return view('admin.employee.admin-view-employee', compact('users'));
+    }
     
+    function ShowProfile(){
+        return view('admin.employee.admin-profile');
+    }
+
+    function ShowSetting(){
+        return view('admin.employee-setting');
+    }
     
 
    

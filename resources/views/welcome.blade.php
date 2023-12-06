@@ -43,7 +43,11 @@
                 </div>
 
                 @if (Auth::check())
+                <div class="flex gap-5">
                     <a href="" class="text-[#403838] text-[16px]">{{ Auth::user()->first_name }}</a>
+                    <a href="{{route('auth.logout')}}" id="logoutLink"   class="text-[#403838] text-[16px]">Logout</a>
+                </div>
+                   
                 @else
                     <a href="{{ route('auth.login') }}"
                         class=" bg-[#2B6BE6]  text-white mx-[4px] px-8 py-2 rounded-[18px] hover:bg-[#134197] ">Login</a>
@@ -87,7 +91,12 @@
         </div>
 
     </div>
-
+    <script src="{{asset('js/exam.js')}}"></script>
+    <script>
+            document.getElementById('logoutLink').addEventListener('click', function () {
+                localStorage.removeItem('examChoices');
+            });
+    </script>
 </body>
 
 </html>

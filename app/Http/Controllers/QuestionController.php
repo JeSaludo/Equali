@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Choice;
 use App\Models\Question;
-
+use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
@@ -13,7 +13,7 @@ class QuestionController extends Controller
    function StoreQuestion(Request $request){
 
         $img = $request->img;
-       
+        
 
         $request->validate([
             'question_text' => 'required',
@@ -22,44 +22,56 @@ class QuestionController extends Controller
             'correct_choice' => 'required|numeric',           
 
         ]);
-      
-            
-        $question = new Question();
-        $question->question_text = $request->question_text;  
-       
-        $question->save();
+        DB::beginTransaction();
+        try{
 
-        if(!is_null($img)){                        
-
-            if ($question->image_path) {
-                Storage::delete('public/questions/' . $question->image_path);
+            $question = new Question();
+            $question->question_text = $request->question_text;  
+           
+            $question->save();
+    
+            if(!is_null($img)){                        
+    
+                if ($question->image_path) {
+                    Storage::delete('public/questions/' . $question->image_path);
+                }
+                
+                $extension = $img->getClientOriginalExtension();
+                $newFileName = 'question-image_' . $question->id . '.' . $extension;
+    
+                $path = $request->file('img')->storeAs('public/questions', $newFileName);           
+                   
+                $question->image_path = $newFileName;
+                $question->save();
+            }
+    
+            foreach ($request->choice_text as $key => $choiceText) {
+               $isCorrect = ($request->correct_choice == ($key + 1));
+               $choice = new Choice();
+               $choice->question_id = $question->id;
+               $choice->choice_text = $choiceText;
+               $choice->is_correct = $isCorrect;
+               $choice->save();
             }
             
-            $extension = $img->getClientOriginalExtension();
-            $newFileName = 'question-image_' . $question->id . '.' . $extension;
+            $choice = new Choice();
+            $choice->question_id = $question->id;
+            $choice->choice_text = "No Answer";
+            $choice->is_correct = false;
+            $choice->save();
+            
+            
+            DB::commit();
 
-            $path = $request->file('img')->storeAs('public/questions', $newFileName);           
-               
-            $question->image_path = $newFileName;
-            $question->save();
+            return redirect()->route('admin.dashboard.view-question');
         }
-
-        foreach ($request->choice_text as $key => $choiceText) {
-           $isCorrect = ($request->correct_choice == ($key + 1));
-           $choice = new Choice();
-           $choice->question_id = $question->id;
-           $choice->choice_text = $choiceText;
-           $choice->is_correct = $isCorrect;
-           $choice->save();
+        catch (\Exception $e) {        
+            DB::rollback(); 
+           
+            return redirect()->back()->with('error', 'Failed to submit exam. Please try again later.');
+            // $request->session()->forget('form_submitted');
         }
-        
-        $choice = new Choice();
-        $choice->question_id = $question->id;
-        $choice->choice_text = "No Answer";
-        $choice->is_correct = false;
-        $choice->save();
-        
-        return redirect()->route('admin.dashboard.view-question');
+      
     }
     
 
@@ -133,8 +145,6 @@ class QuestionController extends Controller
     }
 
 
-    public function ShowCreateExam(){
-        return view('');
-    }
+    
 
 }

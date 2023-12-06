@@ -149,27 +149,21 @@
                                         <td class="px-6 py-3">{{ $user->id }}</td>
                                         <td class="px-6 py-3 ">{{ $user->last_name . ', ' . $user->first_name }} </td>
 
-                                        @if ($user->qualifiedStudent->exam_schedule_date != null)
-                                            <td class="px-6 py-3  whitespace-nowrap">
-
+                                        @if ($user->qualifiedStudent && $user->qualifiedStudent->exam_schedule_date != null)
+                                            <td class="px-6 py-3 whitespace-nowrap">
                                                 {{ \Carbon\Carbon::parse($user->qualifiedStudent->exam_schedule_date)->format('F j, Y') }}
                                             </td>
-
-                                            <td class="px-6 py-3  whitespace-nowrap">
-
+                                            <td class="px-6 py-3 whitespace-nowrap">
                                                 {{ \Carbon\Carbon::parse($user->qualifiedStudent->start_time)->format('h:i A') }}
                                                 -
                                                 {{ \Carbon\Carbon::parse($user->qualifiedStudent->end_time)->format('h:i A') }}
-
                                             </td>
                                         @else
-                                            <td class="px-6 py-3 text-left  whitespace-nowrap">
+                                            <td class="px-6 py-3 text-left whitespace-nowrap">
                                                 Not yet scheduled
                                             </td>
-
                                             <td></td>
                                         @endif
-
 
                                         <td class="px-6 py-3 text-[#626B7F]">
                                             {{-- <a href="" class="mx-2" title="Schedule"><i

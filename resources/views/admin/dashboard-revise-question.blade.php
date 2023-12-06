@@ -48,7 +48,7 @@
             </div>
              
             <div class="w-full mx-auto">
-                <form id="form" action="{{ route('admin.dashboard.store-question-directly') }}" method="POST" enctype="multipart/form-data">
+                <form id="form" action="{{ route('admin.item-analysis.store-revise') }}" method="POST" enctype="multipart/form-data">
                     @csrf
 
                     
@@ -61,66 +61,38 @@
                         <div class="bg-[#4c4a67] h-[250px]  rounded-[8px] flex justify-between p-4">
                             
                             <div id="preview" class="w-1/4 hidden py-4 ml-[16px] rounded-xl items-center bg-[#28273a] mt-8">
-                                <img id="imagePreview" class="hidden mx-auto text-center" alt="Image Preview" style="max-width: 100%; max-height: 160px;">
+                                <img id="imagePreview"  class="hidden mx-auto text-center" alt="Image Preview" style="max-width: 100%; max-height: 160px;">
                                 
                             </div>
                             
                             <div class="w-full m-4 mt-12 flex items-center">
-                                <textarea
+                                <input
                                 class="bg-transparent text-[28px] mx-auto text-center  flex items-center  py-8 w-full h-full placeholder:text-[#EBEFF9] caret-white text-white"
-                                placeholder="Type Question Here" name="question_text" required autocomplete="off"  style="resize: none;"></textarea>
+                                placeholder="Type Question Here" name="question_text" required autocomplete="off"   value="{{$question->question_text}}">
                             </div>
                             
                         </div>
                         
                         <div class="h-[163px] my-7 flex justify-evenly gap-4 ">
+                            @foreach ($question->choices->where('choice_text', '!=', 'No Answer') as $key => $choice)
                             <div class="w-full bg-[#4c4a67] rounded-lg relative">
                                 <input type="text"
                                     class="bg-transparent text-[16px]  placeholder:font-poppins mx-auto text-center w-full h-full placeholder:text-[#EBEFF9] caret-white text-white"
                                     placeholder="Type Choice Here" name="choice_text[]" required
-                                    autocomplete="off">
-                                <div>
-                                    <input
-                                        class="absolute top-0 right-0 m-1 w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 "
-                                        type="radio" name="correct_choice" value="1" checked />
-                                </div>
+                                    autocomplete="off"  value="{{ $choice->choice_text }}" required>
+                              
+                            <input
+                                class="absolute top-0 right-0 m-1 w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 "
+                                type="radio" id="choice" name="correct_choice" value="{{ $key + 1 }}"
+                                @if ($choice->is_correct) checked @endif />
 
                             </div>
-                            <div class="w-full bg-[#4c4a67] rounded-lg relative">
-                                <input type="text"
-                                    class="bg-transparent text-[16px]  placeholder:font-poppins mx-auto text-center w-full h-full placeholder:text-[#EBEFF9] caret-white text-white"
-                                    placeholder="Type Choice Here" name="choice_text[]" required required
-                                    autocomplete="off">
-                                <div>
-                                    <input
-                                        class="absolute top-0 right-0 m-1 w-4 h-4 text-blue-600 bg-gray-100 border-gray-300"
-                                        type="radio" name="correct_choice" value="2" />
-                                </div>
-                            </div>
-                            <div class="w-full bg-[#4c4a67] rounded-lg relative">
-                                <input type="text"
-                                    class="bg-transparent text-[16px]  placeholder:font-poppins mx-auto text-center w-full h-full placeholder:text-[#EBEFF9] caret-white text-white"
-                                    placeholder="Type Choice Here" name="choice_text[]" required required
-                                    autocomplete="off">
-                                <div>
-                                    <input
-                                        class="absolute top-0 right-0 m-1 w-4 h-4 text-blue-600 bg-gray-100 border-gray-300"
-                                        type="radio" name="correct_choice" value="3" />
-                                </div>
-                            </div>
-                            <div class="w-full bg-[#4c4a67] rounded-lg relative">
-                                <input type="text"
-                                    class="bg-transparent text-[16px]  placeholder:font-poppins mx-auto text-center w-full h-full placeholder:text-[#EBEFF9] caret-white text-white"
-                                    placeholder="Type Choice Here" name="choice_text[]" required required
-                                    autocomplete="off">
-                                <div>
-                                    <input
-                                        class="absolute top-0 right-0 m-1 w-4 h-4 text-blue-600 bg-gray-100 border-gray-300"
-                                        type="radio" name="correct_choice" value="4" />
-                                </div>
-                            </div>
+                          
+                          
+                          @endforeach
 
-                            <input type="hidden" name="exam_id" value="{{$exam_id}}">
+                          <input type="hidden" value="{{$question->id}}" name="question_id">
+                         
                         </div>
 
                         <div class="flex justify-end w-full">
@@ -131,7 +103,7 @@
 
                         </div>
 
-                    
+
 
                     </div>
 

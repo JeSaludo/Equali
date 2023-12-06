@@ -39,7 +39,7 @@
 
             <div>
                 <a href="{{ route('admin.dashboard.view-question') }}" class="mx-4 cursor-pointer hover:bg-[#EAF0FF]  px-4 py-2 rounded-[15px] flex justify-between  items-center text-[#718297] my-2">
-                    <div class="pointer-events-none"><i class='bx bxs-data pr-2'></i>Question Bank</div>
+                    <div class="pointer-events-none"><i class='bx bxs-hdd pr-2' ></i></i>Question Bank</div>
                 </a>
             </div>
 
@@ -61,7 +61,7 @@
 
                         <a href="{{ route('admin.report.qualified-exam') }}"
                             class=" mx-4 px-4 py-2 hover:cursor-pointer hover:bg-[#EAF0FF] rounded-[15px] flex  items-center text-[#718297] my-2">
-                            <div class="px-4 whitespace-nowrap">Weighted Average</div>
+                            <div class="px-4 whitespace-nowrap">Qualified Ranking</div>
 
                         </a>
                         <a href="{{ route('admin.dashboard.item-analysis-chart') }}"
@@ -69,12 +69,7 @@
                             <div class="px-4 whitespace-nowrap">Item Analysis
                             </div>
                         </a>
-
-                        <a href="{{ route('admin.dashboard.item-analysis') }}"
-                            class=" mx-4 px-4 py-2 hover:cursor-pointer hover:bg-[#EAF0FF] rounded-[15px] flex  items-center text-[#718297] my-2">
-                            <div class="px-4 whitespace-nowrap">Item Analysis
-                            </div>
-                        </a>
+                       
 
                         <a href="{{ route('admin.dashboard.report.qualifying-exam') }}"
                             class=" mx-4 px-4 py-2 hover:cursor-pointer hover:bg-[#EAF0FF] rounded-[15px] flex  items-center text-[#718297] my-2">
@@ -99,13 +94,7 @@
               
         </nav>
 
-        <div class="absolute bottom-0 left-0 w-full">
-            <a href="{{ route('auth.logout') }}"
-                class=" mx-4 px-4 py-2 hover:cursor-pointer hover:bg-[#EAF0FF] rounded-[15px] flex  items-center text-[#718297] my-2">
-                <div class=""><i class='bx bx-log-out pr-2'></i>Logout
-                </div>
-            </a>
-        </div>
+      
     </div>
     <script src="{{ asset('js/dropdown.js') }}"></script>
 
