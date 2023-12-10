@@ -50,6 +50,10 @@ Route::middleware(['admin'])->group(function () {
     Route::post('/dashboard/add-question/store', [QuestionController::class, 'StoreQuestion'])->name('admin.dashboard.store-question');
     Route::get('/dashboard/questions/{id}/edit', [QuestionController::class, 'ShowEditQuestion'])->name('admin.dashboard.edit-question');
     Route::put('/dashboard/questions/{id}', [QuestionController::class, 'UpdateQuestion'])->name('admin.dashboard.update-question');
+
+    Route::get('/dashboard/exam/questions/{id}/edit', [QuestionController::class, 'ShowEditQuestionInExam'])->name('admin.dashboard.edit-question-in-exam');
+    Route::put('/dashboard/exam/questions/{id}', [QuestionController::class, 'UpdateQuestionInExam'])->name('admin.dashboard.update-question-in-exam');
+
     Route::delete('/dashboard/questions/{id}/delete', [QuestionController::class, 'DeleteQuestion'])->name('admin.dashboard.delete-question');
     //Interview 
     Route::get('/dashboard/pending-interview',[InterviewController::class, 'ShowPendingInterview'])->name('admin.dashboard.pending-interview');
@@ -57,8 +61,8 @@ Route::middleware(['admin'])->group(function () {
     Route::post('/dashboard/interview/store', [InterviewController::class, 'StoreInterview'])->name('admin.dashboard.store-interview');
    
     Route::get('/dashboard/interview/review', [InterviewController::class, 'ShowReview'])->name('admin.dashboard.show-review');
-   
-   
+    Route::get('/dashboard/interview/review/{id}', [InterviewController::class, 'EditInterview'])->name('admin.dashboard.edit-screening-form');
+    Route::put('admin/interview/update-interview/{id}', [InterviewController::class, 'UpdateInterview'])->name('admin.dashboard.update-interview');
     //Applicant
    Route::get('/dashboard/applicant/{id}/edit', [ApplicantController::class, "EditApplicant"])->name('admin.dashboard.edit-applicant');
     Route::post('/dashboard/add-applicant/store', [ApplicantController::class, 'StoreApplicant'])->name('admin.dashboard.store-applicant');
@@ -88,9 +92,9 @@ Route::middleware(['admin'])->group(function () {
     Route::get('/dashboard/qualified-applicant/store', [ApplicantController::class, 'StoreQualifiedApplicant'])->name('admin.dashboard.store-qualifiedpted-appplicant');
     Route::get('/dashboard/qualified-applicant/{id}/delete', [ApplicantController::class, 'DeleteQualifiedApplicant'])->name('admin.dashboard.delete-qualified-appplicant');
 
-    //rename this   // can be considered a qualified 
+   
     
-    //Qualified 
+   
     Route::get('/dashboard/list-of-scheduled-applicant', [InterviewController::class, 'ShowScheduleForInterview'])->name('admin.dashboard.show-qualified-appplicant');
     
     Route::put('/dashboard/qualified-applicant/{id}', [ApplicantController::class, 'UpdateQualifiedApplicant'])->name('admin.dashboard.update-qualified-applicant');
@@ -105,7 +109,8 @@ Route::middleware(['admin'])->group(function () {
     Route::get('/dashboard/item-analysis/revise', [ReportController::class, 'ShowItemAnalysisRevise'])->name('admin.dashboard.item-analysis.revise');
     Route::get('/dashboard/item-analysis/discard', [ReportController::class, 'ShowItemAnalysisDiscard'])->name('admin.dashboard.item-analysis.discard');
    
-    Route::get('/dashboard/view-interview', [AdminController::class, 'ShowInterview'])->name('admin.dashboard.show-interview');
+    Route::get('/dashboard/view-schedule-interview', [AdminController::class, 'ShowScheduleInterview'])->name('admin.dashboard.show-schedule-interview');
+    Route::get('/dashboard/view-scheduled-interview', [AdminController::class, 'ShowScheduledInterview'])->name('admin.dashboard.show-scheduled-interview');
 
     Route::get('/dashboard/exam', [ExamController::class, 'ShowAdminExam'])->name('admin.dashboard.show-exam');
     Route::get('/dashboard/exam/{id}/edit', [ExamController::class, 'EditExam'])->name('admin.dashboard.edit-exam');
@@ -121,7 +126,9 @@ Route::middleware(['admin'])->group(function () {
     Route::get('/exam/result', [ExamController::class, 'ShowExamResult'])->name('student.exam-result');
     Route::get('/exam/already-responded', [ExamController::class, 'ShowAlreadyResponded'])->name('student.already-responded');
 
-    Route::get('/dashboard/report/qualified-exam-result', [ReportController::class, 'ShowQualifyingExamResult'])->name('admin.report.qualified-exam');
+    Route::get('/dashboard/report/qualified-applicant-ranking', [ReportController::class, 'ShowQualifyingRankingResult'])->name('admin.report.qualified-applicant-ranking');
+    Route::get('/dashboard/report/qualified-applicant-ranking-IT', [ReportController::class, 'ShowQualifyingRankingResultIT'])->name('admin.report.qualified-applicant-ranking-it');
+    Route::get('/dashboard/report/qualified-applicant-ranking-IS', [ReportController::class, 'ShowQualifyingRankingResultIS'])->name('admin.report.qualified-applicant-ranking-is');
 
  
     Route::get('/dashboard/report/qualified-exam-result/export', [ReportController::class, 'ExportQualifyingExam'])->name("export.qualified-exam-result");
@@ -147,17 +154,29 @@ Route::middleware(['admin'])->group(function () {
 
    
     Route::get('dashboard/report/list-of-qualifying-exam', [ReportController::class, 'ShowQualifyingExam'])->name('admin.dashboard.report.qualifying-exam');
-});
-
-
-Route::middleware('auth')->group(function(){
-    Route::get('/exam', [ExamController::class,'ShowExam'])->name('student.show-exam');
-    Route::post('/exam/result', [ExamController::class, 'SubmitExam'])->name('submit-exam');
-});
 
 
 
+
+    
     Route::get('/dashboard/view-employee', [AdminController::class, 'ShowEmployee'])->name('admin.show-employee');
-    Route::get('/dashboard/profile', [AdminController::class,'ShowProfile'])->name('admin.show-profile');
+    Route::get('/dashboard/{id}/profile', [AdminController::class,'ShowProfile'])->name('admin.show-profile');
 
     Route::get('/dashboard/setting', [AdminController::class,'ShowSetting'])->name('admin.show-setting');
+
+    Route::put('/dashboard/{id}/update-profile', [AdminController::class,'UpdateProfile'])->name('admin.update.profile');
+
+    
+
+
+
+
+});
+
+
+    Route::middleware('auth')->group(function(){
+        Route::get('/exam', [ExamController::class,'ShowExam'])->name('student.show-exam');
+        Route::post('/exam/result', [ExamController::class, 'SubmitExam'])->name('submit-exam');
+    });
+
+    Route::get('/dashboard/report/interview-result', [ReportController::class, 'ShowInterviewResult'])->name('admin.report.interview-result');

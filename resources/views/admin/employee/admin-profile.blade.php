@@ -29,44 +29,36 @@
            
 
 
-            <div class="my-2">
-                <i class='bx bx-cog bx-sm text-[#8B8585]'></i>
-                <i class='bx bx-bell text-[#8B8585] bx-sm'></i>
-                <i class='bx bx-user-circle bx-sm text-[#8B8585]'></i>
-            </div>
-
+           
+            @include('layout.user-popup')
         </nav>
-
-
-
-
-
         <section class="ml-[218px] main ">
 
-            <div class="  bg-white min-h-screen">
+            @include('layout.popup')
 
-                <div class="p-7">
+            <div class="  bg-white  h-screen">
+
+                <div class="p-8">
                     <div class="">
                         <h1 class="text-[22px] font-poppins  px-6 font-semibold text-[#26386A]">Edit Profile </h1>
                         <p class="text-[14px] font-poppins  px-6 font-noprmal text-gray-500">Edit your information here </p>
                     </div>
-                    <form class=" mt-10" action="{{ route('auth.store.admin.registration') }}" method="post">
+
+                    <form class=" mt-10" action="{{ route('admin.update.profile', $user->id) }}" method="post">
                         @csrf
+                        @method('PUT')        
                         
-                       
-                       
-    
-                        <div class="w-5/12">
+                        <div class="px-6 w-5/12">
                             <div class="flex  gap-2 my-4 ">
                                 <div class=" w-full ">
-                                    <input type="text" name="first_name"
+                                    <input type="text" name="first_name" value="{{$user->first_name}}"
                                         class="h-[45px] w-full rounded placeholder:text-[#4E4E4E] placeholder:font-poppins placeholder:text-[16px] px-[40px] border border-[#D9DBE3]"
                                         placeholder="First Name" required autocomplete="off">
             
                                 </div>
             
                                 <div class="w-full  ">
-                                    <input type="text" name="last_name"
+                                    <input type="text" name="last_name" value="{{$user->last_name}}"
                                         class="h-[45px] w-full rounded placeholder:text-[#4E4E4E] placeholder:font-poppins placeholder:text-[16px] px-[40px] border border-[#D9DBE3]"
                                         placeholder="Last Name" required autocomplete="off">
             
@@ -74,26 +66,35 @@
                             </div>
                             
                             <div class=" my-4">
-                                <input type="email" name="email"
+                                <input type="email" name="email" value="{{$user->email}}"
                                     class="h-[45px] w-full rounded placeholder:text-[#4E4E4E] placeholder:font-poppins placeholder:text-[16px] px-[40px] border border-[#D9DBE3] "
                                     placeholder="Email Address" required autocomplete="off">
         
                             </div>
-        
-        
-                            <div class=" my-4">
-                                <input type="password" name="password"
+
+                            {{-- <div class=" my-4">
+                                <input type="password" name="curent_password" 
                                     class="h-[45px] w-full rounded placeholder:text-[#4E4E4E] placeholder:font-poppins placeholder:text-[16px] px-[40px] border border-[#D9DBE3] "
-                                    placeholder="Password" required autocomplete="off">
+                                    placeholder="Old Password"  autocomplete="off">
+        
+                            </div>
+                         
+
+                            <div class=" my-4">
+                                <input type="text" name="password" 
+                                    class="h-[45px] w-full rounded placeholder:text-[#4E4E4E] placeholder:font-poppins placeholder:text-[16px] px-[40px] border border-[#D9DBE3] "
+                                    placeholder="New Password"  autocomplete="off">
         
                             </div>
         
                             <div class="relative my-4">
-                                <input type="password" name="password_confirmation"
+                                <input type="text" name="password_confirmation"
                                     class="h-[45px] w-full rounded placeholder:text-[#4E4E4E] placeholder:font-poppins placeholder:text-[16px] px-[40px] border border-[#D9DBE3] "
-                                    placeholder="Confirm Password" required autocomplete="off">
+                                    placeholder="Confirm Password"  autocomplete="off">
         
-                            </div>
+                            </div> --}}
+                            
+                            
 
                             <div class="relative my-6">
                                 <input type="submit" value="Update Profile"
@@ -103,19 +104,14 @@
                     
     
     
-    
-    
-    
-                       
-    
-                        <div class="relative my-2 mx-auto">
-    
-                            @error('email')
-                                <h1 class="bg-gray-200 p-3 text-[12px] rounded-md text-red-500 font-bold font-poppins">
-                                    {{ $message }}
-                                </h1>
-                            @enderror
+                        @if ($errors->has('error'))
+                        <div class="alert alert-danger">
+                            {{ $errors->first('error') }}
                         </div>
+                        @endif
+                    
+                   
+                    
     
                     </form>
                 </div>
@@ -124,8 +120,13 @@
        
         </section>
 
+
+
     </div>
 
+
+   
+    
 </body>
 
 </html>

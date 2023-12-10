@@ -23,8 +23,14 @@ class ApplicantController extends Controller
 
     function ShowApplicant(Request $request){
         
-        $users  = User::where('role', 'Student')->with('admissionExam');
 
+        if(auth()->user()->role === "ProgramHead"){
+            $users  = User::where('role', 'Student')->with('admissionExam')->where('status', 'Pending')
+            ->orWhere('status', 'Ready For Exam')
+            ->orWhere('status', 'Pending Schedule');
+
+        }
+            
         $searchTerm = $request->searchTerm;
         
         $recentUser = User::where('role', 'Student')->get();
@@ -191,7 +197,7 @@ class ApplicantController extends Controller
 
 
         $user = User::where('role', 'Student')->findOrFail($id);
-        $user->status = "Ready For Interview";
+        $user->status = "Pending Schedule";
         $user->save();
 
         $approveUser = new QualifiedStudent();
@@ -216,7 +222,7 @@ class ApplicantController extends Controller
         foreach ($selectedUserIds as $userId) {
         
             $user = User::where('role', 'Student')->findOrFail($userId);
-            $user->status = "Ready For Interview";
+            $user->status = "Pending Schedule";
             $user->save();
     
             $approveUser = new QualifiedStudent();
@@ -266,7 +272,8 @@ class ApplicantController extends Controller
     function ShowApprovedApplicant(Request $request){
 
         $users = User::where('role', 'Student')->with('admissionExam')
-        ->where('status', 'Ready For Interview')
+        ->where('status', 'Pending Interview')
+        ->Orwhere('status', 'Pending Schedule')
         ->orWhere('status','Ready For Exam');
         //->doesntHave('studentInfo');
         // ->with('qualifiedStudent')->get();
@@ -336,11 +343,16 @@ class ApplicantController extends Controller
            $user->exam_schedule_date = $request->date;
            $user->start_time = $request->start_time;
            $user->end_time = $request->end_time;
+           
            $user->save();
+
+           $temp_user = User::find($userId);
+           $temp_user->status = "Pending Interview";
+           $temp_user->save();
            dispatch(new SendScheduleEmail($user->user->email, $user->exam_schedule_date, $user->start_time, $user->end_time));
            //Mail::to($this->userEmail)->send(new AcceptanceMail($this->userEmail, $this->firstName, $this->lastName, $this->tempPassword));
           }
-        return redirect()->route('admin.dashboard.show-interview');
+        return redirect()->route('admin.dashboard.show-schedule-interview');
        
         
     }

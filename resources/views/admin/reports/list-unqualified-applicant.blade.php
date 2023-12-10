@@ -27,15 +27,12 @@
 
             <h1 class="text-[#26386A] text-[18px]  font-bold font-raleway ">Reports </h1>
 
-            <div class="my-2">
-                <i class='bx bx-cog bx-sm text-[#8B8585]'></i>
-                <i class='bx bx-bell text-[#8B8585] bx-sm'></i>
-                <i class='bx bx-user-circle bx-sm text-[#8B8585]'></i>
-            </div>
-
-        </nav>  
-
+          
+            @include('layout.user-popup')
+        </nav>
         <section class="ml-[218px] main ">
+
+            @include('layout.popup')
             <div class="mx-4 my-4">
 
                 <div class="flex justify-between mx-4 my-2">

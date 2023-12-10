@@ -33,19 +33,12 @@
                     </form>
             </div>
         
-            <div class="my-2">
-                <i class='bx bx-cog bx-sm text-[#8B8585]' ></i>
-                <i class='bx bx-bell text-[#8B8585] bx-sm'></i>
-                <i class='bx bx-user-circle bx-sm text-[#8B8585]' ></i>
-            </div>
-         
-        </nav>    
-
-
-
-
-
+           
+            @include('layout.user-popup')
+        </nav>
         <section class="ml-[218px] main ">
+
+            @include('layout.popup')
 
            
            

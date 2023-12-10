@@ -68,7 +68,7 @@ class QuestionController extends Controller
         catch (\Exception $e) {        
             DB::rollback(); 
            
-            return redirect()->back()->with('error', 'Failed to submit exam. Please try again later.');
+            return redirect()->back()->with('error', 'Failed to create question. Please try again later.');
             // $request->session()->forget('form_submitted');
         }
       
@@ -131,11 +131,20 @@ class QuestionController extends Controller
             $choice->is_correct = $isCorrect;
             $choice->save();
         }
+
+        $choice = new Choice();
+        $choice->question_id = $question->id;
+        $choice->choice_text = "No Answer";
+        $choice->is_correct = false;
+        $choice->save();
+        
     
     
         return redirect()->route('admin.dashboard.view-question')->with('success', 'Question edited successfully!');
     }   
+  
 
+   
     public function DeleteQuestion($id){
         $question = Question::findOrFail($id);
         $question->choices()->delete();

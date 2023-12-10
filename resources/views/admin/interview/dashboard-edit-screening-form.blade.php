@@ -34,8 +34,9 @@
             <section class="ml-[218px] main ">
 
                 @include('layout.popup')
-                <form action="{{ route('admin.dashboard.store-interview') }}" method="POST">
+                <form action="{{ route('admin.dashboard.update-interview', $user->id) }}" method="POST">
                     @csrf
+                    @method('PUT')
                     <div class="bg-white mx-4">
                         <h1 class="text-center text-[#26386A] font-poppins font-bold text-2xl my-3 py-4">Screening Form
                         </h1>
@@ -61,20 +62,22 @@
                         </div>
                         <div class="flex mx-4 justify-between  gap-2 ">
                             <div class=" px-4 my-2  w-full">
-                                <input type="text" name="home_address" value="{{ old('home_address') }}"
+                                <input type="text" name="home_address" value="{{ $user->studentInfo->address }}"
                                     class="h-[50px] w-full rounded placeholder:text-[#4E4E4E] placeholder:font-poppins placeholder:text-[16px] px-[20px] border-2 border-[#D7D8D0] "
                                     placeholder="Home Address" required autocomplete="off">
                             </div>
 
-                            <div class=" px-4 my-2 w-full">
+                            <div class="px-4 my-2 w-full">
                                 <select
-                                    class="h-[50px] w-full rounded placeholder:text-[#4E4E4E] placeholder:font-poppins placeholder:text-[16px] px-[20px] border-2 border-[#D7D8D0] "
-                                    placeholder="" required autocomplete="off" name="course">
-                                    <option value="" disabled selected>Course Applied:</option>
-                                    <option value="IT" {{ old('course') == 'IT' ? 'selected' : '' }}>Bachelor in
-                                        Science of Information Technology</option>
-                                    <option value="IS" {{ old('course') == 'IS' ? 'selected' : '' }}>Bachelor in
-                                        Science of Information Systems</option>
+                                    class="h-[50px] w-full rounded placeholder:text-[#4E4E4E] placeholder:font-poppins placeholder:text-[16px] px-[20px] border-2 border-[#D7D8D0]"
+                                    required autocomplete="off" name="course">
+                                    <option value="IT" {{ $user->studentInfo->course == 'IT' ? 'selected' : '' }}>
+                                        Bachelor in Science of Information Technology
+                                    </option>
+
+                                    <option value="IS" {{ $user->studentInfo->course == 'IS' ? 'selected' : '' }}>
+                                        Bachelor in Science of Information Systems
+                                    </option>
                                 </select>
                             </div>
                         </div>
@@ -82,26 +85,28 @@
                         <div class="flex mx-4 justify-between  gap-2 ">
                             <div class=" px-4 my-2  w-full">
                                 <input type="text" name="school_last_attended"
-                                    value="{{ old('school_last_attended') }}"
+                                    value="{{ $user->studentInfo->school_last_attended }}"
                                     class="h-[50px] w-full rounded placeholder:text-[#4E4E4E] placeholder:font-poppins placeholder:text-[16px] px-[20px] border-2 border-[#D7D8D0] "
                                     placeholder="School Last Attended:" required autocomplete="off">
                             </div>
 
                             <div class=" px-4 my-2 w-full">
-                                <input type="text" name="school_address" value="{{ old('school_address') }}"
+                                <input type="text" name="school_address"
+                                    value="{{ $user->studentInfo->school_address }}"
                                     class="h-[50px] w-full rounded placeholder:text-[#4E4E4E] placeholder:font-poppins placeholder:text-[16px] px-[20px] border-2 border-[#D7D8D0] "
                                     placeholder="School Address:" required autocomplete="off">
                             </div>
                         </div>
                         <div class="flex mx-4 justify-between  gap-2 ">
                             <div class=" px-4 my-2  w-full">
-                                <input type="text" name="year_graduated" value="{{ old('year_graduated') }}"
+                                <input type="text" name="year_graduated"
+                                    value="{{ $user->studentInfo->year_graduated }}"
                                     class="digit-only h-[50px] w-full rounded placeholder:text-[#4E4E4E] placeholder:font-poppins placeholder:text-[16px] px-[20px] border-2 border-[#D7D8D0] "
                                     placeholder="Year Graduated:" required autocomplete="off">
                             </div>
 
                             <div class=" px-4 my-2 w-full">
-                                <input type="text" name="gpa" value="{{ old('gpa') }}"
+                                <input type="text" name="gpa" value="{{ $user->studentInfo->gpa }}"
                                     class="digit-only h-[50px] w-full rounded placeholder:text-[#4E4E4E] placeholder:font-poppins placeholder:text-[16px] px-[20px] border-2 border-[#D7D8D0] "
                                     placeholder="GPA:" required autocomplete="off">
                             </div>
@@ -113,19 +118,36 @@
                             <div class="px-4 my-2 w-full">
                                 <select
                                     class="h-[50px] w-full rounded placeholder:text-[#4E4E4E] placeholder:font-poppins placeholder:text-[16px] px-[20px] border-2 border-[#D7D8D0]"
-                                    placeholder="" required autocomplete="off" name="academic_track"
-                                    id="academic-track">
-                                    <option value="" disabled selected>Academic Track:</option>
-                                    <option value="ABM">Accountancy, Business, and Management</option>
-                                    <option value="HUMSS">Humanities and Social Sciences</option>
-                                    <option value="STEM">Science, Technology, Engineering, and Mathematics</option>
-                                    <option value="GAS">General Academic Strand</option>
-                                    <option value="TVL">Technical Vocational Livelihood (TVL) Track</option>
-                                    <option value="ST">Sports Track</option>
-                                    <option value="ADT">Arts and Design Track</option>
-                                    <option value="other">Other</option>
+                                    required autocomplete="off" name="academic_track" id="academic-track">
+
+                                    <option value="ABM"
+                                        {{ $user->studentInfo->academic_track == 'ABM' ? 'selected' : '' }}>
+                                        Accountancy, Business, and Management</option>
+                                    <option value="HUMSS"
+                                        {{ $user->studentInfo->academic_track == 'HUMSS' ? 'selected' : '' }}>
+                                        Humanities and Social Sciences</option>
+                                    <option value="STEM"
+                                        {{ $user->studentInfo->academic_track == 'STEM' ? 'selected' : '' }}>Science,
+                                        Technology, Engineering, and Mathematics</option>
+                                    <option value="GAS"
+                                        {{ $user->studentInfo->academic_track == 'GAS' ? 'selected' : '' }}>General
+                                        Academic Strand</option>
+                                    <option value="TVL"
+                                        {{ $user->studentInfo->academic_track == 'TVL' ? 'selected' : '' }}>Technical
+                                        Vocational Livelihood (TVL) Track</option>
+                                    <option value="ST"
+                                        {{ $user->studentInfo->academic_track == 'ST' ? 'selected' : '' }}>Sports Track
+                                    </option>
+                                    <option value="ADT"
+                                        {{ $user->studentInfo->academic_track == 'ADT' ? 'selected' : '' }}>Arts and
+                                        Design Track</option>
+                                    <option value="other"
+                                        {{ $user->studentInfo->academic_track == 'other' ? 'selected' : '' }}>Other
+                                    </option>
                                 </select>
                             </div>
+
+
 
                             <div class="px-4 my-2 w-full" id="otherTrackInput" style="display:none;">
                                 <input type="text"
@@ -154,12 +176,14 @@
                                 <div class="mt-3">
                                     <label for="" class="text-[16px]">Computers:</label>
                                     <div>
-                                        <input type="checkbox" name="hasDesktop" id="" value="1">
+                                        <input type="checkbox" name="hasDesktop" id=""
+                                            {{ $user->studentInfo->has_computer ? 'checked' : '' }}>
                                         <label for="hasDesktop">Desktop</label>
                                     </div>
 
                                     <div>
-                                        <input type="checkbox" name="hasLaptop" id="" value="1">
+                                        <input type="checkbox" name="hasLaptop" id=""
+                                            {{ $user->studentInfo->has_laptop ? 'checked' : '' }}>
                                         <label for="hasLaptop">Laptop</label>
                                     </div>
                                 </div>
@@ -167,12 +191,14 @@
                                 <div class="mt-3">
                                     <label for="" class="text-[16px]">Mobiles:</label>
                                     <div>
-                                        <input type="checkbox" name="hasSmartphone" id="" value="1">
+                                        <input type="checkbox" name="hasSmartphone" id="" value="1"
+                                            {{ $user->studentInfo->has_smartphone ? 'checked' : '' }}>
                                         <label for="hasSmartphone">Smartphone</label>
                                     </div>
 
                                     <div>
-                                        <input type="checkbox" name="hasTablet" id="" value="1">
+                                        <input type="checkbox" name="hasTablet" id=""
+                                            {{ $user->studentInfo->has_tablet ? 'checked' : '' }}>
                                         <label for="hasTablet">Tablet</label>
                                     </div>
                                 </div>
@@ -183,21 +209,25 @@
 
                                     <div>
                                         <input type="radio" required name="connectivity" id="stable"
-                                            value="Stable">
+                                            value="Stable"
+                                            {{ $user->studentInfo->internet_status == 'Stable' ? 'checked' : '' }}>
                                         <label for="stable">Stable</label>
                                     </div>
 
                                     <div>
                                         <input type="radio" required name="connectivity" id="not_stable"
-                                            value="Not Stable">
+                                            value="Not Stable"
+                                            {{ $user->studentInfo->internet_status == 'Not Stable' ? 'checked' : '' }}>
                                         <label for="not_stable">Not Stable</label>
                                     </div>
 
                                     <div>
                                         <input type="radio" required name="connectivity" id="none"
-                                            value="None">
+                                            value="None"
+                                            {{ $user->studentInfo->internet_status == 'None' ? 'checked' : '' }}>
                                         <label for="none">None</label>
                                     </div>
+
                                 </div>
 
                             </div>
@@ -212,30 +242,35 @@
                             <div class="flex justify-between my-2">
                                 <p>1. Background and Interest to the program</p>
                                 <input type="text" name="interview1" id="interview1" placeholder=""
-                                    class="score border-2 border-[#D7D8D0] text-center " required>
+                                    class="score border-2 border-[#D7D8D0] text-center "
+                                    value="{{ $user->studentInfo->interviewNo1 }}" required>
                             </div>
 
                             <div class="flex justify-between my-2">
                                 <p>2. Ability to express one self</p>
                                 <input type="text" name="interview2" id="interview2"
-                                    class="score border-2 border-[#D7D8D0] text-center " required>
+                                    class="score border-2 border-[#D7D8D0] text-center "
+                                    value="{{ $user->studentInfo->interviewNo2 }}" required>
                             </div>
                             <div class="flex justify-between my-2">
                                 <p>3. Academic Potential</p>
                                 <input type="text" name="interview3" id="interview3" placeholder=""
-                                    class="score border-2 border-[#D7D8D0] text-center " required>
+                                    class="score border-2 border-[#D7D8D0] text-center "
+                                    value="{{ $user->studentInfo->interviewNo3 }}" required>
                             </div>
 
                             <div class="flex justify-between my-2">
                                 <p>4. Extra Curricular Potential</p>
                                 <input type="text" name="interview4" id="interview4" placeholder=""
-                                    class="score border-2 border-[#D7D8D0] text-center " required>
+                                    class="score border-2 border-[#D7D8D0] text-center "
+                                    value="{{ $user->studentInfo->interviewNo4 }}" required>
                             </div>
 
                             <div class="flex justify-between my-2">
                                 <p>5. Potential to support learning</p>
                                 <input type="text" name="interview5" id="interview5" placeholder=""
-                                    class="score border-2 border-[#D7D8D0] text-center " required>
+                                    class="score border-2 border-[#D7D8D0] text-center "
+                                    value="{{ $user->studentInfo->interviewNo5 }}" required>
                             </div>
                             <div class="flex justify-end">
                                 <h1 class="text-center w-[200px]" id="averageScore">Average Score:</h1>
@@ -282,8 +317,9 @@
                             </div>
                             <div class="flex">
                                 <textarea class="p-4 w-full border border-solid border-black text-left font-poppins" name="remarks" id=""
-                                    cols="30" rows="5" style="resize: none;"></textarea>
+                                    cols="30" rows="5" style="resize: none;">{{ $user->studentInfo->remarks }}</textarea>
                             </div>
+
 
                             <input type="text" hidden value="{{ $user->id }}" name="user_id">
                             <div class="flex justify-end mt-10 ">
@@ -325,18 +361,20 @@
                 })
             });
 
-
-
             const inputElements = document.querySelectorAll('.score');
             inputElements.forEach((inputElement) => {
                 inputElement.addEventListener("input", function(e) {
                     // Remove non-numeric characters from the input
-                    e.target.value = e.target.value.replace(/[^0-5]/g, '').substring(0, 1);;
+                    e.target.value = e.target.value.replace(/[^0-5]/g, '').substring(0, 1);
                     // Allows decimals as well
                     calculateAverage();
                 });
             });
 
+            // Calculate average onload
+            window.onload = function() {
+                calculateAverage();
+            };
 
             function calculateAverage() {
                 // Get all input values, convert to numbers, and filter out any NaN values
@@ -352,6 +390,7 @@
                 averageScoreValue.textContent = average.toFixed(2); // Display with 2 decimal places
             }
         </script>
+
     </body>
 
 </html>

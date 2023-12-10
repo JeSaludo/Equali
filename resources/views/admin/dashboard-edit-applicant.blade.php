@@ -29,15 +29,12 @@
             <h1 class="text-[#26386A] text-[18px]  font-bold font-raleway ">Edit Applicant </h1>
 
             <div class="my-2">
-                <i class='bx bx-cog bx-sm text-[#8B8585]'></i>
-                <i class='bx bx-bell text-[#8B8585] bx-sm'></i>
-                <i class='bx bx-user-circle bx-sm text-[#8B8585]'></i>
-            </div>
-
-        </nav>
-
-
-        <section class="ml-[218px] ">
+           
+                @include('layout.user-popup')
+            </nav>
+            <section class="ml-[218px] main ">
+    
+                @include('layout.popup')
 
             <div class="mt-5 w-6/12 right-0 mx-auto    transition-all transform  delay-150 ease-linear">
                 <form action="{{ route('admin.dashboard.update-applicant', $user->id) }}" method="POST">

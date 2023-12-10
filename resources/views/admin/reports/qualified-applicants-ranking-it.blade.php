@@ -52,11 +52,11 @@
                     <div class="flex mx-4 mb-4" id="navLinks">
 
                         <a href="{{ route('admin.report.qualified-applicant-ranking') }}"
-                            class="font-poppins   text-slate-500  active nav-link whitespace-nowrap">All</a>
+                            class="font-poppins   text-slate-500   nav-link whitespace-nowrap">All</a>
                         <a href="{{ route('admin.report.qualified-applicant-ranking-it') }}"
-                            class="font-poppins  text-slate-500 nav-link   whitespace-nowrap">Qualified IT</a>
+                            class="font-poppins  text-slate-500 nav-link active  whitespace-nowrap">Qualified IT</a>
                         <a href="{{ route('admin.report.qualified-applicant-ranking-is') }}"
-                            class="font-poppins  text-slate-500 nav-link   whitespace-nowrap">Qualified IS</a>
+                            class="font-poppins  text-slate-500 nav-link    whitespace-nowrap">Qualified IS</a>
 
 
                         <a href="#" class="font-poppins  text-slate-500 w-full no-hover-underline"></a>

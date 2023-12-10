@@ -13,17 +13,43 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
         //\App\Models\User::factory(10)->create();
-        //\App\Models\AdmissionExam::factory(10)->create();
+        // \App\Models\AdmissionExam::factory(10)->create();
         \App\Models\User::factory()->create([
             'first_name' => null,
             'last_name' => null,
             'username' => null,
             'contact_number' => null,
             'status' => null,
-            'email' => 'admin@test.com',
-            'password' => 'admin12345',
+            'email' => 'equali.programhead@gmail.com',
+            'password' => 'programhead12345',
             'role' => 'ProgramHead',
             'remember_token' => null,
         ]);
+
+        \App\Models\User::factory()->create([
+            'first_name' => null,
+            'last_name' => null,
+            'username' => null,
+            'contact_number' => null,
+            'status' => null,
+            'email' => 'equali.dean@gmail.com',
+            'password' => 'dean12345',
+            'role' => 'Dean',
+            'remember_token' => null,
+        ]);
+
+        \App\Models\User::factory()->create([
+            'first_name' => null,
+            'last_name' => null,
+            'username' => null,
+            'contact_number' => null,
+            'status' => null,
+            'email' => 'equali.proctor@gmail.com',
+            'password' => 'proctor12345',
+            'role' => 'Proctor',
+            'remember_token' => null,
+        ]);
+
+      
     }
 }

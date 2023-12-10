@@ -37,17 +37,11 @@
                 </form>
             </div>
 
-            <div class="my-2">
-                <i class='bx bx-cog bx-sm text-[#8B8585]'></i>
-                <i class='bx bx-bell text-[#8B8585] bx-sm'></i>
-                <i class='bx bx-user-circle bx-sm text-[#8B8585]'></i>
-            </div>
-
+            @include('layout.user-popup')
         </nav>
-
-
         <section class="ml-[218px] main ">
 
+            @include('layout.popup')
             <div class="flex-row md:flex justify-evenly my-4 ">
 
                 <div class="bg-white mx-4 px-6 w-full relative rounded-lg border  border-[#D9DBE3] shadow-sm ">

@@ -47,7 +47,7 @@ class ReportController extends Controller
         return view('admin.reports.list-of-qualifying-exam', compact('results'));
     }
 
-    public function ShowQualifyingExamResult(){
+    public function ShowQualifyingRankingResult(){
 
         // $users = User::where('role', 'Student')
         // ->with('result')
@@ -61,6 +61,43 @@ class ReportController extends Controller
         $results = $results->paginate(10);
         
         return view('admin.reports.qualified-applicants-ranking', compact('results'));
+    }
+
+    public function ShowQualifyingRankingResultIS(){
+
+        // $users = User::where('role', 'Student')
+        // ->with('result')
+        // ->get();//can use result with student so it easy to use order by
+       
+
+        $results = Result::with(['user', 'user.studentInfo'])
+        ->whereNotNull('weighted_average')
+        ->whereHas('user.studentInfo', function ($query) {
+            $query->where('course', "IS");
+        })
+        ->orderByDesc('weighted_average')
+        ->paginate(10);
+    
+        return view('admin.reports.qualified-applicants-ranking-is', compact('results'));
+    }
+
+    public function ShowQualifyingRankingResultIT(){
+
+        // $users = User::where('role', 'Student')
+        // ->with('result')
+        // ->get();//can use result with student so it easy to use order by
+       
+        $results = Result::with(['user', 'user.studentInfo'])
+        ->whereNotNull('weighted_average')
+        ->whereHas('user.studentInfo', function ($query) {
+            $query->where('course', "IT");
+        })
+        ->orderByDesc('weighted_average')
+        ->paginate(10);
+
+        
+        
+        return view('admin.reports.qualified-applicants-ranking-it', compact('results'));
     }
    
     public function ShowItemAnalysisChart(){
@@ -768,6 +805,16 @@ class ReportController extends Controller
         return view('admin.reports.item-analysis-report', compact('questions', 'DI', 'DS'));
     }
    
+    public function ShowInterviewResult(){
+        $results = Result::with('user')->whereNotNull('measure_a_score')  
+        ->paginate(10);
+
+
+
+        
+        return view('admin.reports.list-of-inteview-result', compact('results'));
+    }
+
 }
 
 

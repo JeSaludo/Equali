@@ -73,10 +73,10 @@ class AuthController extends Controller
     }
     public function CreateAccountAdmin(Request $request)
     {
-
+           
         $validatedData = $request->validate([
 
-            'role' => 'required|in:ProgramHead,Proctor,Dead,Tester,Student',
+            'role' => 'required|in:ProgramHead,Proctor,Dean,Tester,Student',
             'email' => 'required|unique:users,email',
             'password' => 'required|confirmed|min:6',
         ]);

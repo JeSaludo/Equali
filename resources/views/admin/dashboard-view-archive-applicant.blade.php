@@ -34,16 +34,11 @@
                     </form>
             </div>
         
-            <div class="my-2">
-                <i class='bx bx-cog bx-sm text-[#8B8585]' ></i>
-                <i class='bx bx-bell text-[#8B8585] bx-sm'></i>
-                <i class='bx bx-user-circle bx-sm text-[#8B8585]' ></i>
-            </div>
-         
-        </nav>    
-
-
+            @include('layout.user-popup')
+        </nav>
         <section class="ml-[218px] main ">
+
+            @include('layout.popup')
             
             <div class="flex-row md:flex justify-evenly my-4 ">
 
@@ -111,15 +106,19 @@
             </div>
 
             <div class="flex mx-4 my-4" id="navLinks">
-                <a href="{{route('admin.dashboard.show-applicant')}}" class="font-poppins  text-slate-500 nav-link  ">All</a>
-                <a href="{{route('admin.dashboard.show-pending-applicant')}}" class="font-poppins  text-slate-500 nav-link ">Pending</a>
-                <a href="{{route('admin.dashboard.show-approved-applicant')}}" class="font-poppins  text-slate-500 nav-link">Approved</a>
-                <a href="{{route('admin.dashboard.show-archive-applicant')}}" class="font-poppins  text-slate-500 nav-link active">Archived</a>
-                <a href="{{route('admin.dashboard.show-waitlisted-applicant')}}" class="font-poppins  text-slate-500 nav-link ">Waitlisted</a>
-                <a href="{{route('admin.dashboard.show-qualified-applicant')}}" class="font-poppins  text-slate-500 nav-link ">Qualified</a>               
-                <a href="{{route('admin.dashboard.show-unqualified-applicant')}}" class="font-poppins  text-slate-500 nav-link ">Unqualified</a>               
-                
-                <a href="#" class="font-poppins  text-slate-500 w-full no-hover-underline"></a>
+                <a href="{{ route('admin.dashboard.show-applicant') }}"
+                class="font-poppins  text-slate-500 nav-link  ">All</a>
+            <a href="{{ route('admin.dashboard.show-pending-applicant') }}"
+                class="font-poppins  text-slate-500 nav-link ">Pending</a>
+            <a href="{{ route('admin.dashboard.show-approved-applicant') }}"
+                class="font-poppins  text-slate-500 nav-link">Approved</a>
+            <a href="{{ route('admin.dashboard.show-archive-applicant') }}"
+                class="font-poppins  text-slate-500 active nav-link">Archived</a>
+           
+            <a href="{{route('admin.dashboard.show-schedule-interview')}}"
+                class="font-poppins   text-slate-500  nav-link whitespace-nowrap">Schedule Interview</a>
+            <a href="{{route('admin.dashboard.show-scheduled-interview')}}"
+                class="font-poppins   text-slate-500  nav-link whitespace-nowrap">Scheduled Interview</a> 
             </div>
             <div class="bg-white mx-4 relative  border   border-[#D9DBE3] shadow-md rounded-lg ">                    
                 <div class="overflow-x-auto">

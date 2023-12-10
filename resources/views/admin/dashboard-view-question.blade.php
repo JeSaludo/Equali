@@ -39,13 +39,11 @@
                 </form>
             </div>
 
-            <div class="my-2">
-                <i class='bx bx-cog bx-sm text-[#8B8585]'></i>
-                <i class='bx bx-bell text-[#8B8585] bx-sm'></i>
-                <i class='bx bx-user-circle bx-sm text-[#8B8585]'></i>
-            </div>
+            @include('layout.user-popup')
         </nav>
-        <section class="ml-[218px] ">
+        <section class="ml-[218px] main ">
+
+            @include('layout.popup')
             <div class="flex justify-between mx-4 mt-4 mb-4">
 
                 <h1 class="text-[#26386A] text-[18px]  font-bold font-raleway ">List of Applicants</h1>
