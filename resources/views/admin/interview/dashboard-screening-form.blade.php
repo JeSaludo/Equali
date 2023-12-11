@@ -21,7 +21,7 @@
 
     <body>
         <div class="min-h-screen  bg-[#EEF4F6]">
-
+            @include('layout.danger-alert')
 
             @include('layout.sidenav', ['active' => 0])
             <nav class="ml-[218px] flex justify-end items-center border-b border-[#D9DBE3] h-[60px] bg-white px-4">
@@ -94,17 +94,23 @@
                             </div>
                         </div>
                         <div class="flex mx-4 justify-between  gap-2 ">
-                            <div class=" px-4 my-2  w-full">
+                            <div class="px-4 my-2 w-full">
                                 <input type="text" name="year_graduated" value="{{ old('year_graduated') }}"
-                                    class="digit-only h-[50px] w-full rounded placeholder:text-[#4E4E4E] placeholder:font-poppins placeholder:text-[16px] px-[20px] border-2 border-[#D7D8D0] "
-                                    placeholder="Year Graduated:" required autocomplete="off">
+                                    class="digit-only h-[50px] w-full rounded placeholder:text-[#4E4E4E] placeholder:font-poppins placeholder:text-[16px] px-[20px] border-2 border-[#D7D8D0]"
+                                    placeholder="Year Graduated:" required autocomplete="off" maxlength="4"
+                                    oninput="validateYear(this);">
+                                <div id="yearError" class="text-red-500"></div>
                             </div>
 
-                            <div class=" px-4 my-2 w-full">
-                                <input type="text" name="gpa" value="{{ old('gpa') }}"
-                                    class="digit-only h-[50px] w-full rounded placeholder:text-[#4E4E4E] placeholder:font-poppins placeholder:text-[16px] px-[20px] border-2 border-[#D7D8D0] "
-                                    placeholder="GPA:" required autocomplete="off">
+
+                            <div class="px-4 my-2 w-full">
+                                <input type="number" name="gpa" value="{{ old('gpa') }}"
+                                    class="digit-only h-[50px] w-full rounded placeholder:text-[#4E4E4E] placeholder:font-poppins placeholder:text-[16px] px-[20px] border-2 border-[#D7D8D0]"
+                                    placeholder="GPA:" required autocomplete="off" min="75" max="100"
+                                    oninput="validateGPA(this);">
+                                <div id="gpaError" class="text-red-500"></div>
                             </div>
+
                         </div>
 
                         <div class="flex mx-4 justify-between  gap-2 ">
@@ -212,29 +218,34 @@
                             <div class="flex justify-between my-2">
                                 <p>1. Background and Interest to the program</p>
                                 <input type="text" name="interview1" id="interview1" placeholder=""
+                                    value="{{ old('interview1') }}"
                                     class="score border-2 border-[#D7D8D0] text-center " required>
                             </div>
 
                             <div class="flex justify-between my-2">
                                 <p>2. Ability to express one self</p>
                                 <input type="text" name="interview2" id="interview2"
+                                    value="{{ old('interview2') }}"
                                     class="score border-2 border-[#D7D8D0] text-center " required>
                             </div>
                             <div class="flex justify-between my-2">
                                 <p>3. Academic Potential</p>
                                 <input type="text" name="interview3" id="interview3" placeholder=""
+                                    value="{{ old('interview3') }}"
                                     class="score border-2 border-[#D7D8D0] text-center " required>
                             </div>
 
                             <div class="flex justify-between my-2">
                                 <p>4. Extra Curricular Potential</p>
                                 <input type="text" name="interview4" id="interview4" placeholder=""
+                                    value="{{ old('interview4') }}"
                                     class="score border-2 border-[#D7D8D0] text-center " required>
                             </div>
 
                             <div class="flex justify-between my-2">
                                 <p>5. Potential to support learning</p>
                                 <input type="text" name="interview5" id="interview5" placeholder=""
+                                    value="{{ old('interview5') }}"
                                     class="score border-2 border-[#D7D8D0] text-center " required>
                             </div>
                             <div class="flex justify-end">
@@ -350,6 +361,50 @@
                 // Update the average score display
                 const averageScoreValue = document.getElementById("averageScoreValue");
                 averageScoreValue.textContent = average.toFixed(2); // Display with 2 decimal places
+            }
+        </script>
+
+        <script>
+            function validateGPA(input) {
+                var gpaError = document.getElementById('gpaError');
+                var gpaValue = parseFloat(input.value);
+
+                if (isNaN(gpaValue) || gpaValue < 75 || gpaValue > 100) {
+                    input.setCustomValidity(''); // Clear the browser's built-in error message
+
+                    if (isNaN(gpaValue)) {
+                        gpaError.textContent = 'Please enter a valid number.';
+                    } else if (gpaValue < 75) {
+                        gpaError.textContent = 'GPA cannot be lower than 75.';
+                    } else {
+                        gpaError.textContent = 'GPA cannot be higher than 100.';
+                    }
+                } else {
+                    input.setCustomValidity('');
+                    gpaError.textContent = '';
+                }
+            }
+        </script>
+
+        <script>
+            function validateYear(input) {
+                var yearError = document.getElementById('yearError');
+                var yearValue = parseInt(input.value);
+
+                if (isNaN(yearValue) || input.value.length !== 4 || yearValue < 1900 || yearValue > 2099) {
+                    input.setCustomValidity('');
+
+                    if (isNaN(yearValue) || input.value.length !== 4) {
+                        yearError.textContent = 'Please enter a valid four-digit year.';
+                    } else if (yearValue < 1900) {
+                        yearError.textContent = 'Year cannot be earlier than 1900.';
+                    } else {
+                        yearError.textContent = 'Year cannot be later than 2099.';
+                    }
+                } else {
+                    input.setCustomValidity('');
+                    yearError.textContent = '';
+                }
             }
         </script>
     </body>

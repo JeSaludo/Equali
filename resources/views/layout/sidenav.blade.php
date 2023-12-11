@@ -27,7 +27,12 @@
                         <div class="pointer-events-none"><i class='bx bxs-user pr-2'></i>Admission</div>
                     </a>
                 </div>
-
+                <div>
+                    <a href="{{ route('admin.dashboard.show-schedule-interview') }}"
+                        class="mx-4 cursor-pointer whitespace-nowrap {{ $active == 1 ? 'bg-gradient-to-r from-[#234BDA] to-[#6499FF] text-white' : 'hover:bg-[#EAF0FF] text-[#718297]' }}  px-4 py-2 rounded-[15px] flex justify-between  items-center text-[#718297] my-2">
+                        <div class="pointer-events-none "><i class='bx bxs-calendar pr-2'></i>Schedule Interview</div>
+                    </a>
+                </div>
                 <div>
                     <a href="{{ route('admin.report.qualified-applicant-ranking') }}"
                         class=" mx-4 cursor-pointer hover:bg-[#EAF0FF]  px-4 py-2 rounded-[15px] flex justify-between  items-center text-[#718297] my-2"

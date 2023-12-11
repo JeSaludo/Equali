@@ -14,9 +14,7 @@ return new class extends Migration
         Schema::create('exams', function (Blueprint $table) {
             $table->id();
             $table->string('title');
-            $table->text('description')->nullable();
-            $table->bigInteger('num_of_question');
-            $table->bigInteger('passing_score');
+            $table->text('description')->nullable();          
             $table->timestamps();
         });
     }

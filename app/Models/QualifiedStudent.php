@@ -9,7 +9,7 @@ class QualifiedStudent extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['interview','interview_date']; 
+    protected $fillable = ['interview','interview_date','location']; 
 
 
     public function user()

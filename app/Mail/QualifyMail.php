@@ -13,13 +13,20 @@ class QualifyMail extends Mailable
 {
     use Queueable, SerializesModels;
 
+    public $get_first_name;
+    public $get_last_name;
+   
     /**
      * Create a new message instance.
      */
-    public function __construct()
+    public function __construct( $get_first_name, $get_last_name)
     {
-        //
+       
+        $this->get_first_name = $get_first_name;
+        $this->get_last_name = $get_last_name;
+       
     }
+    
 
     /**
      * Get the message envelope.
@@ -37,7 +44,7 @@ class QualifyMail extends Mailable
     public function content(): Content
     {
         return new Content(
-            view: 'view.name',
+            view: 'email.qualify',
         );
     }
 

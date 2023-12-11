@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use App\Models\Choice;
 use App\Models\Question;
 use Illuminate\Support\Facades\DB;
@@ -10,13 +11,14 @@ use Illuminate\Support\Facades\Storage;
 
 class QuestionController extends Controller
 {
-   function StoreQuestion(Request $request){
+    function StoreQuestion(Request $request){
 
         $img = $request->img;
         
 
         $request->validate([
-            'question_text' => 'required',
+            'question_text' => 'required|unique:questions,question_text',
+
             'choice_text' => 'required|array',
             'choice_text.*' => 'required|string',
             'correct_choice' => 'required|numeric',           
@@ -63,7 +65,7 @@ class QuestionController extends Controller
             
             DB::commit();
 
-            return redirect()->route('admin.dashboard.view-question');
+            return redirect()->route('admin.dashboard.view-question')->with('success', 'Question added successfully!');      ;
         }
         catch (\Exception $e) {        
             DB::rollback(); 
@@ -75,6 +77,14 @@ class QuestionController extends Controller
     }
     
 
+    function ShowQuestionReadOnly($id){
+
+
+       
+        $question = Question::with('choices')->findOrFail($id);  
+      
+       return view('admin.dashboard-view-read-only-question', compact('question'));
+    }
     function ShowQuestions(){
         $questions  = Question::paginate(10);
 

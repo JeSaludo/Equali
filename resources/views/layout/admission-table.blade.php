@@ -132,7 +132,7 @@
                                      </a>
 
                                      <a class="hover:text-red-400 mx-1" title="Reject"
-                                         href="{{ route('admin.dashboard.archive-applicant', $user->id) }}"
+                                         href="{{ route('admin.dashboard.reject-applicant', $user->id) }}"
                                          onclick="return confirm('Are you sure you want to archive this user?')">
                                          <i class='bx bx-user-x bx-sm '></i>
                                      </a>

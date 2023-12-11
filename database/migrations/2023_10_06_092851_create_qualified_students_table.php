@@ -18,7 +18,7 @@ return new class extends Migration
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->date('exam_schedule_date')->nullable();
             $table->time('start_time')->nullable();
-            $table->time('end_time')->nullable();
+            $table->string('location')->nullable();
 
          
             

@@ -15,17 +15,22 @@ class ScheduleMail extends Mailable
 
     public $get_date;
     public $get_start_time;
-    public $get_end_time;
 
+    public $get_first_name;
+    public $get_last_name; 
+    public $get_location;
     /**
      * Create a new message instance.
      */
-    public function __construct($get_date, $get_start_time, $get_end_time)
+    public function __construct($get_date, $get_start_time,$get_first_name, $get_last_name, $get_location)
     {
         $this->get_date = $get_date;
         $this->get_start_time = $get_start_time;
-        $this->get_end_time = $get_end_time;
-    }
+     
+        $this->get_first_name = $get_first_name;
+        $this->get_last_name = $get_last_name;
+        $this->get_location = $get_location;
+    }  
 
     /**
      * Get the message envelope.

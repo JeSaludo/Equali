@@ -1,13 +1,14 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use App\Exports\UnqualifiedApplicantExport;
+use App\Exports\QualifiedApplicantExport;
 use App\Exports\ApplicantRankingExport;
 use App\Exports\ItemAnalysisReport;
 use App\Exports\ResultExport;
 use Illuminate\Http\Request;
 
-
+use App\Models\Option;
 use App\Models\Result;
 use App\Models\Question;
 use App\Models\Choice;
@@ -24,8 +25,8 @@ class ReportController extends Controller
 {
     public function ShowQualifyingExam(Request $request){
 
-
-        $results = Result::with('user')->whereNotNull('weighted_average')->orderByDesc('measure_c_score');
+        
+        $results = Result::with('user')->whereNotNull('weighted_average')->orderByDesc('total_exam_Score');
         
         $searchTerm = $request->input('searchTerm');
         if (!empty($searchTerm)) {
@@ -41,10 +42,10 @@ class ReportController extends Controller
       
 
         $results = $results->paginate(10);
-
+        $option = Option::first();
         
 
-        return view('admin.reports.list-of-qualifying-exam', compact('results'));
+        return view('admin.reports.list-of-qualifying-exam', compact('results', 'option'));
     }
 
     public function ShowQualifyingRankingResult(){
@@ -73,7 +74,7 @@ class ReportController extends Controller
         $results = Result::with(['user', 'user.studentInfo'])
         ->whereNotNull('weighted_average')
         ->whereHas('user.studentInfo', function ($query) {
-            $query->where('course', "IS");
+            $query->where('course', "IS")->where('status', 'Qualified');
         })
         ->orderByDesc('weighted_average')
         ->paginate(10);
@@ -90,7 +91,7 @@ class ReportController extends Controller
         $results = Result::with(['user', 'user.studentInfo'])
         ->whereNotNull('weighted_average')
         ->whereHas('user.studentInfo', function ($query) {
-            $query->where('course', "IT");
+            $query->where('course', "IT")->where('status', 'Qualified');
         })
         ->orderByDesc('weighted_average')
         ->paginate(10);
@@ -732,87 +733,42 @@ class ReportController extends Controller
     
                     $correctChoice = $choices->where('is_correct', true)->first();
                     $correctChoiceId = $correctChoice->id;
-    
                     $responses = ExamResponse::where('question_id', $question->id)->get();
-    
                     $totalResponses = $responses->count();
-                    $correctResponses = $responses->where('choice_id', $correctChoiceId)->count();
-    
-                    // Calculate the percentage of correct responses
-                    $percentageCorrect = ($totalResponses > 0) ? ($correctResponses / $totalResponses) * 100 : 0;
-    
-                    $totalStudents = User::where("Role", "Student")->count();
-    
-                    $percentileThreshold = 27; // Change this to the desired percentile
-    
-                    // Calculate the number of users required for each percentile
-                    $upperPercentileCount = ceil(($percentileThreshold / 100) * $totalResponses);
-                    $lowerPercentileCount = ceil(($percentileThreshold / 100) * $totalResponses); // Set the lower count to the same as the upper count
-                    $middlePercentileCount = $totalResponses - 2 * $upperPercentileCount; // Remaining for the middle
-    
-                    // Retrieve upper threshold users based on the weighted average
-                    $upperThresholdUsers = Result::join('users', 'results.user_id', '=', 'users.id')
-                        ->orderByDesc('results.measure_c_score')
-                        ->select('users.*', 'results.measure_c_score')
-                        ->take($upperPercentileCount)
-                        ->get();
-    
-                    // Retrieve middle threshold users based on the weighted average
-                    $middleThresholdUsers = Result::join('users', 'results.user_id', '=', 'users.id')
-                        ->orderByDesc('results.measure_c_score')
-                        ->skip($upperPercentileCount)
-                        ->take($middlePercentileCount)
-                        ->select('users.*', 'results.measure_c_score')
-                        ->get();
-    
-                    // Retrieve lower threshold users based on the weighted average
-                    $lowerThresholdUsers = Result::join('users', 'results.user_id', '=', 'users.id')
-                        ->orderBy('results.measure_c_score')  // Order in ascending order for lower threshold
-                        ->take($lowerPercentileCount)
-                        ->select('users.*', 'results.measure_c_score')
-                        ->get();
-    
-                    // Separate responses of the threshold users
-                    $upperThresholdUserResponses = $responses->whereIn('user_id', $upperThresholdUsers->pluck('id'));
-                    $middleThresholdUserResponses = $responses->whereIn('user_id', $middleThresholdUsers->pluck('id'));
-                    $lowerThresholdUserResponses = $responses->whereIn('user_id', $lowerThresholdUsers->pluck('id'));
-    
-                    // Count correct responses for upper threshold users
-                    $totalUpperCorrectResponses = $upperThresholdUserResponses->where('choice_id', $correctChoiceId)->count();
-    
-                    // Count correct responses for middle threshold users
-                    $totalMiddleCorrectResponses = $middleThresholdUserResponses->where('choice_id', $correctChoiceId)->count();
-    
-                    // Count correct responses for lower threshold users
-                    $totalLowerCorrectResponses = $lowerThresholdUserResponses->where('choice_id', $correctChoiceId)->count();
-    
-                
-                    // Calculate Discrimination Index for the upper, middle, and lower threshold users
-                    // $totalUpperThresholdUserResponses = $upperThresholdUserResponses->count();
-                    // $totalMiddleThresholdUserResponses = $middleThresholdUserResponses->count();
-                    // $totalLowerThresholdUserResponses = $lowerThresholdUserResponses->count();
-                    // $totalOtherUsersResponses = $totalResponses - $totalUpperThresholdUserResponses - $totalMiddleThresholdUserResponses - $totalLowerThresholdUserResponses;
-    
-                    // Calculate the discrimination index
-                    $di = number_format($correctResponses / $totalResponses, 2);
-                   
-                    $N = round(($totalUpperCorrectResponses - $totalLowerCorrectResponses) / $totalResponses, 2);
+                    $correctResponses = $responses->where('choice_id', $correctChoiceId)->count();   
+                    $di = round($correctResponses / $totalResponses, 2);
                     $DI[$index] = $di;
-                    $DS[$index] = $N;
+                 
                 }
             }
+            
+
+          
         }
+
+       
+
+
+        
         return view('admin.reports.item-analysis-report', compact('questions', 'DI', 'DS'));
     }
    
     public function ShowInterviewResult(){
-        $results = Result::with('user')->whereNotNull('measure_a_score')  
+        $results = Result::with('user')->whereNotNull('measure_a_score')->orderByDesc('measure_a_score')
         ->paginate(10);
 
 
 
         
         return view('admin.reports.list-of-inteview-result', compact('results'));
+    }
+
+    public function ExportQualified(){
+        return Excel::download(new QualifiedApplicantExport, 'QualifiedApplicant.xlsx');
+    }
+
+    public function ExportUnqualified(){
+        return Excel::download(new UnqualifiedApplicantExport, 'UnqualifiedApplicant.xlsx');
     }
 
 }

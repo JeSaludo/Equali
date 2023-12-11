@@ -20,16 +20,22 @@ class SendScheduleEmail implements ShouldQueue
     protected $email;
     protected $exam_schedule_date;
     protected $start_time;
-    protected $end_time;
+   
+    protected $first_name;
+    protected $last_name;
+    protected $location;
     /**
      * Create a new job instance.
      */
-    public function __construct($email, $exam_schedule_date, $start_time, $end_time)
+    public function __construct($email, $exam_schedule_date, $start_time, $first_name, $last_name, $location)
     {
         $this->email = $email;
         $this->exam_schedule_date = $exam_schedule_date;
         $this->start_time = $start_time;
-        $this->end_time = $end_time;
+     
+        $this->first_name = $first_name;
+        $this->last_name = $last_name;
+        $this->location = $location;
     }
 
     /**
@@ -37,6 +43,6 @@ class SendScheduleEmail implements ShouldQueue
      */
     public function handle(): void
     {
-        Mail::to($this->email)->send(new ScheduleMail($this->exam_schedule_date, $this->start_time, $this->end_time));
+        Mail::to($this->email)->send(new ScheduleMail($this->exam_schedule_date, $this->start_time, $this->first_name, $this->last_name, $this->location));
     }
 }

@@ -11,6 +11,7 @@ use App\Models\Question;
 use App\Models\Result;
 use App\Models\StudentResponse;
 use App\Models\User;
+use App\Models\Option;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
@@ -19,31 +20,52 @@ use Illuminate\Database\QueryException;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Storage;
 use App\Jobs\SendExamReportEmail;
+use App\Jobs\SendQualifyMail;
+use App\Mail\QualifyMail;
+use App\Mail\UnqualifyMail;
 
 class ExamController extends Controller
 
 {
-    function ShowExam()
+    function ShowExam(Request $request)
     {
+        // $request->session()->forget('form_submitted');
+        $user = User::where('id', Auth::user()->id)->first();
+
+        if ($user->exam_taken === null) {
+            $option = Option::first(); 
+            if($user->where('status', 'Ready For Exam')){
+                $exam = session('assigned_exam');
+
+                if (!$exam) {
+
+                
+                    // If not, randomly select an exam and store its identifier in the session
+                    $exam = Exam::inRandomOrder()->with('examQuestion.question.choices')->first();
+                    
+                
+                        if($exam->examQuestion->count() == $option->qualifying_number_of_items){
+                            session(['assigned_exam' => $exam]);
+                        }
+                
+
+                    //return redirect()->route('home')->with('error', 'Exam has not been set, Please try again later');
+                
+                }            
+
+            
+                return view('student.exam', compact('exam', 'option'));
+            }
+            else{
+                return redirect()->route('home')->with("error", "You must be interviewed first before you take the exam!");
+            }
+        }else{
+            return redirect()->route('home')->with("error", "You have already taken the exam!");
+        }
        
-     
-        $user = User::where('id', Auth::user()->id)->with('studentInfo')->first();
+        
+       
 
-
-        if($user->studentInfo){
-            $exam = session('assigned_exam');
-
-            if (!$exam) {
-                // If not, randomly select an exam and store its identifier in the session
-                $exam = Exam::inRandomOrder()->with('examQuestion.question.choices')->first();
-                session(['assigned_exam' => $exam]);
-            }            
-            return view('student.exam', compact('exam'));
-        }
-        else{
-            return redirect()->route('home')->with("error", "Error");
-        }
-       //$request->session()->forget('form_submitted');
        
     }
 
@@ -51,128 +73,153 @@ class ExamController extends Controller
         return view('student.already-responded');
     }
 
-    function SubmitExam(Request $request){
+    function SubmitExam(Request $request){  
 
-     
-        if ($request->session()->get('form_submitted')) {
-            // Form has already been submitted, handle the case
-            return redirect()->route('student.already-responded');
-        }
-
-        DB::beginTransaction();
-        try{     
-           
-            $userAnswers = $request->answer;
-           
-            $score = 0;
-          
-            $currentExamId = $request->exam_id;
         
-            $currentExam = ExamQuestion::where('exam_id', $request->exam_id)->with('question.choices')->get();        
-            $choices = Choice::all();
-         
-           
+            $user = User::find(Auth::user()->id);
 
-          
-            foreach ($currentExam as $index => $exam) {
-                $correctAnswer = $exam->question->correctAnswer(); // Make sure this method returns the correct answer 
-
-
-                if (isset($userAnswers[$index + 1]) && $userAnswers[$index + 1] != "No Answer") {
-                    ExamResponse::create([
-                        'user_id' => auth()->id(),
-                        'question_id' => $exam->question->id,
-                        'choice_id' => $userAnswers[$index + 1],
-                    ]);          
+            if($user->exam_taken == null){
+                DB::beginTransaction();
+                try{     
+                   
+                    $userAnswers = $request->answer;
+                   
+                    $score = 0;
+                  
+                    $currentExamId = $request->exam_id;
                 
-                    $choices = $choices->find($userAnswers[$index + 1]);
-                }
-                
-            
-                
-                if(isset($userAnswers[$index + 1]) && $choices->choice_text === $correctAnswer){
-                    $score++;                
-                }
-                
+                    $currentExam = ExamQuestion::where('exam_id', $request->exam_id)->with('question.choices')->get();        
+                    $choices = Choice::all();
+                 
+                   
+        
+                  
+                    foreach ($currentExam as $index => $exam) {
+                        $correctAnswer = $exam->question->correctAnswer(); // Make sure this method returns the correct answer 
+        
+        
+                        if (isset($userAnswers[$index + 1]) && $userAnswers[$index + 1] != "No Answer") {
+                            ExamResponse::create([
+                                'user_id' => auth()->id(),
+                                'question_id' => $exam->question->id,
+                                'choice_id' => $userAnswers[$index + 1],
+                            ]);          
+                        
+                            $choices = $choices->find($userAnswers[$index + 1]);
+                        }
+                        
+                        if(isset($userAnswers[$index + 1]) && $choices->choice_text === $correctAnswer){
+                            $score++;                
+                        }
+                    }       
+        
                
-            
-            }       
-
-       
-        
-            $examScore = $score;
-
-            $minScore = 0;    // Minimum score
-            $maxScore = count($userAnswers);  // Maximum score
-            $minValue = 1;    // Minimum value
-            $maxValue = 5;  
-
-            $score = min(max($score, $minScore), $maxScore);        
-            $sizeOfScore = sizeOf($userAnswers);
-
-            $range = $maxValue - $minValue;
-            $scoreFraction = ($score - $minScore) / ($maxScore - $minScore);
-            $scaledValue = $minValue + $range * $scoreFraction;
-            $scaledValue = intval($scaledValue);        
-            
-            $result = Result::where('user_id', $request->user_id)->first();
-            $result->measure_c_score = $scaledValue;
-            
-            $result->save();
-            
-            $result->weighted_average = ($result->measure_a_score + $result->measure_b_score + $result->measure_c_score) / 3;
-            $result->save();
-            $request->session()->put('form_submitted', true);
-
-            $user = User::where('id', $request->user_id)->first();
-            $user->status = "WaitListed";
-            $user->save();
-
-            $userAnswers = $request->answer;
-            $currentExamId = $request->exam_id;
-        
-            $currentExam = ExamQuestion::where('exam_id', $request->exam_id)->with('question.choices')->get();        
-            $choices = Choice::all();
-            $tempQuestion = [];
-            
-            foreach ($currentExam as $index => $exam)
-            {
-                if (isset($userAnswers[$index + 1])){
-                    $tempQuestion[$index]['question_text'] = $exam->question->question_text;
-                    $tempQuestion[$index]['choices'] = [];
-        
-                    $correctAnswer = $exam->question->correctAnswer();
-                    $userChoice = $choices->find($userAnswers[$index + 1]);
-            
-                foreach ($exam->question->choices as $choice)
-                    
-                        $tempQuestion[$index]['choices'][] = [
-                            'choice_text' => $choice->choice_text,
-                            'userChoice' => $userChoice->choice_text,
-                            'is_correct' => ($choice->choice_text == $correctAnswer),
-                        ];
-                }
-            }
-  
-            $user = User::find($request->user_id);
-            $defaultEmail = "janerissaludo@gmail.com";   
-            SendExamReportEmail::dispatch($defaultEmail, $user->first_name, $user->last_name, $tempQuestion);
                 
-            DB::commit();
-                     
-            
-        }
-        catch (\Exception $e) {        
-            DB::rollback(); 
-           
-            return redirect()->back()->with('error', 'Failed to submit exam. Please try again later.');
-            // $request->session()->forget('form_submitted');
-        }
-
-       
-        //Mail::to($this->defaultEmail)->send(new ExamReports($this->firstName, $this->lastName, $this->tempQuestion));
-        return view('student.exam-result', compact('score', 'sizeOfScore'));
+                    $examScore = $score;
         
+                    $minScore = 0;    // Minimum score
+                    $maxScore = count($userAnswers);  // Maximum score
+                    $minValue = 1;    // Minimum value
+                    $maxValue = 5;  
+        
+                    $score = min(max($score, $minScore), $maxScore);        
+                    $sizeOfScore = sizeOf($userAnswers);
+        
+                    $range = $maxValue - $minValue;
+                    $scoreFraction = ($score - $minScore) / ($maxScore - $minScore);
+                    $scaledValue = $minValue + $range * $scoreFraction;
+                    $scaledValue = intval($scaledValue);        
+                    
+                    $result = Result::where('user_id', $request->user_id)->first();
+                    $result->total_exam_score = $score;
+                    $result->measure_c_score = $scaledValue;
+                    
+                    $result->save();
+                    
+                    $result->weighted_average = ($result->measure_a_score + $result->measure_b_score + $result->measure_c_score) / 3;
+                    $result->save();
+                    $request->session()->put('form_submitted', true);
+        
+                    $option = Option::first();
+                    $user = User::where('id', $request->user_id)->first();
+    
+                    $user->exam_taken = 1;
+                    if($result->weighted_average >= $option->qualified_student_passing_average ){
+                      
+                        $user->status = "Qualified";
+                       // Mail::to($user->email)->send(new QualifyMail($user->firstName, $user->lastName));
+                        SendQualifyMail::dispatch($user->email, $user->first_name, $user->last_name);
+                  
+                    }
+                    else{
+                      
+                        $user->status = "Unqualified";
+                        //Mail::to($user->email)->send(new UnqualifyMail($user->firstName, $user->lastName));
+                        UnqualifyMail::dispatch($user->email, $user->first_name, $user->last_name);
+                    }
+                   
+                    $user->save();
+                    $userAnswers = $request->answer;
+                    $currentExamId = $request->exam_id;
+                
+                    $currentExam = ExamQuestion::where('exam_id', $request->exam_id)->with('question.choices')->get();        
+                    $choices = Choice::all();
+                    $tempQuestion = [];
+                    
+                    foreach ($currentExam as $index => $exam)
+                    {
+                        if (isset($userAnswers[$index + 1])){
+                            $tempQuestion[$index]['question_text'] = $exam->question->question_text;
+                            $tempQuestion[$index]['choices'] = [];
+                
+                            $correctAnswer = $exam->question->correctAnswer();
+                            $userChoice = $choices->find($userAnswers[$index + 1]);
+                    
+                        foreach ($exam->question->choices as $choice)
+                            
+                                $tempQuestion[$index]['choices'][] = [
+                                    'choice_text' => $choice->choice_text,
+                                    'userChoice' => $userChoice->choice_text,
+                                    'is_correct' => ($choice->choice_text == $correctAnswer),
+                                ];
+                        }
+                    }
+          
+                    $user = User::find($request->user_id);
+                    
+                    
+                    $deans = User::where('role', 'Dean')->get();
+        
+                    foreach($deans as $dean){
+                        SendExamReportEmail::dispatch($dean->email, $user->first_name, $user->last_name, $tempQuestion);
+                  
+                    }
+                        
+                    DB::commit();
+    
+                    $option = Option::first();
+                    //Mail::to($this->defaultEmail)->send(new ExamReports($this->firstName, $this->lastName, $this->tempQuestion));
+                    return view('student.exam-result', compact('score', 'sizeOfScore', 'option'));
+                    
+                
+                    
+                }
+                catch (\Exception $e) {        
+                    DB::rollback(); 
+                   
+                    return redirect()->back()->with('error', 'Failed to submit exam. Please try again later.');
+                    // $request->session()->forget('form_submitted');
+                }
+        
+            }
+            else{
+                return redirect()->route('home')->with("error", "You have already taken the exam!");
+            }
+
+          
+          
+     
+      
     }
   
 
@@ -203,13 +250,9 @@ class ExamController extends Controller
             $exam->title =  $request->examName;
             $exam->description = $request->description;
         }
-        $totalPoint = 10;//Default
-        $passingPercentage = 40;
-        $exam->num_of_question = $totalPoint;
-
-        $exam->passing_score = ($totalPoint * $passingPercentage) / 100;
+      
         $exam->save();
-        return redirect()->back()->with('success', 'Question added successfully!');       
+        return redirect()->back()->with('success', 'Exam added successfully!');       
 
     }
 
@@ -234,10 +277,7 @@ class ExamController extends Controller
             $exam->description = $request->description;
         }
       
-        $passingPercentage = 40;
-        $exam->num_of_question = $request->numOfQuestion;
-
-        $exam->passing_score = ($request->numOfQuestion * $passingPercentage) / 100;
+       
         $exam->save();
         return redirect()->route('admin.dashboard.edit-exam', ['id' => $id]);
 
@@ -248,8 +288,8 @@ class ExamController extends Controller
         $exam = Exam::findOrFail($id);
         $examQuestions = ExamQuestion::where('exam_id', $id)->with('question.choices')->get();
 
-
-        return view('admin.dashboard-edit-exam', compact('exam', 'examQuestions'));
+        $option = Option::first();
+        return view('admin.dashboard-edit-exam', compact('exam', 'examQuestions','option'));
     }
 
     public function DeleteExam($id){
@@ -271,12 +311,14 @@ class ExamController extends Controller
         
         // Change the limit for the total number of questions.
         $exam = Exam::find($id);
-        $maxTotalQuestions = $exam->num_of_question;
+        $option = Option::first();
+        $maxTotalQuestions = $option->qualifying_number_of_items;
         $numOfQuestions = $request->numOfQuestions;
         
         // Check if there are enough available questions.
         if ($availableQuestionsCount < $numOfQuestions) {
-            return "Not enough available questions to add.";
+            return redirect()->back()->with('error', 'Not enough question available in the question bank');
+           
         }
         
         // Get the current total questions added.
@@ -321,7 +363,8 @@ class ExamController extends Controller
         
         // Check if the desired number of questions couldn't be added due to reaching the maximum limit.
         if (count($addedQuestionIds) < $numOfQuestions) {
-            return "Cannot add more questions. Maximum limit reached.";
+           
+            return redirect()->back()->with('error', 'Cannot add more questions. Maximum limit reached.');
         }
         
         
@@ -335,7 +378,8 @@ class ExamController extends Controller
         $exam_id = $id;
 
         $exam = Exam::find($id);
-        $maxTotalQuestions = $exam->num_of_question;
+        $option = Option::first();
+        $maxTotalQuestions = $option->qualifying_number_of_items;
         // Get the current total questions added.
         $totalQuestionsAdded = ExamQuestion::where('exam_id', $id)->count();
             
@@ -349,7 +393,9 @@ class ExamController extends Controller
             return view('admin.dashboard-add-question-direct', compact('exam_id'));
         }
         else{
-            return "Cannot add more questions. Maximum limit reached.";
+            
+           
+            return redirect()->back()->with('error', 'Cannot add more questions. Maximum limit reached.');
         }
 
 

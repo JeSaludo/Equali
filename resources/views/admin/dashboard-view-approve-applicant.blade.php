@@ -21,7 +21,7 @@
 
     <body>
         <div class="min-h-screen  bg-[#F7F7F7]">
-
+            @include('layout.danger-alert')
 
             @include('layout.sidenav', ['active' => 0])
             <nav class="ml-[218px] flex justify-between items-center border-b border-[#D9DBE3] h-[60px] bg-white px-4">
@@ -123,10 +123,7 @@
                         class="font-poppins active text-slate-500 nav-link">Approved</a>
                     <a href="{{ route('admin.dashboard.show-archive-applicant') }}"
                         class="font-poppins  text-slate-500 nav-link">Archived</a>
-                    <a href="{{ route('admin.dashboard.show-schedule-interview') }}"
-                        class="font-poppins   text-slate-500  nav-link whitespace-nowrap">Schedule Interview</a>
-                    <a href="{{ route('admin.dashboard.show-scheduled-interview') }}"
-                        class="font-poppins   text-slate-500  nav-link whitespace-nowrap">Scheduled Interview</a>
+
                     <a href="#" class="font-poppins  text-slate-500 w-full no-hover-underline"></a>
                 </div>
 

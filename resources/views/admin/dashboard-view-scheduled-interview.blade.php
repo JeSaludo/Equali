@@ -22,7 +22,7 @@
 
     <body>
         <div class="min-h-screen  bg-[#F7F7F7]">
-
+            @include('layout.danger-alert')
 
             @include('layout.sidenav', ['active' => 0])
             <nav class="ml-[218px] flex justify-between items-center border-b border-[#D9DBE3] h-[60px] bg-white px-4">
@@ -60,14 +60,7 @@
                     <div class="flex mx-4 mb-4" id="navLinks">
 
 
-                        <a href="{{ route('admin.dashboard.show-applicant') }}"
-                            class="font-poppins  text-slate-500 nav-link  ">All</a>
-                        <a href="{{ route('admin.dashboard.show-pending-applicant') }}"
-                            class="font-poppins  text-slate-500 nav-link ">Pending</a>
-                        <a href="{{ route('admin.dashboard.show-approved-applicant') }}"
-                            class="font-poppins  text-slate-500 nav-link">Approved</a>
-                        <a href="{{ route('admin.dashboard.show-archive-applicant') }}"
-                            class="font-poppins  text-slate-500 nav-link">Archived</a>
+
                         <a href="{{ route('admin.dashboard.show-schedule-interview') }}"
                             class="font-poppins   text-slate-500  nav-link whitespace-nowrap">Schedule Interview</a>
                         <a href="{{ route('admin.dashboard.show-scheduled-interview') }}"
@@ -89,6 +82,7 @@
                                         <td class="px-6 py-2">Applicant Name</td>
                                         <td class="px-6 py-2">Interview & Exam Schedule</td>
                                         <td class="px-6 py-2">Time</td>
+                                        <td class="px-6 py-2">Status</td>
                                     </tr>
                                 </thead>
 
@@ -122,8 +116,8 @@
                                                     <td class="px-6 py-3    whitespace-nowrap">
 
                                                         {{ \Carbon\Carbon::parse($user->qualifiedStudent->start_time)->format('h:i A') }}
-                                                        -
-                                                        {{ \Carbon\Carbon::parse($user->qualifiedStudent->end_time)->format('h:i A') }}
+
+
 
                                                     </td>
                                                 @else
@@ -173,43 +167,6 @@
                             </nav>
                         </div>
 
-
-                        <!-- Create the popup for scheduling -->
-                        <div id="popup"
-                            class="fixed top-0 left-0 w-full h-full flex justify-center items-center bg-gray-500 bg-opacity-50 z-50 hidden">
-                            <div class="bg-white rounded-lg p-4">
-                                <span class="cursor-pointer absolute top-2 right-2 text-gray-600"
-                                    id="closePopup">&times;</span>
-                                <h2 class="text-lg font-semibold mb-4">Schedule Exam and Interview</h2>
-
-                                <div>
-                                    <div class="mb-4">
-                                        <label for="date"
-                                            class="block text-sm font-medium text-gray-600">Date:</label>
-                                        <input type="date" name="date" class="w-full px-3 py-2 border rounded-md"
-                                            required>
-
-
-                                        <div class="my-2">
-                                            <label for="start_time">Start Time:</label>
-                                            <input type="time" id="start_time" name="start_time" required>
-
-                                            <label for="end_time">End Time:</label>
-                                            <input type="time" id="end_time" name="end_time" required>
-                                        </div>
-
-
-
-
-                                    </div>
-                                    <button type="submit"
-                                        class="bg-[#2B6CE6] text-white px-4 py-2 rounded-md hover:bg-[#134197] transition-colors duration-200">Submit</button>
-                                    <button type="button" id="cancelSchedule"
-                                        class="bg-gray-300 text-gray-600 px-4 py-2 rounded-md hover:bg-gray-400 transition-colors duration-200 ml-2">Cancel</button>
-                                </div>
-                            </div>
-                        </div>
-                </form>
 
 
 

@@ -7,7 +7,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
-
+use Illuminate\Validation\Rule;
 
 
 class AuthController extends Controller
@@ -76,8 +76,8 @@ class AuthController extends Controller
            
         $validatedData = $request->validate([
 
-            'role' => 'required|in:ProgramHead,Proctor,Dean,Tester,Student',
-            'email' => 'required|unique:users,email',
+            'role' => 'required|in:ProgramHead,Proctor,Dean',
+            'email' => 'required|email:rfc,dns,unique:users',
             'password' => 'required|confirmed|min:6',
         ]);
 
@@ -88,7 +88,7 @@ class AuthController extends Controller
         $user->status = "Active";
         $user->save();
 
-        return redirect()->route('auth.login')->with('status', 'Registration Successfull');
+        return redirect()->route('auth.login')->with('success', 'Registration Successfull');
     }
 
     public function Logout(Request $request)
@@ -98,5 +98,10 @@ class AuthController extends Controller
         $request->session()->invalidate();
         $request->session()->regenerateToken();
         return redirect('/')->with('status', 'Logout Successfully');
+    }
+
+    public function ShowForgotPassword(){
+        return view('auth.forgot-password');
+
     }
 }

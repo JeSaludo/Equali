@@ -21,7 +21,7 @@
 
     <body>
         <div class="min-h-screen  bg-[#F7F7F7]">
-
+            @include('layout.danger-alert')
 
             @include('layout.sidenav', ['active' => 0])
             <nav class="ml-[218px] flex justify-end items-center border-b border-[#D9DBE3] h-[60px] bg-white px-4">
@@ -116,21 +116,7 @@
                         </div>
 
                 </form>
-                @if ($errors->any())
-                    <div class="text-red-900 ">
-                        <ul>
-                            @foreach ($errors->all() as $error)
-                                <li>{{ $error }}</li>
-                            @endforeach
-                        </ul>
-                    </div>
-                @endif
 
-                @if (session('success'))
-                    <div class="bg-gray-200 p-3 text-[12px] rounded-md text-green-500 font-bold font-poppins">
-                        {{ session('success') }}
-                    </div>
-                @endif
 
 
                 <div id="popup"

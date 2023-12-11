@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Mail\AcceptanceMail;
 use App\Mail\ScheduleMail;
+use App\Mail\RejectMail;
 use App\Models\AdmissionExam;
 use App\Models\QualifiedStudent;
 use App\Models\Result;
@@ -16,7 +17,8 @@ use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
 use App\Jobs\SendScheduleEmail;
 use App\Jobs\SendAcceptanceEmail;
-
+use App\Jobs\SendProctorMail;
+use App\Mail\NotifyProctor;
 class ApplicantController extends Controller
 {
     
@@ -53,7 +55,7 @@ class ApplicantController extends Controller
             $request->validate([
                 'firstName' => 'required',   
                 'lastName' => 'required',          
-                'email' => 'required|email|unique:users,email',  
+                'email' => 'required|email:rfc,dns|unique:users,email',  
                 // 'contactNumber' => 'required|min:11|unique:users,contact_number|numeric',
                
             ]);
@@ -123,7 +125,7 @@ class ApplicantController extends Controller
         }
         catch (\Exception $e) {        
             DB::rollback(); 
-            return redirect()->back()->with('error', 'Failed to add the applicant. Please try again later.');
+            return redirect()->back()->with('error', 'Failed to add the applicant. Please try again .' . $e->getMessage());
         }
        
       return redirect()->back()->with('success', 'Question added successfully!');       
@@ -141,7 +143,7 @@ class ApplicantController extends Controller
         $request->validate([
             'firstName' => 'required',
             'lastName' => 'required',
-            'email' => 'required|email|unique:users,email,' . $id, 
+            'email' => 'required|email:rfc,dns|unique:users,email,' . $id, 
             // 'contactNumber' => 'required|min:11|unique:users,contact_number,' . $id, 
         ]);
         
@@ -206,7 +208,7 @@ class ApplicantController extends Controller
         $tempPassword = $user->last_name . $user->first_name . "12345";
         $tempPassword = preg_replace('/\s+/u', '', $tempPassword);
         $tempPassword = strtolower($tempPassword);
-       // Mail::to($user->email)->send(new AcceptanceMail($user->email, $user->first_name,  $user->last_name, $tempPassword));           
+        //Mail::to($user->email)->send(new AcceptanceMail($user->email, $user->first_name,  $user->last_name, $tempPassword));           
         
        dispatch(new SendAcceptanceEmail($user->email, $user->first_name, $user->last_name, $tempPassword));
        return redirect()->back()->with('success', 'Approved Applicant successfully!');       
@@ -240,9 +242,19 @@ class ApplicantController extends Controller
 
     }
     function ArchiveApplicant($id){
+       
         $user = User::where('role', 'Student')->findOrFail($id);
         $user->status = "Archived";
         $user->save();      
+        return redirect()->back()->with('success', 'Archive Applicant successfully!');       
+    }
+    function ArchiveApplicantWithEmail($id){
+        
+        $user = User::where('role', 'Student')->findOrFail($id);
+        $user->status = "Archived";
+        $user->save();      
+        Mail::to($user->email)->send(new RejectMail($user->first_name,  $user->last_name));           
+          
         return redirect()->back()->with('success', 'Archive Applicant successfully!');       
     }
 
@@ -330,10 +342,9 @@ class ApplicantController extends Controller
             'date' => 'required',
             'selectedUsers' => 'required|array|min:1',
             'start_time' => 'required',
-            'end_time' => 'required',
+            'location' => 'required',
         
         ]);
-
         
         $selectedUserIds = $request->input('selectedUsers');
        
@@ -342,16 +353,31 @@ class ApplicantController extends Controller
 
            $user->exam_schedule_date = $request->date;
            $user->start_time = $request->start_time;
-           $user->end_time = $request->end_time;
+           $user->location = $request->location;
            
            $user->save();
 
            $temp_user = User::find($userId);
            $temp_user->status = "Pending Interview";
            $temp_user->save();
-           dispatch(new SendScheduleEmail($user->user->email, $user->exam_schedule_date, $user->start_time, $user->end_time));
-           //Mail::to($this->userEmail)->send(new AcceptanceMail($this->userEmail, $this->firstName, $this->lastName, $this->tempPassword));
-          }
+           dispatch(new SendScheduleEmail($user->user->email, $user->exam_schedule_date, $user->start_time, $user->first_name, $user->last_name, $user->location));
+           //Mail::to($user->user->email)->send(new ScheduleMail($user->exam_schedule_date, $user->start_time, $temp_user->first_name, $temp_user->last_name, $user->location));
+           //
+          
+        }
+          
+        
+        //     //dispatch(new SendProctorMail($proctor->email, $proctor->last_name, $proctor->first_name, $user->last_name, $user->first_name, $user->exam_schedule_date, $user->start_time));
+        
+        //change this to proper mail tomorrow
+        $proctors = User::where('role', 'Proctor')->get();
+        foreach ($proctors as $proctor) {
+            Mail::to($proctor->email)->send(new NotifyProctor());
+        }
+        
+
+    
+         
         return redirect()->route('admin.dashboard.show-schedule-interview');
        
         

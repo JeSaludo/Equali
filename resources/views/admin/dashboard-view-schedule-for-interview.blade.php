@@ -22,7 +22,7 @@
 
     <body>
         <div class="min-h-screen  bg-[#F7F7F7]">
-
+            @include('layout.danger-alert')
 
             @include('layout.sidenav', ['active' => 0])
             <nav class="ml-[218px] flex justify-between items-center border-b border-[#D9DBE3] h-[60px] bg-white px-4">
@@ -66,14 +66,7 @@
                     <div class="flex mx-4 mb-4" id="navLinks">
 
 
-                        <a href="{{ route('admin.dashboard.show-applicant') }}"
-                            class="font-poppins  text-slate-500 nav-link  ">All</a>
-                        <a href="{{ route('admin.dashboard.show-pending-applicant') }}"
-                            class="font-poppins  text-slate-500 nav-link ">Pending</a>
-                        <a href="{{ route('admin.dashboard.show-approved-applicant') }}"
-                            class="font-poppins  text-slate-500 nav-link">Approved</a>
-                        <a href="{{ route('admin.dashboard.show-archive-applicant') }}"
-                            class="font-poppins  text-slate-500 nav-link">Archived</a>
+
                         <a href="{{ route('admin.dashboard.show-schedule-interview') }}"
                             class="font-poppins active  text-slate-500  nav-link whitespace-nowrap">Schedule
                             Interview</a>
@@ -208,13 +201,20 @@
                                             class="w-full px-3 py-2 border rounded-md" required>
 
 
-                                        <div class="my-2">
-                                            <label for="start_time">Start Time:</label>
-                                            <input type="time" id="start_time" name="start_time" required>
+                                        <div class="my-2 ">
+                                            <label for="start_time">Time:</label>
+                                            <input type="time" id="start_time" name="start_time" class="w-full">
 
-                                            <label for="end_time">End Time:</label>
-                                            <input type="time" id="end_time" name="end_time" required>
+
                                         </div>
+
+                                        <div class="my-2">
+                                            <label for="location">Location:</label>
+                                            <input type="text" id="location" name="location" class="w-full"
+                                                required>
+
+                                        </div>
+
 
 
 

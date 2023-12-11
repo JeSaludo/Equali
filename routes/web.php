@@ -35,7 +35,7 @@ Route::post('/login/authenticate', [AuthController::class, 'Authenticate'])->nam
 $rndRoute = "31dsda943dasd4azx2Qesd2123";
 Route::get('/register/admin/' . $rndRoute, [AuthController::class, 'ShowAdminRegistration'])->name("auth.show.admin.registration");
 Route::post('/register/store/admin/' . $rndRoute, [AuthController::class, 'CreateAccountAdmin'])->name("auth.store.admin.registration");
-
+Route::get('/forgot-password', [AuthController::class, 'ShowForgotPassword'])->name('auth.show-forgot-password');
 
 Route::get('/logout', [AuthController::class, 'Logout'])->name('auth.logout');
 
@@ -50,6 +50,8 @@ Route::middleware(['admin'])->group(function () {
     Route::post('/dashboard/add-question/store', [QuestionController::class, 'StoreQuestion'])->name('admin.dashboard.store-question');
     Route::get('/dashboard/questions/{id}/edit', [QuestionController::class, 'ShowEditQuestion'])->name('admin.dashboard.edit-question');
     Route::put('/dashboard/questions/{id}', [QuestionController::class, 'UpdateQuestion'])->name('admin.dashboard.update-question');
+
+    Route::get('/dashboard/question/{id}/view-only', [QuestionController::class, 'ShowQuestionReadOnly'])->name('admin.show-question-read-only');
 
     Route::get('/dashboard/exam/questions/{id}/edit', [QuestionController::class, 'ShowEditQuestionInExam'])->name('admin.dashboard.edit-question-in-exam');
     Route::put('/dashboard/exam/questions/{id}', [QuestionController::class, 'UpdateQuestionInExam'])->name('admin.dashboard.update-question-in-exam');
@@ -79,6 +81,10 @@ Route::middleware(['admin'])->group(function () {
     Route::get('/dashboard/view-unqualified-applicant', [ApplicantController::class, 'ShowUnqualifiedApplicant'])->name('admin.dashboard.show-unqualified-applicant');
    
     Route::get('/dashboard/applicant/{id}/archived', [ApplicantController::class, 'ArchiveApplicant'])->name('admin.dashboard.archive-applicant');
+    Route::get('/dashboard/applicant/{id}/reject', [ApplicantController::class, 'ArchiveApplicantWithEmail'])->name('admin.dashboard.reject-applicant');
+    
+    
+    
     Route::get('/dashboard/applicant/{id}/approved', [ApplicantController::class, 'ApproveApplicant'])->name('admin.dashboard.approve-applicant');
     Route::post('/dashboard/applicant/approve-users', [ApplicantController::class, 'ApproveApplicantMultiple'])->name('admin.dashboard.approve-applicant-multiple');
     
@@ -165,10 +171,15 @@ Route::middleware(['admin'])->group(function () {
     Route::get('/dashboard/setting', [AdminController::class,'ShowSetting'])->name('admin.show-setting');
 
     Route::put('/dashboard/{id}/update-profile', [AdminController::class,'UpdateProfile'])->name('admin.update.profile');
+    Route::put('/dashboard/update-setting', [AdminController::class,'UpdateSetting'])->name('admin.update.setting');
 
     
 
 
+    Route::get('/dashboard/report/interview-result', [ReportController::class, 'ShowInterviewResult'])->name('admin.report.interview-result');
+    Route::get('/dashboard/report/qualified-result', [ReportController::class,'ExportQualified'])->name('admin.report.qualified-result');
+
+    Route::get('/dashboard/report/unqualified-result', [ReportController::class,'ExportUnqualified'])->name('admin.report.unqualified-result');
 
 
 });
@@ -179,4 +190,5 @@ Route::middleware(['admin'])->group(function () {
         Route::post('/exam/result', [ExamController::class, 'SubmitExam'])->name('submit-exam');
     });
 
-    Route::get('/dashboard/report/interview-result', [ReportController::class, 'ShowInterviewResult'])->name('admin.report.interview-result');
+   
+    

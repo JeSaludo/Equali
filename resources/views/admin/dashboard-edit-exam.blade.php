@@ -21,7 +21,7 @@
 
     <body>
         <div class="min-h-screen  bg-[#F7F7F7]">
-
+            @include('layout.danger-alert')
 
             @include('layout.sidenav', ['active' => 0])
             <nav class="ml-[218px] flex justify-between items-center border-b border-[#D9DBE3] h-[60px] bg-white px-4">
@@ -56,15 +56,7 @@
                                     <input type="text" name="examName" value="{{ $exam->title }}"
                                         class="block text-[36px] s font-bold text-[#26386A]">
 
-                                    <div class="flex justify-between w-8/12">
-                                        <div class="flex ">
-                                            <p class="text-[18px]">Number of Question: </p>
-                                            <input type="number" name="numOfQuestion"
-                                                value="{{ $exam->num_of_question }}" class="w-5/12 ml-2 text-[18px]">
 
-                                        </div>
-
-                                    </div>
 
                                     <div class="mt-2 w-9/12">
                                         <textarea name="description" class="w-full h-[80px] resize-none  text-[18px] text-[#827F8A]">{{ $exam->description }}</textarea>
@@ -119,7 +111,8 @@
 
         </div>
 
-        <h1 class="mx-4  my-4 font-medium">{{ $examQuestions->count() }} Questions</h1>
+        <h1 class="mx-4  my-4 font-medium">{{ $examQuestions->count() }} /
+            {{ $option->qualifying_number_of_items }} Questions </h1>
 
         @if ($examQuestions->count() === 0)
             <div class="mx-auto text-center">

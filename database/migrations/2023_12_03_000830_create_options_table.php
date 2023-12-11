@@ -13,6 +13,10 @@ return new class extends Migration
     {
         Schema::create('options', function (Blueprint $table) {
             $table->id();
+            $table->bigInteger('qualifying_passing_score');
+            $table->decimal('qualified_student_passing_average');   // for average?       
+            $table->bigInteger('qualifying_number_of_items');// 
+            $table->bigInteger('qualifying_timer');
             $table->timestamps();
         });
     }

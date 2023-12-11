@@ -37,7 +37,7 @@
             @include('layout.user-popup')
         </nav>
         <section class="ml-[218px] main ">
-
+            @include('layout.danger-alert')
             @include('layout.popup')
             <div class="flex-row md:flex justify-evenly my-4 ">
 

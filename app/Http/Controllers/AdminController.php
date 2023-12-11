@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use Illuminate\Http\Request;
 use App\Models\Question;
+use App\Models\Option;
 use Illuminate\Support\Facades\Hash;
 class AdminController extends Controller
 {
@@ -114,7 +115,26 @@ class AdminController extends Controller
     }
 
     function ShowSetting(){
-        return view('admin.employee-setting');
+        $option = Option::first();
+        return view('admin.employee.admin-setting', compact('option'));
+    }
+
+    function UpdateSetting(Request $request){
+
+
+        $request->validate([
+            'qualifying_passing_score' => 'required|integer', // Adjust the range as needed
+            'qualifying_number_of_items' => 'required|integer', // Adjust the range as needed
+            'qualifying_timer' => 'required|integer|min:0',
+            'qualified_student_passing_average' => 'required|numeric|between:0,5',
+        ]);
+        $option = Option::first();
+        $option->qualified_student_passing_average = $request->qualified_student_passing_average;
+        $option->qualifying_number_of_items = $request->qualifying_number_of_items;
+        $option->qualifying_passing_score = $request->qualifying_passing_score;
+        $option->qualifying_timer = $request->qualifying_timer;
+        $option->save();
+        return redirect()->route('admin.dashboard.overview')->with('success', 'Questions added successfully!');
     }
     
 
