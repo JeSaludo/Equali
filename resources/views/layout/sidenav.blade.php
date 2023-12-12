@@ -41,6 +41,11 @@
 
                     </a>
                 </div>
+                {{-- debug --}}
+                {{-- <a href="{{ route('admin.dashboard.pending-interview') }}"
+                    class="mx-4 cursor-pointer hover:bg-[#EAF0FF]  px-4 py-2 rounded-[15px] flex justify-between  items-center text-[#718297] my-2">
+                    <div class="pointer-events-none"><i class='bx bxs-file-blank pr-2'></i>Interview</div>
+                </a> --}}
             @elseif (Auth::user()->role === 'Proctor')
                 <a href="{{ route('admin.dashboard.pending-interview') }}"
                     class="mx-4 cursor-pointer hover:bg-[#EAF0FF]  px-4 py-2 rounded-[15px] flex justify-between  items-center text-[#718297] my-2">

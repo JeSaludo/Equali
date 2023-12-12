@@ -16,7 +16,7 @@ class ItemAnalysisController extends Controller
     public function GenerateItemAnalysis(){
         
         $DI = [];
-        $questions = Question::paginate(10); // Use paginate directly, no need for initial all()
+        $questions = Question::all(); // Use paginate directly, no need for initial all()
     
         foreach ($questions as $index => $question) {
             $hasResponses = $question->examResponse()->exists();
@@ -31,10 +31,16 @@ class ItemAnalysisController extends Controller
                 $di = round($correctResponses / $totalResponses, 2);
                 $DI[$index] = $di;
     
-                // $question->update(['category' => null]);
-                if($question->category != "Discard"){
+                //$question->update(['category' => null]);
+                // if($question->category != "Discard"){
                     if ($di < 0.15){
+                    
+                        $question->category = "Discard";
+                        $question->save();
                         $question->update(['category' => 'Discard']);
+                       
+                
+                        ExamQuestion::where('question_id', $question->id)->delete();
                     }
                     elseif ($di >= 0.15 && $di < 0.3){
                         $question->update(['category' => 'Revise']);
@@ -46,9 +52,13 @@ class ItemAnalysisController extends Controller
                         $question->update(['category' => 'Revise']);
                     }                               
                     elseif ($di >= 0.86){
+                     
+                        $question->category = "Discard";
+                        $question->save();
                         $question->update(['category' => 'Discard']);
+                        ExamQuestion::where('question_id', $question->id)->delete();
                     }
-                }
+                // }
                 
             }            
         }
@@ -63,7 +73,6 @@ class ItemAnalysisController extends Controller
         $selectedYear = $request->selected_year;
         
       
-        
         
         $questions = Question::where('category');
         
@@ -90,7 +99,10 @@ class ItemAnalysisController extends Controller
                     $di = round($correctResponses / $totalResponses, 2);
                     $DI[$index] = $di;
                 }
+              
             }            
+
+          
         }
 
        
@@ -116,8 +128,8 @@ class ItemAnalysisController extends Controller
             // Check if there are exam responses for the current question
             $hasResponses = $question->examResponse()->exists();
            
-            if($question->examResponse()->count() > 1)
-            {
+            if($question->examResponse()->count() > 0)
+            // {
                 if ($hasResponses) {
                     $choices = $question->choices;
     
@@ -129,8 +141,9 @@ class ItemAnalysisController extends Controller
                     $di = round($correctResponses / $totalResponses, 2);
                     $DI[$index] = $di;
                 }
-            }            
-        }
+                
+             }            
+        
 
        
         return view('admin.reports.item-analysis-revise', compact('questions', 'DI','questionCount','uniqueYears', 'selectedYear'));

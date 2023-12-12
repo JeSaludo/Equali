@@ -129,51 +129,70 @@
 
 
                                                 </td>
-                                                <td class="px-6 py-3 whitespace-nowrap">
-
-                                                    @if ($DI[$index] < 0.15)
-                                                        Very Difficult
-                                                    @elseif ($DI[$index] > 0.14 && $DI[$index] < 0.3)
-                                                        Difficult
-                                                    @elseif ($DI[$index] > 0.29 && $DI[$index] < 0.71)
-                                                        Moderate
-                                                    @elseif ($DI[$index] > 0.7 && $DI[$index] < 0.86)
-                                                        Easy
-                                                    @elseif ($DI[$index] > 0.85)
-                                                        Very Easy
-                                                    @endif
-
-
-                                                </td>
-
-
-                                                <td class="px-6 py-3 whitespace-nowrap ">
-                                                    @if ($DI[$index] < 0.15)
-                                                        To be discarded
-                                                    @elseif ($DI[$index] > 0.14 && $DI[$index] < 0.3)
-                                                        To be revised
-                                                    @elseif ($DI[$index] > 0.29 && $DI[$index] < 0.71)
-                                                        Very Good Items
-                                                    @elseif ($DI[$index] > 0.7 && $DI[$index] < 0.86)
-                                                        To be revised
-                                                    @elseif ($DI[$index] > 0.85)
-                                                        To be discarded
-                                                    @endif
+                                                @if ($DI[$index] !== 'N/A')
+                                                    <td class="px-6 py-3 whitespace-nowrap">
 
 
 
-                                                </td>
 
 
+                                                        @if ($DI[$index] < 0.15)
+                                                            Very Difficult
+                                                        @elseif ($DI[$index] > 0.14 && $DI[$index] < 0.3)
+                                                            Difficult
+                                                        @elseif ($DI[$index] > 0.29 && $DI[$index] < 0.71)
+                                                            Moderate
+                                                        @elseif ($DI[$index] > 0.7 && $DI[$index] < 0.86)
+                                                            Easy
+                                                        @elseif ($DI[$index] > 0.85)
+                                                            Very Easy
+                                                        @endif
+
+
+                                                    </td>
+
+
+                                                    <td class="px-6 py-3 whitespace-nowrap ">
+                                                        @if ($DI[$index] < 0.15)
+                                                            To be discarded
+                                                        @elseif ($DI[$index] > 0.14 && $DI[$index] < 0.3)
+                                                            To be revised
+                                                        @elseif ($DI[$index] > 0.29 && $DI[$index] < 0.71)
+                                                            Very Good Items
+                                                        @elseif ($DI[$index] > 0.7 && $DI[$index] < 0.86)
+                                                            To be revised
+                                                        @elseif ($DI[$index] > 0.85)
+                                                            To be discarded
+                                                        @endif
+
+
+
+                                                    </td>
+                                                @else
+                                                    <td class="px-6 py-3 whitespace-nowrap "></td>
+                                                    <td class="px-6 py-3 whitespace-nowrap "></td>
+                                                @endif
 
                                                 <td class="px-6 py-3 text-center">
-
-
-                                                    <a href="{{ route('admin.item-analysis.revise', $question->id) }}"
-                                                        onclick="return confirm('Are you sure you want to revise?')"
-                                                        class="text-[14px] py-1 px-6 rounded-md bg-orange-200 text-orange-700">Revise
-                                                    </a>
-
+                                                    @if ($DI[$index] !== 'N/A')
+                                                        @if ($DI[$index] < 0.15)
+                                                            <p class=" py-1 px-2">Discard</p>
+                                                        @elseif ($DI[$index] > 0.14 && $DI[$index] < 0.3)
+                                                            <a href="{{ route('admin.item-analysis.revise', $question->id) }}"
+                                                                onclick="return confirm('Are you sure you want to revise?')"
+                                                                class="text-[14px] py-1 px-6 rounded-md bg-orange-200 text-orange-700">Revise
+                                                            </a>
+                                                        @elseif ($DI[$index] > 0.29 && $DI[$index] < 0.71)
+                                                            <p class=" py-1 px-2 ">Retain</p>
+                                                        @elseif ($DI[$index] > 0.7 && $DI[$index] < 0.86)
+                                                            <a href="{{ route('admin.item-analysis.revise', $question->id) }}"
+                                                                onclick="return confirm('Are you sure you want to revise?')"
+                                                                class="text-[14px] py-1 px-6 rounded-md bg-orange-200 text-orange-700">Revise
+                                                            </a>
+                                                        @elseif ($DI[$index] > 0.85)
+                                                            <p class=" py-1 px-2 ">Discard</p>
+                                                        @endif
+                                                    @endif
 
 
 

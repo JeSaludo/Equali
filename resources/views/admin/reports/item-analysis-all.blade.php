@@ -87,11 +87,11 @@
                     <a href="#" class="font-poppins  text-slate-500 w-full no-hover-underline"></a>
                 </div>
                 <div class="bg-white mx-4 relative  border   border-[#D9DBE3] shadow-md rounded-lg my-4">
-                    <div class="overflow-x-auto overflow-y-auto max-h-[500px]">
+                    <div class="overflow-x-auto overflow-y-auto max-h-[400px]">
                         <table
                             class="w-full font-poppins border-collapse   text-md text-left rtl:text-right text-gray-500 table-auto ">
                             <thead
-                                class="border-b  text-[#26386A] border-[#D9DBE3] font-semibold text-center whitespace-nowrap">
+                                class="border-b sticky top-0 bg-white  text-[#26386A] border-[#D9DBE3] font-semibold text-center whitespace-nowrap">
                                 <tr>
                                     <td class="px-6 py-2">Item </td>
                                     <td class="px-6 py-2 text-center">Difficulty Index</td>
@@ -122,18 +122,14 @@
                                                 $dataFound = true;
                                             @endphp
 
-                                            <tr
-                                                class="text-center mx-auto {{ $index % 2 == 0 ? 'bg-[#F6F8FF]' : 'bg-white' }} border-b border-gray-100">
+                                            <tr class="text-center mx-auto border-b border-gray-100">
                                                 <td class="px-6 py-3">
                                                     {{ $question->id }}
 
                                                 </td>
 
                                                 <td class="px-6 py-3">
-
                                                     {{ $DI[$index] }}
-
-
 
                                                 </td>
                                                 <td class="px-6 py-3 whitespace-nowrap">
@@ -193,8 +189,6 @@
                                                     @elseif ($DI[$index] > 0.85)
                                                         <p class=" py-1 px-2 ">Discard</p>
                                                     @endif
-
-
 
                                                 </td>
 

@@ -581,7 +581,9 @@ class ReportController extends Controller
 
     public function ReviseQuestion($id){
        
-        $question = Question::find($id);
+        
+        $question = Question::with('examResponse')->find($id);
+      
         return view('admin.dashboard-revise-question', compact('question'));
     }
    
@@ -590,70 +592,48 @@ class ReportController extends Controller
 
     public function StoreReviseQuestion(Request $request){
        // Question::
+       $request->validate([
+        'question_text' => 'required|unique:questions,question_text',
+        'choice_text' => 'required|array',
+        'choice_text.*' => 'required|string',
+        'correct_choice' => 'required|numeric',           
 
-       $previousQuestionText = $request->input('question_text'); 
-       $existingQuestion = Question::find($request->question_id)
-           ->where('question_text', '!=', $previousQuestionText)
-           ->first();
-
-        $tempQuestionText = $existingQuestion->question_text;
-        $previousQuestionText = $request->input('question_text');
-        if($previousQuestionText ===  $tempQuestionText){
-            return redirect()->back()->with('error', 'The question text must be unique.');
-        }
-        
-        $temp_question = Question::find($request->question_id);
-        $temp_question->choices()->delete();
-        $temp_question->delete();
+        ]);    
         
         
-
         $img = $request->img;
-       
-
-        $request->validate([
-            'question_text' => 'required',
-            'choice_text' => 'required|array',
-            'choice_text.*' => 'required|string',
-            'correct_choice' => 'required|numeric',           
-
-        ]);
-        
-
-       
-       
             
-        $question = new Question();
-        $question->question_text = $request->question_text;  
-        $question->category = "Revise";
-        $question->year =  date('Y'); 
-        $question->save();
      
 
-        if(!is_null($img)){                        
+        $question = Question::findOrFail($request->question_id);
+        $question->question_text = $request->question_text;
+        $question->category = null;
+        $currentYear = date('Y'); 
+        $question->save();
 
-            if ($question->image_path) {
-                Storage::delete('public/questions/' . $question->image_path);
-            }
+        if ($request->hasFile('img')) {
+            $img = $request->file('img');
+            $newFileName = 'question-image_' . $question->id . '.' . $img->getClientOriginalExtension();
             
-            $extension = $img->getClientOriginalExtension();
-            $newFileName = 'question-image_' . $question->id . '.' . $extension;
-
-            $path = $request->file('img')->storeAs('public/questions', $newFileName);           
-               
+            // Store the new image and replace the existing image
+            $path = $img->storeAs('public/questions', $newFileName);
             $question->image_path = $newFileName;
-            $question->save();
+        }
+        $question->save();
+        // Delete existing choices for this question (optional)
+        $question->choices()->delete();
+    
+        // Add/update choices
+        foreach ($request->choice_text as $key => $choiceText) {
+            $isCorrect = ($request->correct_choice == ($key + 1));
+    
+            $choice = new Choice();
+            $choice->question_id = $question->id;
+            $choice->choice_text = $choiceText;
+            $choice->is_correct = $isCorrect;
+            $choice->save();
         }
 
-        foreach ($request->choice_text as $key => $choiceText) {
-           $isCorrect = ($request->correct_choice == ($key + 1));
-           $choice = new Choice();
-           $choice->question_id = $question->id;
-           $choice->choice_text = $choiceText;
-           $choice->is_correct = $isCorrect;
-           $choice->save();
-        }
-        
         $choice = new Choice();
         $choice->question_id = $question->id;
         $choice->choice_text = "No Answer";
