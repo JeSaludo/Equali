@@ -15,18 +15,19 @@ class ItemAnalysisReport implements FromView
 {
     protected $questions;
     protected $DI;
-    protected $DS;
 
-    public function __construct($questions, $DI, $DS)
+
+    public function __construct($questions, $DI)
     {
         $this->questions = $questions;
         $this->DI = $DI;
-        $this->DS = $DS;
+       
+       
     }
 
 
     public function view(): View
     {
-        return view('exports.item-analysis-report', ['questions' => $this->questions, 'DI' => $this->DI, 'DS' => $this->DS]);
+        return view('exports.item-analysis-report', ['questions' => $this->questions, 'DI' => $this->DI]);
     }
 }

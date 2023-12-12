@@ -63,6 +63,7 @@
                                     <td class="px-6 py-2">Question No.</td>
                                     <td class="px-6 py-2">Question</td>
                                     <td class="px-6 py-2">Category</td>
+                                    <td class="px-6 py-2">Created Date</td>
                                     <td class="px-6 py-2">Action</td>
                                 </tr>
                             </thead>
@@ -104,12 +105,16 @@
                                                         class="py-1 px-4 rounded-md bg-green-200 text-green-600">Revised</span>
                                                 @endif
                                             </td>
+                                            <td class="px-6 py-3">
+                                                {{ $question->created_at->format('Y-m-d') }}
+
 
                                             <td class="px-6 py-3"><a
                                                     href="{{ route('admin.dashboard.edit-question', $question) }}"><i
                                                         class='bx bxs-edit'></i></a>
 
-                                                <form action="{{ route('admin.dashboard.delete-question', $question) }}"
+                                                <form
+                                                    action="{{ route('admin.dashboard.delete-question', $question) }}"
                                                     method="POST" style="display: inline-block;">
                                                     @csrf
                                                     @method('DELETE')

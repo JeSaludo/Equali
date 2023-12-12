@@ -49,14 +49,30 @@
 
                 @include('admin.reports.layout.sub-header')
 
+                <div class="mx-4 w-[200px]">
 
+
+
+                    <form action="{{ route('admin.dashboard.item-analysis') }}" method="GET" id="yearForm">
+                        <select id="year" name="selected_year"
+                            class="font-poppins bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+                            onchange="document.getElementById('yearForm').submit()">
+                            <option value="" selected>Select Year</option>
+                            @foreach ($uniqueYears as $year)
+                                <option value="{{ $year }}" {{ $selectedYear == $year ? 'selected' : '' }}>
+                                    {{ $year }}</option>
+                            @endforeach
+                        </select>
+                    </form>
+
+                </div>
 
 
 
                 <div class="flex mx-4 mb-4" id="navLinks">
 
                     <a href="{{ route('admin.dashboard.item-analysis') }}"
-                        class="font-poppins   text-slate-500  nav-link whitespace-nowrap">Pending Items</a>
+                        class="font-poppins   text-slate-500  nav-link whitespace-nowrap">All Items</a>
                     <a href="{{ route('admin.dashboard.item-analysis.revise') }}"
                         class="font-poppins  text-slate-500 nav-link   whitespace-nowrap">Revise Items</a>
                     <a href="{{ route('admin.dashboard.item-analysis.retain') }}"
@@ -76,10 +92,8 @@
                                 <tr>
                                     <td class="px-6 py-2">Item </td>
                                     <td class="px-6 py-2 text-center">Difficulty Index</td>
-                                    <td class="px-6 py-2 text-center">Difficulty</td>
-                                    <td class="px-6 py-2 text-center">Discrimination Index</td>
-                                    <td class="px-6 py-2 text-center">Discrimination</td>
-                                    <td class="px-6 py-2">Action</td>
+                                    <td class="px-6 py-2 text-center">Difficulty Level</td>
+                                    <td class="px-6 py-2 text-center">Status</td>
 
                                 </tr>
                             </thead>
@@ -98,7 +112,7 @@
                                     </tr>
                                 @else
                                     @foreach ($questions as $index => $question)
-                                        @if (isset($DI[$index]) && isset($DS[$index]))
+                                        @if (isset($DI[$index]))
                                             @php
                                                 $dataFound = true;
                                             @endphp
@@ -119,59 +133,38 @@
                                                 </td>
                                                 <td class="px-6 py-3 whitespace-nowrap">
 
-                                                    @if ($DS[$index] >= 0.86)
-                                                        Very Easy
-                                                    @elseif ($DS[$index] <= 0.85 && $DS[$index] >= 0.71)
-                                                        Easy
-                                                    @elseif ($DS[$index] <= 0.7 && $DS[$index] >= 0.3)
-                                                        Moderate
-                                                    @elseif ($DS[$index] <= 0.29 && $DS[$index] >= 0.15)
-                                                        Difficult
-                                                    @elseif ($DS[$index] <= 0.14 && $DS[$index] >= 0)
+                                                    @if ($DI[$index] < 0.15)
                                                         Very Difficult
+                                                    @elseif ($DI[$index] > 0.14 && $DI[$index] < 0.3)
+                                                        Difficult
+                                                    @elseif ($DI[$index] > 0.29 && $DI[$index] < 0.71)
+                                                        Moderate
+                                                    @elseif ($DI[$index] > 0.7 && $DI[$index] < 0.86)
+                                                        Easy
+                                                    @elseif ($DI[$index] > 0.85)
+                                                        Very Easy
                                                     @endif
 
 
                                                 </td>
 
-                                                <td class="px-6 py-3 ">
-                                                    {{ $DS[$index] }}
-                                                </td>
+
                                                 <td class="px-6 py-3 whitespace-nowrap ">
-
-                                                    @if ($DS[$index] >= 0.86)
-                                                        To be discarded
-                                                    @elseif ($DS[$index] <= 0.85 && $DS[$index] >= 0.71)
-                                                        To be revised
-                                                    @elseif ($DS[$index] <= 0.7 && $DS[$index] >= 0.3)
-                                                        Very Good items
-                                                    @elseif ($DS[$index] <= 0.29 && $DS[$index] >= 0.15)
-                                                        To be revised
-                                                    @elseif ($DS[$index] <= 0.14 && $DS[$index] >= 0)
-                                                        To be discarded
+                                                    @if ($DI[$index] < 0.15)
+                                                        Discarded
+                                                    @elseif ($DI[$index] > 0.14 && $DI[$index] < 0.3)
+                                                        Revised
+                                                    @elseif ($DI[$index] > 0.29 && $DI[$index] < 0.71)
+                                                        Retained
+                                                    @elseif ($DI[$index] > 0.7 && $DI[$index] < 0.86)
+                                                        Revised
+                                                    @elseif ($DI[$index] > 0.85)
+                                                        Discarded
                                                     @endif
 
 
-                                                </td>
-
-
-
-                                                <td class="px-6 py-3 text-left">
-
-
-
-                                                    <a href="{{ route('admin.item-analysis.revise', $question->id) }}"
-                                                        onclick="return confirm('Are you sure you want to revise?')"
-                                                        class="text-[14px] py-1 px-2 rounded-md bg-emerald-300 text-emerald-700">Revise</a>
-                                                    <a href="{{ route('admin.item-analysis.retain', $question->id) }}"
-                                                        onclick="return confirm('Are you sure you want to retain?')"
-                                                        class="text-[14px] py-1 px-2 rounded-md bg-blue-300 text-blue-700">Retain</a>
-
-
-
 
                                                 </td>
-
                                             </tr>
                                         @endif
                                     @endforeach
@@ -192,28 +185,7 @@
                         <nav
                             class="bg-white border-t rounded-b-lg text-[14px] font-poppins border-[#D9DBE3] w-full py-2 flex justify-start pl-2 items-center">
 
-                            <a href="{{ $questions->previousPageUrl() }}"
-                                class="flex items-center justify-center px-3 h-8 ms-0 leading-tight text-gray-500 bg-white border border-e-0 border-gray-300 rounded-s-lg hover:bg-gray-100 hover:text-[#26386A] {{ $questions->currentPage() > 1 ? '' : 'opacity-50 cursor-not-allowed' }}">
-                                <span class="">Previous</span>
 
-                            </a>
-
-
-
-
-                            <div class="flex">
-                                @for ($i = 1; $i <= $questions->lastPage(); $i++)
-                                    <a href="{{ $questions->url($i) }}"
-                                        class="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-[#26386A]  {{ $i == $questions->currentPage() ? 'bg-slate-100' : '' }}">
-                                        {{ $i }}
-                                    </a>
-                                @endfor
-                            </div>
-                            <a href="{{ $questions->nextPageUrl() }}"
-                                class="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 rounded-e-lg hover:bg-gray-100 hover:text-[#26386A] {{ $questions->hasMorePages() ? '' : 'opacity-50 cursor-not-allowed' }}">
-                                <span class="">Next</span>
-
-                            </a>
 
 
 

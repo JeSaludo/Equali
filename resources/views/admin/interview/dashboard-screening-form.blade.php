@@ -42,19 +42,19 @@
                         <div class="flex mx-4 justify-between l gap-2 ">
                             <div class=" px-4 my-2  w-full">
                                 <input type="text" name="name"
-                                    class="h-[50px] w-full rounded placeholder:text-[#4E4E4E] placeholder:font-poppins placeholder:text-[16px] px-[20px] border-2 border-[#D7D8D0] "
+                                    class="h-[50px] w-full rounded placeholder:text-slate-300 placeholder:font-poppins placeholder:text-[16px] px-[20px] border-2 border-[#D7D8D0] "
                                     placeholder="Applicant Name:" required autocomplete="off"
                                     value="{{ $user->first_name }} {{ $user->last_name }}" disabled>
                             </div>
 
                             <div class="relative px-4 my-2 flex w-full">
                                 <div
-                                    class="h-[50px] py-3 w-3/12 bg-white whitespace-nowrap placeholder:text-[#4E4E4E]  px-[40px] rounded-l   border-x-2 border-y-2 border-r-2 border-[#D7D8D0]">
+                                    class="h-[50px] py-3 w-3/12 bg-white whitespace-nowrap placeholder:text-slate-300  px-[40px] rounded-l   border-x-2 border-y-2 border-r-2 border-[#D7D8D0]">
                                     <label for="">Date</label>
                                 </div>
 
                                 <input
-                                    class="h-[50px] w-full  placeholder:text-[#4E4E4E]  px-[40px] rounded-r border-y-2 border-r-2 border-[#D7D8D0]"
+                                    class="h-[50px] w-full  placeholder:text-slate-300  px-[40px] rounded-r border-y-2 border-r-2 border-[#D7D8D0]"
                                     type="date" name="date" class="" placeholder=":"
                                     value="{{ date('Y-m-d') }}">
                             </div>
@@ -62,13 +62,13 @@
                         <div class="flex mx-4 justify-between  gap-2 ">
                             <div class=" px-4 my-2  w-full">
                                 <input type="text" name="home_address" value="{{ old('home_address') }}"
-                                    class="h-[50px] w-full rounded placeholder:text-[#4E4E4E] placeholder:font-poppins placeholder:text-[16px] px-[20px] border-2 border-[#D7D8D0] "
+                                    class="h-[50px] w-full rounded placeholder:text-slate-300 placeholder:font-poppins placeholder:text-[16px] px-[20px] border-2 border-[#D7D8D0] "
                                     placeholder="Home Address" required autocomplete="off">
                             </div>
 
                             <div class=" px-4 my-2 w-full">
                                 <select
-                                    class="h-[50px] w-full rounded placeholder:text-[#4E4E4E] placeholder:font-poppins placeholder:text-[16px] px-[20px] border-2 border-[#D7D8D0] "
+                                    class="h-[50px] w-full rounded placeholder:text-slate-300 placeholder:font-poppins placeholder:text-[16px] px-[20px] border-2 border-[#D7D8D0] "
                                     placeholder="" required autocomplete="off" name="course">
                                     <option value="" disabled selected>Course Applied:</option>
                                     <option value="IT" {{ old('course') == 'IT' ? 'selected' : '' }}>Bachelor in
@@ -83,20 +83,20 @@
                             <div class=" px-4 my-2  w-full">
                                 <input type="text" name="school_last_attended"
                                     value="{{ old('school_last_attended') }}"
-                                    class="h-[50px] w-full rounded placeholder:text-[#4E4E4E] placeholder:font-poppins placeholder:text-[16px] px-[20px] border-2 border-[#D7D8D0] "
+                                    class="h-[50px] w-full rounded placeholder:text-slate-300 placeholder:font-poppins placeholder:text-[16px] px-[20px] border-2 border-[#D7D8D0] "
                                     placeholder="School Last Attended:" required autocomplete="off">
                             </div>
 
                             <div class=" px-4 my-2 w-full">
                                 <input type="text" name="school_address" value="{{ old('school_address') }}"
-                                    class="h-[50px] w-full rounded placeholder:text-[#4E4E4E] placeholder:font-poppins placeholder:text-[16px] px-[20px] border-2 border-[#D7D8D0] "
+                                    class="h-[50px] w-full rounded placeholder:text-slate-300 placeholder:font-poppins placeholder:text-[16px] px-[20px] border-2 border-[#D7D8D0] "
                                     placeholder="School Address:" required autocomplete="off">
                             </div>
                         </div>
                         <div class="flex mx-4 justify-between  gap-2 ">
                             <div class="px-4 my-2 w-full">
                                 <input type="text" name="year_graduated" value="{{ old('year_graduated') }}"
-                                    class="digit-only h-[50px] w-full rounded placeholder:text-[#4E4E4E] placeholder:font-poppins placeholder:text-[16px] px-[20px] border-2 border-[#D7D8D0]"
+                                    class="digit-only h-[50px] w-full rounded placeholder:text-slate-300 placeholder:font-poppins placeholder:text-[16px] px-[20px] border-2 border-[#D7D8D0]"
                                     placeholder="Year Graduated:" required autocomplete="off" maxlength="4"
                                     oninput="validateYear(this);">
                                 <div id="yearError" class="text-red-500"></div>
@@ -105,7 +105,7 @@
 
                             <div class="px-4 my-2 w-full">
                                 <input type="number" name="gpa" value="{{ old('gpa') }}"
-                                    class="digit-only h-[50px] w-full rounded placeholder:text-[#4E4E4E] placeholder:font-poppins placeholder:text-[16px] px-[20px] border-2 border-[#D7D8D0]"
+                                    class="digit-only h-[50px] w-full rounded placeholder:text-slate-300 placeholder:font-poppins placeholder:text-[16px] px-[20px] border-2 border-[#D7D8D0]"
                                     placeholder="GPA:" required autocomplete="off" min="75" max="100"
                                     oninput="validateGPA(this);">
                                 <div id="gpaError" class="text-red-500"></div>
@@ -118,7 +118,7 @@
 
                             <div class="px-4 my-2 w-full">
                                 <select
-                                    class="h-[50px] w-full rounded placeholder:text-[#4E4E4E] placeholder:font-poppins placeholder:text-[16px] px-[20px] border-2 border-[#D7D8D0]"
+                                    class="h-[50px] w-full rounded placeholder:text-slate-300 placeholder:font-poppins placeholder:text-[16px] px-[20px] border-2 border-[#D7D8D0]"
                                     placeholder="" required autocomplete="off" name="academic_track"
                                     id="academic-track">
                                     <option value="" disabled selected>Academic Track:</option>
@@ -135,7 +135,7 @@
 
                             <div class="px-4 my-2 w-full" id="otherTrackInput" style="display:none;">
                                 <input type="text"
-                                    class="h-[50px] w-full rounded placeholder:text-[#4E4E4E] placeholder:font-poppins placeholder:text-[16px] px-[20px] border-2 border-[#D7D8D0]"
+                                    class="h-[50px] w-full rounded placeholder:text-slate-300 placeholder:font-poppins placeholder:text-[16px] px-[20px] border-2 border-[#D7D8D0]"
                                     placeholder="Specify Academic Track" name="other_academic_track"
                                     id="other-academic-track">
                             </div>
@@ -307,19 +307,7 @@
                         </div>
                 </form>
 
-                <div class="relative my-2 mx-auto">
-                    @error('home_address')
-                        <h1 class="bg-gray-200 p-3 text-[12px] rounded-md text-red-500 font-bold font-poppins">
-                            {{ $message }}
-                        </h1>
-                    @enderror
 
-                    @if (session('status'))
-                        <div class="bg-gray-200 p-3 text-[12px] rounded-md text-green-500 font-bold font-poppins">
-                            {{ session('status') }}
-                        </div>
-                    @endif
-                </div>
 
         </div>
 
@@ -342,7 +330,7 @@
             inputElements.forEach((inputElement) => {
                 inputElement.addEventListener("input", function(e) {
                     // Remove non-numeric characters from the input
-                    e.target.value = e.target.value.replace(/[^0-5]/g, '').substring(0, 1);;
+                    e.target.value = e.target.value.replace(/[^1-5]/g, '').substring(0, 1);;
                     // Allows decimals as well
                     calculateAverage();
                 });

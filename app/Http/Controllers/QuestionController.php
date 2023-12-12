@@ -29,7 +29,8 @@ class QuestionController extends Controller
 
             $question = new Question();
             $question->question_text = $request->question_text;  
-           
+            $currentYear = date('Y'); 
+            $question->year =  $currentYear;
             $question->save();
     
             if(!is_null($img)){                        
@@ -78,9 +79,6 @@ class QuestionController extends Controller
     
 
     function ShowQuestionReadOnly($id){
-
-
-       
         $question = Question::with('choices')->findOrFail($id);  
       
        return view('admin.dashboard-view-read-only-question', compact('question'));

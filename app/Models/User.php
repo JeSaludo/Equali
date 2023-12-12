@@ -49,9 +49,9 @@ class User extends Authenticatable
         'password' => 'hashed',
     ];
 
-    protected function examSubmissions(){
-        return $this->hasMany(ExamSubmission::class);
-    }
+    // protected function examSubmissions(){
+    //     return $this->hasMany(ExamSubmission::class);
+    // }
 
     public function admissionExam()
     {

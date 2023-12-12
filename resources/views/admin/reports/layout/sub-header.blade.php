@@ -48,12 +48,17 @@
 
     <h1 class="text-[#26386A] text-[18px]  font-bold font-raleway">Item Analysis</h1>
     <div>
-        <a href="{{ route('admin.item-analysis-refresh') }}"
+        <a href="{{ route('admin.item-analysis-analyze') }}"
             class="bg-[#365EFF] hover:bg-[#384b94] font-poppins text-white py-1 px-4 rounded-lg">
-            Reevaluate 
+            Analyze
         </a>
+
+
     </div>
 
 
-   
+
+
+
+
 </div>

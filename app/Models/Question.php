@@ -10,13 +10,23 @@ class Question extends Model
     use HasFactory;
 
 
-    protected $fillable = ['question_text','category', 'image_path']; 
+    protected $fillable = ['question_text','category', 'image_path','year','eligible_for_exam']; 
 
 
 
     public function choices(){
         return $this->hasMany(Choice::class);
     }
+    public function exam()
+    {
+        return $this->belongsTo(Exam::class);
+    }
+
+    public function examResponse()
+    {
+        return $this->hasMany(ExamResponse::class);
+    }
+
 
     public function correctAnswer()
     {
@@ -31,15 +41,7 @@ class Question extends Model
         return $this->hasMany(Question::class, 'question_id');
     }
 
-    public function exam()
-    {
-        return $this->belongsTo(Exam::class);
-    }
-
-    public function examResponse()
-    {
-        return $this->hasMany(ExamResponse::class);
-    }
+   
 
     public function getResponseCounts()
     {

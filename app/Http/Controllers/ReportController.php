@@ -506,90 +506,32 @@ class ReportController extends Controller
     {
 
         $DI = [];
-        $DS = [];
+        Question::all();
+        $questions = Question::where('category')->paginate(10);
+
         
-        $questions = Question::all();
         foreach ($questions as $index => $question) {
             // Check if there are exam responses for the current question
             $hasResponses = $question->examResponse()->exists();
 
-            if ($hasResponses) {
-                $choices = $question->choices;
-
-                $correctChoice = $choices->where('is_correct', true)->first();
-                $correctChoiceId = $correctChoice->id;
-
-                $responses = ExamResponse::where('question_id', $question->id)->get();
-
-                $totalResponses = $responses->count();
-                $correctResponses = $responses->where('choice_id', $correctChoiceId)->count();
-
-                // Calculate the percentage of correct responses
-                $percentageCorrect = ($totalResponses > 0) ? ($correctResponses / $totalResponses) * 100 : 0;
-
-                $totalStudents = User::where("Role", "Student")->count();
-
-                $percentileThreshold = 27; // Change this to the desired percentile
-
-                // Calculate the number of users required for each percentile
-                $upperPercentileCount = ceil(($percentileThreshold / 100) * $totalResponses);
-                $lowerPercentileCount = ceil(($percentileThreshold / 100) * $totalResponses); // Set the lower count to the same as the upper count
-                $middlePercentileCount = $totalResponses - 2 * $upperPercentileCount; // Remaining for the middle
-
-                // Retrieve upper threshold users based on the weighted average
-                $upperThresholdUsers = Result::join('users', 'results.user_id', '=', 'users.id')
-                    ->orderByDesc('results.measure_c_score')
-                    ->select('users.*', 'results.measure_c_score')
-                    ->take($upperPercentileCount)
-                    ->get();
-
-                // Retrieve middle threshold users based on the weighted average
-                $middleThresholdUsers = Result::join('users', 'results.user_id', '=', 'users.id')
-                    ->orderByDesc('results.measure_c_score')
-                    ->skip($upperPercentileCount)
-                    ->take($middlePercentileCount)
-                    ->select('users.*', 'results.measure_c_score')
-                    ->get();
-
-                // Retrieve lower threshold users based on the weighted average
-                $lowerThresholdUsers = Result::join('users', 'results.user_id', '=', 'users.id')
-                    ->orderBy('results.measure_c_score')  // Order in ascending order for lower threshold
-                    ->take($lowerPercentileCount)
-                    ->select('users.*', 'results.measure_c_score')
-                    ->get();
-
-                // Separate responses of the threshold users
-                $upperThresholdUserResponses = $responses->whereIn('user_id', $upperThresholdUsers->pluck('id'));
-                $middleThresholdUserResponses = $responses->whereIn('user_id', $middleThresholdUsers->pluck('id'));
-                $lowerThresholdUserResponses = $responses->whereIn('user_id', $lowerThresholdUsers->pluck('id'));
-
-                // Count correct responses for upper threshold users
-                $totalUpperCorrectResponses = $upperThresholdUserResponses->where('choice_id', $correctChoiceId)->count();
-
-                // Count correct responses for middle threshold users
-                $totalMiddleCorrectResponses = $middleThresholdUserResponses->where('choice_id', $correctChoiceId)->count();
-
-                // Count correct responses for lower threshold users
-                $totalLowerCorrectResponses = $lowerThresholdUserResponses->where('choice_id', $correctChoiceId)->count();
-
-            
-                // Calculate Discrimination Index for the upper, middle, and lower threshold users
-                // $totalUpperThresholdUserResponses = $upperThresholdUserResponses->count();
-                // $totalMiddleThresholdUserResponses = $middleThresholdUserResponses->count();
-                // $totalLowerThresholdUserResponses = $lowerThresholdUserResponses->count();
-                // $totalOtherUsersResponses = $totalResponses - $totalUpperThresholdUserResponses - $totalMiddleThresholdUserResponses - $totalLowerThresholdUserResponses;
-
-                // Calculate the discrimination index
-                $di = round(($correctResponses) / $totalResponses);
-
-                $N = round(($totalUpperCorrectResponses - $totalLowerCorrectResponses) / $totalResponses, 2);
-                $DI[$index] = $di;
-                $DS[$index] = $N;
-            }
+            if($question->examResponse()->count() > 1)
+            {
+                if ($hasResponses) {
+                    $choices = $question->choices;
+    
+                    $correctChoice = $choices->where('is_correct', true)->first();
+                    $correctChoiceId = $correctChoice->id;
+                    $responses = ExamResponse::where('question_id', $question->id)->get();
+                    $totalResponses = $responses->count();
+                    $correctResponses = $responses->where('choice_id', $correctChoiceId)->count();   
+                    $di = round($correctResponses / $totalResponses, 2);
+                    $DI[$index] = $di;
+                }
+            }            
         }
-
+       
         
-        return Excel::download(new ItemAnalysisReport($questions, $DI, $DS), 'Item-Analysis-Report.xlsx');
+        return Excel::download(new ItemAnalysisReport($questions, $DI), 'Item-Analysis-Report.xlsx');
     }
    public function ShowUnqualifiedApplicants()
    {
@@ -644,23 +586,27 @@ class ReportController extends Controller
     }
    
 
-    public function GenerateItemAnalysis(){
-        
-        Question::where('category', '!=', 'discard')
-        ->update(['category' => null]);
-
-         return redirect()->back()->with('success', 'Question revise successfully!');
-    }
+    
 
     public function StoreReviseQuestion(Request $request){
        // Question::
 
-     
+       $previousQuestionText = $request->input('question_text'); 
+       $existingQuestion = Question::find($request->question_id)
+           ->where('question_text', '!=', $previousQuestionText)
+           ->first();
+
+        $tempQuestionText = $existingQuestion->question_text;
+        $previousQuestionText = $request->input('question_text');
+        if($previousQuestionText ===  $tempQuestionText){
+            return redirect()->back()->with('error', 'The question text must be unique.');
+        }
+        
         $temp_question = Question::find($request->question_id);
         $temp_question->choices()->delete();
         $temp_question->delete();
         
-
+        
 
         $img = $request->img;
        
@@ -672,11 +618,15 @@ class ReportController extends Controller
             'correct_choice' => 'required|numeric',           
 
         ]);
-      
+        
+
+       
+       
             
         $question = new Question();
         $question->question_text = $request->question_text;  
         $question->category = "Revise";
+        $question->year =  date('Y'); 
         $question->save();
      
 
@@ -717,9 +667,8 @@ class ReportController extends Controller
     public function ShowItemAnalysisReport(){
 
         $DI = [];
-        $DS = [];
-        $questionCount = Question::all();
-        $questions = Question::where('category')->paginate(10);
+       
+        $questions = Question::where('category')->paginate(15);
 
         
         foreach ($questions as $index => $question) {
@@ -738,19 +687,15 @@ class ReportController extends Controller
                     $correctResponses = $responses->where('choice_id', $correctChoiceId)->count();   
                     $di = round($correctResponses / $totalResponses, 2);
                     $DI[$index] = $di;
-                 
                 }
-            }
-            
-
-          
+            }            
         }
 
        
 
 
         
-        return view('admin.reports.item-analysis-report', compact('questions', 'DI', 'DS'));
+        return view('admin.reports.item-analysis-report', compact('questions', 'DI'));
     }
    
     public function ShowInterviewResult(){

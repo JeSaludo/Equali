@@ -98,17 +98,21 @@
                             </div>
                         </div>
                         <div class="flex mx-4 justify-between  gap-2 ">
-                            <div class=" px-4 my-2  w-full">
+
+
+                            <div class="px-4 my-2 w-full">
                                 <input type="text" name="year_graduated"
                                     value="{{ $user->studentInfo->year_graduated }}"
-                                    class="digit-only h-[50px] w-full rounded placeholder:text-[#4E4E4E] placeholder:font-poppins placeholder:text-[16px] px-[20px] border-2 border-[#D7D8D0] "
-                                    placeholder="Year Graduated:" required autocomplete="off">
+                                    class="digit-only h-[50px] w-full rounded placeholder:text-[#4E4E4E] placeholder:font-poppins placeholder:text-[16px] px-[20px] border-2 border-[#D7D8D0]"
+                                    placeholder="Year Graduated:" required autocomplete="off" maxlength="4"
+                                    oninput="validateYear(this);">
+                                <div id="yearError" class="text-red-500"></div>
                             </div>
 
                             <div class=" px-4 my-2 w-full">
                                 <input type="text" name="gpa" value="{{ $user->studentInfo->gpa }}"
                                     class="digit-only h-[50px] w-full rounded placeholder:text-[#4E4E4E] placeholder:font-poppins placeholder:text-[16px] px-[20px] border-2 border-[#D7D8D0] "
-                                    placeholder="GPA:" required autocomplete="off">
+                                    placeholder="GPA:" required autocomplete="off" min="75" max="100">
                             </div>
                         </div>
 
@@ -332,19 +336,7 @@
                         </div>
                 </form>
 
-                <div class="relative my-2 mx-auto">
-                    @error('home_address')
-                        <h1 class="bg-gray-200 p-3 text-[12px] rounded-md text-red-500 font-bold font-poppins">
-                            {{ $message }}
-                        </h1>
-                    @enderror
 
-                    @if (session('status'))
-                        <div class="bg-gray-200 p-3 text-[12px] rounded-md text-green-500 font-bold font-poppins">
-                            {{ session('status') }}
-                        </div>
-                    @endif
-                </div>
 
         </div>
 
@@ -361,20 +353,18 @@
                 })
             });
 
+
+
             const inputElements = document.querySelectorAll('.score');
             inputElements.forEach((inputElement) => {
                 inputElement.addEventListener("input", function(e) {
                     // Remove non-numeric characters from the input
-                    e.target.value = e.target.value.replace(/[^0-5]/g, '').substring(0, 1);
+                    e.target.value = e.target.value.replace(/[^1-5]/g, '').substring(0, 1);;
                     // Allows decimals as well
                     calculateAverage();
                 });
             });
 
-            // Calculate average onload
-            window.onload = function() {
-                calculateAverage();
-            };
 
             function calculateAverage() {
                 // Get all input values, convert to numbers, and filter out any NaN values
@@ -388,6 +378,50 @@
                 // Update the average score display
                 const averageScoreValue = document.getElementById("averageScoreValue");
                 averageScoreValue.textContent = average.toFixed(2); // Display with 2 decimal places
+            }
+        </script>
+
+        <script>
+            function validateGPA(input) {
+                var gpaError = document.getElementById('gpaError');
+                var gpaValue = parseFloat(input.value);
+
+                if (isNaN(gpaValue) || gpaValue < 75 || gpaValue > 100) {
+                    input.setCustomValidity(''); // Clear the browser's built-in error message
+
+                    if (isNaN(gpaValue)) {
+                        gpaError.textContent = 'Please enter a valid number.';
+                    } else if (gpaValue < 75) {
+                        gpaError.textContent = 'GPA cannot be lower than 75.';
+                    } else {
+                        gpaError.textContent = 'GPA cannot be higher than 100.';
+                    }
+                } else {
+                    input.setCustomValidity('');
+                    gpaError.textContent = '';
+                }
+            }
+        </script>
+
+        <script>
+            function validateYear(input) {
+                var yearError = document.getElementById('yearError');
+                var yearValue = parseInt(input.value);
+
+                if (isNaN(yearValue) || input.value.length !== 4 || yearValue < 1900 || yearValue > 2099) {
+                    input.setCustomValidity('');
+
+                    if (isNaN(yearValue) || input.value.length !== 4) {
+                        yearError.textContent = 'Please enter a valid four-digit year.';
+                    } else if (yearValue < 1900) {
+                        yearError.textContent = 'Year cannot be earlier than 1900.';
+                    } else {
+                        yearError.textContent = 'Year cannot be later than 2099.';
+                    }
+                } else {
+                    input.setCustomValidity('');
+                    yearError.textContent = '';
+                }
             }
         </script>
 

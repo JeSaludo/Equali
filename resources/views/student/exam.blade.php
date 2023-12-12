@@ -18,7 +18,7 @@
 
     <body>
         <div class="min-h-screen w-[1440px] mx-auto ">
-
+            @include('layout.danger-alert')
             <div class="flex justify-between">
                 <div class="w-full">
                     <nav class="h-[60px] flex justify-between mx-[40px]">
@@ -63,7 +63,7 @@
                                             <p class="text-[#626B7F]">
                                             <div>
 
-                                                <h2>{{ $index + 1 }}. {{ $examQuestion->question->question_text }}
+                                                <h2>{{ $examQuestion->question->question_text }}
                                                 </h2>
                                                 @if ($examQuestion->question->image_path != null)
                                                     <img class="w-3/12 p-4"
@@ -189,9 +189,9 @@
             // Set your exam duration in seconds
             let timer;
 
-            // Check if the timer is stored in sessionStorage
-            if (sessionStorage.getItem("timer")) {
-                timer = parseInt(sessionStorage.getItem("timer"), 10);
+            // Check if the timer is stored in localStorage
+            if (localStorage.getItem("timer")) {
+                timer = parseInt(localStorage.getItem("timer"), 10);
             } else {
                 timer = {{ $option->qualifying_timer }} * 60; // Set the default timer value
             }
@@ -203,7 +203,8 @@
 
             // Save the timer when the page is about to unload (refresh/close)
             window.onbeforeunload = function() {
-                sessionStorage.setItem("timer", timer.toString());
+                // Save the timer in localStorage instead of sessionStorage
+                localStorage.setItem("timer", timer.toString());
             };
 
             function startTimer() {
@@ -242,7 +243,7 @@
                             }
                         }
 
-                        sessionStorage.clear();
+                        localStorage.clear();
                         document.getElementById("form").submit();
                     } else {
                         timer--;

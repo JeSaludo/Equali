@@ -76,7 +76,7 @@
                                 <tr>
                                     <td class="px-6 py-2">Item </td>
                                     <td class="px-6 py-2 text-center">Difficulty Index</td>
-                                    <td class="px-6 py-2 text-center">Difficulty</td>
+                                    <td class="px-6 py-2 text-center">Difficult Level</td>
                                     <td class="px-6 py-2 text-center">Status</td>
                                     <td class="px-6 py-2">Action </td>
 

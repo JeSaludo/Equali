@@ -9,6 +9,7 @@ use App\Http\Controllers\InterviewController;
 use App\Http\Controllers\QuestionController;
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\ItemAnalysisController;
 use Illuminate\Auth\Events\Login;
 use Illuminate\Support\Facades\Route;
 
@@ -110,10 +111,10 @@ Route::middleware(['admin'])->group(function () {
     
     Route::get('/dashboard/report/item-analysis-chart', [ReportController::class, 'ShowItemAnalysisChart'])->name('admin.dashboard.item-analysis-chart');
     Route::get('/dashboard/report/item-analysis', [ReportController::class , 'ShowItemAnalysisReport'])->name('admin.dashboard.item-analysis-report');
-    Route::get('/dashboard/item-analysis', [ReportController::class, 'ShowItemAnalysis'])->name('admin.dashboard.item-analysis');
-    Route::get('/dashboard/item-analysis/retain', [ReportController::class, 'ShowItemAnalysisRetain'])->name('admin.dashboard.item-analysis.retain');
-    Route::get('/dashboard/item-analysis/revise', [ReportController::class, 'ShowItemAnalysisRevise'])->name('admin.dashboard.item-analysis.revise');
-    Route::get('/dashboard/item-analysis/discard', [ReportController::class, 'ShowItemAnalysisDiscard'])->name('admin.dashboard.item-analysis.discard');
+    Route::get('/dashboard/item-analysis', [ItemAnalysisController::class, 'ShowItemAnalysisAll'])->name('admin.dashboard.item-analysis');
+    Route::get('/dashboard/item-analysis/retain', [ItemAnalysisController::class, 'ShowItemAnalysisRetain'])->name('admin.dashboard.item-analysis.retain');
+    Route::get('/dashboard/item-analysis/revise', [ItemAnalysisController::class, 'ShowItemAnalysisRevise'])->name('admin.dashboard.item-analysis.revise');
+    Route::get('/dashboard/item-analysis/discard', [ItemAnalysisController::class, 'ShowItemAnalysisDiscard'])->name('admin.dashboard.item-analysis.discard');
    
     Route::get('/dashboard/view-schedule-interview', [AdminController::class, 'ShowScheduleInterview'])->name('admin.dashboard.show-schedule-interview');
     Route::get('/dashboard/view-scheduled-interview', [AdminController::class, 'ShowScheduledInterview'])->name('admin.dashboard.show-scheduled-interview');
@@ -154,9 +155,10 @@ Route::middleware(['admin'])->group(function () {
     Route::get('/dashboard/item-analysis/{id}/revise',[ReportController::class, 'ReviseQuestion'])->name('admin.item-analysis.revise');
     Route::get('/dashboard/item-analysis/{id}/discard',[ReportController::class, 'DiscardQuestion'])->name('admin.item-analysis.discard');
 
-    Route::get('/dashboard/item-analysis/refresh', [ReportController::class, 'GenerateItemAnalysis'])->name('admin.item-analysis-refresh');
+    Route::get('/dashboard/item-analysis/analyze', [ItemAnalysisController::class, 'GenerateItemAnalysis'])->name('admin.item-analysis-analyze');
     Route::post('/dashboard/item-analysis/store-revise-question', [ReportController::class, 'StoreReviseQuestion'])->name('admin.item-analysis.store-revise');
 
+   
 
    
     Route::get('dashboard/report/list-of-qualifying-exam', [ReportController::class, 'ShowQualifyingExam'])->name('admin.dashboard.report.qualifying-exam');

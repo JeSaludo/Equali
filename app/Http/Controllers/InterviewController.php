@@ -127,7 +127,7 @@ class InterviewController extends Controller
        
 
        
-       return redirect()->route('admin.dashboard.pending-interview');
+       return redirect()->route('admin.dashboard.pending-interview')->with("success", "Interview Sucess");
     }
 
     function UpdateInterview(Request $request, $id){
@@ -197,7 +197,7 @@ class InterviewController extends Controller
        
         $result->save();
 
-        return redirect()->route('admin.dashboard.show-review');
+        return redirect()->route('admin.dashboard.show-review')->with('success', "Successfully updated the interview");
     }
    
 }
