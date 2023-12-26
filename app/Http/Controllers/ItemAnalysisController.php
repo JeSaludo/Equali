@@ -9,62 +9,58 @@ use App\Models\Question;
 use App\Models\Choice;
 use App\Models\ExamQuestion;
 use App\Models\ExamResponse;
+use App\Models\ItemAnalysisReport;
 use App\Models\User;
 
 class ItemAnalysisController extends Controller
 {
-    public function GenerateItemAnalysis(){
-        
+    public function GenerateItemAnalysis() {
         $DI = [];
-        $questions = Question::all(); // Use paginate directly, no need for initial all()
+        $questions = Question::all();
     
         foreach ($questions as $index => $question) {
             $hasResponses = $question->examResponse()->exists();
     
-            if ($question->examResponse()->count() > 1 && $hasResponses) {
+            if ($hasResponses && $question->examResponse()->count() > 1) {
                 $choices = $question->choices;
                 $correctChoice = $choices->where('is_correct', true)->first();
                 $correctChoiceId = $correctChoice->id;
                 $responses = ExamResponse::where('question_id', $question->id)->get();
                 $totalResponses = $responses->count();
-                $correctResponses = $responses->where('choice_id', $correctChoiceId)->count();   
+                $correctResponses = $responses->where('choice_id', $correctChoiceId)->count();
                 $di = round($correctResponses / $totalResponses, 2);
                 $DI[$index] = $di;
     
-                //$question->update(['category' => null]);
-                // if($question->category != "Discard"){
-                    if ($di < 0.15){
-                    
-                        $question->category = "Discard";
-                        $question->save();
-                        $question->update(['category' => 'Discard']);
-                       
-                
-                        ExamQuestion::where('question_id', $question->id)->delete();
-                    }
-                    elseif ($di >= 0.15 && $di < 0.3){
-                        $question->update(['category' => 'Revise']);
-                    }
-                    elseif ($di >= 0.3 && $di < 0.71){
-                        $question->update(['category' => 'Retain']);
-                    }                                                                 
-                    elseif ($di >= 0.71 && $di < 0.86){
-                        $question->update(['category' => 'Revise']);
-                    }                               
-                    elseif ($di >= 0.86){
-                     
-                        $question->category = "Discard";
-                        $question->save();
-                        $question->update(['category' => 'Discard']);
-                        ExamQuestion::where('question_id', $question->id)->delete();
-                    }
-                // }
-                
-            }            
+                // Store the item analysis report in the database
+                ItemAnalysisReport::updateOrCreate([
+                    'question_id' => $question->id,
+                    'di' => $di,
+                    'year' => $question->year,
+                ]);
+    
+                if ($di < 0.15) {
+                    $question->category = "Discard";
+                    $question->save();
+                    $question->update(['category' => 'Discard']);
+                    ExamQuestion::where('question_id', $question->id)->delete();
+                } elseif ($di >= 0.15 && $di < 0.3) {
+                    $question->update(['category' => 'Revise']);
+                } elseif ($di >= 0.3 && $di < 0.71) {
+                    $question->update(['category' => 'Retain']);
+                } elseif ($di >= 0.71 && $di < 0.86) {
+                    $question->update(['category' => 'Revise']);
+                } elseif ($di >= 0.86) {
+                    $question->category = "Discard";
+                    $question->save();
+                    $question->update(['category' => 'Discard']);
+                    ExamQuestion::where('question_id', $question->id)->delete();
+                }
+            }
         }
     
         return redirect()->back()->with('success', 'Analyze items successfully!');
     }
+    
 
     public function ShowItemAnalysisAll(Request $request){
         $questionCount = Question::all();
@@ -85,7 +81,7 @@ class ItemAnalysisController extends Controller
             // Check if there are exam responses for the current question
             $hasResponses = $question->examResponse()->exists();
             
-    
+            
             if($question->examResponse()->count() > 1)
             {
                 if ($hasResponses) {

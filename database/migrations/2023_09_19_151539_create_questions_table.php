@@ -15,6 +15,8 @@ return new class extends Migration
             $table->id();
             $table->string("question_text");
             $table->string("category")->nullable();
+            $table->integer('year')->nullable();
+            $table->boolean('eligible_for_exam')->default(false);
             $table->timestamps();
         });
     }

@@ -38,11 +38,32 @@
 
                 <div class="flex  mx-4 mt-1 justify-between items-center">
                     <h1 class="text-[#26386A] mx-4 font-bold text-xl  py-2">Item Analysis</h1>
-                    <a href="{{ route('export.item-analysis-result') }}"
-                        class="bg-[#365EFF] hover:bg-[#384b94] font-poppins text-white py-1 px-4 rounded-lg">
-                        Export Report
-                    </a>
+                    <form action="{{ route('export.item-analysis-result') }}" method="post">
+                        @csrf
+                        <input name="selectedYear" type="hidden" value="{{ $selectedYear }}">
+
+
+                        <button type="submit"
+                            class="bg-[#365EFF] hover:bg-[#384b94] font-poppins text-white py-1 px-4 rounded-lg">
+                            Export Report
+                        </button>
+                    </form>
+
                 </div>
+                <div class="mx-5 w-[140px]">
+                    <form action="{{ route('admin.dashboard.item-analysis-report') }}" method="GET" id="yearForm">
+                        <select id="year" name="selected_year"
+                            class="font-poppins bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+                            onchange="document.getElementById('yearForm').submit()">
+                            <option value="" selected>Select Year</option>
+                            @foreach ($uniqueYears as $year)
+                                <option value="{{ $year }}" {{ $selectedYear == $year ? 'selected' : '' }}>
+                                    {{ $year }}</option>
+                            @endforeach
+                        </select>
+                    </form>
+                </div>
+
                 <div class="flex mx-4 mb-4" id="navLinks">
 
                     <a href="{{ route('admin.dashboard.item-analysis-chart') }}"
@@ -89,103 +110,89 @@
                                     $dataFound = false;
                                 @endphp
 
-                                @if ($questions->count() == 0)
+                                @if ($items->count() == 0)
                                     <tr>
                                         <td class="px-6 py-3">
                                             <p>No data found in the database</p>
                                         </td>
                                     </tr>
                                 @else
-                                    @foreach ($questions as $index => $question)
-                                        @if (isset($DI[$index]))
-                                            @php
-                                                $dataFound = true;
-                                            @endphp
+                                    @foreach ($items as $index => $item)
+                                        <tr
+                                            class="text-center mx-auto {{ $index % 2 == 0 ? 'bg-[#F6F8FF]' : 'bg-white' }} border-b border-gray-100">
+                                            <td class="px-6 py-3">
+                                                {{ $item->id }}
 
-                                            <tr
-                                                class="text-center mx-auto {{ $index % 2 == 0 ? 'bg-[#F6F8FF]' : 'bg-white' }} border-b border-gray-100">
-                                                <td class="px-6 py-3">
-                                                    {{ $question->id }}
+                                            </td>
 
-                                                </td>
+                                            <td class="px-6 py-3">
 
-                                                <td class="px-6 py-3">
-
-                                                    {{ $DI[$index] }}
+                                                {{ $item->di }}
 
 
 
-                                                </td>
-                                                <td class="px-6 py-3 whitespace-nowrap">
+                                            </td>
+                                            <td class="px-6 py-3 whitespace-nowrap">
 
 
-                                                    @if ($DI[$index] < 0.15)
-                                                        Very Difficult
-                                                    @elseif ($DI[$index] > 0.14 && $DI[$index] < 0.3)
-                                                        Difficult
-                                                    @elseif ($DI[$index] > 0.29 && $DI[$index] < 0.71)
-                                                        Moderate
-                                                    @elseif ($DI[$index] > 0.7 && $DI[$index] < 0.86)
-                                                        Easy
-                                                    @elseif ($DI[$index] > 0.85)
-                                                        Very Easy
-                                                    @endif
-
-
-
-                                                </td>
-
-
-                                                <td class="px-6 py-3 whitespace-nowrap ">
-
-
-                                                    @if ($DI[$index] < 0.15)
-                                                        To be discarded
-                                                    @elseif ($DI[$index] > 0.14 && $DI[$index] < 0.3)
-                                                        To be revised
-                                                    @elseif ($DI[$index] > 0.29 && $DI[$index] < 0.71)
-                                                        Very Good Items
-                                                    @elseif ($DI[$index] > 0.7 && $DI[$index] < 0.86)
-                                                        To be revised
-                                                    @elseif ($DI[$index] > 0.85)
-                                                        To be discarded
-                                                    @endif
-
-
-                                                </td>
+                                                @if ($item->di < 0.15)
+                                                    Very Difficult
+                                                @elseif ($item->di > 0.14 && $item->di < 0.3)
+                                                    Difficult
+                                                @elseif ($item->di > 0.29 && $item->di < 0.71)
+                                                    Moderate
+                                                @elseif ($item->di > 0.7 && $item->di < 0.86)
+                                                    Easy
+                                                @elseif ($item->di > 0.85)
+                                                    Very Easy
+                                                @endif
 
 
 
-                                                <td class="px-6 py-3 text-center">
+                                            </td>
+
+
+                                            <td class="px-6 py-3 whitespace-nowrap ">
+
+
+                                                @if ($item->di < 0.15)
+                                                    To be discarded
+                                                @elseif ($item->di > 0.14 && $item->di < 0.3)
+                                                    To be revised
+                                                @elseif ($item->di > 0.29 && $item->di < 0.71)
+                                                    Very Good Items
+                                                @elseif ($item->di > 0.7 && $item->di < 0.86)
+                                                    To be revised
+                                                @elseif ($item->di > 0.85)
+                                                    To be discarded
+                                                @endif
+
+
+                                            </td>
 
 
 
-                                                    @if ($DI[$index] < 0.15)
-                                                        <p class=" py-1 px-2">Discard</p>
-                                                    @elseif ($DI[$index] > 0.14 && $DI[$index] < 0.3)
-                                                        <p class=" py-1 px-2 ">Revise</p>
-                                                    @elseif ($DI[$index] > 0.29 && $DI[$index] < 0.71)
-                                                        <p class=" py-1 px-2 ">Retain</p>
-                                                    @elseif ($DI[$index] > 0.7 && $DI[$index] < 0.86)
-                                                        <p class=" py-1 px-2 ">Revise</p>
-                                                    @elseif ($DI[$index] > 0.85)
-                                                        <p class=" py-1 px-2 ">Discard</p>
-                                                    @endif
-                                                </td>
+                                            <td class="px-6 py-3 text-center">
 
-                                            </tr>
-                                        @endif
-                                    @endforeach
 
-                                    @if (!$dataFound)
-                                        <tr class="">
-                                            <td></td>
-                                            <td class="py-2">
-                                                <p class="">No valid data found </p>
+
+                                                @if ($item->di < 0.15)
+                                                    <p class=" py-1 px-2">Discard</p>
+                                                @elseif ($item->di > 0.14 && $item->di < 0.3)
+                                                    <p class=" py-1 px-2 ">Revise</p>
+                                                @elseif ($item->di > 0.29 && $item->di < 0.71)
+                                                    <p class=" py-1 px-2 ">Retain</p>
+                                                @elseif ($item->di > 0.7 && $item->di < 0.86)
+                                                    <p class=" py-1 px-2 ">Revise</p>
+                                                @elseif ($item->di > 0.85)
+                                                    <p class=" py-1 px-2 ">Discard</p>
+                                                @endif
                                             </td>
 
                                         </tr>
-                                    @endif
+                                    @endforeach
+
+
                                 @endif
 
                             </tbody>
@@ -193,28 +200,6 @@
                         <nav
                             class="bg-white border-t rounded-b-lg text-[14px] font-poppins border-[#D9DBE3] w-full py-2 flex justify-start pl-2 items-center">
 
-                            <a href="{{ $questions->previousPageUrl() }}"
-                                class="flex items-center justify-center px-3 h-8 ms-0 leading-tight text-gray-500 bg-white border border-e-0 border-gray-300 rounded-s-lg hover:bg-gray-100 hover:text-[#26386A] {{ $questions->currentPage() > 1 ? '' : 'opacity-50 cursor-not-allowed' }}">
-                                <span class="">Previous</span>
-
-                            </a>
-
-
-
-
-                            <div class="flex">
-                                @for ($i = 1; $i <= $questions->lastPage(); $i++)
-                                    <a href="{{ $questions->url($i) }}"
-                                        class="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-[#26386A]  {{ $i == $questions->currentPage() ? 'bg-slate-100' : '' }}">
-                                        {{ $i }}
-                                    </a>
-                                @endfor
-                            </div>
-                            <a href="{{ $questions->nextPageUrl() }}"
-                                class="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 rounded-e-lg hover:bg-gray-100 hover:text-[#26386A] {{ $questions->hasMorePages() ? '' : 'opacity-50 cursor-not-allowed' }}">
-                                <span class="">Next</span>
-
-                            </a>
 
 
 

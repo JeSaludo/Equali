@@ -44,10 +44,6 @@
                                             <h1 class="text-[#2B6BE6] font-poppins font-bold text-lg">Qualifying Exam
                                             </h1>
                                         </div>
-
-
-
-
                                     </div>
 
 
@@ -172,7 +168,7 @@
         </div>
 
         <script src="{{ asset('js/exam.js') }}"></script>
-        <script>
+        {{-- <script>
             document.getElementById("toggleTimer").addEventListener("click", function() {
                 const timerContainer = document.getElementById("timerContainer");
                 const buttonText = document.getElementById("toggleTimer");
@@ -253,10 +249,121 @@
 
             // Start the timer when the page is loaded
             startTimer();
+        </script> --}}
+
+
+        <script>
+            // Declare countdown in the global scope
+            let countdown;
+
+            // Set your exam duration in seconds
+            let timer;
+
+            // Check if the timer is stored in localStorage
+            if (localStorage.getItem("timer")) {
+                timer = parseInt(localStorage.getItem("timer"), 10);
+            } else {
+                timer = {{ $option->qualifying_timer }} * 60; // Set the default timer value
+            }
+
+            // Restore the timer when the page is loaded
+            window.onload = function() {
+                startTimer();
+            };
+
+            // Save the timer when the page is about to unload (refresh/close)
+            window.onbeforeunload = function() {
+                // Save the timer in localStorage instead of sessionStorage
+                localStorage.setItem("timer", timer.toString());
+            };
+
+            document.getElementById("form").addEventListener("submit", function() {
+                // Clear the timer value from localStorage when the form is submitted
+                localStorage.removeItem("timer");
+
+                // ... (any additional logic you may want to perform when the form is submitted)
+
+                // Reset the timer
+                resetTimer();
+            });
+
+            function startTimer() {
+
+
+                function updateTimer() {
+                    let hours = Math.floor(timer / 3600);
+                    let minutes = Math.floor((timer % 3600) / 60);
+                    let seconds = timer % 60;
+
+                    // Add leading zeros if needed
+                    hours = hours < 10 ? "0" + hours : hours;
+                    minutes = minutes < 10 ? "0" + minutes : minutes;
+                    seconds = seconds < 10 ? "0" + seconds : seconds;
+
+                    // Update the UI
+                    document.getElementById("timer").innerText = `Time: ${hours}:${minutes}:${seconds}`;
+
+                    // Check if the timer has reached zero
+                    if (timer <= 0) {
+                        clearInterval(countdown);
+
+                        const numberOfQuestions = {{ $exam->examQuestion->count() }};
+
+                        for (let i = 1; i <= numberOfQuestions; i++) {
+                            const noAnswerRadio = document.querySelector(`input[name="answer[${i}]"][id="noAnswer${i}"]`);
+                            const otherRadioChecked = document.querySelector(
+                                `input[name="answer[${i}]"]:checked:not([id="noAnswer${i}"])`);
+
+                            if (noAnswerRadio && !otherRadioChecked) {
+                                noAnswerRadio.checked = true;
+                                console.log(`Selected "No Answer" for question ${i}`);
+                            } else {
+                                console.log(
+                                    `Could not find "No Answer" radio for question ${i} or another option already selected`);
+                            }
+                        }
+
+                        localStorage.clear();
+                        document.getElementById("form").submit();
+
+                        // Reset the timer after submitting the form
+                        resetTimer();
+
+                    } else {
+                        timer--;
+                    }
+                }
+
+                countdown = setInterval(updateTimer, 1000);
+            }
+
+            function resetTimer() {
+                // Clear the existing timer interval if it's running
+                clearInterval(countdown);
+
+                // Set your exam duration in seconds
+                timer = {{ $option->qualifying_timer }} * 60; // Set the default timer value
+
+                // Start the timer
+                startTimer();
+            }
+
+            document.getElementById("toggleTimer").addEventListener("click", function() {
+                const timerContainer = document.getElementById("timerContainer");
+                const buttonText = document.getElementById("toggleTimer");
+
+                timerContainer.classList.toggle("hidden");
+
+                if (timerContainer.classList.contains("hidden")) {
+                    buttonText.innerText = "Show";
+                } else {
+                    buttonText.innerText = "Hide";
+                }
+            });
+
+            // Start the timer when the page is loaded
+            startTimer();
         </script>
-
-
-
 
 
 

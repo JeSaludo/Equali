@@ -8,6 +8,7 @@ use App\Mail\RejectMail;
 use App\Models\AdmissionExam;
 use App\Models\QualifiedStudent;
 use App\Models\Result;
+use App\Models\Option;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Database\QueryException;
 use App\Models\User;
@@ -56,6 +57,7 @@ class ApplicantController extends Controller
                 'firstName' => 'required',   
                 'lastName' => 'required',          
                 'email' => 'required|email:rfc,dns|unique:users,email',  
+                'rawScore' => 'required'
                 // 'contactNumber' => 'required|min:11|unique:users,contact_number|numeric',
                
             ]);
@@ -66,58 +68,51 @@ class ApplicantController extends Controller
             $user->last_name = $request->lastName;
             $user->email = $request->email;
             $user->contact_number = $request->contactNumber;         
-            $user->status = "Pending";
+            $user->status = "Pending Schedule";
             $user->save();
 
             $tempPassword = $user->last_name . $user->first_name . "12345";
             $tempPassword = preg_replace('/\s+/u', '', $tempPassword);
             $tempPassword = strtolower($tempPassword);
             $user->password = $tempPassword;
-            
-
-
             $user->save();
 
             $admissionExam = new AdmissionExam();
             $admissionExam->user_id = $user->id;
-            $admissionExam->score = $request->score;
+            $admissionExam->raw_score = $request->rawScore;
             
-            $passingPercentage =40;
-
-            $passingScore = ($passingPercentage / 100) * $request->totalScore;
-    
-            if($request->score >= $passingScore){
+            
+            if($request->percentage > 74){
                 $admissionExam->status = "Passed";
             }
             else{
                 $admissionExam->status = "Failed";
             }
             
-
-            
-            $admissionExam->total_score = $request->totalScore;
+            $admissionExam->percentage = $request->percentage;
             $admissionExam->save();
             
             $score = $request->score;
 
             $result = new Result();
             $result->user_id = $user->id;            
-            $minScore = 0;    
-            $maxScore = $user->admissionExam->total_score; 
-            $minValue = 1;    
-            $maxValue = 5;  
+           
 
-            $score = min(max($score, $minScore), $maxScore);        
-            
-            $range = $maxValue - $minValue;
-            $scoreFraction = ($score - $minScore) / ($maxScore - $minScore);
-            $scaledValue = $minValue + $range * $scoreFraction;
-            $scaledValue = intval($scaledValue);
-
-            $result->measure_b_score = $scaledValue;
+            $result->measure_b_score = $request->measure_b_score;
            
     
             $result->save();
+
+            $approveUser = new QualifiedStudent();
+            $approveUser->user_id = $user->id;
+            $approveUser->save();
+            $tempPassword = $user->last_name . $user->first_name . "12345";
+            $tempPassword = preg_replace('/\s+/u', '', $tempPassword);
+            $tempPassword = strtolower($tempPassword);
+            Mail::to($user->email)->send(new AcceptanceMail($user->email, $user->first_name,  $user->last_name, $tempPassword));           
+            
+            //dispatch(new SendAcceptanceEmail($user->email, $user->first_name, $user->last_name, $tempPassword));
+           
     
             DB::commit();
           
@@ -128,7 +123,7 @@ class ApplicantController extends Controller
             return redirect()->back()->with('error', 'Failed to add the applicant. Please try again .' . $e->getMessage());
         }
        
-      return redirect()->back()->with('success', 'Question added successfully!');       
+      return redirect()->back()->with('success', 'Applicant added successfully!');       
        
     }
 
@@ -154,11 +149,12 @@ class ApplicantController extends Controller
         $user->contact_number = $request->contactNumber;           
         
 
-        $user->admissionExam->score = $request->score;        
-        $passingPercentage =40;
-
-        $passingScore = ($passingPercentage / 100) * $user->admissionExam->total_score;
-        if($request->score >= $passingScore){
+        $user->admissionExam->raw_score = $request->rawScore;        
+    
+        $user->admissionExam->percentage = $request->percentage;        
+    
+        
+        if($request->percentage >= 74){
             $user->admissionExam->status = "Passed";
         }
         else{
@@ -167,37 +163,19 @@ class ApplicantController extends Controller
         $user->admissionExam->save();
         $user->save();
 
-        $result = new Result();
-        $result->user_id = $user->id;          
-
-        $score= $user->admissionExam->score;
-
-        $minScore = 0;    // Minimum score
-        $maxScore = $user->admissionExam->total_score;  // Maximum score
-        $minValue = 1;    // Minimum value
-        $maxValue = 5;  
-
-        $score = min(max($score, $minScore), $maxScore);        
+        $result = Result::where('user_id', $user->id)->first();
+       
         
-        $range = $maxValue - $minValue;
-        $scoreFraction = ($score - $minScore) / ($maxScore - $minScore);
-        $scaledValue = $minValue + $range * $scoreFraction;
-        $scaledValue = intval($scaledValue);
-        $result->measure_b_score = $scaledValue;
-      
+        $result->measure_b_score = $request->measure_b_score;    
 
 
        
         $result->save();
        
-        return redirect()->route('admin.dashboard.show-applicant');       
+        return redirect()->route('admin.dashboard.admission')->with('success', 'User has been updated successfully');       
     }
     
     function ApproveApplicant($id){
-
-       
-
-
         $user = User::where('role', 'Student')->findOrFail($id);
         $user->status = "Pending Schedule";
         $user->save();
@@ -337,55 +315,129 @@ class ApplicantController extends Controller
 
     
 
+    // function Schedule(Request $request){
+
+        
+
+    //     $option = Option::first();
+
+       
+    //     $validate = $request->validate([
+    //         'date' => 'required',
+    //         'selectedUsers' => 'required|array|min:1',
+    //         'start_time' => 'required',
+    //         'location' => 'required',
+        
+    //     ]);
+        
+    //     $selectedUserIds = $request->input('selectedUsers');
+       
+    //     foreach ($selectedUserIds as $userId) {
+    //        $user = QualifiedStudent::where('user_id', $userId)->with('user')->first();
+
+    //        $user->exam_schedule_date = $request->date;
+    //        $user->start_time = $request->start_time;
+    //        $user->location = $request->location;
+           
+    //        $user->save();
+
+    //        $temp_user = User::find($userId);
+    //        $temp_user->status = "Pending Interview";
+    //        $temp_user->save();
+    //        dispatch(new SendScheduleEmail($user->user->email, $user->exam_schedule_date, $user->start_time, $user->first_name, $user->last_name, $user->location));
+    //        //Mail::to($user->user->email)->send(new ScheduleMail($user->exam_schedule_date, $user->start_time, $temp_user->first_name, $temp_user->last_name, $user->location));
+    //        //
+          
+    //     }
+          
+        
+    //     //     //dispatch(new SendProctorMail($proctor->email, $proctor->last_name, $proctor->first_name, $user->last_name, $user->first_name, $user->exam_schedule_date, $user->start_time));
+        
+    //     //change this to proper mail tomorrow
+    //     $proctors = User::where('role', 'Proctor')->get();
+    //     foreach ($proctors as $proctor) {
+    //         Mail::to($proctor->email)->send(new NotifyProctor());
+    //     }
+        
+
+    
+         
+    //     return redirect()->route('admin.dashboard.show-schedule-interview');
+       
+        
+    // }
+
+    //Schedule
+ 
     function Schedule(Request $request){
+
+        $option = Option::first();
+    
+        // Validate the request
         $validate = $request->validate([
             'date' => 'required',
             'selectedUsers' => 'required|array|min:1',
             'start_time' => 'required',
             'location' => 'required',
-        
         ]);
-        
+    
+        // Get the selected user IDs
         $selectedUserIds = $request->input('selectedUsers');
-       
+    
+        // Loop through each selected user
         foreach ($selectedUserIds as $userId) {
-           $user = QualifiedStudent::where('user_id', $userId)->with('user')->first();
+            $user = QualifiedStudent::where('user_id', $userId)->with('user')->first();
+    
+            // Check if scheduling limit for the date has been reached
+            $scheduleCountForDate = QualifiedStudent::where('exam_schedule_date', $request->date)->count();
+            if ($scheduleCountForDate > $option->slot_per_day )  {
+                // Limit reached, handle accordingly (e.g., show an error message)
+                return redirect()->back()->withErrors(['date' => 'Scheduling limit for this date has been reached.']);
+            }
+            else{
+            // Update user's schedule
+            $user->exam_schedule_date = $request->date;
+            $user->start_time = $request->start_time;
+            $user->location = $request->location;
+            $user->save();
 
-           $user->exam_schedule_date = $request->date;
-           $user->start_time = $request->start_time;
-           $user->location = $request->location;
-           
-           $user->save();
+            // Update user status
+            $temp_user = User::find($userId);
+            $temp_user->status = "Pending Interview";
+            $temp_user->save();
 
-           $temp_user = User::find($userId);
-           $temp_user->status = "Pending Interview";
-           $temp_user->save();
-           dispatch(new SendScheduleEmail($user->user->email, $user->exam_schedule_date, $user->start_time, $user->first_name, $user->last_name, $user->location));
-           //Mail::to($user->user->email)->send(new ScheduleMail($user->exam_schedule_date, $user->start_time, $temp_user->first_name, $temp_user->last_name, $user->location));
-           //
-          
-        }
-          
-        
-        //     //dispatch(new SendProctorMail($proctor->email, $proctor->last_name, $proctor->first_name, $user->last_name, $user->first_name, $user->exam_schedule_date, $user->start_time));
-        
-        //change this to proper mail tomorrow
+            // Dispatch email notification
+            dispatch(new SendScheduleEmail($user->user->email, $user->exam_schedule_date, $user->start_time, $user->first_name, $user->last_name, $user->location));
+
+            }
+    
+           }
+    
+        // Notify proctors
         $proctors = User::where('role', 'Proctor')->get();
         foreach ($proctors as $proctor) {
             Mail::to($proctor->email)->send(new NotifyProctor());
         }
-        
-
     
-         
-        return redirect()->route('admin.dashboard.show-schedule-interview');
-       
-        
+        return redirect()->route('admin.dashboard.show-schedule-interview')->with("success",'Schedule added successfuly');
     }
+    
 
-    //Schedule
- 
 
+    function ReSchedule($id){
+      
+        $user = User::find($id);
+        $user->status = "Pending Schedule";
+        $user->save();
+        $temp_user = QualifiedStudent::where('user_id', $user->id)->with('user')->first();
+        $temp_user->exam_schedule_date = null;
+        $temp_user->start_time = null;
+        $temp_user->location = null;
+        $temp_user->save();
+       
+        return redirect()->route('admin.dashboard.show-schedule-interview')->with("success",'Reschedule added successfuly');
+   
+    }
 
     function ShowArchiveApplicant(Request $request){
 

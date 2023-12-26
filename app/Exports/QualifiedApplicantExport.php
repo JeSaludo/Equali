@@ -16,7 +16,7 @@ class QualifiedApplicantExport implements FromView
         $query->where('status', 'Qualified');
     })
     ->whereNotNull('weighted_average')
-    ->orderByDesc('weighted_average')->get();
+   ->get();
         return view('exports.ranking-report', ['results' => $results]);
     }
 }

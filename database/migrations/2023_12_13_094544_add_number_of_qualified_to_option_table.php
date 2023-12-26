@@ -11,10 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('questions', function (Blueprint $table) {
-            //
-            $table->integer('year')->nullable();
-            $table->boolean('eligible_for_exam')->default(false);
+        Schema::table('options', function (Blueprint $table) {
+            $table->bigInteger('number_of_qualified')->default(30);
         });
     }
 
@@ -23,8 +21,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('question', function (Blueprint $table) {
-            $table->dropColumn(['year', 'eligible_for_exam']);
+        Schema::table('option', function (Blueprint $table) {
+            $table->dropColumn('number_of_qualified');
         });
     }
 };

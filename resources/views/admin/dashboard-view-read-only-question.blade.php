@@ -34,18 +34,18 @@
 
 
 
-                <div class="bg-white mx-4 rounded-[12px] h-[587px] p-4">
+                <div id="sectionToPrint" class="bg-white mx-4 rounded-[12px] h-[587px] p-4 ">
 
                     <div class="bg-[#4c4a67] h-[250px] rounded-[8px] flex justify-between p-4">
 
-                        @if ($question->image_path == null)
-                            <div class="w-full m-4 mt-12 flex items-center">
-                                <input
-                                    class="bg-transparent text-[28px] mx-auto text-center flex items-center py-8 w-full h-full placeholder:text-[#EBEFF9] caret-white text-white"
-                                    placeholder="Type Question Here" name="question_text" required autocomplete="off"
-                                    value="{{ $question->question_text }}" readonly>
-                            </div>
-                        @endif
+
+                        <div class="w-full m-4 mt-12 flex items-center">
+                            <input
+                                class="bg-transparent text-[28px] mx-auto text-center flex items-center py-8 w-full h-full placeholder:text-[#EBEFF9] caret-white text-white"
+                                placeholder="Type Question Here" name="question_text" required autocomplete="off"
+                                value="{{ $question->question_text }}" readonly>
+                        </div>
+
                     </div>
 
                     <div>

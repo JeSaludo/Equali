@@ -185,6 +185,9 @@
                                                     <i class='bx bx-conversation'></i>
                                                 </a>
 
+                                                <a href="{{ route('admin.dashboard.read-interview', $user->id) }}">
+                                                    <i class='bx bx-show'></i></a>
+
 
                                             </td>
                                         </tr>

@@ -13,21 +13,21 @@ use App\Models\User;
 
 class ItemAnalysisReport implements FromView
 {
-    protected $questions;
-    protected $DI;
-
-
-    public function __construct($questions, $DI)
+    protected $items;
+    
+    protected $selectedYear;
+   
+    public function __construct($items, $selectedYear)
     {
-        $this->questions = $questions;
-        $this->DI = $DI;
-       
+        $this->items = $items;
+    
+        $this->selectedYear = $selectedYear;
        
     }
 
 
     public function view(): View
     {
-        return view('exports.item-analysis-report', ['questions' => $this->questions, 'DI' => $this->DI]);
+        return view('exports.item-analysis-report', ['items' => $this->items,  'selectedYear' => $this->selectedYear]);
     }
 }

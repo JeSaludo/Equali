@@ -1,12 +1,17 @@
 <?php
 
 namespace App\Http\Controllers;
+
+use App\Exports\QualifiedITExport;
+use App\Exports\QualifiedISExport;
 use App\Exports\UnqualifiedApplicantExport;
 use App\Exports\QualifiedApplicantExport;
 use App\Exports\ApplicantRankingExport;
 use App\Exports\ItemAnalysisReport;
 use App\Exports\ResultExport;
+use App\Exports\InterviewExport;
 use Illuminate\Http\Request;
+use App\Models\ItemAnalysisReport as IAReport;
 
 use App\Models\Option;
 use App\Models\Result;
@@ -43,8 +48,6 @@ class ReportController extends Controller
 
         $results = $results->paginate(10);
         $option = Option::first();
-        
-
         return view('admin.reports.list-of-qualifying-exam', compact('results', 'option'));
     }
 
@@ -56,10 +59,14 @@ class ReportController extends Controller
        
 
         $results = Result::with('user')
+        ->whereHas('user', function ($query) {
+            $query->where('status', 'Qualified');
+        })
         ->whereNotNull('weighted_average')
-        ->orderByDesc('weighted_average');
-
-        $results = $results->paginate(10);
+        ->orderByDesc('weighted_average')
+        ->paginate(10);
+    
+    
         
         return view('admin.reports.qualified-applicants-ranking', compact('results'));
     }
@@ -502,36 +509,25 @@ class ReportController extends Controller
        return Excel::download(new ResultExport, 'Qualifying-Exam-Report.xlsx');
    }
 
-    public function ExportItemAnalysis() 
+    public function ExportItemAnalysis(Request $request) 
     {
 
-        $DI = [];
-        Question::all();
-        $questions = Question::where('category')->paginate(10);
-
-        
-        foreach ($questions as $index => $question) {
-            // Check if there are exam responses for the current question
-            $hasResponses = $question->examResponse()->exists();
-
-            if($question->examResponse()->count() > 1)
-            {
-                if ($hasResponses) {
-                    $choices = $question->choices;
-    
-                    $correctChoice = $choices->where('is_correct', true)->first();
-                    $correctChoiceId = $correctChoice->id;
-                    $responses = ExamResponse::where('question_id', $question->id)->get();
-                    $totalResponses = $responses->count();
-                    $correctResponses = $responses->where('choice_id', $correctChoiceId)->count();   
-                    $di = round($correctResponses / $totalResponses, 2);
-                    $DI[$index] = $di;
-                }
-            }            
-        }
+        $selectedYear = $request->selectedYear;
        
         
-        return Excel::download(new ItemAnalysisReport($questions, $DI), 'Item-Analysis-Report.xlsx');
+        $items = IAReport::all();        
+   
+        
+        if (isset($selectedYear)) {
+            $items->where('year', $selectedYear);
+        }
+        
+        
+      
+      
+
+        
+        return Excel::download(new ItemAnalysisReport($items, $selectedYear), 'Item-Analysis-Report.xlsx');
     }
    public function ShowUnqualifiedApplicants()
    {
@@ -540,8 +536,8 @@ class ReportController extends Controller
     ->whereHas('user', function ($query) {
         $query->where('status', 'Unqualified');
     })
-    ->whereNotNull('weighted_average')
-    ->orderByDesc('weighted_average');
+    ->whereNotNull('weighted_average');
+  
     $results = $results->paginate(10);
 
     return view('admin.reports.list-unqualified-applicant', compact('results'));
@@ -554,8 +550,8 @@ class ReportController extends Controller
     ->whereHas('user', function ($query) {
         $query->where('status', 'Qualified');
     })
-    ->whereNotNull('weighted_average')
-    ->orderByDesc('weighted_average');
+    ->whereNotNull('weighted_average');
+    
     $results = $results->paginate(10);
 
     return view('admin.reports.list-qualified-applicant', compact('results'));
@@ -644,38 +640,22 @@ class ReportController extends Controller
         return redirect()->route('admin.dashboard.item-analysis');
     }
 
-    public function ShowItemAnalysisReport(){
-
-        $DI = [];
-       
-        $questions = Question::where('category')->paginate(15);
-
+    public function ShowItemAnalysisReport(Request $request){
+        $uniqueYears = Question::distinct()->pluck('year')->toArray();
+        $selectedYear = $request->selected_year;
         
-        foreach ($questions as $index => $question) {
-            // Check if there are exam responses for the current question
-            $hasResponses = $question->examResponse()->exists();
-
-            if($question->examResponse()->count() > 1)
-            {
-                if ($hasResponses) {
-                    $choices = $question->choices;
-    
-                    $correctChoice = $choices->where('is_correct', true)->first();
-                    $correctChoiceId = $correctChoice->id;
-                    $responses = ExamResponse::where('question_id', $question->id)->get();
-                    $totalResponses = $responses->count();
-                    $correctResponses = $responses->where('choice_id', $correctChoiceId)->count();   
-                    $di = round($correctResponses / $totalResponses, 2);
-                    $DI[$index] = $di;
-                }
-            }            
+        $items = IAReport::all();
+        
+   
+        
+        if (isset($selectedYear)) {
+            $items->where('year', $selectedYear);
         }
-
-       
-
+      
+      
 
         
-        return view('admin.reports.item-analysis-report', compact('questions', 'DI'));
+        return view('admin.reports.item-analysis-report', compact('items','uniqueYears','selectedYear'));
     }
    
     public function ShowInterviewResult(){
@@ -694,6 +674,17 @@ class ReportController extends Controller
 
     public function ExportUnqualified(){
         return Excel::download(new UnqualifiedApplicantExport, 'UnqualifiedApplicant.xlsx');
+    }
+
+    public function ExportInterview(){
+        return Excel::download(new InterviewExport, 'Interview.xlsx');
+    }
+
+    public function ExportQualifiedIT(){
+        return Excel::download(new QualifiedITEXport, 'QuaifiedIT.xlsx');
+    }
+    public function ExportQualifiedIS(){
+        return Excel::download(new QualifiedISEXport, 'QuaifiedIS.xlsx');
     }
 
 }

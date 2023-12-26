@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use App\Models\ExamQuestion;
 use App\Models\User;
 use App\Models\Choice;
 use App\Models\Question;
@@ -84,9 +84,28 @@ class QuestionController extends Controller
        return view('admin.dashboard-view-read-only-question', compact('question'));
     }
     function ShowQuestions(){
+
+        $questionCount = Question::all();
         $questions  = Question::paginate(10);
 
-        return view('admin.dashboard-view-question', compact('questions'));
+        return view('admin.dashboard-view-question', compact('questionCount', 'questions'));
+
+    }
+
+    function ShowRetainQuestions(){
+        $questionCount = Question::all(); 
+        $questions  = Question::where('category', 'Retain')->paginate(10);
+
+        return view('admin.dashboard-view-question-retain', compact('questionCount', 'questions'));
+
+    }
+
+    function ShowDiscardQuestions(){
+
+        $questionCount = Question::all();
+        $questions  = Question::where('category', 'Discard')->paginate(10);
+
+        return view('admin.dashboard-view-question-discard', compact('questionCount', 'questions'));
 
     }
 
@@ -155,10 +174,13 @@ class QuestionController extends Controller
    
     public function DeleteQuestion($id){
         $question = Question::findOrFail($id);
-        $question->choices()->delete();
-        $question->delete();
+       
+     
+        $question->category = "Discard";
+        $question->save();
 
-        return redirect()->route('admin.dashboard.view-question')->with('success', 'Question remove successfully!');
+        ExamQuestion::where('question_id', $id)->delete();
+        return redirect()->route('admin.dashboard.view-question')->with('success', 'Question discarded successfully!');
     }
 
 

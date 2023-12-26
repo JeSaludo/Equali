@@ -46,6 +46,7 @@
                 @include('layout.popup')
 
                 @include('layout.schedule-interview-count')
+
                 <div class="flex justify-between mx-4 mt-4 mb-4">
 
                     <h1 class="text-[#26386A] text-[18px]  font-bold font-raleway ">List of Interviews</h1>
@@ -53,6 +54,8 @@
 
 
                 </div>
+
+
 
                 <form action="{{ route('admin.dashboard.schedule-applicant') }}" method="POST">
                     @csrf
@@ -72,6 +75,10 @@
                             Interview</a>
                         <a href="{{ route('admin.dashboard.show-scheduled-interview') }}"
                             class="font-poppins   text-slate-500  nav-link whitespace-nowrap">Scheduled Interview</a>
+                        <a href="{{ route('admin.dashboard.show-scheduled-date') }}"
+                            class="font-poppins   text-slate-500  nav-link whitespace-nowrap">Scheduled
+                            Date</a>
+
                         <a href="#" class="font-poppins  text-slate-500 w-full no-hover-underline"></a>
                     </div>
 
@@ -233,6 +240,7 @@
 
 
 
+
             </section>
 
         </div>
@@ -259,6 +267,7 @@
                 selectAllCheckbox.addEventListener('click', function() {
                     checkboxes.forEach(checkbox => {
                         checkbox.checked = selectAllCheckbox.checked;
+
                     });
                     approveBtn.disabled = !selectAllCheckbox.checked;
                 });
@@ -267,6 +276,7 @@
 
             const selectAllCheckbox = document.getElementById('default-checkbox');
             const checkboxes = document.querySelectorAll('tbody input[type="checkbox"]');
+
 
             function updateSelectAllCheckbox() {
                 selectAllCheckbox.checked = Array.from(checkboxes).every(checkbox => checkbox.checked);
@@ -296,17 +306,6 @@
             });
 
             // Handle the submit button
-            document.getElementById("submitSchedule").addEventListener("click", function() {
-                // You can add your submit logic here
-                // For example, you can retrieve the event name from the input field
-                var eventName = document.getElementById("event").value;
-
-                // Close the popup
-                document.getElementById("popup").classList.add("hidden");
-
-                // You can do something with the event name, e.g., save it to a database
-                console.log("Event Name: " + eventName);
-            });
         </script>
 
 
@@ -315,7 +314,7 @@
 
         <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.2.0/flowbite.min.js"></script>
         <script src="{{ asset('js/nav-link.js') }}"></script>
-        <script src="{{ asset('js/add-applicant.js') }}"></script>
+
     </body>
 
 </html>

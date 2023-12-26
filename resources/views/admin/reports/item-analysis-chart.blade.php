@@ -63,8 +63,12 @@
                 @foreach ($questions as $question)
                     <div class="bg-white my-5 mx-4 rounded-lg border-[#D9DBE3] border">
 
-                        <div class="px-4 mt-4 text-lg font-poppins font-bold">
-                            <h1 class="text-[#26386A]">Question {{ $question->id }}</h1>
+                        <div class="px-4 mt-4 text-lg font-poppins ">
+                            <h1 class="text-[#26386A] font-bold">Question {{ $question->id }}</h1>
+                            <h1 class="text-[#26386A]"> {{ $question->question_text }}</h1>
+
+                            <p class="text-[#26386A] text-[14px]">Correct Answer : <strong class="text-green-500">
+                                    {{ $question->correctAnswer() }}</strong></p>
                         </div>
                         <div class="w-full px-8 py-4  " id="chart{{ $question->id }}"></div>
                         <script>
@@ -72,12 +76,14 @@
                                 chart: {
                                     type: 'bar',
                                     height: 250,
+
                                 },
                                 plotOptions: {
                                     bar: {
                                         borderRadius: 4,
                                         horizontal: true,
                                         barWidth: 40, // Set a fixed width for the bars (adjust as needed)
+
                                     }
                                 },
                                 series: [{
@@ -87,6 +93,7 @@
                                 xaxis: {
                                     categories: {!! json_encode($question->getChoiceLabels()) !!}, // Replace with your method to get choice labels
                                 },
+
                             };
 
                             var chart{{ $question->id }} = new ApexCharts(document.querySelector("#chart{{ $question->id }}"),

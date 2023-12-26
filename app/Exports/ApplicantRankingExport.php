@@ -11,9 +11,12 @@ class ApplicantRankingExport implements FromView
     public function view(): View
     {
         $results = Result::with('user')
+        ->whereHas('user', function ($query) {
+            $query->where('status', 'Qualified');
+        })
         ->whereNotNull('weighted_average')
         ->orderByDesc('weighted_average')
-        ->get();
+        ->paginate(10);
         return view('exports.ranking-report', ['results' => $results]);
     }
 }

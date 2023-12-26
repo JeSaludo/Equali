@@ -13,8 +13,9 @@ return new class extends Migration
     {
         Schema::create('admission_exams', function (Blueprint $table) {
             $table->id();
-            $table->bigInteger('score');
-            $table->bigInteger('total_score');
+            $table->bigInteger('raw_score');
+            $table->bigInteger('percentage');
+            
             $table->unsignedBigInteger('user_id');          
             $table->string('status')->nullable();
          

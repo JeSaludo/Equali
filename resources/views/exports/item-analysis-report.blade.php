@@ -1,47 +1,56 @@
-<table class="w-full font-poppins border-collapse   text-md text-left rtl:text-right text-gray-500 table-auto ">
-    <thead class="border-b text-[#26386A] border-[#D9DBE3] font-semibold text-left whitespace-nowrap">
+<table id="item-analysis-table"
+    class="w-full font-poppins border-collapse   text-md text-left rtl:text-right text-gray-500 table-auto ">
+    <thead class="border-b  text-[#26386A] border-[#D9DBE3] font-semibold text-center whitespace-nowrap">
         <tr>
             <td class="px-6 py-2">Item </td>
             <td class="px-6 py-2 text-center">Difficulty Index</td>
-            <td class="px-6 py-2 text-center">Difficulty Level</td>
+            <td class="px-6 py-2 text-center">Difficult Level</td>
             <td class="px-6 py-2 text-center">Status</td>
-            <td class="px-6 py-2">Action</td>
-
+            <td class="px-6 py-2">Action </td>
+            <td class="px-6 py-2">Analyzed Date </td>
         </tr>
     </thead>
 
     <tbody class="text-left ">
-        @foreach ($questions as $index => $question)
-            @if (isset($DI[$index]))
-                @php
-                    $dataFound = true;
-                @endphp
 
-                <tr>
+        @php
+            $dataFound = false;
+        @endphp
+
+        @if ($items->count() == 0)
+            <tr>
+                <td class="px-6 py-3">
+                    <p>No data found in the database</p>
+                </td>
+            </tr>
+        @else
+            @foreach ($items as $index => $item)
+                <tr
+                    class="text-center mx-auto {{ $index % 2 == 0 ? 'bg-[#F6F8FF]' : 'bg-white' }} border-b border-gray-100">
                     <td class="px-6 py-3">
-                        {{ $question->id }}
+                        {{ $item->id }}
 
                     </td>
 
-                    <td class="px-6 py-3 text-center mx-auto">
+                    <td class="px-6 py-3">
 
-                        {{ $DI[$index] }}
+                        {{ $item->di }}
+
 
 
                     </td>
-
                     <td class="px-6 py-3 whitespace-nowrap">
 
 
-                        @if ($DI[$index] < 0.15)
+                        @if ($item->di < 0.15)
                             Very Difficult
-                        @elseif ($DI[$index] > 0.14 && $DI[$index] < 0.3)
+                        @elseif ($item->di > 0.14 && $item->di < 0.3)
                             Difficult
-                        @elseif ($DI[$index] > 0.29 && $DI[$index] < 0.71)
+                        @elseif ($item->di > 0.29 && $item->di < 0.71)
                             Moderate
-                        @elseif ($DI[$index] > 0.7 && $DI[$index] < 0.86)
+                        @elseif ($item->di > 0.7 && $item->di < 0.86)
                             Easy
-                        @elseif ($DI[$index] > 0.85)
+                        @elseif ($item->di > 0.85)
                             Very Easy
                         @endif
 
@@ -53,15 +62,15 @@
                     <td class="px-6 py-3 whitespace-nowrap ">
 
 
-                        @if ($DI[$index] < 0.15)
+                        @if ($item->di < 0.15)
                             To be discarded
-                        @elseif ($DI[$index] > 0.14 && $DI[$index] < 0.3)
+                        @elseif ($item->di > 0.14 && $item->di < 0.3)
                             To be revised
-                        @elseif ($DI[$index] > 0.29 && $DI[$index] < 0.71)
+                        @elseif ($item->di > 0.29 && $item->di < 0.71)
                             Very Good Items
-                        @elseif ($DI[$index] > 0.7 && $DI[$index] < 0.86)
+                        @elseif ($item->di > 0.7 && $item->di < 0.86)
                             To be revised
-                        @elseif ($DI[$index] > 0.85)
+                        @elseif ($item->di > 0.85)
                             To be discarded
                         @endif
 
@@ -71,25 +80,31 @@
 
 
                     <td class="px-6 py-3 text-center">
-                        @if ($DI[$index] < 0.15)
+
+
+
+                        @if ($item->di < 0.15)
                             <p class=" py-1 px-2">Discard</p>
-                        @elseif ($DI[$index] > 0.14 && $DI[$index] < 0.3)
+                        @elseif ($item->di > 0.14 && $item->di < 0.3)
                             <p class=" py-1 px-2 ">Revise</p>
-                        @elseif ($DI[$index] > 0.29 && $DI[$index] < 0.71)
+                        @elseif ($item->di > 0.29 && $item->di < 0.71)
                             <p class=" py-1 px-2 ">Retain</p>
-                        @elseif ($DI[$index] > 0.7 && $DI[$index] < 0.86)
+                        @elseif ($item->di > 0.7 && $item->di < 0.86)
                             <p class=" py-1 px-2 ">Revise</p>
-                        @elseif ($DI[$index] > 0.85)
+                        @elseif ($item->di > 0.85)
                             <p class=" py-1 px-2 ">Discard</p>
                         @endif
                     </td>
 
+
+                    <td class="px-6 py-3 text-center">
+                        {{ $item->year }}
+                    </td>
                 </tr>
-            @endif
-        @endforeach
+            @endforeach
 
 
-
+        @endif
 
     </tbody>
 </table>

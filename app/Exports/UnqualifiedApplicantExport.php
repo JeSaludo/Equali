@@ -15,8 +15,7 @@ class UnqualifiedApplicantExport implements FromView
         ->whereHas('user', function ($query) {
             $query->where('status', 'Unqualified');
         })
-        ->whereNotNull('weighted_average')
-        ->orderByDesc('weighted_average')
+        ->whereNotNull('weighted_average')        
         ->get();
         
         return view('exports.ranking-report', ['results' => $results]);

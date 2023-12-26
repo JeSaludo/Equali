@@ -17,6 +17,7 @@ return new class extends Migration
             $table->decimal('qualified_student_passing_average');   // for average?       
             $table->bigInteger('qualifying_number_of_items');// 
             $table->bigInteger('qualifying_timer');
+            $table->bigInteger('slot_per_day')->default(30);
             $table->timestamps();
         });
     }

@@ -6,57 +6,31 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use App\Models\Question;
 use App\Models\Option;
+use App\Models\StudentInfo;
 use Illuminate\Support\Facades\Hash;
 class AdminController extends Controller
 {
     function ShowAdminOverview()
-    {
-        $user = User::where('role', 'Student')->get();
+    {   
+        $users = User::where('role','Student')->where('status','Pending Interview')->orWhere('status', 'Pending Schedule');
 
-        $recentApplicants = User::where('role', 'Student')
-        ->with('admissionExam')
-        ->latest('created_at')
-        ->limit(5)
-        ->get();
+        $users = $users->paginate(10);
 
-        $recentInterviews = User::where('role', 'Student')->get();
+        $totalInterview = StudentInfo::where('interview', true)->count() + User::where('role', 'Student')->where('status', 'Pending Interview')->count();
 
-        if(auth()->user()->role === "ProgramHead"){
-            $recentUsers = User::where('role', 'Student')
-            ->where('status', 'Pending')->orWhere('status', 'Pending Schedule')
-            ->orWhere('status', 'Ready For Exam')
-            ->orWhere('status', 'Pending Interview')
-            ->latest('created_at')
-            ->limit(5)
-            ->get();
-        }
-        else if(auth()->user()->role === "Proctor"){
-            $recentUsers = User::where('role', 'Student')
-            ->where('status', 'Pending Interview')
-            // ->orWhere('status', 'Ready For Exam')
-            ->latest('created_at')
-            ->limit(5)
-            ->get();
-        }
-        else if(auth()->user()->role === "Dean"){
-            $recentUsers = User::where('role', 'Student')
-            ->with('admissionExam')
-            ->latest('created_at')
-            ->limit(5)
-            ->get();
-        }
-        
+        $pendingInterview = User::where('role', 'Student')->where('status', 'Pending Interview')->count();
 
-        $totalInterview = User::with('studentInfo')
-        ->whereHas('studentInfo', function ($query) {
-            $query->where('interview', 1);
-        });
+        $finishedInterview = StudentInfo::where('interview', true)->count();
+        return view('admin.dashboard-overview', compact('users' , 'totalInterview', 'pendingInterview','finishedInterview'));
+    }
 
-       
-
-        
-
-        return view('admin.dashboard-overview', compact('recentApplicants', 'user', 'recentUsers','totalInterview'));
+    function ShowScheduledDate(){
+        $option = Option::first();
+        $users = User::where('role', 'Student')->where('status', 'Pending Interview')
+        ->with('qualifiedStudent');
+        $slotLimit = $option->slot_per_day;
+        $users = $users->paginate(10);
+        return view('admin.dashboard-view-scheduled-date', compact( 'users' ,'slotLimit'));
     }
 
     function ShowScheduleInterview(){
@@ -127,14 +101,18 @@ class AdminController extends Controller
             'qualifying_number_of_items' => 'required|integer', // Adjust the range as needed
             'qualifying_timer' => 'required|integer|min:0',
             'qualified_student_passing_average' => 'required|numeric|between:0,5',
+            'slot_per_day' => 'required',
+            'number_of_qualified' => 'required:min:1',
         ]);
         $option = Option::first();
         $option->qualified_student_passing_average = $request->qualified_student_passing_average;
         $option->qualifying_number_of_items = $request->qualifying_number_of_items;
         $option->qualifying_passing_score = $request->qualifying_passing_score;
         $option->qualifying_timer = $request->qualifying_timer;
+        $option->slot_per_day = $request->slot_per_day;
+        $option->number_of_qualified = $request->number_of_qualified;
         $option->save();
-        return redirect()->route('admin.dashboard.overview')->with('success', 'Questions added successfully!');
+        return redirect()->route('admin.overview.dean')->with('success', 'setting updated successfully!');
     }
     
 

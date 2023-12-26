@@ -62,10 +62,12 @@
                                 <thead
                                     class="border-b text-[#26386A] border-[#D9DBE3] font-semibold text-center whitespace-nowrap">
                                     <tr>
-                                        <td class="px-6 py-2">ID</td>
+                                        <td class="px-6 py-2">No.</td>
                                         <td class="px-6 py-2">Applicant Name</td>
                                         <td class="px-6 py-2">Exam Score</td>
+
                                         <td class="px-6 py-2">Status</td>
+
                                     </tr>
                                 </thead>
 
@@ -77,7 +79,7 @@
                                         @foreach ($results as $index => $result)
                                             <tr
                                                 class="{{ $index % 2 == 0 ? 'bg-[#F6F8FF]' : 'bg-white' }} border-b border-gray-100">
-                                                <td class="px-6 py-3">{{ $result->user_id }}</td>
+                                                <td class="px-6 py-3">{{ $index + 1 }}</td>
                                                 <td class="px-6 py-3">
                                                     {{ $result->user->last_name . ', ' . $result->user->first_name }}
                                                 </td>

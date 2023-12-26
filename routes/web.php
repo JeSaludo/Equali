@@ -3,6 +3,7 @@
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\ApplicantController;
 use App\Http\Controllers\auth\AuthController;
+use App\Http\Controllers\DeanController;
 use App\Http\Controllers\DeveloperController;
 use App\Http\Controllers\ExamController;
 use App\Http\Controllers\InterviewController;
@@ -10,6 +11,7 @@ use App\Http\Controllers\QuestionController;
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ItemAnalysisController;
+use App\Http\Controllers\ProgramHeadController;
 use Illuminate\Auth\Events\Login;
 use Illuminate\Support\Facades\Route;
 
@@ -44,10 +46,32 @@ Route::get('/logout', [AuthController::class, 'Logout'])->name('auth.logout');
 //link  register/admin/31dsda943dasd4azx2Qesd2123
 
 Route::middleware(['admin'])->group(function () {
-    Route::get('dashboard/overview', [AdminController::class, 'ShowAdminOverview'])->name('admin.dashboard.overview');   
+   
+    Route::get('dashboard/overview-interview', [AdminController::class, 'ShowAdminOverview'])->name('admin.dashboard.overview.proctor');
+    Route::get('dashboard/admission', [ProgramHeadController::class, 'ShowAdmission'])->name('admin.dashboard.admission');   
+    Route::get('dashboard/admission-qualified', [ProgramHeadController::class, 'ShowAdmissionQualified'])->name('admin.dashboard.admission.qualified');   
+    Route::get('dashboard/admission-unqualified', [ProgramHeadController::class, 'ShowAdmissionUnqualified'])->name('admin.dashboard.admission.unqualified');   
+    Route::get('dashboard/admission-waitlisted', [ProgramHeadController::class, 'ShowAdmissionWaitlisted'])->name('admin.dashboard.admission.waitlisted');   
+    Route::get('dashboard/admission-for-interview', [ProgramHeadController::class, 'ShowAdmissionInterview'])->name('admin.dashboard.admission.interview');   
+    Route::get('dashboard/admission-for-exam', [ProgramHeadController::class, 'ShowAdmissionExam'])->name('admin.dashboard.admission.exam');   
+   
+    
+    Route::get('dashboard/overview', [DeanController::class, 'ShowAdmission'])->name('admin.overview.dean');   
+    Route::get('dashboard/overview-qualified', [DeanController::class, 'ShowAdmissionQualified'])->name('admin.overview.qualified.dean');   
+    Route::get('dashboard/overview-unqualified', [DeanController::class, 'ShowAdmissionUnqualified'])->name('admin.overview.unqualified.dean');   
+    Route::get('dashboard/overview-waitlisted', [DeanController::class, 'ShowAdmissionWaitlisted'])->name('admin.overview.waitlisted.dean');   
+    Route::get('dashboard/overview-for-interview', [DeanController::class, 'ShowAdmissionInterview'])->name('admin.overview.interview.dean');   
+    Route::get('dashboard/overview-for-exam', [DeanController::class, 'ShowAdmissionExam'])->name('admin.overview.exam.dean');   
+   
+    
+    
     //Question 
     Route::get('/dashboard/question/add-question', [QuestionController::class, 'ShowAddQuestion'])->name('admin.dashboard.add-question');
     Route::get('/dashboard/view-questions', [QuestionController::class, 'ShowQuestions'])->name('admin.dashboard.view-question');
+    Route::get('/dashboard/view-questions-retain', [QuestionController::class, 'ShowRetainQuestions'])->name('admin.dashboard.view-question-retain');
+    Route::get('/dashboard/view-questions-discard', [QuestionController::class, 'ShowDiscardQuestions'])->name('admin.dashboard.view-question-discard');
+   
+   
     Route::post('/dashboard/add-question/store', [QuestionController::class, 'StoreQuestion'])->name('admin.dashboard.store-question');
     Route::get('/dashboard/questions/{id}/edit', [QuestionController::class, 'ShowEditQuestion'])->name('admin.dashboard.edit-question');
     Route::put('/dashboard/questions/{id}', [QuestionController::class, 'UpdateQuestion'])->name('admin.dashboard.update-question');
@@ -61,6 +85,9 @@ Route::middleware(['admin'])->group(function () {
     //Interview 
     Route::get('/dashboard/pending-interview',[InterviewController::class, 'ShowPendingInterview'])->name('admin.dashboard.pending-interview');
     Route::get('/dashboard/interview/screening-form/{id}',[InterviewController::class, 'ShowScreeningForm'])->name('admin.dashboard.interview-now');
+    Route::get('/dashboard/interview/read-screening-form/{id}',[InterviewController::class, 'ShowReadScreeningForm'])->name('admin.dashboard.read-interview');
+   
+   
     Route::post('/dashboard/interview/store', [InterviewController::class, 'StoreInterview'])->name('admin.dashboard.store-interview');
    
     Route::get('/dashboard/interview/review', [InterviewController::class, 'ShowReview'])->name('admin.dashboard.show-review');
@@ -108,6 +135,7 @@ Route::middleware(['admin'])->group(function () {
     
     
     Route::post('/dashboard/qualified-applicant/set-schedule', [ApplicantController::class, 'Schedule'])->name('admin.dashboard.schedule-applicant'); 
+    Route::get('/dashboard/qualified-applicant/re-schedule/{id}', [ApplicantController::class, 'ReSchedule'])->name('admin.dashboard.reschedule-applicant'); 
     
     Route::get('/dashboard/report/item-analysis-chart', [ReportController::class, 'ShowItemAnalysisChart'])->name('admin.dashboard.item-analysis-chart');
     Route::get('/dashboard/report/item-analysis', [ReportController::class , 'ShowItemAnalysisReport'])->name('admin.dashboard.item-analysis-report');
@@ -118,6 +146,7 @@ Route::middleware(['admin'])->group(function () {
    
     Route::get('/dashboard/view-schedule-interview', [AdminController::class, 'ShowScheduleInterview'])->name('admin.dashboard.show-schedule-interview');
     Route::get('/dashboard/view-scheduled-interview', [AdminController::class, 'ShowScheduledInterview'])->name('admin.dashboard.show-scheduled-interview');
+    Route::get('/dashboard/view-scheduled-date', [AdminController::class, 'ShowScheduledDate'])->name('admin.dashboard.show-scheduled-date');
 
     Route::get('/dashboard/exam', [ExamController::class, 'ShowAdminExam'])->name('admin.dashboard.show-exam');
     Route::get('/dashboard/exam/{id}/edit', [ExamController::class, 'EditExam'])->name('admin.dashboard.edit-exam');
@@ -139,7 +168,7 @@ Route::middleware(['admin'])->group(function () {
 
  
     Route::get('/dashboard/report/qualified-exam-result/export', [ReportController::class, 'ExportQualifyingExam'])->name("export.qualified-exam-result");
-    Route::get('/dashboard/report/item-analysis-result/report', [ReportController::class, 'ExportItemAnalysis'])->name('export.item-analysis-result');
+    Route::post('/dashboard/report/item-analysis-result/report', [ReportController::class, 'ExportItemAnalysis'])->name('export.item-analysis-result');
     
     
     
@@ -157,8 +186,11 @@ Route::middleware(['admin'])->group(function () {
 
     Route::get('/dashboard/item-analysis/analyze', [ItemAnalysisController::class, 'GenerateItemAnalysis'])->name('admin.item-analysis-analyze');
     Route::post('/dashboard/item-analysis/store-revise-question', [ReportController::class, 'StoreReviseQuestion'])->name('admin.item-analysis.store-revise');
+    
 
-   
+    Route::get('/dashboard/report/qualified-it', [ReportController::class, 'ExportQualifiedIT'])->name('export.qualified-it');
+    Route::get('/dashboard/report/qualified-is', [ReportController::class, 'ExportQualifiedIS'])->name('export.qualified-is');
+    
 
    
     Route::get('dashboard/report/list-of-qualifying-exam', [ReportController::class, 'ShowQualifyingExam'])->name('admin.dashboard.report.qualifying-exam');
@@ -178,11 +210,13 @@ Route::middleware(['admin'])->group(function () {
     
 
 
-    Route::get('/dashboard/report/interview-result', [ReportController::class, 'ShowInterviewResult'])->name('admin.report.interview-result');
+    Route::get('/dashboard/report/view-interview-result', [ReportController::class, 'ShowInterviewResult'])->name('admin.show.report.interview-result');
     Route::get('/dashboard/report/qualified-result', [ReportController::class,'ExportQualified'])->name('admin.report.qualified-result');
 
     Route::get('/dashboard/report/unqualified-result', [ReportController::class,'ExportUnqualified'])->name('admin.report.unqualified-result');
-
+    
+    Route::get('/dashboard/report/interview-result', [ReportController::class,'ExportInterview'])->name('admin.report.interview-results');
+    
 
 });
 

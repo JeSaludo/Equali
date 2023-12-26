@@ -29,8 +29,7 @@
             <nav class="ml-[218px] flex justify-between items-center border-b border-[#D9DBE3] h-[60px] bg-white px-4">
 
                 <div class="flex items-center  ">
-                    <form method="get" action="{{ route('admin.dashboard.show-approved-applicant') }}"
-                        class="relative w-[300px]">
+                    <form method="get" action="" class="relative w-[300px]">
                         @csrf
                         <input type="text" name="searchTerm" placeholder="Search Here"
                             value="{{ request('searchTerm') }}"
@@ -45,6 +44,65 @@
             <section class="ml-[218px] main ">
 
                 @include('layout.popup')
+
+                <div class="grid md:mx-2 grid-col md:grid-cols-3 gap-4 mt-4">
+
+                    <a href="{{ route('admin.dashboard.view-question') }}" class="flex flex-col h-full">
+
+
+                        <div class="bg-white mx-4 px-6 relative rounded-lg border  border-[#D9DBE3] shadow-sm ">
+                            <h1 class="text-[16px] pt-2 font-poppins font-bold text-[#26386A] ">All Question</h1>
+
+
+                            <div class="flex items-end gap-3 text-[#718297] mb-8 ">
+                                <i class='bx bxs-box text-[30px] pb-2'></i>
+                                <p class="text-[36px] py-0">{{ $questionCount->count() }}</p>
+                            </div>
+
+                            <div class="bg-[#5587F7] w-full  py-3 absolute bottom-0 left-0 px-0 mx-0 rounded-b-lg">
+                            </div>
+
+                        </div>
+
+                    </a>
+
+                    <a href="{{ route('admin.dashboard.view-question-retain') }}" class="flex flex-col h-full">
+
+                        <div class="bg-white mx-4 px-6 relative rounded-lg border  border-[#D9DBE3] shadow-sm ">
+                            <h1 class="text-[16px] pt-2 font-poppins font-bold text-[#26386A] ">Retain Question</h1>
+
+
+                            <div class="flex items-end gap-3 text-[#718297] mb-8 ">
+                                <i class='bx  bxs-box text-[30px] pb-2'></i>
+                                <p class="text-[36px] py-0">{{ $questionCount->where('category', 'Retain')->count() }}
+                            </div>
+
+                            <div class="bg-[#5587F7] w-full  py-3 absolute bottom-0 left-0 px-0 mx-0 rounded-b-lg">
+                            </div>
+
+                        </div>
+
+
+                    </a>
+
+                    <a href="{{ route('admin.dashboard.view-question-discard') }}" class="flex flex-col h-full">
+                        <div class="bg-white mx-4 px-6 relative rounded-lg border  border-[#D9DBE3] shadow-sm ">
+                            <h1 class="text-[16px] pt-2 font-poppins font-bold text-[#26386A] ">Discard Question</h1>
+
+
+                            <div class="flex items-end gap-3 text-[#718297] mb-8 ">
+                                <i class='bx bxs-archive text-[30px] pb-2'></i>
+                                <p class="text-[36px] py-0">{{ $questionCount->where('category', 'Discard')->count() }}
+                            </div>
+
+                            <div class="bg-[#5587F7] w-full  py-3 absolute bottom-0 left-0 px-0 mx-0 rounded-b-lg">
+                            </div>
+
+                        </div>
+                    </a>
+
+                </div>
+
                 <div class="flex justify-between mx-4 mt-4 mb-4">
 
                     <h1 class="text-[#26386A] text-[18px]  font-bold font-raleway ">List of Question</h1>

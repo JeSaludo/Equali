@@ -43,7 +43,7 @@
 
 
                         <div>
-                            <a href="{{ route('export.qualified-exam-result') }}"
+                            <a href="{{ route('admin.report.interview-results') }}"
                                 class="bg-[#365EFF] hover:bg-[#384b94] font-poppins text-white py-1 px-4 rounded-lg">
                                 Export Report
                             </a>
@@ -56,7 +56,7 @@
                                 <thead
                                     class="border-b text-[#26386A] border-[#D9DBE3] font-semibold text-center whitespace-nowrap">
                                     <tr>
-                                        <td class="px-6 py-2">Ranking No.</td>
+                                        <td class="px-6 py-2">No.</td>
                                         <td class="px-6 py-2">Applicant Name</td>
                                         <td class="px-6 py-2">Interview Average</td>
                                     </tr>

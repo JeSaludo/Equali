@@ -31,12 +31,16 @@ class AuthController extends Controller
             $request->session()->regenerate();
             //add redirect for admin and users || condition
 
-            if (Auth::user()->role === "ProgramHead" || Auth::user()->role === "Dean" || Auth::user()->role === "Proctor") {
-                return redirect()->route('admin.dashboard.overview');
+            if (Auth::user()->role === "Proctor") {
+                return redirect()->route('admin.dashboard.overview.proctor');
             } else if (Auth::user()->role === "Student") {
-
-               
                 return redirect()->route('home');
+            }
+            else if(Auth::user()->role === "Dean" ){
+                return redirect()->route('admin.overview.dean');
+            }
+            else if(Auth::user()->role === "ProgramHead"){
+                return redirect()->route('admin.dashboard.admission');
             }
             return redirect()->intended('/')->with('status', 'Login Successfull');
         }

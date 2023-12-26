@@ -28,8 +28,7 @@
             <nav class="ml-[218px] flex justify-between items-center border-b border-[#D9DBE3] h-[60px] bg-white px-4">
 
                 <div class="flex items-center  ">
-                    <form method="get" action="{{ route('admin.dashboard.show-applicant') }}"
-                        class="relative w-[300px]">
+                    <form method="get" action="" class="relative w-[300px]">
                         @csrf
                         <input type="text" name="searchTerm" placeholder="Search Here"
                             value="{{ request('searchTerm') }}"
@@ -64,9 +63,11 @@
                         <a href="{{ route('admin.dashboard.show-schedule-interview') }}"
                             class="font-poppins   text-slate-500  nav-link whitespace-nowrap">Schedule Interview</a>
                         <a href="{{ route('admin.dashboard.show-scheduled-interview') }}"
-                            class="font-poppins active  text-slate-500  nav-link whitespace-nowrap">Scheduled
+                            class="font-poppins  active text-slate-500  nav-link whitespace-nowrap">Scheduled
                             Interview</a>
-
+                        <a href="{{ route('admin.dashboard.show-scheduled-date') }}"
+                            class="font-poppins   text-slate-500  nav-link whitespace-nowrap">Scheduled
+                            Date</a>
                         <a href="#" class="font-poppins  text-slate-500 w-full no-hover-underline"></a>
                     </div>
 
@@ -82,7 +83,7 @@
                                         <td class="px-6 py-2">Applicant Name</td>
                                         <td class="px-6 py-2">Interview & Exam Schedule</td>
                                         <td class="px-6 py-2">Time</td>
-                                        <td class="px-6 py-2">Status</td>
+                                        <td class="px-6 py-2">Action</td>
                                     </tr>
                                 </thead>
 
@@ -120,12 +121,24 @@
 
 
                                                     </td>
+
+                                                    <td class="px-6 py-3   whitespace-nowrap flex items-center gap-3">
+
+
+                                                        <a href="{{ route('admin.dashboard.reschedule-applicant', $user->id) }}"
+                                                            onclick="return confirm('Are you sure you want to resched this user?')"
+                                                            title="Reschedule" class="mx-1 hover:text-green-400"><i
+                                                                class='bx bx-calendar-edit'></i></a>
+                                                        <a class="hover:text-red-400 mx-1"
+                                                            href="{{ route('admin.dashboard.unqualify-applicant', $user->id) }}"
+                                                            title="Reject "
+                                                            onclick="return confirm('Are you sure you want to unqualify this user?')">
+                                                            <i class='bx bx-user-x bx-sm'></i>
+                                                        </a>
+                                                    </td>
                                                 @else
                                                     <td class="px-6 py-3   whitespace-nowrap">
                                                         Not yet scheduled
-                                                    </td>
-                                                    <td class="px-6 py-3   whitespace-nowrap">
-
                                                     </td>
                                                 @endif
 

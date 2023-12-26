@@ -23,7 +23,7 @@ return new class extends Migration
             $table->string('password')->nullable();
             $table->enum('role', ['ProgramHead','Proctor', 'Dean', 'Tester', 'Student'])->default('Student');
             $table->string('status')->nullable();
-            
+        
             $table->tinyInteger('exam_taken')->nullable();
            
             $table->rememberToken();

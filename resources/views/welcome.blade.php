@@ -6,7 +6,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
         <meta http-equiv="X-UA-Compatible" content="ie=edge">
-        <title>Equali | Landig Page </title>
+        <title>Equali | Landing Page </title>
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
         <link
@@ -46,7 +46,7 @@
                     @if (Auth::check())
                         <div class="flex gap-5">
                             <a href="" class="text-[#403838] text-[16px]">{{ Auth::user()->first_name }}</a>
-                            <a href="{{ route('auth.logout') }}" id="logoutLink"
+                            <a href="{{ route('auth.logout') }}" onclick="logout()" id="logoutLink"
                                 class="text-[#403838] text-[16px]">Logout</a>
                         </div>
                     @else
@@ -69,9 +69,6 @@
 
 
                     <div class="my-8 w-10/12 flex justify-start  ">
-
-
-
                         @if (auth()->check())
                             <a href="{{ route('student.show-exam') }}"
                                 class="flex items-center justify-center text-lg font-poppins font-normal mr-2 w-full h-[50px] rounded-[18px] bg-[#1E5CD1] hover:bg-[#134197] transition-colors duration-200 text-white">Take
@@ -99,7 +96,11 @@
                 localStorage.removeItem('examChoices');
             });
         </script>
-
+        <script>
+            function logout() {
+                localStorage.clear();
+            }
+        </script>
 
     </body>
 

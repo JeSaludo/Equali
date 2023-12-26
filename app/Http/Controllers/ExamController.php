@@ -40,16 +40,20 @@ class ExamController extends Controller
                 $exam = session('assigned_exam');
 
                 if (!$exam) {
-
                 
                     // If not, randomly select an exam and store its identifier in the session
                     $exam = Exam::inRandomOrder()->with('examQuestion.question.choices')->first();
                     
-                
-                        if($exam->examQuestion->count() == $option->qualifying_number_of_items){
-                            session(['assigned_exam' => $exam]);
-                        }
-                
+                 
+                    if ($exam->examQuestion->count() == $option->qualifying_number_of_items) {
+                        session(['assigned_exam' => $exam]);
+                    }
+                    
+                    else {
+                        // Handle the case where no suitable exam is found
+                        return redirect()->route('home')->with('error', 'No qualifying exam found.');
+                    }
+                      
 
                     //return redirect()->route('home')->with('error', 'Exam has not been set, Please try again later');
                 
@@ -77,7 +81,7 @@ class ExamController extends Controller
 
     function SubmitExam(Request $request){  
 
-        
+            
             $user = User::find(Auth::user()->id);
 
             if($user->exam_taken == null){
@@ -146,19 +150,30 @@ class ExamController extends Controller
                     $user = User::where('id', $request->user_id)->first();
     
                     $user->exam_taken = 1;
-                    if($result->weighted_average >= $option->qualified_student_passing_average ){
-                      
-                        $user->status = "Qualified";
-                       // Mail::to($user->email)->send(new QualifyMail($user->firstName, $user->lastName));
-                        SendQualifyMail::dispatch($user->email, $user->first_name, $user->last_name);
-                  
+
+                    $qualifiedCount = User::where('role', 'Student')->where('status', 'Qualified')->count();
+
+                    if ($qualifiedCount < $option->number_of_qualified) {
+                        if ($result->weighted_average >= $option->qualified_student_passing_average) {
+                            $user->status = "Qualified";
+                            SendQualifyMail::dispatch($user->email, $user->first_name, $user->last_name);
+                        } else {
+                            $user->status = "Unqualified";
+                            SendUnqualifyMail::dispatch($user->email, $user->first_name, $user->last_name);
+                        }
+                    } else {
+
+                        if ($result->weighted_average >= $option->qualified_student_passing_average) {
+                            $user->status = "WaitListed";
+                            // SendQualifyMail::dispatch($user->email, $user->first_name, $user->last_name);
+                        } else {
+                            $user->status = "Unqualified";
+                            SendUnqualifyMail::dispatch($user->email, $user->first_name, $user->last_name);
+                        }
+                       
                     }
-                    else{
-                      
-                        $user->status = "Unqualified";
-                        //Mail::to($user->email)->send(new UnqualifyMail($user->firstName, $user->lastName));
-                        SendUnqualifyMail::dispatch($user->email, $user->first_name, $user->last_name);
-                    }
+
+                    
                    
                     $user->save();
                     $userAnswers = $request->answer;
@@ -302,72 +317,7 @@ class ExamController extends Controller
     }
     
     public function storeRandomExam(Request $request, $id) {
-        // $existingQuestionIds = ExamQuestion::where('exam_id', $id)->pluck('question_id')->toArray();
-
-        // // Check if there are any available questions to add.
-        // $availableQuestionsCount = Question::whereNotIn('id', $existingQuestionIds)
-        //     ->where(function ($query) {
-        //         $query->whereNull('category')->orWhere('category', '!=', 'Discard');
-        //     })
-        // ->count();
         
-        // // Change the limit for the total number of questions.
-        // $exam = Exam::find($id);
-        // $option = Option::first();
-        // $maxTotalQuestions = $option->qualifying_number_of_items;
-        // $numOfQuestions = $request->numOfQuestions;
-        
-        // // Check if there are enough available questions.
-        // if ($availableQuestionsCount < $numOfQuestions) {
-        //     return redirect()->back()->with('error', 'Not enough question available in the question bank');
-           
-        // }
-        
-        // // Get the current total questions added.
-        // $totalQuestionsAdded = ExamQuestion::where('exam_id', $id)->count();
-        
-        // // Calculate the remaining questions that can be added based on the maximum limit.
-        // $remainingQuestions = $maxTotalQuestions - $totalQuestionsAdded;
-        
-        // // Ensure that the desired number of questions does not exceed the remaining limit.
-        // $numOfQuestionsToAdd = min($numOfQuestions, $remainingQuestions);
-        
-        // // Initialize variables to keep track of the added question IDs.
-        // $addedQuestionIds = [];
-        
-        // // Loop until you have added the desired number of unique random questions or until the total limit is reached.
-        // while (count($addedQuestionIds) < $numOfQuestionsToAdd) {
-        //     // Get a random question that is not already in the exam.
-        //     $randomQuestion = Question::where(function ($query) use ($existingQuestionIds) {
-        //         $query->whereNull('category')->orWhere('category', '!=', 'Discard');
-        //     })
-        //     ->whereNotIn('id', $existingQuestionIds)
-        //     ->inRandomOrder()
-        //     ->first();
-        //     // Check if a valid random question is found.
-        //     if ($randomQuestion) {
-        //         // Create a new ExamQuestion record.
-        //         $examQuestion = new ExamQuestion();
-        //         $examQuestion->exam_id = $id;
-        //         $examQuestion->question_id = $randomQuestion->id;
-        //         $examQuestion->save();
-        
-        //         // Add the question ID to the list of added question IDs.
-        //         $addedQuestionIds[] = $randomQuestion->id;
-        
-        //         // Update the $existingQuestionIds array to avoid adding the same question multiple times.
-        //         $existingQuestionIds[] = $randomQuestion->id;
-        //     } else {
-        //         // Handle the case where there are no more unique questions to add.
-        //         break;
-        //     }
-        // }
-        
-        // // Check if the desired number of questions couldn't be added due to reaching the maximum limit.
-        // if (count($addedQuestionIds) < $numOfQuestions) {
-           
-        //     return redirect()->back()->with('error', 'Cannot add more questions. Maximum limit reached.');
-        // }
         $numOfQuestions = $request->numOfQuestions;
         $examId = $id;
         
@@ -395,8 +345,10 @@ class ExamController extends Controller
         $availableSlots = $maxQuestionsAllowed - count($existingQuestionIdsInCurrentExam);
         
         // Check if the requested number of questions exceeds the available slots
-        if ($numOfQuestions > $availableSlots) {
+        if ($numOfQuestions > $availableSlots + 1) {
             // Redirect back with an error message
+           
+            
             return redirect()->back()->with('error', 'Failed to add questions. Maximum number of questions allowed is ' . $maxQuestionsAllowed );
         }
         
@@ -544,8 +496,16 @@ class ExamController extends Controller
             $choice->is_correct = $isCorrect;
             $choice->save();
         }
+
+        $choice = new Choice();
+        $choice->question_id = $question->id;
+        $choice->choice_text = "No Answer";
+        $choice->is_correct = false;
+        $choice->save();
         return redirect()->back()->with('success', 'Question added successfully!');
     }
+
+
 
     
 }

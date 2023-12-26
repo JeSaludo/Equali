@@ -92,6 +92,27 @@
 
                                 </div>
 
+                                <label for="" class="my-0 text-gray-600 font-poppins ">Slot per Day
+                                </label>
+                                <div class=" w-full  mb-4 mt-1">
+                                    <input type="number" name="slot_per_day" value="{{ $option->slot_per_day }}"
+                                        class="h-[45px] w-full rounded placeholder:text-[#4E4E4E] placeholder:font-poppins placeholder:text-[16px] px-[40px] border border-[#D9DBE3]"
+                                        placeholder="Enter number of exam items" required autocomplete="off">
+
+                                </div>
+
+
+                                <label for="" class="my-0 text-gray-600 font-poppins ">Number of Qualified
+                                    Applicant
+                                </label>
+                                <div class=" w-full  mb-4 mt-1">
+                                    <input type="number" name="number_of_qualified"
+                                        value="{{ $option->number_of_qualified }}"
+                                        class="h-[45px] w-full rounded placeholder:text-[#4E4E4E] placeholder:font-poppins placeholder:text-[16px] px-[40px] border border-[#D9DBE3]"
+                                        placeholder="Enter number of exam items" required autocomplete="off">
+
+                                </div>
+
                                 <div class="relative my-6">
                                     <input type="submit" value="Save"
                                         class="text-lg font-poppins font-normal mr-2 w-full h-[45px] rounded-md bg-[#1E5CD1] hover:bg-[#134197] transition-colors duration-200 text-white">

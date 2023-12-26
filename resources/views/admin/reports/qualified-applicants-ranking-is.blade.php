@@ -42,7 +42,7 @@
 
 
                         <div>
-                            <a href="{{ route('export.applicant-ranking-result') }}"
+                            <a href="{{ route('export.qualified-is') }}"
                                 class="bg-[#365EFF] hover:bg-[#384b94] font-poppins text-white py-1 px-4 rounded-lg">
                                 Export Report
                             </a>

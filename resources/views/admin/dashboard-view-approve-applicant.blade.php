@@ -27,7 +27,7 @@
             <nav class="ml-[218px] flex justify-between items-center border-b border-[#D9DBE3] h-[60px] bg-white px-4">
 
                 <div class="flex items-center  ">
-                    <form method="get" action="{{ route('admin.dashboard.show-approved-applicant') }}"
+                    <form method="get" action=""
                         class="relative w-[300px]">
                         @csrf
                         <input type="text" name="searchTerm" placeholder="Search Here"
