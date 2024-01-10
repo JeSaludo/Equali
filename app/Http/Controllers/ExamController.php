@@ -225,7 +225,7 @@ class ExamController extends Controller
                    
                     }
                         
-                    DB::commit();
+                    
     
                     $option = Option::first();
                     return view('student.exam-result', compact('score', 'sizeOfScore', 'option'));
