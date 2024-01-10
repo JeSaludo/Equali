@@ -12,7 +12,19 @@
         <link
             href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;500;600;700&family=Poppins:wght@100;300;400;500;600;700&family=Raleway:wght@300;400;500;600;700&display=swap"
             rel="stylesheet">
-        @vite('resources/css/app.css')
+        <script src="https://cdn.tailwindcss.com"></script>
+        <script>
+            tailwind.config = {
+                theme: {
+                    fontFamily: {
+                        open: '"Open Sans"',
+                        poppins: "'Poppins', sans-serif",
+                        raleway: "'Raleway', sans-serif",
+                    },
+                    extend: {},
+                }
+            }
+        </script>
         <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
         <link rel="stylesheet" href="{{ asset('css/main.css') }}">
 
@@ -43,7 +55,7 @@
                     <form action="{{ route('admin.dashboard.update-qualified-applicant', $user->id) }}" method="POST">
                         @csrf
                         @method('put')
-                        <div class="bg-white mx-4 rounded-[12px] mt-4  h-[380px] p-4 border-gray-600 border-2">
+                        <div class="bg-white mx-4 rounded-[12px] mt-4  h-[380px] p-4 border-gray-100 border-2">
                             <div
                                 class="text-center mx-auto font-poppins text-[28px] font-semibold  text-[#26386A] uppercase">
                                 <h1>Edit Information</h1>

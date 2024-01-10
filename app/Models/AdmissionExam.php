@@ -10,7 +10,8 @@ class AdmissionExam extends Model
     use HasFactory;
 
     protected $fillable = [
-       'score',
+       'raw_score',
+       'percentage',
        'status',
        'total_score',
        

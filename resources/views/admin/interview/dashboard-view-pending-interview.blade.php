@@ -12,7 +12,19 @@
         <link
             href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;500;600;700&family=Poppins:wght@100;300;400;500;600;700&family=Raleway:wght@300;400;500;600;700&display=swap"
             rel="stylesheet">
-        @vite('resources/css/app.css')
+        <script src="https://cdn.tailwindcss.com"></script>
+        <script>
+            tailwind.config = {
+                theme: {
+                    fontFamily: {
+                        open: '"Open Sans"',
+                        poppins: "'Poppins', sans-serif",
+                        raleway: "'Raleway', sans-serif",
+                    },
+                    extend: {},
+                }
+            }
+        </script>
         <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
 
 
@@ -28,18 +40,14 @@
             @include('layout.sidenav', ['active' => 0])
             <nav class="ml-[218px] flex justify-between items-center border-b border-[#D9DBE3] h-[60px] bg-white px-4">
 
-                <div class="flex items-center  ">
-                    <form method="get" action="{{ route('admin.dashboard.report.qualifying-exam') }}"
-                        class="relative w-[300px]">
-                        @csrf
-                        <input type="text" name="searchTerm" placeholder="Search Here"
-                            value="{{ request('searchTerm') }}"
-                            class="border border-[#D9DBE3] bg-[#F7F7F7] placeholder:text-[#8B8585] px-12 py-2 pl-10 pr-10 w-full rounded-[16px]">
-                        <i
-                            class='bx bx-search text-[#8B8585] bx-sm absolute left-3 top-1/2 transform -translate-y-1/2'></i>
-                    </form>
-                </div>
-
+                <form method="get" action="{{ route('admin.dashboard.report.qualifying-exam') }}"
+                    class="relative w-[300px]">
+                    @csrf
+                    <input type="text" name="searchTerm" placeholder="Search Here"
+                        value="{{ request('searchTerm') }}"
+                        class="border border-[#D9DBE3] bg-[#F7F7F7] placeholder:text-[#8B8585] px-12 py-2 pl-10 pr-10 w-full rounded-[16px]">
+                    <i class='bx bx-search text-[#8B8585] bx-sm absolute left-3 top-1/2 transform -translate-y-1/2'></i>
+                </form>
 
                 @include('layout.user-popup')
             </nav>
@@ -100,15 +108,11 @@
 
                     </div>
                 </div>
-                <div class="flex justify-between mx-4 my-2">
-
-                    <h1 class="text-[#26386A] text-[18px]  font-bold font-raleway ">List of Interviews</h1>
 
 
-                </div>
 
 
-                <div class="flex mx-4 mb-4" id="navLinks">
+                <div class="flex mx-4 mb-4   " id="navLinks">
 
 
 
@@ -121,6 +125,19 @@
 
                     <a href="#" class="font-poppins  text-slate-500 w-full no-hover-underline"></a>
                 </div>
+
+                <div class="flex justify-between mx-4 my-2 ">
+
+                    <h1 class="text-[#26386A] text-[18px]  font-bold font-raleway ">List of Interview</h1>
+                    @include('admin.partials.select-acad-year', [
+                        'route' => 'admin.dashboard.pending-interview',
+                    ])
+                </div>
+                <div class="flex justify-end my-2 mx-4">
+
+
+                </div>
+
                 <div class="bg-white mx-4 relative  border   border-[#D9DBE3] shadow-md rounded-lg ">
                     <div class="overflow-x-auto">
                         <table

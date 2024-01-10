@@ -15,8 +15,10 @@ return new class extends Migration
             $table->id();
             $table->string("question_text");
             $table->string("category")->nullable();
+            $table->string("difficulty")->nullable();
             $table->integer('year')->nullable();
             $table->boolean('eligible_for_exam')->default(false);
+            $table->string("image_path")->nullable();
             $table->timestamps();
         });
     }

@@ -13,14 +13,15 @@ class NotifyProctor extends Mailable
 {
     use Queueable, SerializesModels;
 
-
+    public $pendingInterviewCount;
     
     /**
      * Create a new message instance.
      */
-    public function __construct()
+    public function __construct($pendingInterviewCount)
     {
         //
+        $this->pendingInterviewCount = $pendingInterviewCount;
        
     }
 

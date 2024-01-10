@@ -12,7 +12,19 @@
         <link
             href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;500;600;700&family=Poppins:wght@100;300;400;500;600;700&family=Raleway:wght@300;400;500;600;700&display=swap"
             rel="stylesheet">
-        @vite('resources/css/app.css')
+        <script src="https://cdn.tailwindcss.com"></script>
+        <script>
+            tailwind.config = {
+                theme: {
+                    fontFamily: {
+                        open: '"Open Sans"',
+                        poppins: "'Poppins', sans-serif",
+                        raleway: "'Raleway', sans-serif",
+                    },
+                    extend: {},
+                }
+            }
+        </script>
         <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
         <link rel="stylesheet" href="{{ asset('css/main.css') }}">
         <script src="https://unpkg.com/cropperjs/dist/cropper.min.js"></script>
@@ -40,13 +52,8 @@
             <section class="ml-[218px] main ">
 
                 @include('layout.popup')
-                <div class="flex justify-between items-center mb-2 mx-4 ">
 
-
-
-                </div>
-
-                <div class="w-full mx-auto">
+                <div class="w-full mx-auto mt-4">
                     <form id="form" action="{{ route('admin.dashboard.store-question') }}" method="POST"
                         enctype="multipart/form-data">
                         @csrf
@@ -175,9 +182,15 @@
                         </div>
                     @endif
                 </div>
-
+                <div>
+                    <button type="button" id="addQuestionBtn"
+                        class="text-lg font-poppins font-normal w-full h-[50px] rounded-[18px] bg-[#2B6CE6] hover:bg-[#134197] transition-colors duration-200 text-white">
+                        Add Another Question
+                    </button>
+                </div>
 
             </section>
+
 
 
 
@@ -220,8 +233,6 @@
                 });
 
             });
-
-
 
             let imgPreview = document.getElementById("preview")
 

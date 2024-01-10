@@ -14,8 +14,8 @@ use App\Http\Controllers\ItemAnalysisController;
 use App\Http\Controllers\ProgramHeadController;
 use Illuminate\Auth\Events\Login;
 use Illuminate\Support\Facades\Route;
-
-
+use App\Http\Controllers\AcademicYearController;
+use App\Http\Controllers\AppointmentController;
 
 /*
 |--------------------------------------------------------------------------
@@ -45,9 +45,11 @@ Route::get('/logout', [AuthController::class, 'Logout'])->name('auth.logout');
 
 //link  register/admin/31dsda943dasd4azx2Qesd2123
 
-Route::middleware(['admin'])->group(function () {
+Route::middleware(['admin', 'check.profile'])->group(function () {
    
     Route::get('dashboard/overview-interview', [AdminController::class, 'ShowAdminOverview'])->name('admin.dashboard.overview.proctor');
+
+    
     Route::get('dashboard/admission', [ProgramHeadController::class, 'ShowAdmission'])->name('admin.dashboard.admission');   
     Route::get('dashboard/admission-qualified', [ProgramHeadController::class, 'ShowAdmissionQualified'])->name('admin.dashboard.admission.qualified');   
     Route::get('dashboard/admission-unqualified', [ProgramHeadController::class, 'ShowAdmissionUnqualified'])->name('admin.dashboard.admission.unqualified');   
@@ -82,6 +84,9 @@ Route::middleware(['admin'])->group(function () {
     Route::put('/dashboard/exam/questions/{id}', [QuestionController::class, 'UpdateQuestionInExam'])->name('admin.dashboard.update-question-in-exam');
 
     Route::delete('/dashboard/questions/{id}/delete', [QuestionController::class, 'DeleteQuestion'])->name('admin.dashboard.delete-question');
+    Route::post('/dashboard/questions/{id}/restore', [QuestionController::class, 'RestoreQuestion'])->name('admin.dashboard.restore-question');
+   
+    
     //Interview 
     Route::get('/dashboard/pending-interview',[InterviewController::class, 'ShowPendingInterview'])->name('admin.dashboard.pending-interview');
     Route::get('/dashboard/interview/screening-form/{id}',[InterviewController::class, 'ShowScreeningForm'])->name('admin.dashboard.interview-now');
@@ -97,6 +102,9 @@ Route::middleware(['admin'])->group(function () {
    Route::get('/dashboard/applicant/{id}/edit', [ApplicantController::class, "EditApplicant"])->name('admin.dashboard.edit-applicant');
     Route::post('/dashboard/add-applicant/store', [ApplicantController::class, 'StoreApplicant'])->name('admin.dashboard.store-applicant');
     Route::put('/dashboard/applicant/{id}', [ApplicantController::class, 'UpdateApplicant'])->name('admin.dashboard.update-applicant');
+    Route::put('/dashboard/applicant-status/{id}', [ApplicantController::class, 'UpdateApplicantStatus'])->name('admin.dashboard.update-applicant-status');
+   
+   
     Route::delete('/dashboard/applicant/{id}/delete', [ApplicantController::class, 'DeleteApplicant'])->name('admin.dashboard.delete-applicant');
         
     Route::get('/dashboard/view-applicant', [ApplicantController::class, 'ShowApplicant'])->name('admin.dashboard.show-applicant');
@@ -111,24 +119,19 @@ Route::middleware(['admin'])->group(function () {
     Route::get('/dashboard/applicant/{id}/archived', [ApplicantController::class, 'ArchiveApplicant'])->name('admin.dashboard.archive-applicant');
     Route::get('/dashboard/applicant/{id}/reject', [ApplicantController::class, 'ArchiveApplicantWithEmail'])->name('admin.dashboard.reject-applicant');
     
-    
-    
+    Route::get('/dashboard/view-waitlisted/{id}', [ApplicantController::class, 'ShowUpdateWaitListed'])->name('admin.dashboard.show-waitlisted');
+    Route::put('/dashboard/update-waitlisted/{id}', [ApplicantController::class, 'UpdateWaitlisted'])->name('admin.dashboard.update-waitlisted-applicant');
     Route::get('/dashboard/applicant/{id}/approved', [ApplicantController::class, 'ApproveApplicant'])->name('admin.dashboard.approve-applicant');
     Route::post('/dashboard/applicant/approve-users', [ApplicantController::class, 'ApproveApplicantMultiple'])->name('admin.dashboard.approve-applicant-multiple');
     
     
     Route::get('/dashboard/applicant/{id}/unqualified', [ApplicantController::class, 'UnqualifyApplicant'])->name('admin.dashboard.unqualify-applicant');
     Route::get('/dashboard/applicant/{id}/qualified', [ApplicantController::class, 'QualifyApplicant'])->name('admin.dashboard.qualify-applicant');
-    
-
     //
     Route::get('/dashboard/qualified-applicant/{id}/edit', [ApplicantController::class, 'EditQualifiedApplicant'])->name('admin.dashboard.edit-qualified-appplicant');
     Route::get('/dashboard/qualified-applicant/store', [ApplicantController::class, 'StoreQualifiedApplicant'])->name('admin.dashboard.store-qualifiedpted-appplicant');
     Route::get('/dashboard/qualified-applicant/{id}/delete', [ApplicantController::class, 'DeleteQualifiedApplicant'])->name('admin.dashboard.delete-qualified-appplicant');
 
-   
-    
-   
     Route::get('/dashboard/list-of-scheduled-applicant', [InterviewController::class, 'ShowScheduleForInterview'])->name('admin.dashboard.show-qualified-appplicant');
     
     Route::put('/dashboard/qualified-applicant/{id}', [ApplicantController::class, 'UpdateQualifiedApplicant'])->name('admin.dashboard.update-qualified-applicant');
@@ -147,6 +150,7 @@ Route::middleware(['admin'])->group(function () {
     Route::get('/dashboard/view-schedule-interview', [AdminController::class, 'ShowScheduleInterview'])->name('admin.dashboard.show-schedule-interview');
     Route::get('/dashboard/view-scheduled-interview', [AdminController::class, 'ShowScheduledInterview'])->name('admin.dashboard.show-scheduled-interview');
     Route::get('/dashboard/view-scheduled-date', [AdminController::class, 'ShowScheduledDate'])->name('admin.dashboard.show-scheduled-date');
+    Route::get('/dashboard/view-scheduled-calendar', [AdminController::class, 'ShowScheduledCalendar'])->name('admin.dashboard.show-scheduled-calendar');
 
     Route::get('/dashboard/exam', [ExamController::class, 'ShowAdminExam'])->name('admin.dashboard.show-exam');
     Route::get('/dashboard/exam/{id}/edit', [ExamController::class, 'EditExam'])->name('admin.dashboard.edit-exam');
@@ -204,23 +208,27 @@ Route::middleware(['admin'])->group(function () {
 
     Route::get('/dashboard/setting', [AdminController::class,'ShowSetting'])->name('admin.show-setting');
 
-    Route::put('/dashboard/{id}/update-profile', [AdminController::class,'UpdateProfile'])->name('admin.update.profile');
     Route::put('/dashboard/update-setting', [AdminController::class,'UpdateSetting'])->name('admin.update.setting');
 
+    Route::put('/dashboard/update-setting/acad-year', [AdminController::class,'UpdateSettingForAcad'])->name('admin.update.setting-acad')->withoutMiddleware('check.profile');
+
+    //Academic Year
     
-
-
+    
     Route::get('/dashboard/report/view-interview-result', [ReportController::class, 'ShowInterviewResult'])->name('admin.show.report.interview-result');
     Route::get('/dashboard/report/qualified-result', [ReportController::class,'ExportQualified'])->name('admin.report.qualified-result');
 
     Route::get('/dashboard/report/unqualified-result', [ReportController::class,'ExportUnqualified'])->name('admin.report.unqualified-result');
     
     Route::get('/dashboard/report/interview-result', [ReportController::class,'ExportInterview'])->name('admin.report.interview-results');
-    
+    Route::post('/dashboard/setting/create-acad-year', [AcademicYearController::class,'CreateAcademicYear'])->name('admin.setting.create-acad')->withoutMiddleware('check.profile');
 
+    
+    
 });
 
-
+    Route::put('/dashboard/{id}/update-profile', [AdminController::class,'UpdateProfile'])->name('admin.update.profile')->middleware('admin');
+   
     Route::middleware('auth')->group(function(){
         Route::get('/exam', [ExamController::class,'ShowExam'])->name('student.show-exam');
         Route::post('/exam/result', [ExamController::class, 'SubmitExam'])->name('submit-exam');

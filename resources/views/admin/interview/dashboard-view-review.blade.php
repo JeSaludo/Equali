@@ -12,7 +12,19 @@
         <link
             href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;500;600;700&family=Poppins:wght@100;300;400;500;600;700&family=Raleway:wght@300;400;500;600;700&display=swap"
             rel="stylesheet">
-        @vite('resources/css/app.css')
+        <script src="https://cdn.tailwindcss.com"></script>
+        <script>
+            tailwind.config = {
+                theme: {
+                    fontFamily: {
+                        open: '"Open Sans"',
+                        poppins: "'Poppins', sans-serif",
+                        raleway: "'Raleway', sans-serif",
+                    },
+                    extend: {},
+                }
+            }
+        </script>
         <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
 
 
@@ -101,12 +113,7 @@
 
                     </div>
                 </div>
-                <div class="flex justify-between mx-4 my-2">
 
-                    <h1 class="text-[#26386A] text-[18px]  font-bold font-raleway ">List of Applicants</h1>
-
-
-                </div>
 
                 <div class="flex mx-4 mb-4" id="navLinks">
 
@@ -119,6 +126,19 @@
 
                     <a href="#" class="font-poppins  text-slate-500 w-full no-hover-underline"></a>
                 </div>
+
+                <div class="flex justify-between mx-4 my-2">
+
+                    <h1 class="text-[#26386A] text-[18px]  font-bold font-raleway ">List of Interviewed Applicant</h1>
+                    @include('admin.partials.select-acad-year', [
+                        'route' => 'admin.dashboard.show-review',
+                    ])
+
+                </div>
+
+
+
+
                 <div class="bg-white mx-4 relative  border   border-[#D9DBE3] shadow-md rounded-lg ">
                     <div class="overflow-x-auto">
                         <table
@@ -128,7 +148,7 @@
                                 <tr>
                                     <td class="px-6 py-2">ID</td>
                                     <td class="px-6 py-2">Applicant</td>
-                                    <td class="px-6 py-2">Interview Exam Schedule</td>
+                                    <td class="px-6 py-2">Date of Interview </td>
                                     <td class="px-6 py-2">Time</td>
                                     <td class="px-6 py-2">Actions</td>
                                 </tr>
@@ -162,8 +182,7 @@
                                                 <td class="px-6 py-3    whitespace-nowrap">
 
                                                     {{ \Carbon\Carbon::parse($user->qualifiedStudent->start_time)->format('h:i A') }}
-                                                    -
-                                                    {{ \Carbon\Carbon::parse($user->qualifiedStudent->end_time)->format('h:i A') }}
+
 
                                                 </td>
                                             @else
@@ -181,8 +200,8 @@
                                             class='bx bx-calendar-check'></i></a> --}}
                                                 <a class="mx-1 hover:text-green-400"
                                                     href="{{ route('admin.dashboard.edit-screening-form', $user->id) }}"
-                                                    title="Interview Now">
-                                                    <i class='bx bx-conversation'></i>
+                                                    title="Edit Interview">
+                                                    <i class='bx bx-edit'></i>
                                                 </a>
 
                                                 <a href="{{ route('admin.dashboard.read-interview', $user->id) }}">
@@ -195,28 +214,28 @@
                                 @endif
                             </tbody>
                         </table>
-                        {{-- <nav
-                        class="bg-white border-t rounded-b-lg text-[14px] font-poppins border-[#D9DBE3] w-full py-2 flex justify-start pl-2 items-center">
+                        <nav
+                            class="bg-white border-t rounded-b-lg text-[14px] font-poppins border-[#D9DBE3] w-full py-2 flex justify-start pl-2 items-center">
 
-                        <a href="{{ $users->previousPageUrl() }}"
-                            class="flex items-center justify-center px-3 h-8 ms-0 leading-tight text-gray-500 bg-white border border-e-0 border-gray-300 rounded-s-lg hover:bg-gray-100 hover:text-[#26386A] {{ $users->currentPage() > 1 ? '' : 'opacity-50 cursor-not-allowed' }}">
-                            <span class="">Previous</span>
+                            <a href="{{ $users->previousPageUrl() }}"
+                                class="flex items-center justify-center px-3 h-8 ms-0 leading-tight text-gray-500 bg-white border border-e-0 border-gray-300 rounded-s-lg hover:bg-gray-100 hover:text-[#26386A] {{ $users->currentPage() > 1 ? '' : 'opacity-50 cursor-not-allowed' }}">
+                                <span class="">Previous</span>
 
-                        </a>
+                            </a>
 
-                        <div class="flex">
-                            @for ($i = 1; $i <= $users->lastPage(); $i++)
-                                <a href="{{ $users->url($i) }}"
-                                    class="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-[#26386A]  {{ $i == $users->currentPage() ? 'bg-slate-100' : '' }}">
-                                    {{ $i }}
-                                </a>
-                            @endfor
-                        </div>
-                        <a href="{{ $users->nextPageUrl() }}"
-                            class="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 rounded-e-lg hover:bg-gray-100 hover:text-[#26386A] {{ $users->hasMorePages() ? '' : 'opacity-50 cursor-not-allowed' }}">
-                            <span class="">Next</span>
-                        </a>
-                    </nav> --}}
+                            <div class="flex">
+                                @for ($i = 1; $i <= $users->lastPage(); $i++)
+                                    <a href="{{ $users->url($i) }}"
+                                        class="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-[#26386A]  {{ $i == $users->currentPage() ? 'bg-slate-100' : '' }}">
+                                        {{ $i }}
+                                    </a>
+                                @endfor
+                            </div>
+                            <a href="{{ $users->nextPageUrl() }}"
+                                class="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 rounded-e-lg hover:bg-gray-100 hover:text-[#26386A] {{ $users->hasMorePages() ? '' : 'opacity-50 cursor-not-allowed' }}">
+                                <span class="">Next</span>
+                            </a>
+                        </nav>
                     </div>
 
                 </div>

@@ -16,7 +16,19 @@
         <link href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.2.0/flowbite.min.css" rel="stylesheet" />
         <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
         <link rel="stylesheet" href="{{ asset('css/main.css') }}">
-        @vite('resources/css/app.css')
+        <script src="https://cdn.tailwindcss.com"></script>
+        <script>
+            tailwind.config = {
+                theme: {
+                    fontFamily: {
+                        open: '"Open Sans"',
+                        poppins: "'Poppins', sans-serif",
+                        raleway: "'Raleway', sans-serif",
+                    },
+                    extend: {},
+                }
+            }
+        </script>
 
     </head>
 
@@ -65,7 +77,7 @@
                         <a href="{{ route('admin.dashboard.show-scheduled-interview') }}"
                             class="font-poppins  active text-slate-500  nav-link whitespace-nowrap">Scheduled
                             Interview</a>
-                        <a href="{{ route('admin.dashboard.show-scheduled-date') }}"
+                        <a href="{{ route('admin.dashboard.show-scheduled-calendar') }}"
                             class="font-poppins   text-slate-500  nav-link whitespace-nowrap">Scheduled
                             Date</a>
                         <a href="#" class="font-poppins  text-slate-500 w-full no-hover-underline"></a>

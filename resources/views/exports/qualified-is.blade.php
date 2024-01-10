@@ -11,42 +11,42 @@
     </thead>
 
     <tbody class="text-center ">
-        @foreach ($results as $index => $result)
+        @foreach ($users as $index => $user)
             <tr class="{{ $index % 2 == 0 ? 'bg-[#F6F8FF]' : 'bg-white' }} border-b border-gray-100">
                 <td class="px-6 py-3">{{ $index + 1 }}</td>
-                <td class="px-6 py-3  whitespace-nowrap">{{ $result->user->first_name }},
-                    {{ $result->user->last_name }}</td>
+                <td class="px-6 py-3  whitespace-nowrap">{{ $user->last_name }},
+                    {{ $user->first_name }}</td>
                 <td class="px-6 py-3  whitespace-nowrap">
                     <p class="font-medium font-poppins  text-[#617388]">
-                        @if (empty($result->measure_a_score))
+                        @if (empty($user->measure_a_score))
                             N/A
                         @else
-                            {{ $result->measure_a_score }}
+                            {{ $user->measure_a_score }}
                         @endif
                     </p>
                 </td>
                 <td class="px-6 py-3  whitespace-nowrap">
                     <p class="font-medium font-poppins text-[#617388]">
-                        @if (empty($result->measure_b_score))
+                        @if (empty($user->measure_b_score))
                             N/A
                         @else
-                            {{ $result->measure_b_score }}
+                            {{ $user->measure_b_score }}
                         @endif
                     </p>
                 </td>
                 <td class="px-6 py-3  whitespace-nowrap">
                     <p class="font-medium font-poppins text-[#617388]">
-                        @if (empty($result->measure_c_score))
+                        @if (empty($user->measure_c_score))
                             N/A
                         @else
-                            {{ $result->measure_c_score }}
+                            {{ $user->measure_c_score }}
                         @endif
                     </p>
                 </td>
                 <td class="px-6 py-3  whitespace-nowrap">
                     <p class="font-medium font-poppins text-[#617388]">
-                        @if ($result->weighted_average)
-                            {{ $result->weighted_average }}
+                        @if ($user->weighted_average)
+                            {{ $user->weighted_average }}
                         @else
                             N/A
                         @endif

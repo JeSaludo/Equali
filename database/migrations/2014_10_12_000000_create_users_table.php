@@ -21,13 +21,16 @@ return new class extends Migration
             $table->string('contact_number')->nullable();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password')->nullable();
-            $table->enum('role', ['ProgramHead','Proctor', 'Dean', 'Tester', 'Student'])->default('Student');
+            $table->enum('role', ['ProgramHead','Proctor', 'Dean', 'Developer', 'Student'])->default('Student');
             $table->string('status')->nullable();
-        
+            $table->boolean('settings_setup_completed')->default(false);
             $table->tinyInteger('exam_taken')->nullable();
            
             $table->rememberToken();
             $table->timestamps();
+
+            
+          
         });
     }
 

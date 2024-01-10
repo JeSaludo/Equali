@@ -183,6 +183,18 @@ class QuestionController extends Controller
         return redirect()->route('admin.dashboard.view-question')->with('success', 'Question discarded successfully!');
     }
 
+    public function RestoreQuestion($id){
+        $question = Question::findOrFail($id);
+       
+     
+        $question->category = "";
+        $question->save();
+
+ 
+        return redirect()->route('admin.dashboard.view-question')->with('success', 'Question restored successfully!');
+   
+    }
+
 
     
 

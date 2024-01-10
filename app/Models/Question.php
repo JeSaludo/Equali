@@ -12,7 +12,7 @@ class Question extends Model
 
     protected $fillable = ['question_text','category', 'image_path','year','eligible_for_exam']; 
 
-
+ 
 
     public function choices(){
         return $this->hasMany(Choice::class);

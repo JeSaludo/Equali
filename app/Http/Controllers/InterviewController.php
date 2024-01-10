@@ -5,16 +5,26 @@ namespace App\Http\Controllers;
 use App\Models\Result;
 use App\Models\StudentInfo;
 use App\Models\User;
+use App\Models\Option;
+use App\Models\AcademicYears;
 use App\Models\QualifiedStudent;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
 use Exception;
 class InterviewController extends Controller
 {
-    function ShowPendingInterview(){
+    function ShowPendingInterview(Request $request){
         $userCount = User::all();
-        $users = User::where('role', 'Student')->where('status', 'Pending Interview')
+
+        $option = Option::first();
+
+        $currentAcademicYear = AcademicYears::where('year_name', $option->academic_year_name)->first();
+        $academicYears = AcademicYears::all();
+
+        $selectedAcademicYear = $request->input('academicYears');
+        $users = User::where('role', 'Student')->where('status', 'Pending Interview')        
         ->with('qualifiedStudent')
         ->doesntHave('studentInfo')
         ->whereDoesntHave('qualifiedStudent', function ($query) {
@@ -22,13 +32,18 @@ class InterviewController extends Controller
         })
         ->latest('created_at');
         
+        if(isset($selectedAcademicYear)){
+            $users->where('academic_year_id', $selectedAcademicYear);
+        }
+        
         $users = $users->paginate(10);
+        $users->appends(['academicYears' => $request->academicYears]);
         $totalInterview = User::with('studentInfo')
         ->whereHas('studentInfo', function ($query) {
             $query->where('interview', 1);
         });
         
-        return view('admin.interview.dashboard-view-pending-interview', compact('users','userCount','totalInterview'));
+        return view('admin.interview.dashboard-view-pending-interview', compact('users','userCount','totalInterview','academicYears','request'));
     } 
     
     function ShowScreeningForm($id){
@@ -38,21 +53,29 @@ class InterviewController extends Controller
         return view('admin.interview.dashboard-screening-form', compact('user'));
     }
 
-    function ShowReview(){
+    function ShowReview(Request $request){
 
         $userCount = User::all();
-        $users = User::where('role', 'Student')->where('status', '!=','Ready For Interview')
+
+        $academicYears = AcademicYears::all();
+        
+        $selectedAcademicYear = $request->input('academicYears');
+        $users = User::where('role', 'Student')->where('status', '!=','Pending Interview')
         ->with('qualifiedStudent')
+        ->with('result')
         ->has('studentInfo')
         ->latest('created_at');
         
-
+        if(isset($selectedAcademicYear)){
+            $users->where('academic_year_id', $selectedAcademicYear);
+        }
         $users = $users->paginate(10);
+        $users->appends(['academicYears' => $request->academicYears]);
         $totalInterview = User::with('studentInfo')
         ->whereHas('studentInfo', function ($query) {
             $query->where('interview', 1);
         });
-        return view('admin.interview.dashboard-view-review', compact('users','userCount','totalInterview'));
+        return view('admin.interview.dashboard-view-review', compact('users','userCount','totalInterview', 'academicYears','request'));
     }
 
 
@@ -123,6 +146,9 @@ class InterviewController extends Controller
            $studentInfo->year_graduated = $request->year_graduated;
            $studentInfo->average_score = $averageScore;//either make a new score db or fix this 
            $studentInfo->remarks =$request->remarks;
+
+
+           $studentInfo->interviewer_id = Auth::user()->id;
            $studentInfo->save();
     
            

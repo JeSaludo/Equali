@@ -11,7 +11,19 @@
         <link
             href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;500;600;700&family=Poppins:wght@100;300;400;500;600;700&family=Raleway:wght@300;400;500;600;700&display=swap"
             rel="stylesheet">
-        @vite('resources/css/app.css')
+        <script src="https://cdn.tailwindcss.com"></script>
+        <script>
+            tailwind.config = {
+                theme: {
+                    fontFamily: {
+                        open: '"Open Sans"',
+                        poppins: "'Poppins', sans-serif",
+                        raleway: "'Raleway', sans-serif",
+                    },
+                    extend: {},
+                }
+            }
+        </script>
         <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
         <link rel="stylesheet" href="{{ asset('css/style.css') }}">
     </head>
@@ -60,11 +72,31 @@
                         </div>
 
                         <div class="relative my-6">
-                            <input type="password" name="password"
+                            <input type="password" name="password" id="passwordInput"
                                 class="h-[50px] w-full rounded placeholder:text-[#4E4E4E] placeholder:font-poppins placeholder:text-[16px] px-[40px] border-2 border-[#D7D8D0] "
                                 placeholder="Password" required autocomplete="off">
                             <i class='bx bxs-lock-alt  text-[#4E4E4E] absolute left-0 py-4 px-4'></i>
+                            <i id="showPasswordToggle" class='bx bx-show absolute right-0 py-4 px-4 cursor-pointer'></i>
                         </div>
+
+
+                        <script>
+                            document.getElementById("showPasswordToggle").addEventListener("click", function() {
+                                var passwordInput = document.getElementById("passwordInput");
+                                var showPasswordToggleIcon = document.getElementById("showPasswordToggle");
+
+                                // Toggle the type attribute of the password input
+                                if (passwordInput.type === "password") {
+                                    passwordInput.type = "text";
+                                    // Change the icon to the hide icon (eye crossed) when the password is revealed
+                                    showPasswordToggleIcon.className = 'bx bxs-hide absolute right-0 py-4 px-4 cursor-pointer';
+                                } else {
+                                    passwordInput.type = "password";
+                                    // Change the icon to the show icon (eye) when the password is hidden
+                                    showPasswordToggleIcon.className = 'bx bx-show absolute right-0 py-4 px-4 cursor-pointer';
+                                }
+                            });
+                        </script>
 
                         <div class="flex justify-between">
                             <div class="flex items-center">

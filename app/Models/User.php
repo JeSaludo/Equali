@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -26,6 +27,7 @@ class User extends Authenticatable
         'email',
         'contact_number',
         'password',
+        'academic_year_id',
         
     ];
 
@@ -52,7 +54,10 @@ class User extends Authenticatable
     // protected function examSubmissions(){
     //     return $this->hasMany(ExamSubmission::class);
     // }
-
+    public function academicYear()
+    {
+        return $this->belongsTo(AcademicYears::class);
+    }
     public function admissionExam()
     {
         return $this->hasOne(AdmissionExam::class);
@@ -64,7 +69,7 @@ class User extends Authenticatable
     }
 
     public function studentInfo(){
-        return $this->hasOne(studentInfo::class);
+        return $this->hasOne(StudentInfo::class);
     }
 
    

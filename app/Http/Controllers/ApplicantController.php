@@ -20,6 +20,7 @@ use App\Jobs\SendScheduleEmail;
 use App\Jobs\SendAcceptanceEmail;
 use App\Jobs\SendProctorMail;
 use App\Mail\NotifyProctor;
+use App\Models\AcademicYears;
 class ApplicantController extends Controller
 {
     
@@ -51,14 +52,22 @@ class ApplicantController extends Controller
     }
 
     function StoreApplicant(Request $request){
+       
+        $option = Option::first();
 
+        if(($option->academic_year_name == null))
+        {
+            return redirect()->back()->with('error', 'Failed to add the applicant. No existing academic year.' );
+       
+        }
+    
         try{           
             $request->validate([
                 'firstName' => 'required',   
                 'lastName' => 'required',          
                 'email' => 'required|email:rfc,dns|unique:users,email',  
-                'rawScore' => 'required'
-                // 'contactNumber' => 'required|min:11|unique:users,contact_number|numeric',
+                'rawScore' => 'required',
+                'contactNumber' => 'required|min:11|unique:users,contact_number|numeric',
                
             ]);
             DB::beginTransaction();
@@ -69,6 +78,10 @@ class ApplicantController extends Controller
             $user->email = $request->email;
             $user->contact_number = $request->contactNumber;         
             $user->status = "Pending Schedule";
+
+            
+            $academicYearId = AcademicYears::where('year_name', $option->academic_year_name)->value('id');
+            $user->academic_year_id = $academicYearId;
             $user->save();
 
             $tempPassword = $user->last_name . $user->first_name . "12345";
@@ -98,8 +111,9 @@ class ApplicantController extends Controller
             $result->user_id = $user->id;            
            
 
-            $result->measure_b_score = $request->measure_b_score;
-           
+            $result->admission_score = $request->measure_b_score;    
+            $result->measure_b_score = $request->measure_b_score * 0.3;    
+    
     
             $result->save();
 
@@ -123,10 +137,22 @@ class ApplicantController extends Controller
             return redirect()->back()->with('error', 'Failed to add the applicant. Please try again .' . $e->getMessage());
         }
        
-      return redirect()->back()->with('success', 'Applicant added successfully!');       
+      return redirect()->route('admin.dashboard.admission')->with('success', 'Applicant added successfully!');       
        
     }
+    function UpdateApplicantStatus(Request $request , $id){
+        $user = User::find($id);
+        $user->status = $request->status;
+        $user->save();
+        return redirect()->back()->with('success', 'Applicant Status Changed Successfuly');
+    }
 
+    function ShowUpdateWaitListed($id){
+
+        $user = User::with('result')->with('studentInfo')->find($id);
+
+        return view('admin.dashboard-update-waitlisted', compact('user'));
+    }
     function EditApplicant($id){       
 
         $user = User::where('role', 'Student')->with('admissionExam')->findOrFail($id);
@@ -139,7 +165,7 @@ class ApplicantController extends Controller
             'firstName' => 'required',
             'lastName' => 'required',
             'email' => 'required|email:rfc,dns|unique:users,email,' . $id, 
-            // 'contactNumber' => 'required|min:11|unique:users,contact_number,' . $id, 
+            'contactNumber' => 'required|min:11|unique:users,contact_number,' . $id, 
         ]);
         
         $user = User::where('role', 'Student')->with('admissionExam')->findOrFail($id);
@@ -166,13 +192,14 @@ class ApplicantController extends Controller
         $result = Result::where('user_id', $user->id)->first();
        
         
-        $result->measure_b_score = $request->measure_b_score;    
+        $result->admission_score = $request->measure_b_score;    
+        $result->measure_b_score = $request->measure_b_score * 0.3;    
 
 
        
         $result->save();
        
-        return redirect()->route('admin.dashboard.admission')->with('success', 'User has been updated successfully');       
+        return redirect()->back()->with('success', 'Applicant Status Changed Successfuly');
     }
     
     function ApproveApplicant($id){
@@ -186,9 +213,9 @@ class ApplicantController extends Controller
         $tempPassword = $user->last_name . $user->first_name . "12345";
         $tempPassword = preg_replace('/\s+/u', '', $tempPassword);
         $tempPassword = strtolower($tempPassword);
-        //Mail::to($user->email)->send(new AcceptanceMail($user->email, $user->first_name,  $user->last_name, $tempPassword));           
+        Mail::to($user->email)->send(new AcceptanceMail($user->email, $user->first_name,  $user->last_name, $tempPassword));           
         
-       dispatch(new SendAcceptanceEmail($user->email, $user->first_name, $user->last_name, $tempPassword));
+       //dispatch(new SendAcceptanceEmail($user->email, $user->first_name, $user->last_name, $tempPassword));
        return redirect()->back()->with('success', 'Approved Applicant successfully!');       
         
     }
@@ -211,8 +238,8 @@ class ApplicantController extends Controller
             $tempPassword = $user->last_name . $user->first_name . "12345";
             $tempPassword = preg_replace('/\s+/u', '', $tempPassword);
             $tempPassword = strtolower($tempPassword);
-            //Mail::to($user->email)->send(new AcceptanceMail($user->email, $user->first_name,  $user->last_name, $tempPassword));           
-            dispatch(new SendAcceptanceEmail($user->email, $user->first_name, $user->last_name, $tempPassword));
+            Mail::to($user->email)->send(new AcceptanceMail($user->email, $user->first_name,  $user->last_name, $tempPassword));           
+            //dispatch(new SendAcceptanceEmail($user->email, $user->first_name, $user->last_name, $tempPassword));
             
         }
         return redirect()->back()->with('success', 'Approved Applicant successfully!');       
@@ -233,7 +260,7 @@ class ApplicantController extends Controller
         $user->save();      
         Mail::to($user->email)->send(new RejectMail($user->first_name,  $user->last_name));           
           
-        return redirect()->back()->with('success', 'Archive Applicant successfully!');       
+        return redirect()->back()->with('success', 'Unqualify Applicant successfully!');       
     }
 
     function UnqualifyApplicant($id){
@@ -288,14 +315,16 @@ class ApplicantController extends Controller
         return view('admin.dashboard-edit-qualified-applicant', compact('user'));
     }
 
-    function UpdateQualifiedApplicant(Request $request, $id){
-        $request->validate([
-            'firstName' => 'required',
-            'lastName' => 'required',
-            'email' => 'required|email|unique:users,email,' . $id, 
-           
-        ]);
 
+    function UpdateWaitlisted(Request $request, $id){
+        $user = User::where('role', 'Student')->findOrFail($id);
+        $user->status = $request->status;       
+        $user->save();
+
+        return redirect()->back()->with('success', 'You have successfuly update the waitlisted');
+    }
+    function UpdateQualifiedApplicant(Request $request, $id){
+        
 
         
         $user = User::where('role', 'Student')->with('qualifiedStudent')->findOrFail($id);
@@ -406,17 +435,21 @@ class ApplicantController extends Controller
             $temp_user->status = "Pending Interview";
             $temp_user->save();
 
+            Mail::to($user->user->email)->send(new ScheduleMail($user->exam_schedule_date, $user->start_time, $temp_user->first_name, $temp_user->last_name, $user->location));
+    //       
             // Dispatch email notification
-            dispatch(new SendScheduleEmail($user->user->email, $user->exam_schedule_date, $user->start_time, $user->first_name, $user->last_name, $user->location));
+            //dispatch(new SendScheduleEmail($user->user->email, $user->exam_schedule_date, $user->start_time, $user->first_name, $user->last_name, $user->location));
 
             }
     
            }
-    
+        
+        $pendingInterviewCount = User::where('status', 'Pending Interview')->count();
+        
         // Notify proctors
         $proctors = User::where('role', 'Proctor')->get();
         foreach ($proctors as $proctor) {
-            Mail::to($proctor->email)->send(new NotifyProctor());
+            Mail::to($proctor->email)->send(new NotifyProctor($pendingInterviewCount));
         }
     
         return redirect()->route('admin.dashboard.show-schedule-interview')->with("success",'Schedule added successfuly');

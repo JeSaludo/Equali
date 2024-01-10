@@ -12,7 +12,19 @@
         <link
             href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;500;600;700&family=Poppins:wght@100;300;400;500;600;700&family=Raleway:wght@300;400;500;600;700&display=swap"
             rel="stylesheet">
-        @vite('resources/css/app.css')
+        <script src="https://cdn.tailwindcss.com"></script>
+        <script>
+            tailwind.config = {
+                theme: {
+                    fontFamily: {
+                        open: '"Open Sans"',
+                        poppins: "'Poppins', sans-serif",
+                        raleway: "'Raleway', sans-serif",
+                    },
+                    extend: {},
+                }
+            }
+        </script>
         <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
         <link rel="stylesheet" href="{{ asset('css/main.css') }}">
 
@@ -36,33 +48,7 @@
                 @include('layout.popup')
 
 
-                <div class="flex  mx-4 mt-1 justify-between items-center">
-                    <h1 class="text-[#26386A] mx-4 font-bold text-xl  py-2">Item Analysis</h1>
-                    <form action="{{ route('export.item-analysis-result') }}" method="post">
-                        @csrf
-                        <input name="selectedYear" type="hidden" value="{{ $selectedYear }}">
 
-
-                        <button type="submit"
-                            class="bg-[#365EFF] hover:bg-[#384b94] font-poppins text-white py-1 px-4 rounded-lg">
-                            Export Report
-                        </button>
-                    </form>
-
-                </div>
-                <div class="mx-5 w-[140px]">
-                    <form action="{{ route('admin.dashboard.item-analysis-report') }}" method="GET" id="yearForm">
-                        <select id="year" name="selected_year"
-                            class="font-poppins bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
-                            onchange="document.getElementById('yearForm').submit()">
-                            <option value="" selected>Select Year</option>
-                            @foreach ($uniqueYears as $year)
-                                <option value="{{ $year }}" {{ $selectedYear == $year ? 'selected' : '' }}>
-                                    {{ $year }}</option>
-                            @endforeach
-                        </select>
-                    </form>
-                </div>
 
                 <div class="flex mx-4 mb-4" id="navLinks">
 
@@ -75,16 +61,41 @@
                     <a href="#" class="font-poppins  text-slate-500 w-full no-hover-underline"></a>
                 </div>
 
+                <div class="flex  mx-4 mt-1 justify-between items-center">
+                    <h1 class="text-[#26386A] mx-4 font-bold text-xl  py-2">Item Analysis</h1>
+
+                    <div class="flex gap-2">
+                        <div class=" w-[200px]">
+                            <form action="{{ route('admin.dashboard.item-analysis-report') }}" method="GET"
+                                id="yearForm">
+                                <select id="year" name="selected_year"
+                                    class="py-1 text-[16px] w-full rounded border border-[#D9DBE3] px-6"
+                                    onchange="document.getElementById('yearForm').submit()">
+                                    <option value="" selected>Select Year</option>
+                                    @foreach ($uniqueYears as $year)
+                                        <option value="{{ $year }}"
+                                            {{ $selectedYear == $year ? 'selected' : '' }}>
+                                            {{ $year }}</option>
+                                    @endforeach
+                                </select>
+                            </form>
+                        </div>
+                        <form action="{{ route('export.item-analysis-result') }}" method="post">
+                            @csrf
+                            <input name="selectedYear" type="hidden" value="{{ $selectedYear }}">
 
 
-                <div class="flex justify-between mx-4 my-2">
-
-
-
-
+                            <button type="submit"
+                                class="bg-[#365EFF] hover:bg-[#384b94] font-poppins text-white py-1 px-4 rounded-lg">
+                                Export
+                            </button>
+                        </form>
+                    </div>
 
 
                 </div>
+
+
 
 
 

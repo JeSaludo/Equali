@@ -17,6 +17,7 @@ return new class extends Migration
             $table->float('di');          
             $table->foreign('question_id')->references('id')->on('questions')->onDelete('cascade');
             $table->unsignedInteger('year');
+
             $table->timestamps();
         });
     }

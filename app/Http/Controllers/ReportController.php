@@ -17,6 +17,7 @@ use App\Models\Option;
 use App\Models\Result;
 use App\Models\Question;
 use App\Models\Choice;
+use App\Models\AcademicYears;
 use App\Models\ExamQuestion;
 use App\Models\ExamResponse;
 use App\Models\User;
@@ -28,89 +29,123 @@ use Illuminate\Support\Facades\Storage;
 
 class ReportController extends Controller
 {
-    public function ShowQualifyingExam(Request $request){
+    public function ShowQualifyingRankingResult(Request $request){
 
+       
+        $academicYears = AcademicYears::all();
+        $selectedAcademicYear = $request->input('academicYears');
+
+       
+
+
+        $users = DB::table('users')
+        ->select('users.*', 'results.*')
+        ->join('results', 'results.user_id', '=', 'users.id')
+        ->where('users.role', 'Student')
+        ->whereNotNull('results.weighted_average')
+        ->orderByDesc('results.weighted_average')
+        ->where('users.status', 'Qualified');
+
+        if(isset($selectedAcademicYear)){
+            $users->where('academic_year_id', $selectedAcademicYear);
+        }
         
-        $results = Result::with('user')->whereNotNull('weighted_average')->orderByDesc('total_exam_Score');
+        $users = $users->paginate(10);
+        $users->appends(['academicYears' => $request->academicYears]);
+    
+    
         
-        $searchTerm = $request->input('searchTerm');
-        if (!empty($searchTerm)) {
-            $results->join('users', 'results.user_id', '=', 'users.id')
-                ->where(function ($query) use ($searchTerm) {
-                    $query->where('users.first_name', 'like', '%' . $searchTerm . '%')
-                        ->orWhere('users.last_name', 'like', '%' . $searchTerm . '%')
-                        ->orWhere('measure_c_score', 'like', '%' . $searchTerm . '%');
-                   
-                });
-        }      
+        return view('admin.reports.qualified-applicants-ranking', compact('users','academicYears','selectedAcademicYear','request'));
+    }
+
+    
+
+    
+
+    public function ShowQualifyingRankingResultIS(Request $request){
 
       
+        $academicYears = AcademicYears::all();
+        $selectedAcademicYear = $request->input('academicYears');
 
-        $results = $results->paginate(10);
+        $users = DB::table('users')
+        ->select('users.*', 'results.*', 'student_infos.*')
+        ->join('results', 'results.user_id', '=', 'users.id')
+        ->join('student_infos', 'student_infos.user_id', '=', 'users.id')
+        ->where('users.role', 'Student')
+        ->where('users.status', 'Qualified')
+        ->where('student_infos.course','IS')
+        ->whereNotNull('results.weighted_average')
+        ->orderByDesc('results.weighted_average');
+       
+
+        if(isset($selectedAcademicYear)){
+            $users->where('academic_year_id', $selectedAcademicYear);
+        }
+        
+        $users = $users->paginate(10);
+        $users->appends(['academicYears' => $request->academicYears]);
+    
+        return view('admin.reports.qualified-applicants-ranking-is', compact('users','academicYears','selectedAcademicYear','request'));
+    }
+
+    public function ShowQualifyingRankingResultIT(Request $request){
+
+     
+        $academicYears = AcademicYears::all();
+        $selectedAcademicYear = $request->input('academicYears');
+
+        $users = DB::table('users')
+        ->select('users.*', 'results.*', 'student_infos.*')
+        ->join('results', 'results.user_id', '=', 'users.id')
+        ->join('student_infos', 'student_infos.user_id', '=', 'users.id')
+        ->where('users.role', 'Student')
+        ->where('users.status', 'Qualified')
+        ->where('student_infos.course','IT')
+        ->whereNotNull('results.weighted_average')
+        ->orderByDesc('results.weighted_average');
+       
+
+        if(isset($selectedAcademicYear)){
+            $users->where('academic_year_id', $selectedAcademicYear);
+        }
+        
+        $users = $users->paginate(10);
+        $users->appends(['academicYears' => $request->academicYears]);
+        
+        
+        return view('admin.reports.qualified-applicants-ranking-it', compact('users','academicYears','selectedAcademicYear','request'));
+    }
+    public function ShowQualifyingExam(Request $request){
+
+        $academicYears = AcademicYears::all();
+        $selectedAcademicYear = $request->input('academicYears');
+        
+        
+        $users = DB::table('users')
+        ->select('users.*', 'results.*')
+        ->join('results', 'results.user_id', '=', 'users.id')        
+        ->where('users.role', 'Student') 
+        ->whereNotNull('results.weighted_average')
+        ->orderByDesc('results.total_exam_score');
+
+       
+        if(isset($selectedAcademicYear)){
+            $users->where('academic_year_id', $selectedAcademicYear);
+        }
+        
+        
+
+        $users = $users->paginate(10);
+        $users->appends(['academicYears' => $request->academicYears]);
+      
         $option = Option::first();
-        return view('admin.reports.list-of-qualifying-exam', compact('results', 'option'));
+        return view('admin.reports.list-of-qualifying-exam', compact('users', 'option','academicYears','selectedAcademicYear','request'));
     }
-
-    public function ShowQualifyingRankingResult(){
-
-        // $users = User::where('role', 'Student')
-        // ->with('result')
-        // ->get();//can use result with student so it easy to use order by
-       
-
-        $results = Result::with('user')
-        ->whereHas('user', function ($query) {
-            $query->where('status', 'Qualified');
-        })
-        ->whereNotNull('weighted_average')
-        ->orderByDesc('weighted_average')
-        ->paginate(10);
-    
-    
-        
-        return view('admin.reports.qualified-applicants-ranking', compact('results'));
-    }
-
-    public function ShowQualifyingRankingResultIS(){
-
-        // $users = User::where('role', 'Student')
-        // ->with('result')
-        // ->get();//can use result with student so it easy to use order by
-       
-
-        $results = Result::with(['user', 'user.studentInfo'])
-        ->whereNotNull('weighted_average')
-        ->whereHas('user.studentInfo', function ($query) {
-            $query->where('course', "IS")->where('status', 'Qualified');
-        })
-        ->orderByDesc('weighted_average')
-        ->paginate(10);
-    
-        return view('admin.reports.qualified-applicants-ranking-is', compact('results'));
-    }
-
-    public function ShowQualifyingRankingResultIT(){
-
-        // $users = User::where('role', 'Student')
-        // ->with('result')
-        // ->get();//can use result with student so it easy to use order by
-       
-        $results = Result::with(['user', 'user.studentInfo'])
-        ->whereNotNull('weighted_average')
-        ->whereHas('user.studentInfo', function ($query) {
-            $query->where('course', "IT")->where('status', 'Qualified');
-        })
-        ->orderByDesc('weighted_average')
-        ->paginate(10);
-
-        
-        
-        return view('admin.reports.qualified-applicants-ranking-it', compact('results'));
-    }
-   
     public function ShowItemAnalysisChart(){
        
-        
+       
+
         $questions = Question::orderBy('id', 'asc')->get();
       
         $questions->load('choices', 'examResponse');
@@ -500,14 +535,34 @@ class ReportController extends Controller
     } 
     
  
-   public function ExportApplicantRanking(){
-        return Excel::download(new ApplicantRankingExport, 'Rankings-Report.xlsx');
+   public function ExportApplicantRanking(Request $request){
+       
+
+
+
+        $acad = AcademicYears::find($request->academicYears);
+
+       
+        if($acad && $acad->year_name != null)
+        {
+            $year = $acad->year_name;
+            return Excel::download(new ApplicantRankingExport($request->academicYears), 'Qualifying-Rankings-Report-' . $year .'.xlsx');
+        }
+        return Excel::download(new ApplicantRankingExport($request->academicYears), 'Qualifying-Rankings-Report.xlsx');
    }
 
-   public function ExportQualifyingExam() 
-   {
-       return Excel::download(new ResultExport, 'Qualifying-Exam-Report.xlsx');
-   }
+    public function ExportQualifyingExam(Request $request) 
+    { 
+        $acad = AcademicYears::find($request->academicYears);
+
+       
+        if($acad && $acad->year_name != null)
+        {
+            $year = $acad->year_name;
+            return Excel::download(new ResultExport($request->academicYears), 'Qualifying-Exam-Report-' . $year .'.xlsx');
+        }
+        return Excel::download(new ResultExport($request->academicYears), 'Qualifying-Exam-Report-All.xlsx');
+    }
 
     public function ExportItemAnalysis(Request $request) 
     {
@@ -522,39 +577,59 @@ class ReportController extends Controller
             $items->where('year', $selectedYear);
         }
         
-        
-      
-      
-
-        
         return Excel::download(new ItemAnalysisReport($items, $selectedYear), 'Item-Analysis-Report.xlsx');
     }
-   public function ShowUnqualifiedApplicants()
+   public function ShowUnqualifiedApplicants(Request $request)
    {
    
-    $results = Result::with('user')
-    ->whereHas('user', function ($query) {
-        $query->where('status', 'Unqualified');
-    })
-    ->whereNotNull('weighted_average');
-  
-    $results = $results->paginate(10);
+    $academicYears = AcademicYears::all();
+    $selectedAcademicYear = $request->input('academicYears');
 
-    return view('admin.reports.list-unqualified-applicant', compact('results'));
+    $users = DB::table('users')
+    ->select('users.*', 'results.*')
+    ->join('results', 'results.user_id', '=', 'users.id')
+    ->where('users.role', 'Student')
+    ->whereNotNull('weighted_average')      
+    ->where('users.status', 'Unqualified');
+
+    if(isset($selectedAcademicYear)){
+        $users->where('academic_year_id', $selectedAcademicYear);
+    }
+    
+    
+
+    $users = $users->paginate(10);
+    $users->appends(['academicYears' => $request->academicYears]);
+
+    return view('admin.reports.list-unqualified-applicant', compact('users','academicYears','selectedAcademicYear','request'));
+
+
+    
    }
 
-   public function ShowQualifiedApplicants()
+   public function ShowQualifiedApplicants(Request $request)
    {
-   
-    $results = Result::with('user')//studentInfo
-    ->whereHas('user', function ($query) {
-        $query->where('status', 'Qualified');
-    })
-    ->whereNotNull('weighted_average');
-    
-    $results = $results->paginate(10);
 
-    return view('admin.reports.list-qualified-applicant', compact('results'));
+        $academicYears = AcademicYears::all();
+        $selectedAcademicYear = $request->input('academicYears');
+    
+        $users = DB::table('users')
+        ->select('users.*', 'results.*')
+        ->join('results', 'results.user_id', '=', 'users.id')
+        ->where('users.role', 'Student')
+        ->whereNotNull('weighted_average')      
+        ->where('users.status', 'Qualified');
+    
+        if(isset($selectedAcademicYear)){
+            $users->where('academic_year_id', $selectedAcademicYear);
+        }
+        
+        
+    
+        $users = $users->paginate(10);
+        $users->appends(['academicYears' => $request->academicYears]);
+
+        return view('admin.reports.list-qualified-applicant', compact('users','academicYears','selectedAcademicYear','request'));
    }
 
    public function RetainQuestion($id){
@@ -603,7 +678,7 @@ class ReportController extends Controller
 
         $question = Question::findOrFail($request->question_id);
         $question->question_text = $request->question_text;
-        $question->category = null;
+        $question->category = "Revised";
         $currentYear = date('Y'); 
         $question->save();
 
@@ -616,6 +691,7 @@ class ReportController extends Controller
             $question->image_path = $newFileName;
         }
         $question->save();
+
         // Delete existing choices for this question (optional)
         $question->choices()->delete();
     
@@ -658,33 +734,98 @@ class ReportController extends Controller
         return view('admin.reports.item-analysis-report', compact('items','uniqueYears','selectedYear'));
     }
    
-    public function ShowInterviewResult(){
-        $results = Result::with('user')->whereNotNull('measure_a_score')->orderByDesc('measure_a_score')
-        ->paginate(10);
+    public function ShowInterviewResult(Request $request){
+
+        $academicYears = AcademicYears::all();
+
+        $selectedAcademicYear = $request->input('academicYears');
+       
+
+        $users = DB::table('users')
+        ->select('users.*', 'results.*', 'student_infos.*')
+        ->join('results', 'results.user_id', '=', 'users.id')
+        ->join('student_infos', 'student_infos.user_id', '=', 'users.id') 
+        ->whereNotNull('measure_a_score')
+        ->where('users.role', 'Student')
+        ->orderByDesc('measure_a_score');
 
 
+
+        if(isset($selectedAcademicYear)){
+            $users->where('academic_year_id', $selectedAcademicYear);
+        }
+        $users = $users->paginate(10);
+        $users->appends(['academicYears' => $request->academicYears]);
+
+
+        return view('admin.reports.list-of-inteview-result', compact('users','academicYears','selectedAcademicYear', 'request'));
+    }
+
+    public function ExportQualified(Request $request){
+
+        $acad = AcademicYears::find($request->academicYears);
+
+       
+        if($acad && $acad->year_name != null)
+        {
+            $year = $acad->year_name;
+            return Excel::download(new QualifiedApplicantExport($request->academicYears), 'QualifiedApplicant-' . $year .'.xlsx');
+        }
+        return Excel::download(new QualifiedApplicantExport($request->academicYears), 'QualifiedApplicant.xlsx');
+    }
+
+    public function ExportUnqualified(Request $request){
+
+        $acad = AcademicYears::find($request->academicYears);
+
+       
+        if($acad && $acad->year_name != null)
+        {
+            $year = $acad->year_name;
+            return Excel::download(new UnqualifiedApplicantExport($request->academicYears), 'Unqualified-Applicant-' . $year .'.xlsx');
+        }
+        return Excel::download(new UnqualifiedApplicantExport($request->academicYears), 'UnqualifiedApplicant-All.xlsx');
+    }
+
+    public function ExportInterview(Request $request){        
+
+        $acad = AcademicYears::find($request->academicYears);
+
+       
+        if($acad && $acad->year_name != null)
+        {
+            $year = $acad->year_name;
+            return Excel::download(new InterviewExport($request->academicYears), 'Interview-' . $year .'.xlsx');
+        }
+        
+        return Excel::download(new InterviewExport($request->academicYears), 'Interview-all.xlsx');
 
         
-        return view('admin.reports.list-of-inteview-result', compact('results'));
-    }
+       }
 
-    public function ExportQualified(){
-        return Excel::download(new QualifiedApplicantExport, 'QualifiedApplicant.xlsx');
-    }
+    public function ExportQualifiedIT(Request $request){
+        $acad = AcademicYears::find($request->academicYears);
 
-    public function ExportUnqualified(){
-        return Excel::download(new UnqualifiedApplicantExport, 'UnqualifiedApplicant.xlsx');
+       
+        if($acad && $acad->year_name != null)
+        {
+            $year = $acad->year_name;
+            return Excel::download(new QualifiedITExport($request->academicYears), 'QualifidIT-' . $year .'.xlsx');
+        }
+        
+        return Excel::download(new QualifiedITExport($request->academicYears), 'QuaifiedIT-all.xlsx');
     }
+    public function ExportQualifiedIS(Request $request){
+        $acad = AcademicYears::find($request->academicYears);
 
-    public function ExportInterview(){
-        return Excel::download(new InterviewExport, 'Interview.xlsx');
-    }
-
-    public function ExportQualifiedIT(){
-        return Excel::download(new QualifiedITEXport, 'QuaifiedIT.xlsx');
-    }
-    public function ExportQualifiedIS(){
-        return Excel::download(new QualifiedISEXport, 'QuaifiedIS.xlsx');
+       
+        if($acad && $acad->year_name != null)
+        {
+            $year = $acad->year_name;
+            return Excel::download(new QualifiedISExport($request->academicYears), 'QualifidIS-' . $year .'.xlsx');
+        }
+        
+        return Excel::download(new QualifiedISExport($request->academicYears), 'QuaifiedIS-all.xlsx');
     }
 
 }

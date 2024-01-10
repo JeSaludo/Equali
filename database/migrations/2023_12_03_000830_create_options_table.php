@@ -18,6 +18,9 @@ return new class extends Migration
             $table->bigInteger('qualifying_number_of_items');// 
             $table->bigInteger('qualifying_timer');
             $table->bigInteger('slot_per_day')->default(30);
+            $table->bigInteger('number_of_qualified')->default(30);
+            $table->string('academic_year_name')->nullable();
+            
             $table->timestamps();
         });
     }

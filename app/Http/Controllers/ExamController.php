@@ -36,23 +36,23 @@ class ExamController extends Controller
 
         if ($user->exam_taken === null) {
             $option = Option::first(); 
-            if($user->where('status', 'Ready For Exam')){
+            if ($user->status === 'Ready For Exam') {
                 $exam = session('assigned_exam');
 
                 if (!$exam) {
-                
+                    
                     // If not, randomly select an exam and store its identifier in the session
                     $exam = Exam::inRandomOrder()->with('examQuestion.question.choices')->first();
                     
                  
-                    if ($exam->examQuestion->count() == $option->qualifying_number_of_items) {
+
+                    if ($exam && $exam->examQuestion->count() == $option->qualifying_number_of_items) {
                         session(['assigned_exam' => $exam]);
-                    }
-                    
-                    else {
+                    } else {
                         // Handle the case where no suitable exam is found
                         return redirect()->route('home')->with('error', 'No qualifying exam found.');
                     }
+                   
                       
 
                     //return redirect()->route('home')->with('error', 'Exam has not been set, Please try again later');
@@ -88,8 +88,7 @@ class ExamController extends Controller
                 DB::beginTransaction();
                 try{     
                    
-                    $userAnswers = $request->answer;
-                   
+                    $userAnswers = $request->answer;                   
                     $score = 0;
                   
                     $currentExamId = $request->exam_id;
@@ -138,7 +137,8 @@ class ExamController extends Controller
                     
                     $result = Result::where('user_id', $request->user_id)->first();
                     $result->total_exam_score = $score;
-                    $result->measure_c_score = $scaledValue;
+                    $result->scaled_exam_score = $scaledValue;
+                    $result->measure_c_score = $scaledValue * 0.4;
                     
                     $result->save();
                     
@@ -156,10 +156,13 @@ class ExamController extends Controller
                     if ($qualifiedCount < $option->number_of_qualified) {
                         if ($result->weighted_average >= $option->qualified_student_passing_average) {
                             $user->status = "Qualified";
-                            SendQualifyMail::dispatch($user->email, $user->first_name, $user->last_name);
+                            //SendQualifyMail::dispatch($user->email, $user->first_name, $user->last_name);
+                            Mail::to($user->email)->send(new QualifyMail( $user->first_name,$user->last_name));
                         } else {
                             $user->status = "Unqualified";
-                            SendUnqualifyMail::dispatch($user->email, $user->first_name, $user->last_name);
+                            //SendUnqualifyMail::dispatch($user->email, $user->first_name, $user->last_name);
+                            Mail::to($user->email)->send(new UnqualifyMail( $user->first_name,$user->last_name));
+        
                         }
                     } else {
 
@@ -168,7 +171,9 @@ class ExamController extends Controller
                             // SendQualifyMail::dispatch($user->email, $user->first_name, $user->last_name);
                         } else {
                             $user->status = "Unqualified";
-                            SendUnqualifyMail::dispatch($user->email, $user->first_name, $user->last_name);
+                            //SendUnqualifyMail::dispatch($user->email, $user->first_name, $user->last_name);
+                            Mail::to($user->email)->send(new UnqualifyMail( $user->first_name,$user->last_name));
+        
                         }
                        
                     }
@@ -208,26 +213,26 @@ class ExamController extends Controller
                     $deans = User::where('role', 'Dean')->get();
         
                     foreach($deans as $dean){
-                        SendExamReportEmail::dispatch($dean->email, $user->first_name, $user->last_name, $tempQuestion);
-                  
+                        //SendExamReportEmail::dispatch($dean->email, $user->first_name, $user->last_name, $tempQuestion);
+                        Mail::to($dean->email)->send(new ExamReports($user->first_name,  $user->last_name, $tempQuestion));
+                   
                     }
                         
-                    DB::commit();
+                    
     
-                    $option = Option::first();
-                    //Mail::to($this->defaultEmail)->send(new ExamReports($this->firstName, $this->lastName, $this->tempQuestion));
+                     $option = Option::first();
+                     DB::commit();
                     return view('student.exam-result', compact('score', 'sizeOfScore', 'option'));
                     
                 
                     
                 }
-                catch (\Exception $e) {        
-                    DB::rollback(); 
-                   
-                    return redirect()->back()->with('error', 'Failed to submit exam. Please try again later.');
-                    // $request->session()->forget('form_submitted');
+                catch (\Exception $e) {
+                  //  Log::error('Failed to submit exam. Error: ' . $e->getMessage());
+                    DB::rollback();
+                    return redirect()->back()->with('error', 'Failed to submit exam. Please try again later.' . $e->getMessage());
                 }
-        
+                
             }
             else{
                 return redirect()->route('home')->with("error", "You have already taken the exam!");
@@ -317,21 +322,28 @@ class ExamController extends Controller
     }
     
     public function storeRandomExam(Request $request, $id) {
-        
-        $numOfQuestions = $request->numOfQuestions;
         $examId = $id;
-        
+    
         $option = Option::first();
-        // Get the maximum allowed number of questions for the exam (assuming you have a max_questions field in your exams table)
         $maxQuestionsAllowed = $option->qualifying_number_of_items;
-        
-        // Get questions that are already associated with the current exam
+    
+        $exam = Exam::find($examId);
+    
+        $existingQuestionIds = $exam->examQuestion()->pluck('question_id')->toArray();
+    
+        $remainingSlots = $maxQuestionsAllowed - count($existingQuestionIds);
+    
+        if ($remainingSlots <= 0) {
+            return redirect()->back()->with('error', 'Maximum number of questions already added.');
+        }
+    
+
         $existingQuestionIdsInCurrentExam = DB::table('exam_questions')
             ->where('exam_id', $examId)
             ->pluck('question_id')
             ->toArray();
         
-        // Get questions that are associated with other exams
+        
         $existingQuestionIdsInOtherExams = DB::table('exam_questions')
             ->whereIn('question_id', function ($query) use ($examId) {
                 $query->select('question_id')
@@ -340,51 +352,37 @@ class ExamController extends Controller
             })
             ->pluck('question_id')
             ->toArray();
-        
-        // Calculate the available slots for new questions
-        $availableSlots = $maxQuestionsAllowed - count($existingQuestionIdsInCurrentExam);
-        
-        // Check if the requested number of questions exceeds the available slots
-        if ($numOfQuestions > $availableSlots + 1) {
-            // Redirect back with an error message
-           
+     
+
+   
+            if ($remainingSlots > 0) {
+                $newQuestions = Question::inRandomOrder()
+                    ->whereNotIn('id', array_merge($existingQuestionIdsInCurrentExam, $existingQuestionIdsInOtherExams))
+                    ->limit($remainingSlots)
+                    ->get();
             
-            return redirect()->back()->with('error', 'Failed to add questions. Maximum number of questions allowed is ' . $maxQuestionsAllowed );
-        }
-        
-        // Get random question ids excluding those already associated with the current exam or other exams
-        $randomQuestionIds = Question::whereNotIn('id', array_merge($existingQuestionIdsInCurrentExam, $existingQuestionIdsInOtherExams))
-            ->inRandomOrder()
-            ->take($numOfQuestions)
-            ->pluck('id')
-            ->toArray();
-        
-        // Check if any selected question is already associated with the current exam or other exams
-        if (count($randomQuestionIds) < $numOfQuestions) {
-            $unavailableQuestions = array_merge($existingQuestionIdsInCurrentExam, $existingQuestionIdsInOtherExams);
-        
-            // Redirect back with a specific error message
-            return redirect()->back()->with('error', 'Failed to add questions. Some questions are already associated with a certain exam');
-        }
-        
-        // Insert records into the exam_questions pivot table
-        foreach ($randomQuestionIds as $questionId) {
-            DB::table('exam_questions')->insert([
-                'exam_id' => $examId,
-                'question_id' => $questionId,
-                'created_at' => now(),
-                'updated_at' => now(),
-            ]);
-        }
-        
-        // Redirect back with a success message
-        return redirect()->back()->with('success', 'Questions added successfully!');
-        
-        
-      
+                // Check if any new questions were added
+                if ($newQuestions->count() > 0) {
+                    foreach ($newQuestions as $question) {
+                        ExamQuestion::create([
+                            'exam_id' => $examId,
+                            'question_id' => $question->id,
+                            'created_at' => now(),
+                            'updated_at' => now(),
+                        ]);
+                    }
+            
+                    return redirect()->back()->with('success', 'New questions added successfully!');
+                } else {
+                    return redirect()->back()->with('error', 'No new questions were added.');
+                }
+            } else {
+                return redirect()->back()->with('error', 'Not enough remaining slots to add new questions.');
+            }
     }
     
-
+    
+    
     function ShowQuestion($id){
 
         $exam_id = $id;
@@ -413,6 +411,68 @@ class ExamController extends Controller
 
        
     }
+    // $numOfQuestions = $request->numOfQuestions;
+    //     $examId = $id;
+        
+    //     $option = Option::first();
+    //     // Get the maximum allowed number of questions for the exam (assuming you have a max_questions field in your exams table)
+    //     $maxQuestionsAllowed = $option->qualifying_number_of_items;
+        
+    //     // Get questions that are already associated with the current exam
+    //     $existingQuestionIdsInCurrentExam = DB::table('exam_questions')
+    //         ->where('exam_id', $examId)
+    //         ->pluck('question_id')
+    //         ->toArray();
+        
+    //     // Get questions that are associated with other exams
+    //     $existingQuestionIdsInOtherExams = DB::table('exam_questions')
+    //         ->whereIn('question_id', function ($query) use ($examId) {
+    //             $query->select('question_id')
+    //                 ->from('exam_questions')
+    //                 ->where('exam_id', '!=', $examId);
+    //         })
+    //         ->pluck('question_id')
+    //         ->toArray();
+        
+    //     // Calculate the available slots for new questions
+    //     $availableSlots = $maxQuestionsAllowed - count($existingQuestionIdsInCurrentExam);
+        
+    //     // Check if the requested number of questions exceeds the available slots
+    //     if ($numOfQuestions > $availableSlots + 1) {
+    //         // Redirect back with an error message
+           
+            
+    //         return redirect()->back()->with('error', 'Failed to add questions. Maximum number of questions allowed is ' . $maxQuestionsAllowed );
+    //     }
+        
+    //     // Get random question ids excluding those already associated with the current exam or other exams
+    //     $randomQuestionIds = Question::whereNotIn('id', array_merge($existingQuestionIdsInCurrentExam, $existingQuestionIdsInOtherExams))
+    //         ->inRandomOrder()
+    //         ->take($numOfQuestions)
+    //         ->pluck('id')
+    //         ->toArray();
+        
+    //     // Check if any selected question is already associated with the current exam or other exams
+    //     if (count($randomQuestionIds) < $numOfQuestions) {
+    //         $unavailableQuestions = array_merge($existingQuestionIdsInCurrentExam, $existingQuestionIdsInOtherExams);
+        
+    //         // Redirect back with a specific error message
+    //         return redirect()->back()->with('error', 'Failed to add questions. Some questions are already associated with a certain exam');
+    //     }
+        
+    //     // Insert records into the exam_questions pivot table
+    //     foreach ($randomQuestionIds as $questionId) {
+    //         DB::table('exam_questions')->insert([
+    //             'exam_id' => $examId,
+    //             'question_id' => $questionId,
+    //             'created_at' => now(),
+    //             'updated_at' => now(),
+    //         ]);
+    //     }
+        
+    //     // Redirect back with a success message
+    //     return redirect()->back()->with('success', 'Questions added successfully!');
+        
 
     function StoreQuestionDirectly(Request $request){
 

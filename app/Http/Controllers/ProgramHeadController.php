@@ -3,91 +3,258 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Models\AcademicYears;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 
 class ProgramHeadController extends Controller
 {
-    public function ShowAdmission(){
-        $totalUserCount = User::where('role' , 'Student')->count();
-     $forInterviewCount = User::where('status' , 'Pending Interview')->count();
-        $forQualifiedCount = User::where('status' , 'Qualified')->count();
-        $forUnqualifiedCount = User::where('status' , 'Unqualified')->count();
-        $forWaitListedCount = User::where('status' , 'Waitlisted')->count();
-        $forQualifyingExamCount = User::where('status' , 'Ready For Exam')->count();
-    
-        $users = User::where('role' , 'Student')->orderByDesc('created_at')->paginate();
+
+    private function getUserCounts($academicYearId = null){
+
       
-        return view('admin.program-head.dashboard-view-admission', compact('totalUserCount', 'forInterviewCount', 'forQualifiedCount', 'forUnqualifiedCount', 'forWaitListedCount', 'forQualifyingExamCount', 'users'));
+        $users = User::where('role' , 'Student');
+
+        if (isset($academicYearId)) {
+           
+            $users->where('academic_year_id', $academicYearId);
+
+        }
+        $users = $users->get();
+      
+       
+        return [
+            "totalUserCount" => $users->where('role' , 'Student')->count(),
+            "forInterviewCount" => $users->where('status' , 'Pending Interview')->count(),
+            "forQualifiedCount" => $users->where('status' , 'Qualified')->count(),
+            "forUnqualifiedCount" => $users->where('status' , 'Unqualified')->count(),
+            "forWaitListedCount" => $users->where('status' , 'Waitlisted')->count(),
+            "forQualifyingExamCount" => $users->where('status' , 'Ready For Exam')->count(),
+        ];
     }
+
+    public function ShowAdmission(Request $request){
+       
+      
+        $userCounts = $this->getUserCounts($request->input('academicYears'));
+        $sortColumn = $request->input('sort_column', 'id'); 
+
+        $sortOrder = $request->input('sort_order', 'asc');  
+
+        $academicYears = AcademicYears::all();
+
+        $selectedAcademicYear = $request->input('academicYears');
+       
+        $users = DB::table('users')
+        ->select('users.*', 'admission_exams.raw_score', 'admission_exams.percentage')
+        ->join('admission_exams', 'admission_exams.user_id', '=', 'users.id')
+        ->where('users.role', 'Student');
+        
+        if(isset($selectedAcademicYear)){
+            $users->where('academic_year_id', $selectedAcademicYear);
+        }
+
+        $users->orderBy($sortColumn, $sortOrder);
+        $users = $users->paginate(10);
+        $users->appends(['academicYears' => $request->academicYears]);
+
+        return view('admin.program-head.dashboard-view-admission', [
+            'totalUserCount' => $userCounts['totalUserCount'],
+            'forInterviewCount' => $userCounts['forInterviewCount'],           
+            'forQualifiedCount' => $userCounts['forQualifiedCount'],
+            'forUnqualifiedCount' => $userCounts['forUnqualifiedCount'],
+            'forWaitListedCount' => $userCounts['forWaitListedCount'],
+            'forQualifyingExamCount' => $userCounts['forQualifyingExamCount'],
+            'academicYears' => $academicYears,
+            'users' => $users,
+            'request' => $request,
+            'sortColumn' => $sortColumn,
+            'sortOrder' => $sortOrder,
+        ]);
+     }
     
 
-    public function ShowAdmissionQualified(){
+    public function ShowAdmissionQualified(Request $request){
+    
+        $userCounts = $this->getUserCounts($request->input('academicYears'));
+        $sortColumn = $request->input('sort_column', 'id'); 
+        $sortOrder = $request->input('sort_order', 'asc');  
 
-        $totalUserCount = User::where('role' , 'Student')->count();
-     $forInterviewCount = User::where('status' , 'Pending Interview')->count();
-        $forQualifiedCount = User::where('status' , 'Qualified')->count();
-        $forUnqualifiedCount = User::where('status' , 'Unqualified')->count();
-        $forWaitListedCount = User::where('status' , 'Waitlisted')->count();
-        $forQualifyingExamCount = User::where('status' , 'Ready For Exam')->count();
-        $user = User::where('role' , 'Student');
+        $academicYears = AcademicYears::all();
 
-        $users = User::where('role' , 'Student')->where('status', 'Qualified');
-        $users =  $users->orderByDesc('created_at')->paginate();
+        $selectedAcademicYear = $request->input('academicYears');
+       
+        $users = DB::table('users')
+        ->select('users.*', 'admission_exams.raw_score', 'admission_exams.percentage')
+        ->join('admission_exams', 'admission_exams.user_id', '=', 'users.id')
+        ->where('users.role', 'Student')->where('users.status', 'Qualified');
+        
+        if(isset($selectedAcademicYear)){
+            $users->where('academic_year_id', $selectedAcademicYear);
+        }
 
-        return view('admin.program-head.dashboard-view-admission-for-qualified',compact('totalUserCount', 'forInterviewCount', 'forQualifiedCount', 'forUnqualifiedCount', 'forWaitListedCount', 'forQualifyingExamCount', 'users'));
+        $users->orderBy($sortColumn, $sortOrder);
+        $users = $users->paginate(10);
+        $users->appends(['academicYears' => $request->academicYears]);
+
+        return view('admin.program-head.dashboard-view-admission-for-qualified', [
+            'totalUserCount' => $userCounts['totalUserCount'],
+            'forInterviewCount' => $userCounts['forInterviewCount'],           
+            'forQualifiedCount' => $userCounts['forQualifiedCount'],
+            'forUnqualifiedCount' => $userCounts['forUnqualifiedCount'],
+            'forWaitListedCount' => $userCounts['forWaitListedCount'],
+            'forQualifyingExamCount' => $userCounts['forQualifyingExamCount'],
+            'academicYears' => $academicYears,
+            'users' => $users,
+            'request' => $request,
+            'sortColumn' => $sortColumn,
+            'sortOrder' => $sortOrder,
+        ]);
     }
-    public function ShowAdmissionUnqualified(){
-        $totalUserCount = User::where('role' , 'Student')->count();
-     $forInterviewCount = User::where('status' , 'Pending Interview')->count();
-        $forQualifiedCount = User::where('status' , 'Qualified')->count();
-        $forUnqualifiedCount = User::where('status' , 'Unqualified')->count();
-        $forWaitListedCount = User::where('status' , 'Waitlisted')->count();
-        $forQualifyingExamCount = User::where('status' , 'Ready For Exam')->count();
-   
-        $users = User::where('role' , 'Student')->where('status', 'Unqualified');
-        $users =  $users->orderByDesc('created_at')->paginate();
+    public function ShowAdmissionUnqualified(Request $request){
+        $userCounts = $this->getUserCounts($request->input('academicYears'));
+        $sortColumn = $request->input('sort_column', 'id'); 
+        $sortOrder = $request->input('sort_order', 'asc');  
 
-        return view('admin.program-head.dashboard-view-admission-for-not-qualified',compact('totalUserCount', 'forInterviewCount', 'forQualifiedCount', 'forUnqualifiedCount', 'forWaitListedCount', 'forQualifyingExamCount', 'users'));
-    }
+        $academicYears = AcademicYears::all();
 
-    public function ShowAdmissionInterview(){
-        $totalUserCount = User::where('role' , 'Student')->count();
-     $forInterviewCount = User::where('status' , 'Pending Interview')->count();
-        $forQualifiedCount = User::where('status' , 'Qualified')->count();
-        $forUnqualifiedCount = User::where('status' , 'Unqualified')->count();
-        $forWaitListedCount = User::where('status' , 'Waitlisted')->count();
-        $forQualifyingExamCount = User::where('status' , 'Ready For Exam')->count();
+        $selectedAcademicYear = $request->input('academicYears');
+       
+        $users = DB::table('users')
+        ->select('users.*', 'admission_exams.raw_score', 'admission_exams.percentage')
+        ->join('admission_exams', 'admission_exams.user_id', '=', 'users.id')
+        ->where('users.role', 'Student')->where('users.status', 'Unqualified');
+        
+        if(isset($selectedAcademicYear)){
+            $users->where('academic_year_id', $selectedAcademicYear);
+        }
 
-        $users = User::where('role' , 'Student')->where('status', 'Pending Interview');
-        $users =  $users->orderByDesc('created_at')->paginate();
+        $users->orderBy($sortColumn, $sortOrder);
+        $users = $users->paginate(10);
+        $users->appends(['academicYears' => $request->academicYears]);
 
-        return view('admin.program-head.dashboard-view-admission-for-interview', compact('totalUserCount', 'forInterviewCount', 'forQualifiedCount', 'forUnqualifiedCount', 'forWaitListedCount', 'forQualifyingExamCount', 'users'));
-    }
+        return view('admin.program-head.dashboard-view-admission-for-not-qualified', [
+            'totalUserCount' => $userCounts['totalUserCount'],
+            'forInterviewCount' => $userCounts['forInterviewCount'],           
+            'forQualifiedCount' => $userCounts['forQualifiedCount'],
+            'forUnqualifiedCount' => $userCounts['forUnqualifiedCount'],
+            'forWaitListedCount' => $userCounts['forWaitListedCount'],
+            'forQualifyingExamCount' => $userCounts['forQualifyingExamCount'],
+            'academicYears' => $academicYears,
+            'users' => $users,
+            'request' => $request,
+            'sortColumn' => $sortColumn,
+            'sortOrder' => $sortOrder,
+        ]); }
 
-    public function ShowAdmissionWaitlisted(){
-        $totalUserCount = User::where('role' , 'Student')->count();
-     $forInterviewCount = User::where('status' , 'Pending Interview')->count();
-        $forQualifiedCount = User::where('status' , 'Qualified')->count();
-        $forUnqualifiedCount = User::where('status' , 'Unqualified')->count();
-        $forWaitListedCount = User::where('status' , 'Waitlisted')->count();
-        $forQualifyingExamCount = User::where('status' , 'Ready For Exam')->count();
+    public function ShowAdmissionInterview(Request $request){
+        $userCounts = $this->getUserCounts($request->input('academicYears'));
+        $sortColumn = $request->input('sort_column', 'id'); 
+        $sortOrder = $request->input('sort_order', 'asc');  
 
-        $users = User::where('role' , 'Student')->where('status', 'Waitlisted');
-        $users =  $users->orderByDesc('created_at')->paginate();
+        $academicYears = AcademicYears::all();
 
-        return view('admin.program-head.dashboard-view-admission-for-waitlisted', compact('totalUserCount', 'forInterviewCount', 'forQualifiedCount', 'forUnqualifiedCount', 'forWaitListedCount', 'forQualifyingExamCount', 'users'));
-    }
-    public function ShowAdmissionExam(){
-        $totalUserCount = User::where('role' , 'Student')->count();
-     $forInterviewCount = User::where('status' , 'Pending Interview')->count();
-        $forQualifiedCount = User::where('status' , 'Qualified')->count();
-        $forUnqualifiedCount = User::where('status' , 'Unqualified')->count();
-        $forWaitListedCount = User::where('status' , 'Waitlisted')->count();
-        $forQualifyingExamCount = User::where('status' , 'Ready For Exam')->count();
+        $selectedAcademicYear = $request->input('academicYears');
+       
+        $users = DB::table('users')
+        ->select('users.*', 'admission_exams.raw_score', 'admission_exams.percentage')
+        ->join('admission_exams', 'admission_exams.user_id', '=', 'users.id')
+        ->where('users.role', 'Student')->where('users.status', 'Pending Interview');
+        
+        if(isset($selectedAcademicYear)){
+            $users->where('academic_year_id', $selectedAcademicYear);
+        }
 
-        $users = User::where('role' , 'Student')->where('status', 'Ready For Exam');
-        $users =  $users->orderByDesc('created_at')->paginate();
+        $users->orderBy($sortColumn, $sortOrder);
+        $users = $users->paginate(10);
+        $users->appends(['academicYears' => $request->academicYears]);
 
-        return view('admin.program-head.dashboard-view-admission-qualifying-exam', compact('totalUserCount', 'forInterviewCount', 'forQualifiedCount', 'forUnqualifiedCount', 'forWaitListedCount', 'forQualifyingExamCount', 'users'));
-    }
+        return view('admin.program-head.dashboard-view-admission-for-interview', [
+            'totalUserCount' => $userCounts['totalUserCount'],
+            'forInterviewCount' => $userCounts['forInterviewCount'],           
+            'forQualifiedCount' => $userCounts['forQualifiedCount'],
+            'forUnqualifiedCount' => $userCounts['forUnqualifiedCount'],
+            'forWaitListedCount' => $userCounts['forWaitListedCount'],
+            'forQualifyingExamCount' => $userCounts['forQualifyingExamCount'],
+            'academicYears' => $academicYears,
+            'users' => $users,
+            'request' => $request,
+            'sortColumn' => $sortColumn,
+            'sortOrder' => $sortOrder,
+        ]);
+       }
+
+    public function ShowAdmissionWaitlisted(Request $request){
+        $userCounts = $this->getUserCounts($request->input('academicYears'));
+        $sortColumn = $request->input('sort_column', 'id'); 
+        $sortOrder = $request->input('sort_order', 'asc');  
+
+        $academicYears = AcademicYears::all();
+
+        $selectedAcademicYear = $request->input('academicYears');
+       
+        $users = DB::table('users')
+        ->select('users.*', 'admission_exams.raw_score', 'admission_exams.percentage')
+        ->join('admission_exams', 'admission_exams.user_id', '=', 'users.id')
+        ->where('users.role', 'Student')->where('users.status', 'Waitlisted');
+        
+        if(isset($selectedAcademicYear)){
+            $users->where('academic_year_id', $selectedAcademicYear);
+        }
+
+        $users->orderBy($sortColumn, $sortOrder);
+        $users = $users->paginate(10);
+        $users->appends(['academicYears' => $request->academicYears]);
+
+        return view('admin.program-head.dashboard-view-admission-for-waitlisted', [
+            'totalUserCount' => $userCounts['totalUserCount'],
+            'forInterviewCount' => $userCounts['forInterviewCount'],           
+            'forQualifiedCount' => $userCounts['forQualifiedCount'],
+            'forUnqualifiedCount' => $userCounts['forUnqualifiedCount'],
+            'forWaitListedCount' => $userCounts['forWaitListedCount'],
+            'forQualifyingExamCount' => $userCounts['forQualifyingExamCount'],
+            'academicYears' => $academicYears,
+            'users' => $users,
+            'request' => $request,
+            'sortColumn' => $sortColumn,
+            'sortOrder' => $sortOrder,
+        ]);
+
+       }
+    public function ShowAdmissionExam(Request $request){
+        $userCounts = $this->getUserCounts($request->input('academicYears'));
+        $sortColumn = $request->input('sort_column', 'id'); 
+        $sortOrder = $request->input('sort_order', 'asc');  
+
+        $academicYears = AcademicYears::all();
+
+        $selectedAcademicYear = $request->input('academicYears');
+       
+        $users = DB::table('users')
+        ->select('users.*', 'admission_exams.raw_score', 'admission_exams.percentage')
+        ->join('admission_exams', 'admission_exams.user_id', '=', 'users.id')
+        ->where('users.role', 'Student')->where('users.status', 'Ready For Exam');
+        
+        if(isset($selectedAcademicYear)){
+            $users->where('academic_year_id', $selectedAcademicYear);
+        }
+
+        $users->orderBy($sortColumn, $sortOrder);
+        $users = $users->paginate(10);
+        $users->appends(['academicYears' => $request->academicYears]);
+
+        return view('admin.program-head.dashboard-view-admission-qualifying-exam', [
+            'totalUserCount' => $userCounts['totalUserCount'],
+            'forInterviewCount' => $userCounts['forInterviewCount'],           
+            'forQualifiedCount' => $userCounts['forQualifiedCount'],
+            'forUnqualifiedCount' => $userCounts['forUnqualifiedCount'],
+            'forWaitListedCount' => $userCounts['forWaitListedCount'],
+            'forQualifyingExamCount' => $userCounts['forQualifyingExamCount'],
+            'academicYears' => $academicYears,
+            'users' => $users,
+            'request' => $request,
+            'sortColumn' => $sortColumn,
+            'sortOrder' => $sortOrder,
+        ]);
+     }
 }

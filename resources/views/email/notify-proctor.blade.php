@@ -16,9 +16,12 @@
         <p>Dear Proctor/Interviewer,</p>
 
 
-        <p>We hope this message finds you well. We would like to inform you that there is a new pending interview for
+        <p>We hope this message finds you well. We would like to inform you that there is
+            <strong>{{ $pendingInterviewCount }}
+                new pending interview </strong> for
             the
-            admission of a student.</p>
+            admission of a student.
+        </p>
 
         <p>Please be prepared to facilitate the interview on the scheduled date and time. For more details, you can
             visit our website on the Equali platform.</p>

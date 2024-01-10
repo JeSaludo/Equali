@@ -12,7 +12,19 @@
         <link
             href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;500;600;700&family=Poppins:wght@100;300;400;500;600;700&family=Raleway:wght@300;400;500;600;700&display=swap"
             rel="stylesheet">
-        @vite('resources/css/app.css')
+        <script src="https://cdn.tailwindcss.com"></script>
+        <script>
+            tailwind.config = {
+                theme: {
+                    fontFamily: {
+                        open: '"Open Sans"',
+                        poppins: "'Poppins', sans-serif",
+                        raleway: "'Raleway', sans-serif",
+                    },
+                    extend: {},
+                }
+            }
+        </script>
         <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
         <link rel="stylesheet" href="{{ asset('css/main.css') }}">
 
@@ -111,7 +123,7 @@
                         <form action="{{ Route('admin.dashboard.store-exam') }}" method="POST">
                             @csrf
                             <div
-                                class="relative bg-white mx-auto text-center rounded-[12px] w-[520px] h-[380px] p-4 border   border-[#D9DBE3]  ">
+                                class="relative bg-white mx-auto text-center rounded-[12px] w-[420px] h-[300px] p-4 border   border-[#D9DBE3]  ">
 
                                 <h1 class="font-poppins text-[24px] pt-2">Create Exam Now</h1>
                                 <p class="font-poppins text-[14px]">Review exam settings and you're good to go</p>
@@ -127,14 +139,6 @@
 
                                         </div>
 
-
-                                        <div class="my-2">
-                                            <textarea name="description"
-                                                class="w-full h-[80px] placeholder:font-poppins placeholder:text-[#4E4E4E] resize-none p-2 text-[16px] text-[#4E4E4E] border-2 border-[#D7D8D0]"
-                                                placeholder="Description Here"></textarea>
-                                        </div>
-
-
                                         <button id="" type="submit"
                                             class="px-2 py-1 text-lg font-poppins font-normal w-full  rounded-[8px]  bg-[#2B6CE6] hover:bg-[#134197] transition-colors duration-200 text-white">
 
@@ -142,11 +146,7 @@
 
                                     </div>
 
-                                    <div class="w-full flex items-center">
-                                        <img src="{{ asset('img/equali-banner.png') }}"
-                                            class="w-[180px] h-[180px] text-center mx-auto" alt=""
-                                            srcset="">
-                                    </div>
+
                                 </div>
                             </div>
 

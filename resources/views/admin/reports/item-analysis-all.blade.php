@@ -17,7 +17,19 @@
 
         <link href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.2.0/flowbite.min.css" rel="stylesheet" />
 
-        @vite('resources/css/app.css')
+        <script src="https://cdn.tailwindcss.com"></script>
+        <script>
+            tailwind.config = {
+                theme: {
+                    fontFamily: {
+                        open: '"Open Sans"',
+                        poppins: "'Poppins', sans-serif",
+                        raleway: "'Raleway', sans-serif",
+                    },
+                    extend: {},
+                }
+            }
+        </script>
         <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
         <link rel="stylesheet" href="{{ asset('css/main.css') }}">
     </head>
@@ -58,7 +70,7 @@
 
                     <form action="{{ route('admin.dashboard.item-analysis') }}" method="GET" id="yearForm">
                         <select id="year" name="selected_year"
-                            class="font-poppins bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+                            class="py-1 text-[16px] w-full rounded border border-[#D9DBE3] px-6"
                             onchange="document.getElementById('yearForm').submit()">
                             <option value="" selected>Select Year</option>
                             @foreach ($uniqueYears as $year)

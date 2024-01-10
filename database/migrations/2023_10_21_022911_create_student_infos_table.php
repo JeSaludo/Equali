@@ -46,7 +46,9 @@ return new class extends Migration
             $table->decimal('average_score', 5, 2)->nullable();
             
             $table->string('remarks')->nullable();
-            
+            $table->unsignedBigInteger('interviewer_id')->nullable();
+            $table->foreign('interviewer_id')->references('id')->on('users')->onDelete('cascade');
+
         });
     }
 

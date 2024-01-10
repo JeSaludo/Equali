@@ -12,7 +12,19 @@
         <link
             href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;500;600;700&family=Poppins:wght@100;300;400;500;600;700&family=Raleway:wght@300;400;500;600;700&display=swap"
             rel="stylesheet">
-        @vite('resources/css/app.css')
+        <script src="https://cdn.tailwindcss.com"></script>
+        <script>
+            tailwind.config = {
+                theme: {
+                    fontFamily: {
+                        open: '"Open Sans"',
+                        poppins: "'Poppins', sans-serif",
+                        raleway: "'Raleway', sans-serif",
+                    },
+                    extend: {},
+                }
+            }
+        </script>
         <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
         <link rel="stylesheet" href="{{ asset('css/main.css') }}">
 
@@ -58,10 +70,7 @@
 
 
 
-                                    <div class="mt-2 w-9/12">
-                                        <textarea name="description" class="w-full h-[80px] resize-none  text-[18px] text-[#827F8A]">{{ $exam->description }}</textarea>
 
-                                    </div>
 
                                 </div>
                     </form>
@@ -83,32 +92,14 @@
         </div>
 
 
-        <div class="mx-4 mt-4 bg-white flex justify-between gap-4 p-2 border border-[#D9DBE3] shadow-md rounded-lg">
+        <div class="my-4 mx-4 w-[240px]">
 
             <form action="{{ route('admin.dashboard.store-random', $exam->id) }}" method="post"
                 class="w-full gap-2 flex">
                 @csrf
-
-                <input type="number" name="numOfQuestions" value="5"
-                    class="w-2/12 text-[24px] font-poppins text-center mx-auto  border rounded-lg border-gray-300 ">
                 <input type="submit" value="Add Random Question"
-                    class="text-lg font-poppins font-normal  w-full h-[50px] rounded-[8px] bg-[#2B6CE6] hover:bg-[#134197] transition-colors duration-200 text-white">
+                    class="font-poppins text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 focus:outline-none">
             </form>
-
-            <div class="w-full">
-                <form action="{{ route('admin.dashboard.exam.show-question', $exam->id) }}" method="post"
-                    class="w-full gap-2 flex">
-                    @csrf
-                    <button
-                        class="drop-shadow-md border border-black px-2 py-1 h-[50px]  text-lg font-poppins font-normal w-full   rounded-[8px]  bg-[#F2F2F3] transition-colors duration-200 text-black"
-                        value="Add Question">
-                        Add Question
-                    </button>
-                </form>
-            </div>
-
-
-
         </div>
 
         <h1 class="mx-4  my-4 font-medium">{{ $examQuestions->count() }} /

@@ -13,6 +13,7 @@ class Result extends Model
         'measure_a_score',
         'measure_b_score',
         'measure_c_score',
+        'scaled_exam_score',
     ];
 
     public function user(){

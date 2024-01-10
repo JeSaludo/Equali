@@ -15,7 +15,19 @@
 
         <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
         <link rel="stylesheet" href="{{ asset('css/main.css') }}">
-        @vite('resources/css/app.css')
+        <script src="https://cdn.tailwindcss.com"></script>
+        <script>
+            tailwind.config = {
+                theme: {
+                    fontFamily: {
+                        open: '"Open Sans"',
+                        poppins: "'Poppins', sans-serif",
+                        raleway: "'Raleway', sans-serif",
+                    },
+                    extend: {},
+                }
+            }
+        </script>
 
     </head>
 
@@ -27,8 +39,7 @@
             <nav class="ml-[218px] flex justify-between items-center border-b border-[#D9DBE3] h-[60px] bg-white px-4">
 
                 <div class="flex items-center  ">
-                    <form method="get" action=""
-                        class="relative w-[300px]">
+                    <form method="get" action="" class="relative w-[300px]">
                         @csrf
                         <input type="text" name="searchTerm" placeholder="Search Here"
                             value="{{ request('searchTerm') }}"

@@ -15,7 +15,19 @@
 
         <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
         <link rel="stylesheet" href="{{ asset('css/main.css') }}">
-        @vite('resources/css/app.css')
+        <script src="https://cdn.tailwindcss.com"></script>
+        <script>
+            tailwind.config = {
+                theme: {
+                    fontFamily: {
+                        open: '"Open Sans"',
+                        poppins: "'Poppins', sans-serif",
+                        raleway: "'Raleway', sans-serif",
+                    },
+                    extend: {},
+                }
+            }
+        </script>
 
     </head>
 
@@ -49,6 +61,7 @@
                 <div class="flex justify-between mx-4 mt-4 mb-4">
 
                     <h1 class="text-[#26386A] text-[18px]  font-bold font-raleway ">List of Applicants</h1>
+
 
 
 

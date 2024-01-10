@@ -70,7 +70,7 @@ class ItemAnalysisController extends Controller
         
       
         
-        $questions = Question::where('category');
+        $questions = Question::where('category'); 
         
         if (isset($selectedYear)) {
             $questions->where('year', $selectedYear);

@@ -12,7 +12,19 @@
         <link
             href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;500;600;700&family=Poppins:wght@100;300;400;500;600;700&family=Raleway:wght@300;400;500;600;700&display=swap"
             rel="stylesheet">
-        @vite('resources/css/app.css')
+        <script src="https://cdn.tailwindcss.com"></script>
+        <script>
+            tailwind.config = {
+                theme: {
+                    fontFamily: {
+                        open: '"Open Sans"',
+                        poppins: "'Poppins', sans-serif",
+                        raleway: "'Raleway', sans-serif",
+                    },
+                    extend: {},
+                }
+            }
+        </script>
         <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
         <link rel="stylesheet" href="{{ asset('css/main.css') }}">
 
@@ -323,36 +335,126 @@
                             </tbody>
                         </table>
 
+                        <div class="mt-8 ">
+                            <table class="table-auto border border-solid border-black w-full">
+                                <thead>
+                                    <tr class="justify-between">
+                                        <th class="border border-solid border-black text-center font-poppins ">Criteria
+                                        </th>
+                                        <th class="border border-solid border-black text-center font-poppins ">Weight
+                                        </th>
+                                        <th class="border border-solid border-black text-center font-poppins ">Score
+                                        </th>
+                                        <th class="border border-solid border-black text-center font-poppins">Weighted
+                                            Score
+                                        </th>
+
+
+
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr class="justify-between">
+                                        <td class="border border-solid border-black text-center font-poppins ">
+                                            Measure A <span class="block">Potential (Interview)</span></td>
+                                        <td class="border border-solid border-black text-center font-poppins ">
+                                            30%</td>
+                                        <td class="border border-solid border-black text-center font-poppins ">
+                                            {{ $user->studentInfo->average_score }}</td>
+                                        <td class="border border-solid border-black text-center font-poppins ">
+                                            {{ $user->result->measure_a_score }}</td>
+
+
+                                    </tr>
+
+                                    <tr class="justify-between">
+                                        <td class="border border-solid border-black text-center font-poppins ">
+                                            Measure B <span class="block">Admssion Exam Result</span></td>
+                                        <td class="border border-solid border-black text-center font-poppins ">
+                                            30%</td>
+
+                                        @if ($user->result->admission_score)
+                                            <td class="border border-solid border-black text-center font-poppins ">
+                                                {{ $user->result->admission_score }}</td>
+                                        @else
+                                            <td class="border border-solid border-black text-center font-poppins ">
+                                                Not Yet Added</td>
+                                        @endif
+
+                                        @if ($user->result->measure_b_score)
+                                            <td class="border border-solid border-black text-center font-poppins ">
+                                                {{ $user->result->measure_b_score }}</td>
+                                        @else
+                                            <td class="border border-solid border-black text-center font-poppins ">
+                                                Not Yet Added</td>
+                                        @endif
+
+                                    </tr>
+
+                                    <tr class="justify-between">
+                                        <td class="border border-solid border-black text-center font-poppins ">
+                                            Measure C <span class="block">Qualifying Exam</span></td>
+                                        <td class="border border-solid border-black text-center font-poppins ">
+                                            40%</td>
+
+                                        @if ($user->result->total_exam_score)
+                                            <td class="border border-solid border-black text-center font-poppins ">
+                                                {{ $user->result->scaled_exam_score }}</td>
+                                        @else
+                                            <td class="border border-solid border-black text-center font-poppins ">
+                                                Not Yet Added</td>
+                                        @endif
+
+                                        @if ($user->result->total_exam_score)
+                                            <td class="border border-solid border-black text-center font-poppins ">
+                                                {{ $user->result->measure_c_score }}</td>
+                                        @else
+                                            <td class="border border-solid border-black text-center font-poppins ">
+                                                Not Yet Added</td>
+                                        @endif
+                                    </tr>
+
+                                    <tr>
+                                        <td> </td>
+                                        <td></td>
+                                        <td class="border border-solid border-black text-center font-poppins ">Weighted
+                                            Average</td>
+                                        <td class="border border-solid border-black text-center font-poppins ">
+                                            {{ $user->result->weighted_average }}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+
+                            <div>
+                                <h1 class="font-poppins text-lg mt-8">Remarks</h1>
+                            </div>
+                            <div class="flex">
+                                <textarea class="p-4 w-full border border-solid border-black text-left font-poppins" name="remarks" id=""
+                                    cols="30" disabled rows="5" style="resize: none;">{{ $user->studentInfo->remarks }}</textarea>
+                            </div>
+
+
+                            <input type="text" hidden value="{{ $user->id }}" name="user_id">
+
+
+
+
+                        </div>
+
+                    </div>
+                    <div class="flex items-center justify-end gap-2 my-4 ">
+
                         <div>
-                            <h1 class="font-poppins text-lg mt-8">Remarks</h1>
+                            <a onclick="printDiv()"
+                                class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 focus:outline-none font-poppins">Print</a>
+
+
                         </div>
-                        <div class="flex">
-                            <textarea class="p-4 w-full border border-solid border-black text-left font-poppins" name="remarks" id=""
-                                cols="30" disabled rows="5" style="resize: none;">{{ $user->studentInfo->remarks }}</textarea>
+                        <div class="">
+                            <a href="{{ route('admin.dashboard.show-review') }}"
+                                class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 font-poppins focus:outline-none">Back</a>
                         </div>
-
-
-                        <input type="text" hidden value="{{ $user->id }}" name="user_id">
-
-
-
-
                     </div>
-
-                </div>
-                <div class="flex items-center justify-end gap-3 mt-4">
-
-                    <div>
-                        <button onclick="printDiv()"
-                            class="font-bold text-white bg-[#2B6CE6] hover:bg-[#134197] rounded-[8px] font-poppins text-lg py-3 px-12 transition-colors duration-200">Print</button>
-
-
-                    </div>
-                    <div class="">
-                        <a href="{{ route('admin.dashboard.show-review') }}"
-                            class="font-bold text-white bg-[#2B6CE6] hover:bg-[#134197] rounded-[8px] font-poppins text-lg py-3 px-12 transition-colors duration-200">Back</a>
-                    </div>
-                </div>
 
             </section>
         </div>

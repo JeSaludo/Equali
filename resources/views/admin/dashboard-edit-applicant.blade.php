@@ -6,13 +6,25 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
         <meta http-equiv="X-UA-Compatible" content="ie=edge">
-        <title>Equali | AddQuestion </title>
+        <title>Equali | Edit Applicant </title>
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
         <link
             href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;500;600;700&family=Poppins:wght@100;300;400;500;600;700&family=Raleway:wght@300;400;500;600;700&display=swap"
             rel="stylesheet">
-        @vite('resources/css/app.css')
+        <script src="https://cdn.tailwindcss.com"></script>
+        <script>
+            tailwind.config = {
+                theme: {
+                    fontFamily: {
+                        open: '"Open Sans"',
+                        poppins: "'Poppins', sans-serif",
+                        raleway: "'Raleway', sans-serif",
+                    },
+                    extend: {},
+                }
+            }
+        </script>
         <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
         <link rel="stylesheet" href="{{ asset('css/main.css') }}">
 
@@ -36,29 +48,34 @@
 
                 @include('layout.popup')
 
-                <div class="mt-5 w-6/12 right-0 mx-auto    transition-all transform  delay-150 ease-linear">
+                <div class="my-6  mx-4   ">
                     <form action="{{ route('admin.dashboard.update-applicant', $user->id) }}" method="POST">
                         @csrf
                         @method('put')
-                        <div class="bg-white mx-4 rounded-[12px] mt-4  h-[450px] p-4 border-gray-600 border-2">
-                            <div
-                                class="text-center mx-auto font-poppins text-[28px] font-semibold  text-[#26386A] uppercase">
-                                <h1>Edit Information </h1>
 
+                        <div class="bg-white mx-4 rounded-[12px] mt-4  p-4 border-gray-100 border-2">
+                            <div class=" font-poppins text-[22px] flex justify-between font-semibold  text-[#26386A] ">
+                                <h1>Applicant Details </h1>
+                                <a href="{{ route('admin.dashboard.admission') }}"
+                                    class="text-white bg-blue-600 hover:bg-blue-600 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 ">Back</a>
                             </div>
 
                             <div class=" px-8 flex justify-between gap-4 mt-6 ">
                                 <div class="relative   w-full">
+                                    <label for="first_name" class="font-poppins text-[14px] text-gray-500 ">First
+                                        Name:</label>
                                     <input type="text" name="firstName"
-                                        class="h-[50px] w-full rounded placeholder:text-[#4E4E4E] placeholder:font-poppins placeholder:text-[16px] px-[40px] border-2 border-[#D7D8D0] "
+                                        class="border font-poppins border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
                                         placeholder="First Name" required autocomplete="off"
                                         value={{ $user->first_name }}>
 
                                 </div>
 
                                 <div class="relative  w-full">
+                                    <label for="last_name" class="font-poppins text-[14px] text-gray-500 ">Last
+                                        Name:</label>
                                     <input type="text" name="lastName"
-                                        class="h-[50px] w-full rounded placeholder:text-[#4E4E4E] placeholder:font-poppins placeholder:text-[16px] px-[40px] border-2 border-[#D7D8D0] "
+                                        class="border font-poppins border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
                                         placeholder="Last Name" required autocomplete="off"
                                         value={{ $user->last_name }}>
 
@@ -68,28 +85,44 @@
 
                             </div>
 
+                            <div class=" px-8 flex justify-between gap-4 mt-6 ">
+                                <div class="relative   w-full">
+                                    <label for="email" class="font-poppins text-[14px] text-gray-500 ">Email
+                                        Address:</label>
+                                    <input type="text" name="email"
+                                        class="border font-poppins border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
+                                        placeholder="Email Address" required autocomplete="off"
+                                        value="{{ $user->email }}">
 
-                            <div class="relative px-8 my-4 w-full">
-                                <input type="text" name="email"
-                                    class="h-[50px] w-full rounded placeholder:text-[#4E4E4E] placeholder:font-poppins placeholder:text-[16px] px-[40px] border-2 border-[#D7D8D0] "
-                                    placeholder="Email Address" required autocomplete="off" value="{{ $user->email }}">
+                                </div>
 
+                                <div class="relative  w-full">
+                                    <label for="contactNumber" class="font-poppins text-[14px] text-gray-500 ">
+                                        Contact Number:</label>
+                                    <input type="text" name="contactNumber"
+                                        class="border font-poppins border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+                                        placeholder="Contact Number" required autocomplete="off"
+                                        value="{{ $user->contact_number }}" oninput="validateNumber(this)"
+                                        minlength="11" maxlength="11">
+                                </div>
+
+                                <script>
+                                    function validateNumber(input) {
+                                        input.value = input.value.replace(/\D/g, ''); // Remove non-numeric characters
+                                    }
+                                </script>
                             </div>
 
-                            {{-- <div class="relative px-8 my-4 w-full">
-                            <input type="text" name="contactNumber"
-                                class="h-[50px] w-full rounded placeholder:text-[#4E4E4E] placeholder:font-poppins placeholder:text-[16px] px-[40px] border-2 border-[#D7D8D0] "
-                                placeholder="Contact Number" required autocomplete="off"
-                                value="{{ $user->contact_number }}">
 
-                        </div> --}}
 
                             <div class=" px-8 flex justify-between gap-4 my-4">
 
 
                                 <div class="relative w-full">
+                                    <label for="rawScore" class="font-poppins text-[14px] text-gray-500 ">
+                                        Raw Score:</label>
                                     <input type="number" name="rawScore"
-                                        class="h-[50px] w-full rounded placeholder:text-[#4E4E4E] placeholder:font-poppins placeholder:text-[16px] px-[40px] border-2 border-[#D7D8D0] "
+                                        class="border font-poppins border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
                                         placeholder="Raw Score" required autocomplete="off" min="1"
                                         value="{{ $user->admissionExam->raw_score }}" max="100"
                                         oninput="checkRawScore(this.value)">
@@ -104,8 +137,10 @@
                                 </div>
 
                                 <div class="relative w-full">
+                                    <label for="percentage" class="font-poppins text-[14px] text-gray-500 ">
+                                        Percentage:</label>
                                     <input type="number" name="percentage"
-                                        class="h-[50px] w-full rounded placeholder:text-[#4E4E4E] placeholder:font-poppins placeholder:text-[16px] px-[40px] border-2 border-[#D7D8D0] "
+                                        class="border font-poppins border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
                                         placeholder="Percentage" required autocomplete="off" min="1"
                                         value="{{ $user->admissionExam->percentage }}" max="100"
                                         oninput="checkPercentage(this.value)">
@@ -149,9 +184,11 @@
 
                             </div>
 
-                            <div class="relative mx-8 ">
+                            <div class="relative mx-8 selection: ">
+                                <label for="admission" class="font-poppins text-[14px] text-gray-500 ">
+                                    Measure B Score:</label>
                                 <select name="measure_b_score" required
-                                    class="h-[50px] w-full rounded placeholder:text-[#4E4E4E] placeholder:font-poppins placeholder:text-[16px] px-[40px] border-2 border-[#D7D8D0]">
+                                    class="border font-poppins border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
 
                                     <option value="5"
                                         {{ $user->admissionExam->measure_b_score == '5' ? 'selected' : '' }}>Excellent
@@ -173,11 +210,9 @@
                             </div>
 
 
-                            <div class="px-8 my-6">
-                                <input type="submit" value="Submit"
-                                    class="text-lg font-poppins font-normal mr-2 w-full h-[50px] rounded-[18px] bg-[#1E5CD1] hover:bg-[#134197] transition-colors duration-200 text-white">
-
-
+                            <div class=" pt-4 pr-6 w-full flex justify-end">
+                                <input type="submit" value="Update Applicant"
+                                    class="text-white bg-blue-700 hover:bg-blue-800 font-poppins focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2   focus:outline-none ">
                             </div>
 
 
@@ -185,6 +220,48 @@
 
 
 
+                    </form>
+
+                    <form class="mx-4 mt-4"
+                        action="{{ route('admin.dashboard.update-applicant-status', $user->id) }}" method="POST">
+
+                        @csrf
+                        @method('put')
+
+                        <div class="bg-white rounded-[12px]   p-4 border-gray-100 border-2">
+                            <div class=" font-poppins text-[22px] font-semibold  text-[#26386A] ">
+                                <h1>Applicant Status Update </h1>
+
+                            </div>
+
+                            <div>
+
+                                <div class="relative px-8 my-4 w-full">
+                                    <label for="admission" class="font-poppins text-[14px] text-gray-500 ">
+                                        Status:</label>
+                                    <select name="status"
+                                        class="border font-poppins border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+                                        autocomplete="off">
+                                        <option value="{{ $user->status }}" selected>{{ $user->status }}</option>
+                                        <option value="Unqualified">Unqualified</option>
+                                        <option value="Qualified">Qualified</option>
+                                        <option value="Qualified">Waitlisted</option>
+                                        <option value="Qualified">Archived</option>
+                                        <option value="Pending Schedule">Pending</option>
+
+                                    </select>
+
+                                </div>
+                            </div>
+                            <div class="  w-full flex justify-end">
+                                <div class=" pt-4 pr-6 w-full flex justify-end">
+                                    <input type="submit" value="Update "
+                                        class="text-white bg-blue-700 hover:bg-blue-800 font-poppins focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2   focus:outline-none ">
+
+
+                                </div>
+                            </div>
+                        </div>
                     </form>
 
                 </div>

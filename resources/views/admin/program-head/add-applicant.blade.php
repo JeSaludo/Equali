@@ -6,7 +6,7 @@
 
 
 
-        <div class="bg-white mx-auto text-center rounded-[12px] w-[520px] h-[450px] p-4 border   border-[#D9DBE3]  ">
+        <div class="bg-white mx-auto text-center rounded-[12px] w-[520px] h-[500px] p-4 border   border-[#D9DBE3]  ">
             <div class="relative text-center mx-auto font-poppins text-[24px] font-semibold  text-[#26386A] uppercase">
                 <h1>Add Applicant</h1>
                 <button id="closePopup" class="absolute top-0 right-0"><i
@@ -41,12 +41,23 @@
 
                 </div>
 
-                {{-- <div class="relative px-8 my-4 w-full">
-                <input type="text" name="contactNumber"
-                    class="h-[50px] w-full rounded placeholder:text-[#4E4E4E] placeholder:font-poppins placeholder:text-[16px] px-[40px] border-2 border-[#D7D8D0] "
-                    placeholder="Contact Number" required autocomplete="off">
+                <div class="relative px-8 my-4 w-full">
+                    <input type="text" name="contactNumber"
+                        class="h-[50px] w-full rounded placeholder:text-[#4E4E4E] placeholder:font-poppins placeholder:text-[16px] px-[40px] border-2 border-[#D7D8D0]"
+                        placeholder="Contact Number" required autocomplete="off" oninput="validateNumber(this)"
+                        minlength="11" maxlength="11">
+                </div>
 
-            </div> --}}
+                <script>
+                    function validateNumber(input) {
+                        input.value = input.value.replace(/\D/g, ''); // Remove non-numeric characters
+                    }
+                </script>
+
+
+
+
+
 
 
                 <div class=" px-8 flex justify-between gap-4 my-4">

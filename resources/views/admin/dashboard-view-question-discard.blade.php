@@ -12,7 +12,19 @@
         <link
             href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;500;600;700&family=Poppins:wght@100;300;400;500;600;700&family=Raleway:wght@300;400;500;600;700&display=swap"
             rel="stylesheet">
-        @vite('resources/css/app.css')
+        <script src="https://cdn.tailwindcss.com"></script>
+        <script>
+            tailwind.config = {
+                theme: {
+                    fontFamily: {
+                        open: '"Open Sans"',
+                        poppins: "'Poppins', sans-serif",
+                        raleway: "'Raleway', sans-serif",
+                    },
+                    extend: {},
+                }
+            }
+        </script>
         <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
         <link rel="stylesheet" href="{{ asset('css/main.css') }}">
 
@@ -104,7 +116,7 @@
                 </div>
                 <div class="flex justify-between mx-4 mt-4 mb-4">
 
-                    <h1 class="text-[#26386A] text-[18px]  font-bold font-raleway ">List of Question</h1>
+                    <h1 class="text-[#26386A] text-[18px]  font-bold font-raleway ">List of Discarded Question</h1>
                     <a id="addQuestionBtn" href="{{ route('admin.dashboard.add-question') }}"
                         class="bg-[#365EFF] hover:bg-[#384b94] font-poppins text-white py-1 px-4 rounded-lg">
                         <i id="icon" class='bx bx-plus-medical pr-2'></i> Add
@@ -170,14 +182,17 @@
                                                     href="{{ route('admin.dashboard.edit-question', $question) }}"><i
                                                         class='bx bxs-edit'></i></a>
 
+
+
                                                 <form
-                                                    action="{{ route('admin.dashboard.delete-question', $question) }}"
-                                                    method="POST" style="display: inline-block;">
+                                                    action="{{ route('admin.dashboard.restore-question', $question) }}"
+                                                    method="POST" style="display: inline-block; ">
                                                     @csrf
-                                                    @method('DELETE')
-                                                    <button type="submit" class="mx-2  hover:text-indigo-900"
-                                                        onclick="return confirm('Are you sure you want to delete this question?')"><i
-                                                            class='bx bxs-trash'></i></button>
+
+                                                    <button type="submit" title="Restore Question"
+                                                        class="mx-2  hover:text-indigo-900"
+                                                        onclick="return confirm('Are you sure you want to restore this question?')"><i
+                                                            class='bx bx-reset'></i></button>
 
                                                 </form>
                                                 <a href="{{ route('admin.show-question-read-only', $question->id) }}">
