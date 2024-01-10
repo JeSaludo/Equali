@@ -40,19 +40,12 @@ class ExamController extends Controller
                 $exam = session('assigned_exam');
 
                 if (!$exam) {
-                    
+                
                     // If not, randomly select an exam and store its identifier in the session
                     $exam = Exam::inRandomOrder()->with('examQuestion.question.choices')->first();
                     
                  
-
                     if ($exam && $exam->examQuestion->count() == $option->qualifying_number_of_items) {
-                        session(['assigned_exam' => $exam]);
-                    } else {
-                        // Handle the case where no suitable exam is found
-                        return redirect()->route('home')->with('error', 'No qualifying exam found.');
-                    }
-                    if ($exam->examQuestion->count() == $option->qualifying_number_of_items) {
                         session(['assigned_exam' => $exam]);
                     }
                     
@@ -92,7 +85,8 @@ class ExamController extends Controller
             $user = User::find(Auth::user()->id);
 
             if($user->exam_taken == null){
-                
+                DB::beginTransaction();
+                try{     
                    
                     $userAnswers = $request->answer;
                    
@@ -144,7 +138,7 @@ class ExamController extends Controller
                     
                     $result = Result::where('user_id', $request->user_id)->first();
                     $result->total_exam_score = $score;
-                    $result->scaled_exam_score = $scaledValue;
+                    //$result->scaled_exam_score = $scaledValue;
                     $result->measure_c_score = $scaledValue * 0.4;
                     
                     $result->save();
@@ -179,7 +173,7 @@ class ExamController extends Controller
                         } else {
                             $user->status = "Unqualified";
                             //SendUnqualifyMail::dispatch($user->email, $user->first_name, $user->last_name);
-                            Mail::to($$user->email)->send(new UnqualifyMail( $user->first_name,$user->last_name));
+                            Mail::to($user->email)->send(new UnqualifyMail( $user->first_name,$user->last_name));
         
                         }
                        
@@ -221,19 +215,23 @@ class ExamController extends Controller
         
                     foreach($deans as $dean){
                         //SendExamReportEmail::dispatch($dean->email, $user->first_name, $user->last_name, $tempQuestion);
-                        Mail::to($dean->email)->send(new ExamReports($user->first_name,  $user->last_name, $tempQuestion));
+                        Mail::to($this->$dean->email)->send(new ExamReports($user->first_name,  $user->last_name, $tempQuestion));
                    
                     }
                         
-                    
+                    DB::commit();
     
                     $option = Option::first();
                     return view('student.exam-result', compact('score', 'sizeOfScore', 'option'));
                     
                 
                     
-                
-                
+                }
+                catch (\Exception $e) {
+                  //  Log::error('Failed to submit exam. Error: ' . $e->getMessage());
+                    DB::rollback();
+                    return redirect()->back()->with('error', 'Failed to submit exam. Please try again later.' . $e->getMessage());
+                }
                 
             }
             else{

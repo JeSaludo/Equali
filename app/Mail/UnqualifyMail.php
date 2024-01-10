@@ -16,9 +16,18 @@ class UnqualifyMail extends Mailable
     /**
      * Create a new message instance.
      */
-    public function __construct()
+    public $get_first_name;
+    public $get_last_name;
+   
+    /**
+     * Create a new message instance.
+     */
+    public function __construct( $get_first_name, $get_last_name)
     {
-        //
+       
+        $this->get_first_name = $get_first_name;
+        $this->get_last_name = $get_last_name;
+       
     }
 
     /**
