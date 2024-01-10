@@ -176,15 +176,7 @@
                     <input type="hidden" name="exam_id" value="{{ $exam->id }}">
 
 
-                    <script>
-                        document.getElementById('submitButton').addEventListener('click', function(event) {
-                            var confirmation = confirm('Are you sure you want to submit the form?');
 
-                            if (!confirmation) {
-                                event.preventDefault(); // Prevent the form from submitting
-                            }
-                        });
-                    </script>
 
                 </section>
 
@@ -212,7 +204,15 @@
 
 
                 </section>
+                <script>
+                    document.getElementById('submitButton').addEventListener('click', function(event) {
+                        var confirmation = confirm('Are you sure you want to submit the form?');
 
+                        if (!confirmation) {
+                            event.preventDefault(); // Prevent the form from submitting
+                        }
+                    });
+                </script>
                 <script>
                     // Function to scroll to the selected question
                     function scrollToQuestion(questionNumber) {
