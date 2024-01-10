@@ -16,7 +16,7 @@ class ApplicantRankingExport implements FromView
 
     public function view(): View
     {
-       dd("HELLo");
+       
         $selectedAcademicYear = $this->selectedYear;
        
         $users = DB::table('users')
