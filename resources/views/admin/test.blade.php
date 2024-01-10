@@ -31,7 +31,8 @@
     </head>
 
     <body>
-        <img src="{{ 'storage/questions/question-image_1.png' }}" alt="LOL">
+        <img src="{{ asset('storage/questions/question-image_1.png') }}" alt="LOL">
+
     </body>
 
 </html>

@@ -536,9 +536,6 @@ class ReportController extends Controller
     
  
    public function ExportApplicantRanking(Request $request){
-       
-
-
 
         $acad = AcademicYears::find($request->academicYears);
 
