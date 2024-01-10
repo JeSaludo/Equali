@@ -94,7 +94,7 @@
                                                     @if ($examQuestion->question->image_path != null)
                                                         <div class="p-2">
                                                             <img class="w-full"
-                                                                src="{{ 'storage/questions/' . $examQuestion->question->image_path }}"
+                                                                src="{{ asset('storage/questions/' . $examQuestion->question->image_path) }}"
                                                                 alt="">
                                                         </div>
                                                     @endif
@@ -159,6 +159,8 @@
 
 
                                         </div>
+
+                                    </div>
                             @endforeach
 
                             <div class="relative">
