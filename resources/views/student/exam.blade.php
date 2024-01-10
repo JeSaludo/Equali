@@ -169,7 +169,7 @@
                             </div>
                         </div>
                     </div>
-
+            </form>
 
         </div>
         <input type="hidden" name="user_id" value="{{ auth()->user()->id }}">
