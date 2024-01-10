@@ -78,6 +78,8 @@
                                     {{-- <div class="mx-0 border-b-2 my-4"></div> --}}
                                     <div class="w-[9/12]">
                                         <div class=" mt-3 ">
+
+
                                             @foreach ($exam->examQuestion as $index => $examQuestion)
                                                 <div id="question{{ $index + 1 }}"
                                                     class="mx-4 w-auto md:mx-auto text-center mt-4 pb-2 md:w-[800px] border rounded-[12px] border-[#D2D2D2] shadow-md ">
@@ -92,7 +94,7 @@
                                                     @if ($examQuestion->question->image_path != null)
                                                         <div class="p-2">
                                                             <img class="w-full"
-                                                                src="{{ asset('storage/questions/' . $examQuestion->question->image_path) }}"
+                                                                src="{{ 'storage/questions/' . $examQuestion->question->image_path }}"
                                                                 alt="">
                                                         </div>
                                                     @endif
@@ -157,42 +159,37 @@
                                         </div>
 
 
+                                        <div class="relative">
+                                            <button type="submit" id="submitButton"
+                                                class="absolute right-0 m-3 md:block lg:hidden  bg-[#2B6CE6] text-white p-2 px-8 rounded-lg hover:bg-[#134197]">Submit</button>
+                                        </div>
                                     </div>
-
                                 </div>
 
 
-                                <div class="relative">
-                                    <button type="submit" id="submitButton"
-                                        class="absolute right-0 m-3 md:block lg:hidden  bg-[#2B6CE6] text-white p-2 px-8 rounded-lg hover:bg-[#134197]">Submit</button>
-                                </div>
                         </div>
+                        <input type="hidden" name="user_id" value="{{ auth()->user()->id }}">
+                        <input type="hidden" name="exam_id" value="{{ $exam->id }}">
+
+
+                        <script>
+                            document.getElementById('submitButton').addEventListener('click', function(event) {
+                                var confirmation = confirm('Are you sure you want to submit the form?');
+
+                                if (!confirmation) {
+                                    event.preventDefault(); // Prevent the form from submitting
+                                }
+                            });
+                        </script>
+                    @else
+                        <div>
+                            <h1 class="text-center text-black font-bold text-[48px]">No Exam Found</h1>
+                        </div>
+
+                        <div class="mx-auto text-center"><a href="{{ route('home') }}"
+                                class="text-center border-2 px-4 rounded-lg text-[24px]">Back</a></div>
+                        @endif
                     </div>
-            </form>
-
-        </div>
-        <input type="hidden" name="user_id" value="{{ auth()->user()->id }}">
-        <input type="hidden" name="exam_id" value="{{ $exam->id }}">
-
-
-        <script>
-            document.getElementById('submitButton').addEventListener('click', function(event) {
-                var confirmation = confirm('Are you sure you want to submit the form?');
-
-                if (!confirmation) {
-                    event.preventDefault(); // Prevent the form from submitting
-                }
-            });
-        </script>
-    @else
-        <div>
-            <h1 class="text-center text-black font-bold text-[48px]">No Exam Found</h1>
-        </div>
-
-        <div class="mx-auto text-center"><a href="{{ route('home') }}"
-                class="text-center border-2 px-4 rounded-lg text-[24px]">Back</a></div>
-        @endif
-        </div>
 
 
         </div>
