@@ -31,7 +31,9 @@
     </head>
 
     <body>
-        <img src="{{ asset('storage/questions/question-image_1.png') }}" alt="LOL">
+
+        <img class="w-full p-4" src="{{ asset('storage/questions/question-image_1.png') }}">
+        <img class=" w-[100px] h-[100px] rounded-md" src="{{ asset('img/equali-banner.png') }}">
 
     </body>
 
