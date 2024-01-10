@@ -235,4 +235,8 @@ Route::middleware(['admin', 'check.profile'])->group(function () {
     });
 
    
+Route::get('/test', function(){
+
     
+    return view('admin.test');
+});
