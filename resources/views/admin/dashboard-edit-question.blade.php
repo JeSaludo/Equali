@@ -61,7 +61,8 @@
                             @if ($question->image_path != null)
                                 <div id="preview"
                                     class="w-1/4  py-4 ml-[16px] rounded-xl items-center bg-[#28273a] mt-8">
-                                    <img id="imagePreview" src="{{ 'storage/questions/' . $question->image_path }}"
+                                    <img id="imagePreview"
+                                        src="{{ asset('storage/questions/' . $question->image_path) }}"
                                         class=" mx-auto text-center" alt="Image Preview"
                                         style="max-width: 100%; max-height: 160px;">
 
