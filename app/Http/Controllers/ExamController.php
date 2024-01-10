@@ -162,7 +162,7 @@ class ExamController extends Controller
                         } else {
                             $user->status = "Unqualified";
                             //SendUnqualifyMail::dispatch($user->email, $user->first_name, $user->last_name);
-                            Mail::to($user->email)->send(new UnqualifyMail( $user->first_name,$user->last_name));
+                            //Mail::to($user->email)->send(new UnqualifyMail( $user->first_name,$user->last_name));
         
                         }
                     } else {
@@ -173,7 +173,7 @@ class ExamController extends Controller
                         } else {
                             $user->status = "Unqualified";
                             //SendUnqualifyMail::dispatch($user->email, $user->first_name, $user->last_name);
-                            Mail::to($user->email)->send(new UnqualifyMail( $user->first_name,$user->last_name));
+                           // Mail::to($user->email)->send(new UnqualifyMail( $user->first_name,$user->last_name));
         
                         }
                        
