@@ -86,12 +86,20 @@ class ExamController extends Controller
 
             if($user->exam_taken == null){
                 DB::beginTransaction();
-                try{                        
-                    $userAnswers = $request->answer;                   
-                    $score = 0;                  
-                    $currentExamId = $request->exam_id;                
+                try{     
+                   
+                    $userAnswers = $request->answer;
+                   
+                    $score = 0;
+                  
+                    $currentExamId = $request->exam_id;
+                
                     $currentExam = ExamQuestion::where('exam_id', $request->exam_id)->with('question.choices')->get();        
                     $choices = Choice::all();
+                 
+                   
+        
+                  
                     foreach ($currentExam as $index => $exam) {
                         $correctAnswer = $exam->question->correctAnswer(); // Make sure this method returns the correct answer 
         
@@ -210,8 +218,10 @@ class ExamController extends Controller
                         Mail::to($dean->email)->send(new ExamReports($user->first_name,  $user->last_name, $tempQuestion));
                    
                     }
-                    $option = Option::first();
+                        
                     DB::commit();
+    
+                    $option = Option::first();
                     return view('student.exam-result', compact('score', 'sizeOfScore', 'option'));
                     
                 
