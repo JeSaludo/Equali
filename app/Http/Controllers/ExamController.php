@@ -215,7 +215,7 @@ class ExamController extends Controller
         
                     foreach($deans as $dean){
                         //SendExamReportEmail::dispatch($dean->email, $user->first_name, $user->last_name, $tempQuestion);
-                        Mail::to($this->$dean->email)->send(new ExamReports($user->first_name,  $user->last_name, $tempQuestion));
+                        Mail::to($dean->email)->send(new ExamReports($user->first_name,  $user->last_name, $tempQuestion));
                    
                     }
                         
