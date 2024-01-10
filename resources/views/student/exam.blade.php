@@ -78,8 +78,6 @@
                                     {{-- <div class="mx-0 border-b-2 my-4"></div> --}}
                                     <div class="w-[9/12]">
                                         <div class=" mt-3 ">
-
-
                                             @foreach ($exam->examQuestion as $index => $examQuestion)
                                                 <div id="question{{ $index + 1 }}"
                                                     class="mx-4 w-auto md:mx-auto text-center mt-4 pb-2 md:w-[800px] border rounded-[12px] border-[#D2D2D2] shadow-md ">
@@ -155,18 +153,19 @@
                                                     </div>
 
                                                 </div>
+                                            @endforeach
                                         </div>
 
 
                                     </div>
 
                                 </div>
-                            @endforeach
 
-                            <div class="relative">
-                                <button type="submit" id="submitButton"
-                                    class="absolute right-0 m-3 md:block lg:hidden  bg-[#2B6CE6] text-white p-2 px-8 rounded-lg hover:bg-[#134197]">Submit</button>
-                            </div>
+
+                                <div class="relative">
+                                    <button type="submit" id="submitButton"
+                                        class="absolute right-0 m-3 md:block lg:hidden  bg-[#2B6CE6] text-white p-2 px-8 rounded-lg hover:bg-[#134197]">Submit</button>
+                                </div>
                         </div>
                     </div>
             </form>
