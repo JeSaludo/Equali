@@ -2,7 +2,7 @@
 
 namespace App\Exports;
 
-use App\Models\Result;
+use App\Models\Results;
 use Illuminate\Contracts\View\View;
 use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Concerns\FromView;
@@ -16,7 +16,7 @@ class ApplicantRankingExport implements FromView
 
     public function view(): View
     {
-       
+       dd("HELLo");
         $selectedAcademicYear = $this->selectedYear;
        
         $users = DB::table('users')
