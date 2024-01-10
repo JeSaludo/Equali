@@ -71,10 +71,6 @@
 
                                     </div>
 
-
-
-
-
                                     {{-- <div class="mx-0 border-b-2 my-4"></div> --}}
                                     <div class="w-[9/12]">
                                         <div class=" mt-3 ">
@@ -165,75 +161,72 @@
                                         </div>
                                     </div>
                                 </div>
+                            @else
+                                <div>
+                                    <h1 class="text-center text-black font-bold text-[48px]">No Exam Found</h1>
+                                </div>
 
-
-                        </div>
-                        <input type="hidden" name="user_id" value="{{ auth()->user()->id }}">
-                        <input type="hidden" name="exam_id" value="{{ $exam->id }}">
-
-
-                        <script>
-                            document.getElementById('submitButton').addEventListener('click', function(event) {
-                                var confirmation = confirm('Are you sure you want to submit the form?');
-
-                                if (!confirmation) {
-                                    event.preventDefault(); // Prevent the form from submitting
-                                }
-                            });
-                        </script>
-                    @else
-                        <div>
-                            <h1 class="text-center text-black font-bold text-[48px]">No Exam Found</h1>
+                                <div class="mx-auto text-center"><a href="{{ route('home') }}"
+                                        class="text-center border-2 px-4 rounded-lg text-[24px]">Back</a></div>
+                            @endif
                         </div>
 
-                        <div class="mx-auto text-center"><a href="{{ route('home') }}"
-                                class="text-center border-2 px-4 rounded-lg text-[24px]">Back</a></div>
-                        @endif
+                    </div>
+                    <input type="hidden" name="user_id" value="{{ auth()->user()->id }}">
+                    <input type="hidden" name="exam_id" value="{{ $exam->id }}">
+
+
+                    <script>
+                        document.getElementById('submitButton').addEventListener('click', function(event) {
+                            var confirmation = confirm('Are you sure you want to submit the form?');
+
+                            if (!confirmation) {
+                                event.preventDefault(); // Prevent the form from submitting
+                            }
+                        });
+                    </script>
+
+                </section>
+
+                <section
+                    class="hidden md:block fixed top-0 right-0 w-[280px] h-screen border-l border-slate-300 bg-white border-r border-[#D9DBE3]">
+                    <div class="fixed bottom-0 right-0 m-4">
+                        <button type="submit" id="submitButton"
+                            class="bg-[#2B6BE6] text-white p-2 px-8 rounded-lg hover:bg-[#134197]">Submit</button>
+                    </div>
+
+                    <div class="mt-8 mx-4">
+                        <h2 class="text-[#2B6BE6] font-poppins font-bold text-lg">Question Numbers</h2>
+                        <div class="grid grid-cols-5 gap-2 mt-4">
+                            @foreach ($exam->examQuestion as $index => $examQuestion)
+                                <div class="question-number text-center border border-slate-300 hover:bg-[#2B6BE6] hover:text-white hover:cursor-pointer"
+                                    data-question="{{ $index + 1 }}"
+                                    onclick="scrollToQuestion({{ $index + 1 }})">
+                                    {{ $index + 1 }}
+                                </div>
+                            @endforeach
+                        </div>
+
+
                     </div>
 
 
-        </div>
+                </section>
 
-        </section>
-
-        <section
-            class="hidden md:block fixed top-0 right-0 w-[280px] h-screen border-l border-slate-300 bg-white border-r border-[#D9DBE3]">
-            <div class="fixed bottom-0 right-0 m-4">
-                <button type="submit" id="submitButton"
-                    class="bg-[#2B6BE6] text-white p-2 px-8 rounded-lg hover:bg-[#134197]">Submit</button>
-            </div>
-
-            <div class="mt-8 mx-4">
-                <h2 class="text-[#2B6BE6] font-poppins font-bold text-lg">Question Numbers</h2>
-                <div class="grid grid-cols-5 gap-2 mt-4">
-                    @foreach ($exam->examQuestion as $index => $examQuestion)
-                        <div class="question-number text-center border border-slate-300 hover:bg-[#2B6BE6] hover:text-white hover:cursor-pointer"
-                            data-question="{{ $index + 1 }}" onclick="scrollToQuestion({{ $index + 1 }})">
-                            {{ $index + 1 }}
-                        </div>
-                    @endforeach
-                </div>
+                <script>
+                    // Function to scroll to the selected question
+                    function scrollToQuestion(questionNumber) {
+                        var questionElement = document.getElementById('question' + questionNumber);
+                        if (questionElement) {
+                            questionElement.scrollIntoView({
+                                behavior: 'smooth'
+                            });
+                        }
+                    }
+                </script>
 
 
-            </div>
-
-
-        </section>
-
-        <script>
-            // Function to scroll to the selected question
-            function scrollToQuestion(questionNumber) {
-                var questionElement = document.getElementById('question' + questionNumber);
-                if (questionElement) {
-                    questionElement.scrollIntoView({
-                        behavior: 'smooth'
-                    });
-                }
-            }
-        </script>
-
-
-        </form>
+            </form>
 
 
 
