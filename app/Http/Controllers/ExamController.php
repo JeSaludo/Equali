@@ -52,7 +52,14 @@ class ExamController extends Controller
                         // Handle the case where no suitable exam is found
                         return redirect()->route('home')->with('error', 'No qualifying exam found.');
                     }
-                   
+                    if ($exam->examQuestion->count() == $option->qualifying_number_of_items) {
+                        session(['assigned_exam' => $exam]);
+                    }
+                    
+                    else {
+                        // Handle the case where no suitable exam is found
+                        return redirect()->route('home')->with('error', 'No qualifying exam found.');
+                    }
                       
 
                     //return redirect()->route('home')->with('error', 'Exam has not been set, Please try again later');
@@ -85,8 +92,7 @@ class ExamController extends Controller
             $user = User::find(Auth::user()->id);
 
             if($user->exam_taken == null){
-                DB::beginTransaction();
-                try{     
+                
                    
                     $userAnswers = $request->answer;
                    
@@ -162,7 +168,7 @@ class ExamController extends Controller
                         } else {
                             $user->status = "Unqualified";
                             //SendUnqualifyMail::dispatch($user->email, $user->first_name, $user->last_name);
-                            Mail::to($user->email)->send(new UnqualifyMail( $user->first_name,$user->last_name));
+                            Mail::to($$user->email)->send(new UnqualifyMail( $user->first_name,$user->last_name));
         
                         }
                     } else {
@@ -173,7 +179,7 @@ class ExamController extends Controller
                         } else {
                             $user->status = "Unqualified";
                             //SendUnqualifyMail::dispatch($user->email, $user->first_name, $user->last_name);
-                            Mail::to($user->email)->send(new UnqualifyMail( $user->first_name,$user->last_name));
+                            Mail::to($$user->email)->send(new UnqualifyMail( $user->first_name,$user->last_name));
         
                         }
                        
@@ -226,12 +232,8 @@ class ExamController extends Controller
                     
                 
                     
-                }
-                catch (\Exception $e) {
-                  //  Log::error('Failed to submit exam. Error: ' . $e->getMessage());
-                    DB::rollback();
-                    return redirect()->back()->with('error', 'Failed to submit exam. Please try again later.' . $e->getMessage());
-                }
+                
+                
                 
             }
             else{
