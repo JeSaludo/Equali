@@ -54,6 +54,16 @@ class ProgramHeadController extends Controller
             $users->where('academic_year_id', $selectedAcademicYear);
         }
 
+
+        $searchTerm = $request->input('searchTerm');
+
+        if ($searchTerm) {
+            $users->where(function ($query) use ($searchTerm) {
+                $query->where('users.first_name', 'like', '%' . $searchTerm . '%')
+                    ->orWhere('users.last_name', 'like', '%' . $searchTerm . '%')
+                    ->orWhere('users.id', 'like', '%' . $searchTerm . '%'); 
+            });
+        }
         $users->orderBy($sortColumn, $sortOrder);
         $users = $users->paginate(10);
         $users->appends(['academicYears' => $request->academicYears]);
@@ -70,6 +80,7 @@ class ProgramHeadController extends Controller
             'request' => $request,
             'sortColumn' => $sortColumn,
             'sortOrder' => $sortOrder,
+            'searchTerm' => $searchTerm
         ]);
      }
     
@@ -92,6 +103,16 @@ class ProgramHeadController extends Controller
         if(isset($selectedAcademicYear)){
             $users->where('academic_year_id', $selectedAcademicYear);
         }
+        $searchTerm = $request->input('searchTerm');
+
+        if ($searchTerm) {
+            $users->where(function ($query) use ($searchTerm) {
+            $query->where('users.first_name', 'like', '%' . $searchTerm . '%')
+            ->orWhere('users.last_name', 'like', '%' . $searchTerm . '%')
+            ->orWhere('users.id', 'like', '%' . $searchTerm . '%')
+            ->where('users.status', 'Qualified'); // Add the condition for pending schedule status
+            });
+        }
 
         $users->orderBy($sortColumn, $sortOrder);
         $users = $users->paginate(10);
@@ -109,6 +130,7 @@ class ProgramHeadController extends Controller
             'request' => $request,
             'sortColumn' => $sortColumn,
             'sortOrder' => $sortOrder,
+            'searchTerm' => $searchTerm,
         ]);
     }
     public function ShowAdmissionUnqualified(Request $request){
@@ -129,6 +151,17 @@ class ProgramHeadController extends Controller
             $users->where('academic_year_id', $selectedAcademicYear);
         }
 
+        $searchTerm = $request->input('searchTerm');
+        
+        if ($searchTerm) {
+            $users->where(function ($query) use ($searchTerm) {
+            $query->where('users.first_name', 'like', '%' . $searchTerm . '%')
+            ->orWhere('users.last_name', 'like', '%' . $searchTerm . '%')
+            ->orWhere('users.id', 'like', '%' . $searchTerm . '%')
+            ->where('users.status', 'Qualified'); // Add the condition for pending schedule status
+            });
+        }
+
         $users->orderBy($sortColumn, $sortOrder);
         $users = $users->paginate(10);
         $users->appends(['academicYears' => $request->academicYears]);
@@ -145,6 +178,7 @@ class ProgramHeadController extends Controller
             'request' => $request,
             'sortColumn' => $sortColumn,
             'sortOrder' => $sortOrder,
+            'searchTerm' => $searchTerm
         ]); }
 
     public function ShowAdmissionInterview(Request $request){
@@ -165,6 +199,17 @@ class ProgramHeadController extends Controller
             $users->where('academic_year_id', $selectedAcademicYear);
         }
 
+        $searchTerm = $request->input('searchTerm');
+        
+        if ($searchTerm) {
+            $users->where(function ($query) use ($searchTerm) {
+            $query->where('users.first_name', 'like', '%' . $searchTerm . '%')
+            ->orWhere('users.last_name', 'like', '%' . $searchTerm . '%')
+            ->orWhere('users.id', 'like', '%' . $searchTerm . '%')
+            ->where('users.status', 'Qualified'); // Add the condition for pending schedule status
+            });
+        }
+
         $users->orderBy($sortColumn, $sortOrder);
         $users = $users->paginate(10);
         $users->appends(['academicYears' => $request->academicYears]);
@@ -181,6 +226,7 @@ class ProgramHeadController extends Controller
             'request' => $request,
             'sortColumn' => $sortColumn,
             'sortOrder' => $sortOrder,
+            'searchTerm' => $searchTerm
         ]);
        }
 
@@ -202,6 +248,17 @@ class ProgramHeadController extends Controller
             $users->where('academic_year_id', $selectedAcademicYear);
         }
 
+        $searchTerm = $request->input('searchTerm');
+        
+        if ($searchTerm) {
+            $users->where(function ($query) use ($searchTerm) {
+            $query->where('users.first_name', 'like', '%' . $searchTerm . '%')
+            ->orWhere('users.last_name', 'like', '%' . $searchTerm . '%')
+            ->orWhere('users.id', 'like', '%' . $searchTerm . '%')
+            ->where('users.status', 'Qualified'); // Add the condition for pending schedule status
+            });
+        }
+
         $users->orderBy($sortColumn, $sortOrder);
         $users = $users->paginate(10);
         $users->appends(['academicYears' => $request->academicYears]);
@@ -218,6 +275,7 @@ class ProgramHeadController extends Controller
             'request' => $request,
             'sortColumn' => $sortColumn,
             'sortOrder' => $sortOrder,
+            'searchTerm' => $searchTerm
         ]);
 
        }
@@ -239,6 +297,18 @@ class ProgramHeadController extends Controller
             $users->where('academic_year_id', $selectedAcademicYear);
         }
 
+        $searchTerm = $request->input('searchTerm');
+        
+        if ($searchTerm) {
+            $users->where(function ($query) use ($searchTerm) {
+            $query->where('users.first_name', 'like', '%' . $searchTerm . '%')
+            ->orWhere('users.last_name', 'like', '%' . $searchTerm . '%')
+            ->orWhere('users.id', 'like', '%' . $searchTerm . '%')
+            ->where('users.status', 'Qualified'); // Add the condition for pending schedule status
+            });
+        }
+        
+
         $users->orderBy($sortColumn, $sortOrder);
         $users = $users->paginate(10);
         $users->appends(['academicYears' => $request->academicYears]);
@@ -255,6 +325,7 @@ class ProgramHeadController extends Controller
             'request' => $request,
             'sortColumn' => $sortColumn,
             'sortOrder' => $sortOrder,
+            'searchTerm' => $searchTerm
         ]);
      }
 }
