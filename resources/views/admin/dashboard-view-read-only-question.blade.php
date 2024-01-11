@@ -50,7 +50,14 @@
 
                     <div class="bg-[#4c4a67] h-[250px] rounded-[8px] flex justify-between p-4">
 
+                        @if ($question->image_path != null)
+                            <div id="preview" class="w-1/4  py-4 ml-[16px] rounded-xl items-center bg-[#28273a] mt-8">
+                                <img id="imagePreview" src="{{ asset('storage/questions/' . $question->image_path) }}"
+                                    class=" mx-auto text-center" alt="Image Preview"
+                                    style="max-width: 100%; max-height: 160px;">
 
+                            </div>
+                        @endif
                         <div class="w-full m-4 mt-12 flex items-center">
                             <input
                                 class="bg-transparent text-[28px] mx-auto text-center flex items-center py-8 w-full h-full placeholder:text-[#EBEFF9] caret-white text-white"

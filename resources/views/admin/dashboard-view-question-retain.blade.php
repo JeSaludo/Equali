@@ -160,9 +160,7 @@
                                                 @elseif ($question->category == 'Retain')
                                                     <span
                                                         class="py-1 px-4 rounded-md bg-blue-200 text-blue-600">Retained</span>
-                                                @elseif ($question->category == 'Revise')
-                                                    <span
-                                                        class="py-1 px-4 rounded-md bg-green-200 text-green-600">Revised</span>
+                                                @elseif ($question->category == 'Revised')
                                                 @endif
                                             </td>
                                             <td class="px-6 py-3">
