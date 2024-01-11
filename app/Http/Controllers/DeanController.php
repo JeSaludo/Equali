@@ -100,11 +100,13 @@ class DeanController extends Controller
 
         $searchTerm = $request->input('searchTerm');
 
-        if($searchTerm) {
-            $users->where('users.first_name', 'like', '%' . $searchTerm . '%')
+        if ($searchTerm) {
+            $users->where(function ($query) use ($searchTerm) {
+            $query->where('users.first_name', 'like', '%' . $searchTerm . '%')
             ->orWhere('users.last_name', 'like', '%' . $searchTerm . '%')
-            ->orWhere('users.id', 'like', '%' . $searchTerm . '%')  ;         
-   
+            ->orWhere('users.id', 'like', '%' . $searchTerm . '%')
+            ->where('users.status', 'Qualified'); // Add the condition for pending schedule status
+            });
         }
 
         $users->orderBy($sortColumn, $sortOrder);
@@ -146,11 +148,13 @@ class DeanController extends Controller
 
         $searchTerm = $request->input('searchTerm');
 
-        if($searchTerm) {
-            $users->where('users.first_name', 'like', '%' . $searchTerm . '%')
-            ->orWhere('users.last_name', 'like', '%' . $searchTerm . '%')
-            ->orWhere('users.id', 'like', '%' . $searchTerm . '%')  ;         
-   
+        if ($searchTerm) {
+            $users->where(function ($query) use ($searchTerm) {
+                $query->where('users.first_name', 'like', '%' . $searchTerm . '%')
+                      ->orWhere('users.last_name', 'like', '%' . $searchTerm . '%')
+                      ->orWhere('users.id', 'like', '%' . $searchTerm . '%')
+                      ->where('users.status', 'Unqualified'); // Add the condition for pending schedule status
+            });
         }
 
         $users->orderBy($sortColumn, $sortOrder);
@@ -195,9 +199,9 @@ class DeanController extends Controller
         if ($searchTerm) {
             $users->where(function ($query) use ($searchTerm) {
                 $query->where('users.first_name', 'like', '%' . $searchTerm . '%')
-                      ->orWhere('users.last_name', 'like', '%' . $searchTerm . '%')
-                      ->orWhere('users.id', 'like', '%' . $searchTerm . '%')
-                      ->where('users.status', 'Pending Interview'); // Add the condition for pending schedule status
+                    ->orWhere('users.last_name', 'like', '%' . $searchTerm . '%')
+                    ->orWhere('users.id', 'like', '%' . $searchTerm . '%')
+                    ->where('users.status', 'Pending Interview'); // Add the condition for pending schedule status
             });
         }
 
@@ -241,11 +245,13 @@ class DeanController extends Controller
 
         $searchTerm = $request->input('searchTerm');
 
-        if($searchTerm) {
-            $users->where('users.first_name', 'like', '%' . $searchTerm . '%')
-            ->orWhere('users.last_name', 'like', '%' . $searchTerm . '%')
-            ->orWhere('users.id', 'like', '%' . $searchTerm . '%')  ;         
-   
+        if ($searchTerm) {
+            $users->where(function ($query) use ($searchTerm) {
+                $query->where('users.first_name', 'like', '%' . $searchTerm . '%')
+                    ->orWhere('users.last_name', 'like', '%' . $searchTerm . '%')
+                    ->orWhere('users.id', 'like', '%' . $searchTerm . '%')
+                    ->where('users.status', 'Waitlisted'); // Add the condition for pending schedule status
+            });
         }
 
         $users->orderBy($sortColumn, $sortOrder);
@@ -289,12 +295,15 @@ class DeanController extends Controller
 
         $searchTerm = $request->input('searchTerm');
 
-        if($searchTerm) {
-            $users->where('users.first_name', 'like', '%' . $searchTerm . '%')
-            ->orWhere('users.last_name', 'like', '%' . $searchTerm . '%')
-            ->orWhere('users.id', 'like', '%' . $searchTerm . '%')  ;         
-   
+        if ($searchTerm) {
+            $users->where(function ($query) use ($searchTerm) {
+                $query->where('users.first_name', 'like', '%' . $searchTerm . '%')
+                    ->orWhere('users.last_name', 'like', '%' . $searchTerm . '%')
+                    ->orWhere('users.id', 'like', '%' . $searchTerm . '%')
+                    ->where('users.status', 'Ready For Exam'); // Add the condition for pending schedule status
+            });
         }
+        
         $users->orderBy($sortColumn, $sortOrder);
         $users = $users->paginate(10);
         $users->appends(['academicYears' => $request->academicYears]);
