@@ -57,9 +57,9 @@ class DeanController extends Controller
             ->orWhere('users.id', 'like', '%' . $searchTerm . '%')  ;         
    
         }
-        
-        $users->orderBy($sortColumn, $sortOrder);
-        $users = $users->paginate(10);
+        $sortedUsers = clone $users;
+        $sortedUsers->orderBy($sortColumn, $sortOrder);
+        $users = $sortedUsers->paginate(10);
         $users->appends(['academicYears' => $request->academicYears, 'sort_order' => $sortOrder]);
 
 
