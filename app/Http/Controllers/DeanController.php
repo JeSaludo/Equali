@@ -192,11 +192,13 @@ class DeanController extends Controller
 
         $searchTerm = $request->input('searchTerm');
 
-        if($searchTerm) {
-            $users->where('users.first_name', 'like', '%' . $searchTerm . '%')
-            ->orWhere('users.last_name', 'like', '%' . $searchTerm . '%')
-            ->orWhere('users.id', 'like', '%' . $searchTerm . '%')  ;         
-   
+        if ($searchTerm) {
+            $users->where(function ($query) use ($searchTerm) {
+                $query->where('users.first_name', 'like', '%' . $searchTerm . '%')
+                      ->orWhere('users.last_name', 'like', '%' . $searchTerm . '%')
+                      ->orWhere('users.id', 'like', '%' . $searchTerm . '%')
+                      ->where('users.schedule_status', 'Pending Interview'); // Add the condition for pending schedule status
+            });
         }
 
         $users->orderBy($sortColumn, $sortOrder);
