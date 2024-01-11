@@ -197,7 +197,7 @@ class DeanController extends Controller
                 $query->where('users.first_name', 'like', '%' . $searchTerm . '%')
                       ->orWhere('users.last_name', 'like', '%' . $searchTerm . '%')
                       ->orWhere('users.id', 'like', '%' . $searchTerm . '%')
-                      ->where('users.schedule_status', 'Pending Interview'); // Add the condition for pending schedule status
+                      ->where('users.status', 'Pending Interview'); // Add the condition for pending schedule status
             });
         }
 
