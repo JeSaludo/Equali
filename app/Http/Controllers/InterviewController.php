@@ -36,6 +36,17 @@ class InterviewController extends Controller
         if(isset($selectedAcademicYear)){
             $users->where('academic_year_id', $selectedAcademicYear);
         }
+
+        $searchTerm = $request->input('searchTerm');
+
+        if ($searchTerm) {
+            $users->where(function ($query) use ($searchTerm) {
+            $query->where('users.first_name', 'like', '%' . $searchTerm . '%')
+            ->orWhere('users.last_name', 'like', '%' . $searchTerm . '%')
+            ->orWhere('users.id', 'like', '%' . $searchTerm . '%')
+            ->where('users.status', 'Pending Interview'); // Add the condition for pending schedule status
+            });
+        }
         
         $users = $users->paginate(10);
         $users->appends(['academicYears' => $request->academicYears]);
@@ -44,7 +55,7 @@ class InterviewController extends Controller
             $query->where('interview', 1);
         });
         
-        return view('admin.interview.dashboard-view-pending-interview', compact('users','userCount','totalInterview','academicYears','request'));
+        return view('admin.interview.dashboard-view-pending-interview', compact('users','userCount','totalInterview','academicYears','request','searchTerm'));
     } 
     
     function ShowScreeningForm($id){
@@ -70,13 +81,24 @@ class InterviewController extends Controller
         if(isset($selectedAcademicYear)){
             $users->where('academic_year_id', $selectedAcademicYear);
         }
+
+        $searchTerm = $request->input('searchTerm');
+        if ($searchTerm) {
+            $users->where(function ($query) use ($searchTerm) {
+            $query->where('users.first_name', 'like', '%' . $searchTerm . '%')
+            ->orWhere('users.last_name', 'like', '%' . $searchTerm . '%')
+            ->orWhere('users.id', 'like', '%' . $searchTerm . '%')
+            ->where('users.status', 'Pending Interview'); // Add the condition for pending schedule status
+            });
+        }
+
         $users = $users->paginate(10);
         $users->appends(['academicYears' => $request->academicYears]);
         $totalInterview = User::with('studentInfo')
         ->whereHas('studentInfo', function ($query) {
             $query->where('interview', 1);
         });
-        return view('admin.interview.dashboard-view-review', compact('users','userCount','totalInterview', 'academicYears','request'));
+        return view('admin.interview.dashboard-view-review', compact('users','userCount','totalInterview', 'academicYears','request', 'searchTerm'));
     }
 
 

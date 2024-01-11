@@ -3,6 +3,7 @@
 namespace App\Exceptions;
 
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Illuminate\View\ViewNotFoundException;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Throwable;
 
@@ -31,6 +32,9 @@ class Handler extends ExceptionHandler
 
     public function render($request, Throwable $exception)
     {
+        
+
+        // Handle other HTTP exceptions
         if ($exception instanceof HttpException) {
             return redirect()->route('error.page'); // Change 'error.page' to the actual route you want to redirect to
         }
