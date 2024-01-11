@@ -38,7 +38,8 @@ class DeanController extends Controller
         $academicYears = AcademicYears::all();
 
         $selectedAcademicYear = $request->input('academicYears');
-       
+        
+
         $users = DB::table('users')
         ->select('users.*', 'admission_exams.raw_score', 'admission_exams.percentage')
         ->join('admission_exams', 'admission_exams.user_id', '=', 'users.id')
@@ -48,6 +49,15 @@ class DeanController extends Controller
             $users->where('academic_year_id', $selectedAcademicYear);
         }
 
+        $searchTerm = $request->input('searchTerm');
+
+        if($searchTerm) {
+            $users->where('users.first_name', 'like', '%' . $searchTerm . '%')
+            ->orWhere('users.last_name', 'like', '%' . $searchTerm . '%')
+            ->orWhere('users.id', 'like', '%' . $searchTerm . '%')  ;         
+   
+        }
+        
         $users->orderBy($sortColumn, $sortOrder);
         $users = $users->paginate(10);
         $users->appends(['academicYears' => $request->academicYears]);
@@ -64,6 +74,7 @@ class DeanController extends Controller
             'request' => $request,
             'sortColumn' => $sortColumn,
             'sortOrder' => $sortOrder,
+            'searchTerm' => $searchTerm,
         ]);
      }
     
@@ -87,6 +98,15 @@ class DeanController extends Controller
             $users->where('academic_year_id', $selectedAcademicYear);
         }
 
+        $searchTerm = $request->input('searchTerm');
+
+        if($searchTerm) {
+            $users->where('users.first_name', 'like', '%' . $searchTerm . '%')
+            ->orWhere('users.last_name', 'like', '%' . $searchTerm . '%')
+            ->orWhere('users.id', 'like', '%' . $searchTerm . '%')  ;         
+   
+        }
+
         $users->orderBy($sortColumn, $sortOrder);
         $users = $users->paginate(10);
         $users->appends(['academicYears' => $request->academicYears]);
@@ -103,6 +123,7 @@ class DeanController extends Controller
             'request' => $request,
             'sortColumn' => $sortColumn,
             'sortOrder' => $sortOrder,
+            'searchTerm' => $searchTerm,
         ]);
     }
     public function ShowAdmissionUnqualified(Request $request){
@@ -123,6 +144,15 @@ class DeanController extends Controller
             $users->where('academic_year_id', $selectedAcademicYear);
         }
 
+        $searchTerm = $request->input('searchTerm');
+
+        if($searchTerm) {
+            $users->where('users.first_name', 'like', '%' . $searchTerm . '%')
+            ->orWhere('users.last_name', 'like', '%' . $searchTerm . '%')
+            ->orWhere('users.id', 'like', '%' . $searchTerm . '%')  ;         
+   
+        }
+
         $users->orderBy($sortColumn, $sortOrder);
         $users = $users->paginate(10);
         $users->appends(['academicYears' => $request->academicYears]);
@@ -139,6 +169,7 @@ class DeanController extends Controller
             'request' => $request,
             'sortColumn' => $sortColumn,
             'sortOrder' => $sortOrder,
+            'searchTerm' => $searchTerm,
         ]); }
 
     public function ShowAdmissionInterview(Request $request){
@@ -159,6 +190,15 @@ class DeanController extends Controller
             $users->where('academic_year_id', $selectedAcademicYear);
         }
 
+        $searchTerm = $request->input('searchTerm');
+
+        if($searchTerm) {
+            $users->where('users.first_name', 'like', '%' . $searchTerm . '%')
+            ->orWhere('users.last_name', 'like', '%' . $searchTerm . '%')
+            ->orWhere('users.id', 'like', '%' . $searchTerm . '%')  ;         
+   
+        }
+
         $users->orderBy($sortColumn, $sortOrder);
         $users = $users->paginate(10);
         $users->appends(['academicYears' => $request->academicYears]);
@@ -175,6 +215,7 @@ class DeanController extends Controller
             'request' => $request,
             'sortColumn' => $sortColumn,
             'sortOrder' => $sortOrder,
+            'searchTerm' => $searchTerm,
         ]);
        }
 
@@ -196,6 +237,15 @@ class DeanController extends Controller
             $users->where('academic_year_id', $selectedAcademicYear);
         }
 
+        $searchTerm = $request->input('searchTerm');
+
+        if($searchTerm) {
+            $users->where('users.first_name', 'like', '%' . $searchTerm . '%')
+            ->orWhere('users.last_name', 'like', '%' . $searchTerm . '%')
+            ->orWhere('users.id', 'like', '%' . $searchTerm . '%')  ;         
+   
+        }
+
         $users->orderBy($sortColumn, $sortOrder);
         $users = $users->paginate(10);
         $users->appends(['academicYears' => $request->academicYears]);
@@ -212,6 +262,7 @@ class DeanController extends Controller
             'request' => $request,
             'sortColumn' => $sortColumn,
             'sortOrder' => $sortOrder,
+            'searchTerm' => $searchTerm,
         ]);
 
        }
@@ -233,6 +284,15 @@ class DeanController extends Controller
             $users->where('academic_year_id', $selectedAcademicYear);
         }
 
+
+        $searchTerm = $request->input('searchTerm');
+
+        if($searchTerm) {
+            $users->where('users.first_name', 'like', '%' . $searchTerm . '%')
+            ->orWhere('users.last_name', 'like', '%' . $searchTerm . '%')
+            ->orWhere('users.id', 'like', '%' . $searchTerm . '%')  ;         
+   
+        }
         $users->orderBy($sortColumn, $sortOrder);
         $users = $users->paginate(10);
         $users->appends(['academicYears' => $request->academicYears]);
@@ -249,6 +309,7 @@ class DeanController extends Controller
             'request' => $request,
             'sortColumn' => $sortColumn,
             'sortOrder' => $sortOrder,
+            'searchTerm' => $searchTerm,
         ]);
      }
     }

@@ -42,7 +42,9 @@
             @include('layout.danger-alert')
 
             @include('layout.sidenav', ['active' => 0])
-            <nav class="ml-[218px] flex justify-end items-center border-b border-[#D9DBE3] h-[60px] bg-white px-4 ">
+            <nav class="ml-[218px] flex justify-between items-center border-b border-[#D9DBE3] h-[60px] bg-white px-4 ">
+
+                @include('admin.partials.search-term', ['route' => 'admin.overview.interview.dean']);
                 @include('layout.user-popup')
             </nav>
 
@@ -57,7 +59,7 @@
                     'sortColumn' => $sortColumn,
                     'sortOrder' => $sortOrder,
                     'academicYears' => $academicYears,
-                    'route' => 'admin.dashboard.admission.interview',
+                    'route' => 'admin.overview.interview.dean',
                 ])
 
 

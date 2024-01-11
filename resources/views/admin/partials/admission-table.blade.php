@@ -6,6 +6,7 @@
 
 
     <div class="flex gap-2">
+
         <div>
             <form action="{{ route($route) }}" method="GET" id="yearForm">
                 <select id="selectAcademicYear" name="academicYears"
