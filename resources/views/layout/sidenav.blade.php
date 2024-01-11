@@ -10,11 +10,6 @@
 
 
         <nav class="relative">
-
-
-
-
-
             @if (Auth::user()->role === 'ProgramHead')
                 <a href="{{ route('admin.dashboard.admission') }}"
                     class="mx-4 bg-gradient-to-r from-[#234BDA] to-[#6499FF] text-white   px-4 py-2 rounded-[15px] flex justify-between items-center  my-2">

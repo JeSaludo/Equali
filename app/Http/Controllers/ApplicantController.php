@@ -344,59 +344,7 @@ class ApplicantController extends Controller
 
     
 
-    // function Schedule(Request $request){
-
-        
-
-    //     $option = Option::first();
-
-       
-    //     $validate = $request->validate([
-    //         'date' => 'required',
-    //         'selectedUsers' => 'required|array|min:1',
-    //         'start_time' => 'required',
-    //         'location' => 'required',
-        
-    //     ]);
-        
-    //     $selectedUserIds = $request->input('selectedUsers');
-       
-    //     foreach ($selectedUserIds as $userId) {
-    //        $user = QualifiedStudent::where('user_id', $userId)->with('user')->first();
-
-    //        $user->exam_schedule_date = $request->date;
-    //        $user->start_time = $request->start_time;
-    //        $user->location = $request->location;
-           
-    //        $user->save();
-
-    //        $temp_user = User::find($userId);
-    //        $temp_user->status = "Pending Interview";
-    //        $temp_user->save();
-    //        dispatch(new SendScheduleEmail($user->user->email, $user->exam_schedule_date, $user->start_time, $user->first_name, $user->last_name, $user->location));
-    //        //Mail::to($user->user->email)->send(new ScheduleMail($user->exam_schedule_date, $user->start_time, $temp_user->first_name, $temp_user->last_name, $user->location));
-    //        //
-          
-    //     }
-          
-        
-    //     //     //dispatch(new SendProctorMail($proctor->email, $proctor->last_name, $proctor->first_name, $user->last_name, $user->first_name, $user->exam_schedule_date, $user->start_time));
-        
-    //     //change this to proper mail tomorrow
-    //     $proctors = User::where('role', 'Proctor')->get();
-    //     foreach ($proctors as $proctor) {
-    //         Mail::to($proctor->email)->send(new NotifyProctor());
-    //     }
-        
-
     
-         
-    //     return redirect()->route('admin.dashboard.show-schedule-interview');
-       
-        
-    // }
-
-    //Schedule
  
     function Schedule(Request $request){
 
@@ -456,7 +404,55 @@ class ApplicantController extends Controller
     }
     
 
+    function ShowInfoWithSetSchedule($id){
+        $user = User::where('role', 'Student')->with('admissionExam')->findOrFail($id);
 
+        return view('admin.dashboard-view-applicant-schedule-info', compact('user'));
+    }
+
+
+
+    function ScheduleIndividual(Request $request, $id){
+        $option = Option::first();
+    
+        
+        $validate = $request->validate([
+            'date' => 'required',
+            
+            'start_time' => 'required',
+            'location' => 'required',
+        ]);
+        
+      
+       
+        $user = QualifiedStudent::with('user')->findOrFail($id);
+        $scheduleCountForDate = QualifiedStudent::where('exam_schedule_date', $request->date)->count();
+        if ($scheduleCountForDate > $option->slot_per_day )  {
+            // Limit reached, handle accordingly (e.g., show an error message)
+            return redirect()->back()->withErrors(['date' => 'Scheduling limit for this date has been reached.']);
+        }
+        $user->exam_schedule_date = $request->date;
+        $user->start_time = $request->start_time;
+        $user->location = $request->location;
+        $user->user->status = "Pending Interview";
+        $user->save();    
+        $user->user->save();
+
+            
+        
+
+        Mail::to($user->user->email)->send(new ScheduleMail($user->exam_schedule_date, $user->start_time, $user->user->first_name, $user->user->last_name, $user->location));
+
+        $pendingInterviewCount = User::where('status', 'Pending Interview')->count();
+        
+        // Notify proctors
+        $proctors = User::where('role', 'Proctor')->get();
+        foreach ($proctors as $proctor) {
+            Mail::to($proctor->email)->send(new NotifyProctor($pendingInterviewCount));
+        }
+        return redirect()->route('admin.dashboard.show-schedule-interview')->with("success",'Schedule added successfuly');
+  
+    }
     function ReSchedule($id){
       
         $user = User::find($id);

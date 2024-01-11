@@ -140,6 +140,10 @@ Route::middleware(['admin', 'check.profile'])->group(function () {
     Route::post('/dashboard/qualified-applicant/set-schedule', [ApplicantController::class, 'Schedule'])->name('admin.dashboard.schedule-applicant'); 
     Route::get('/dashboard/qualified-applicant/re-schedule/{id}', [ApplicantController::class, 'ReSchedule'])->name('admin.dashboard.reschedule-applicant'); 
     
+    Route::get('/dashboard/view/qualified-applicant/{id}', [ApplicantController::class, 'ShowInfoWithSetSchedule'])->name('admin.dashboard.show-scheduler-applicant-individual'); 
+    Route::post('/dashboard/qualified-applicant/set-schedule-individual/{id}', [ApplicantController::class, 'ScheduleIndividual'])->name('admin.dashboard.schedule-applicant-individual'); 
+   
+
     Route::get('/dashboard/report/item-analysis-chart', [ReportController::class, 'ShowItemAnalysisChart'])->name('admin.dashboard.item-analysis-chart');
     Route::get('/dashboard/report/item-analysis', [ReportController::class , 'ShowItemAnalysisReport'])->name('admin.dashboard.item-analysis-report');
     Route::get('/dashboard/item-analysis', [ItemAnalysisController::class, 'ShowItemAnalysisAll'])->name('admin.dashboard.item-analysis');
@@ -224,7 +228,7 @@ Route::middleware(['admin', 'check.profile'])->group(function () {
     Route::post('/dashboard/setting/create-acad-year', [AcademicYearController::class,'CreateAcademicYear'])->name('admin.setting.create-acad')->withoutMiddleware('check.profile');
 
     
-    
+  
 });
 
     Route::put('/dashboard/{id}/update-profile', [AdminController::class,'UpdateProfile'])->name('admin.update.profile')->middleware('admin');
@@ -234,9 +238,9 @@ Route::middleware(['admin', 'check.profile'])->group(function () {
         Route::post('/exam/result', [ExamController::class, 'SubmitExam'])->name('submit-exam');
     });
 
-   
-Route::get('/test', function(){
+   Route::get('error-404', function(){
+    return view('error.404');
+   })->name('error.page');
 
-    
-    return view('admin.test');
-});
+
+   

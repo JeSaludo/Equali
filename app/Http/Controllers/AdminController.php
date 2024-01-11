@@ -54,62 +54,97 @@ class AdminController extends Controller
         $slotLimit = $option->slot_per_day;
         return view('admin.dashboard-view-appointed-date', compact( 'users' ,'slotLimit','scheduledUsersCount'));
     }
-    // function ShowScheduledDate(Request $request){
-
-    //     $users = DB::table('users')
-    //     ->select('users.*', 'qualified_students.*')
-    //     ->join('qualified_students', 'qualified_students.user_id', '=', 'users.id')
-    //     ->where('users.role', 'Student')->where('users.status', 'Pending Interview');
-
     
-      
-    //     $selectedDate = $request->input('selectDate');
 
-    //     // Check if a date is selected
-    //     if ($selectedDate) {
-    //         $users->where('exam_schedule_date', $selectedDate);
-            
-    //     }
-      
-    //     $scheduledUsersCount = $users->count();
-    //     $option = Option::first();
+    function ShowScheduleInterview(Request $request){
         
+        $academicYears = AcademicYears::all();
+
+        $selectedAcademicYear = $request->input('academicYears');
        
-    //     $users = $users->get();
-
-    //     $slotLimit = $option->slot_per_day;
-    //     return view('admin.dashboard-view-scheduled-date', compact( 'users' ,'slotLimit','scheduledUsersCount'));
-    // }
-
-    function ShowScheduleInterview(){
+        $users = DB::table('users')
+        ->select('users.*', 'qualified_students.*')
+        ->join('qualified_students', 'qualified_students.user_id', '=', 'users.id')
+        ->leftJoin('student_infos', 'student_infos.user_id', '=', 'users.id')
+        ->where('users.role', 'Student')
+        ->where('status', 'Pending Schedule')
+        ->whereNull('student_infos.user_id')
+        ->orderBy('users.created_at', 'desc');                
+        
       
-        $option = Option::first();
+        $userCount = User::all();        
 
-        $currentAcademicYear = AcademicYears::where('year_name', $option->academic_year_name)->first();
-      
+        if(isset($selectedAcademicYear)){
+            $users->where('academic_year_id', $selectedAcademicYear);
+        }
+        
+        $searchTerm = $request->input('searchTerm');
 
-
-        $userCount = User::all();
-        $users = User::where('role', 'Student')->where('status', 'Pending Schedule')->where('academic_year_id',  $currentAcademicYear->id)
-        ->with('qualifiedStudent')
-        ->doesntHave('studentInfo')
-        ->latest('created_at');
+        if ($searchTerm) {
+            $users->where(function ($query) use ($searchTerm) {
+            $query->where('users.first_name', 'like', '%' . $searchTerm . '%')
+            ->orWhere('users.last_name', 'like', '%' . $searchTerm . '%')
+            ->orWhere('users.id', 'like', '%' . $searchTerm . '%')
+            ->where('users.status', 'Pending Schedule'); // Add the condition for pending schedule status
+            });
+        }
 
         $users = $users->paginate(10);
-        return view('admin.dashboard-view-schedule-for-interview', compact( 'users', 'userCount'));
+        $users->appends(['academicYears' => $request->academicYears]);
+        return view('admin.dashboard-view-schedule-for-interview',[
+            'userCount' => $userCount,
+            'academicYears' => $academicYears,
+            'users' => $users,
+            'request' => $request,          
+            'searchTerm '=>  $searchTerm,
+        ]);
     }
 
-    function ShowScheduledInterview()
+    function ShowScheduledInterview(Request $request)
     {
+       
         
-        $userCount = User::all();
-        $users = User::where('role', 'Student')->where('status', 'Pending Interview')
-        ->with('qualifiedStudent')
-        ->doesntHave('studentInfo')
-        ->latest('created_at');
+        $academicYears = AcademicYears::all();
 
+        $selectedAcademicYear = $request->input('academicYears');
+       
+        $users = DB::table('users')
+        ->select('users.*', 'qualified_students.*')
+        ->join('qualified_students', 'qualified_students.user_id', '=', 'users.id')
+        ->leftJoin('student_infos', 'student_infos.user_id', '=', 'users.id')
+        ->where('users.role', 'Student')
+        ->where('status', 'Pending Interview')
+        ->whereNull('student_infos.user_id')
+        ->orderBy('users.created_at', 'desc');                
+        
+        $userCount = User::all();        
+
+        if(isset($selectedAcademicYear)){
+
+            $users->where('academic_year_id', $selectedAcademicYear);
+        }
+        
+        $searchTerm = $request->input('searchTerm');
+
+        if ($searchTerm) {
+            $users->where(function ($query) use ($searchTerm) {
+            $query->where('users.first_name', 'like', '%' . $searchTerm . '%')
+            ->orWhere('users.last_name', 'like', '%' . $searchTerm . '%')
+            ->orWhere('users.id', 'like', '%' . $searchTerm . '%')
+            ->where('users.status', 'Pending Interview'); // Add the condition for pending schedule status
+            });
+        }
+      
         $users = $users->paginate(10);
-        return view('admin.dashboard-view-scheduled-interview', compact( 'users', 'userCount'));
+        $users->appends(['academicYears' => $request->academicYears]);
+        return view('admin.dashboard-view-scheduled-interview',[
+            'userCount' => $userCount,
+            'academicYears' => $academicYears,
+            'users' => $users,
+            'request' => $request,          
+            'searchTerm '=>  $searchTerm,
+        ]);
+    
 
     }
 

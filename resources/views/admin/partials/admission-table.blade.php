@@ -31,7 +31,7 @@
 
 
 
-            <script>
+            {{-- <script>
                 // Function to update the academic year and store it
                 function updateAcademicYear() {
                     var selectedAcademicYear = document.getElementById("selectAcademicYear").value;
@@ -53,7 +53,7 @@
                 document.addEventListener("DOMContentLoaded", function() {
                     updateSelectedYearLabel();
                 });
-            </script>
+            </script> --}}
 
 
         </div>
@@ -76,7 +76,7 @@
                     <td class="px-6 py-2">
                         <a
                             href="{{ route($route, ['sort_column' => 'id', 'sort_order' => $sortColumn == 'id' && $sortOrder == 'asc' ? 'desc' : 'asc', 'academicYears' => $request->academicYears]) }}">
-                            ID form <i class='bx bxs-sort-alt'></i>
+                            ID <i class='bx bxs-sort-alt'></i>
                         </a>
                     </td>
 

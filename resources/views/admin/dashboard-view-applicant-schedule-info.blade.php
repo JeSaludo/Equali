@@ -222,50 +222,56 @@
 
                     </form>
 
-                    @if (Auth::user()->role != 'Proctor')
-                        <form class="mx-4 mt-4"
-                            action="{{ route('admin.dashboard.update-applicant-status', $user->id) }}"
-                            method="POST">
 
-                            @csrf
-                            @method('put')
 
-                            <div class="bg-white rounded-[12px]   p-4 border-gray-100 border-2">
-                                <div class=" font-poppins text-[22px] font-semibold  text-[#26386A] ">
-                                    <h1>Applicant Status Update </h1>
 
+
+
+                    <form action="{{ route('admin.dashboard.schedule-applicant-individual', $user->id) }}"
+                        method="POST">
+                        @csrf
+
+                        <div class="bg-white mx-4 rounded-[12px] mt-4 p-4 border-gray-100 border-2">
+                            <div class="font-poppins text-[22px] flex justify-between font-semibold text-[#26386A] ">
+                                <h1>Schedule Exam and Interview</h1>
+                            </div>
+                            <div class="px-8 mt-4">
+
+                                <div class="mb-4">
+                                    <label for="date"
+                                        class="block text-sm font-medium text-gray-600">Date:</label>
+                                    <input type="date" name="date" class="w-full px-3 py-2 border rounded-md"
+                                        required min="<?= date('Y-m-d') ?>">
                                 </div>
 
-                                <div>
+                                <div class=" flex justify-between gap-4 mt-6">
+                                    <div class="my-2 w-full">
+                                        <label for="start_time"
+                                            class="block text-sm font-medium text-gray-600">Time:</label>
+                                        <input type="time" id="start_time" name="start_time"
+                                            class="w-full px-3 py-2 border rounded-md" required value="07:30">
+                                    </div>
 
-                                    <div class="relative px-8 my-4 w-full">
-                                        <label for="admission" class="font-poppins text-[14px] text-gray-500 ">
-                                            Status:</label>
-                                        <select name="status"
-                                            class="border font-poppins border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
-                                            autocomplete="off">
-                                            <option value="{{ $user->status }}" selected>{{ $user->status }}</option>
-                                            <option value="Unqualified">Unqualified</option>
-                                            <option value="Qualified">Qualified</option>
-                                            <option value="Qualified">Waitlisted</option>
-                                            <option value="Qualified">Archived</option>
-                                            <option value="Pending Schedule">Pending</option>
-
-                                        </select>
-
+                                    <div class="my-2 w-full">
+                                        <label for="location"
+                                            class="block text-sm font-medium text-gray-600">Location:</label>
+                                        <input type="text" id="location" name="location"
+                                            placeholder="Enter Exam and interview location"
+                                            class="w-full px-3 py-2 border rounded-md" required>
                                     </div>
                                 </div>
-                                <div class="  w-full flex justify-end">
-                                    <div class=" pt-4 pr-6 w-full flex justify-end">
-                                        <input type="submit" value="Update "
-                                            class="text-white bg-blue-700 hover:bg-blue-800 font-poppins focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2   focus:outline-none ">
 
-
-                                    </div>
+                                <div class="flex justify-end pt-4  w-full">
+                                    <button type="submit"
+                                        class="text-white bg-blue-700 hover:bg-blue-800 font-poppins focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2   focus:outline-none ">Set
+                                        Schedule</button>
                                 </div>
                             </div>
-                        </form>
-                    @endif
+                        </div>
+                    </form>
+
+
+
 
                 </div>
 

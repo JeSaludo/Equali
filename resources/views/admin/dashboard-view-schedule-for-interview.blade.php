@@ -37,8 +37,10 @@
             @include('layout.danger-alert')
 
             @include('layout.sidenav', ['active' => 0])
-            <nav class="ml-[218px] flex justify-end items-center border-b border-[#D9DBE3] h-[60px] bg-white px-4">
-
+            <nav class="ml-[218px] flex justify-between items-center border-b border-[#D9DBE3] h-[60px] bg-white px-4">
+                @include('admin.partials.search-term', [
+                    'route' => 'admin.dashboard.show-schedule-interview',
+                ])
                 @include('layout.user-popup')
             </nav>
             <section class="ml-[218px] main ">
@@ -47,18 +49,41 @@
 
                 @include('layout.schedule-interview-count')
 
+                <div class="flex mx-4 mb-4" id="navLinks">
+
+
+
+                    <a href="{{ route('admin.dashboard.show-schedule-interview') }}"
+                        class="font-poppins active  text-slate-500  nav-link whitespace-nowrap">Schedule
+                        Interview</a>
+                    <a href="{{ route('admin.dashboard.show-scheduled-interview') }}"
+                        class="font-poppins   text-slate-500  nav-link whitespace-nowrap">Scheduled Interview</a>
+                    <a href="{{ route('admin.dashboard.show-scheduled-calendar') }}"
+                        class="font-poppins   text-slate-500  nav-link whitespace-nowrap">Scheduled
+                        Date</a>
+
+                    <a href="#" class="font-poppins  text-slate-500 w-full no-hover-underline"></a>
+                </div>
+
                 <div class="flex justify-between mx-4 mt-4 mb-4">
 
                     <h1 class="text-[#26386A] text-[18px]  font-bold font-raleway ">List of Interviews</h1>
-
+                    <div class="w-2/12">
+                        @include('admin.partials.select-acad-year', [
+                            'route' => 'admin.dashboard.show-schedule-interview',
+                        ])
+                    </div>
 
 
                 </div>
 
 
-
-                <form action="{{ route('admin.dashboard.schedule-applicant') }}" method="POST">
+                <form action="{{ route('admin.dashboard.show-schedule-interview') }}" method="POST">
                     @csrf
+
+
+
+
                     <div class="mx-4 my-2 ">
                         <a disabled id="openPopup"
                             class="w-[120px] border border-[#D9DBE3] hover:cursor-pointer hover:border-slate-400 flex items-center text-[14px] tezt-poppin hover:text-[#384b94] font-poppins text-slate-600 py-1 px-4 rounded-lg">
@@ -66,21 +91,6 @@
                         </a>
                     </div>
 
-                    <div class="flex mx-4 mb-4" id="navLinks">
-
-
-
-                        <a href="{{ route('admin.dashboard.show-schedule-interview') }}"
-                            class="font-poppins active  text-slate-500  nav-link whitespace-nowrap">Schedule
-                            Interview</a>
-                        <a href="{{ route('admin.dashboard.show-scheduled-interview') }}"
-                            class="font-poppins   text-slate-500  nav-link whitespace-nowrap">Scheduled Interview</a>
-                        <a href="{{ route('admin.dashboard.show-scheduled-calendar') }}"
-                            class="font-poppins   text-slate-500  nav-link whitespace-nowrap">Scheduled
-                            Date</a>
-
-                        <a href="#" class="font-poppins  text-slate-500 w-full no-hover-underline"></a>
-                    </div>
 
                     <div class="bg-white mx-4 relative  border   border-[#D9DBE3] shadow-md rounded-lg ">
                         <div class="overflow-x-auto">
@@ -99,8 +109,10 @@
                                         </td>
                                         <td class="px-6 py-2">ID</td>
                                         <td class="px-6 py-2">Applicant Name</td>
-                                        <td class="px-6 py-2">Interview & Exam Schedule</td>
-                                        <td class="px-6 py-2">Time</td>
+                                        <td class="px-6 py-2">Email</td>
+                                        <td class="px-6 py-2">Action</td>
+
+
                                     </tr>
                                 </thead>
 
@@ -131,27 +143,21 @@
                                                 <td class="px-6 py-3 ">
                                                     {{ $user->last_name . ', ' . $user->first_name }} </td>
 
-                                                @if ($user->qualifiedStudent->exam_schedule_date != null)
-                                                    <td class="px-6 py-3  whitespace-nowrap">
+                                                <td class="px-6 py-3 ">
+                                                    {{ $user->email }}
 
-                                                        {{ \Carbon\Carbon::parse($user->qualifiedStudent->exam_schedule_date)->format('F j, Y') }}
-                                                    </td>
+                                                </td>
 
-                                                    <td class="px-6 py-3    whitespace-nowrap">
 
-                                                        {{ \Carbon\Carbon::parse($user->qualifiedStudent->start_time)->format('h:i A') }}
-                                                        -
-                                                        {{ \Carbon\Carbon::parse($user->qualifiedStudent->end_time)->format('h:i A') }}
+                                                <td class="px-6 py-3 ">
 
-                                                    </td>
-                                                @else
-                                                    <td class="px-6 py-3   whitespace-nowrap">
-                                                        Not yet scheduled
-                                                    </td>
-                                                    <td class="px-6 py-3   whitespace-nowrap">
+                                                    <a href="{{ route('admin.dashboard.show-scheduler-applicant-individual', $user->id) }}"
+                                                        class="text-[12px] bg-blue-600 py-1 px-3 hover:bg-blue-900 text-white rounded-md">View</a>
 
-                                                    </td>
-                                                @endif
+
+
+                                                </td>
+
 
 
 
@@ -211,7 +217,8 @@
 
                                         <div class="my-2 ">
                                             <label for="start_time">Time:</label>
-                                            <input type="time" id="start_time" name="start_time" class="w-full">
+                                            <input type="time" id="start_time" name="start_time" class="w-full"
+                                                value="07:30" required>
 
 
                                         </div>
