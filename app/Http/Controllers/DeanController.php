@@ -60,7 +60,8 @@ class DeanController extends Controller
         
         $users->orderBy($sortColumn, $sortOrder);
         $users = $users->paginate(10);
-        $users->appends(['academicYears' => $request->academicYears]);
+        $users->appends(['academicYears' => $request->academicYears, 'sort_order' => $sortOrder]);
+
 
         return view('admin.dean.dashboard-view-admission', [
             'totalUserCount' => $userCounts['totalUserCount'],
