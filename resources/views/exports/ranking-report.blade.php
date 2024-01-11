@@ -24,11 +24,14 @@
             @endphp
 
             @foreach ($users as $index => $user)
-                @if ($index === 0 || $user->weighted_average !== $user[$index - 1]->weighted_average)
+                @if ($index === 0 || $user->weighted_average !== $users[$index - 1]->weighted_average)
                     @php
+
                         $lastIndex = $index + 1;
+
                     @endphp
                 @endif
+
 
                 <tr class="{{ $index % 2 == 0 ? 'bg-[#F6F8FF]' : 'bg-white' }} border-b border-gray-100">
                     <td class="px-6 py-3">{{ $lastIndex }}</td>
