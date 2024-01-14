@@ -49,8 +49,12 @@ class InterviewController extends Controller
         }
         
         $users = $users->paginate(10);
-        $users->appends(['academicYears' => $request->academicYears]);
-        $totalInterview = User::with('studentInfo')
+        $users->appends([
+            'academicYears' => $request->academicYears,
+            // 'sort_column' => $sortColumn,
+            // 'sort_order' => $sortOrder,
+            // 'searchTerm' => $searchTerm,
+        ]);        $totalInterview = User::with('studentInfo')
         ->whereHas('studentInfo', function ($query) {
             $query->where('interview', 1);
         });
@@ -93,8 +97,12 @@ class InterviewController extends Controller
         }
 
         $users = $users->paginate(10);
-        $users->appends(['academicYears' => $request->academicYears]);
-        $totalInterview = User::with('studentInfo')
+        $users->appends([
+            'academicYears' => $request->academicYears,
+            // 'sort_column' => $sortColumn,
+            // 'sort_order' => $sortOrder,
+            // 'searchTerm' => $searchTerm,
+        ]);        $totalInterview = User::with('studentInfo')
         ->whereHas('studentInfo', function ($query) {
             $query->where('interview', 1);
         });

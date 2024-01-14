@@ -34,23 +34,16 @@
     </head>
 
     <body>
-        <div class="min-h-screen  bg-[#EEF4F6]">
+        <div class="min-h-screen ">
 
 
             @include('layouts.sidebar')
 
+            @include('layouts.navigation', [
+                'route' => 'admin.dashboard.show-review',
+                'show' => true,
+            ])
 
-            <nav class="ml-[218px] flex justify-between items-center border-b border-[#D9DBE3] h-[60px] bg-white px-4">
-
-
-                @include('admin.partials.search-term', [
-                    'route' => 'admin.dashboard.show-review',
-                ])
-
-
-
-                @include('layout.user-popup')
-            </nav>
             <section class="sm:ml-64 main">
 
                 @include('layout.popup')

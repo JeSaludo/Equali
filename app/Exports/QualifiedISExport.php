@@ -18,7 +18,6 @@ class QualifiedISExport implements  FromView
     {
         $selectedAcademicYear = $this->selectedYear;
        
-
         $users = DB::table('users')
         ->select('users.*', 'results.*', 'student_infos.*')
         ->join('results', 'results.user_id', '=', 'users.id')

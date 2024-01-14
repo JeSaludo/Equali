@@ -66,8 +66,12 @@ class ProgramHeadController extends Controller
         }
         $users->orderBy($sortColumn, $sortOrder);
         $users = $users->paginate(10);
-        $users->appends(['academicYears' => $request->academicYears]);
-
+        $users->appends([
+            'academicYears' => $request->academicYears,
+            'sort_column' => $sortColumn,
+            'sort_order' => $sortOrder,
+            'searchTerm' => $searchTerm,
+        ]);
         return view('admin.program-head.dashboard-view-admission', [
             'totalUserCount' => $userCounts['totalUserCount'],
             'forInterviewCount' => $userCounts['forInterviewCount'],           
@@ -116,8 +120,12 @@ class ProgramHeadController extends Controller
 
         $users->orderBy($sortColumn, $sortOrder);
         $users = $users->paginate(10);
-        $users->appends(['academicYears' => $request->academicYears]);
-
+        $users->appends([
+            'academicYears' => $request->academicYears,
+            'sort_column' => $sortColumn,
+            'sort_order' => $sortOrder,
+            'searchTerm' => $searchTerm,
+        ]);
         return view('admin.program-head.dashboard-view-admission-for-qualified', [
             'totalUserCount' => $userCounts['totalUserCount'],
             'forInterviewCount' => $userCounts['forInterviewCount'],           
@@ -164,8 +172,12 @@ class ProgramHeadController extends Controller
 
         $users->orderBy($sortColumn, $sortOrder);
         $users = $users->paginate(10);
-        $users->appends(['academicYears' => $request->academicYears]);
-
+        $users->appends([
+            'academicYears' => $request->academicYears,
+            'sort_column' => $sortColumn,
+            'sort_order' => $sortOrder,
+            'searchTerm' => $searchTerm,
+        ]);
         return view('admin.program-head.dashboard-view-admission-for-not-qualified', [
             'totalUserCount' => $userCounts['totalUserCount'],
             'forInterviewCount' => $userCounts['forInterviewCount'],           
@@ -212,8 +224,12 @@ class ProgramHeadController extends Controller
 
         $users->orderBy($sortColumn, $sortOrder);
         $users = $users->paginate(10);
-        $users->appends(['academicYears' => $request->academicYears]);
-
+        $users->appends([
+            'academicYears' => $request->academicYears,
+            'sort_column' => $sortColumn,
+            'sort_order' => $sortOrder,
+            'searchTerm' => $searchTerm,
+        ]);
         return view('admin.program-head.dashboard-view-admission-for-interview', [
             'totalUserCount' => $userCounts['totalUserCount'],
             'forInterviewCount' => $userCounts['forInterviewCount'],           
@@ -261,8 +277,12 @@ class ProgramHeadController extends Controller
 
         $users->orderBy($sortColumn, $sortOrder);
         $users = $users->paginate(10);
-        $users->appends(['academicYears' => $request->academicYears]);
-
+        $users->appends([
+            'academicYears' => $request->academicYears,
+            'sort_column' => $sortColumn,
+            'sort_order' => $sortOrder,
+            'searchTerm' => $searchTerm,
+        ]);
         return view('admin.program-head.dashboard-view-admission-for-waitlisted', [
             'totalUserCount' => $userCounts['totalUserCount'],
             'forInterviewCount' => $userCounts['forInterviewCount'],           
@@ -311,8 +331,12 @@ class ProgramHeadController extends Controller
 
         $users->orderBy($sortColumn, $sortOrder);
         $users = $users->paginate(10);
-        $users->appends(['academicYears' => $request->academicYears]);
-
+        $users->appends([
+            'academicYears' => $request->academicYears,
+            'sort_column' => $sortColumn,
+            'sort_order' => $sortOrder,
+            'searchTerm' => $searchTerm,
+        ]);
         return view('admin.program-head.dashboard-view-admission-qualifying-exam', [
             'totalUserCount' => $userCounts['totalUserCount'],
             'forInterviewCount' => $userCounts['forInterviewCount'],           

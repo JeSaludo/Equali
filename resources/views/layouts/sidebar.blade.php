@@ -305,6 +305,54 @@
 
 
         </div>
+    @elseif (Auth::user()->role === 'Proctor')
+        <div class="mt-6">
+
+            <div class="mt-4 mx-4">
+                <p class=" font-raleway text-[12px] font-bold text-[#718297]">NAVIGATION</p>
+                <a href="{{ route('admin.dashboard.overview.proctor') }}"
+                    class=" px-4 py-2 hover:cursor-pointer hover:bg-[#EAF0FF] rounded-[8px] flex  items-center text-[#718297] my-2
+                {{ request()->routeIs('admin.dashboard.overview.proctor') ? 'bg-gradient-to-r from-[#234BDA] to-[#6499FF] text-white' : '' }}">
+                    <div class=" whitespace-nowrap"><i class='bx bx-file pr-2'></i></i>Overview
+                    </div>
+                </a>
+
+
+            </div>
+
+
+
+
+            <div class="mt-4 mx-4 ">
+
+                <p class=" font-raleway text-[12px] font-bold text-[#718297]">MANAGEMENT</p>
+
+
+                <a href="{{ route('admin.dashboard.pending-interview') }}"
+                    class=" px-4 py-2 hover:cursor-pointer hover:bg-[#EAF0FF] rounded-[8px] flex  items-center text-[#718297] my-2 {{ request()->routeIs('admin.dashboard.show-review') ? 'bg-gradient-to-r from-[#234BDA] to-[#6499FF] text-white' : '' }}
+                    {{ request()->routeIs('admin.dashboard.pending-interview') ? 'bg-gradient-to-r from-[#234BDA] to-[#6499FF] text-white' : '' }}">
+                    <div class=" whitespace-nowrap"><i class='bx bx-file pr-2'></i></i>Interviews
+                    </div>
+                </a>
+
+
+
+            </div>
+            <div class="mt-4 mx-4 ">
+
+                <p class=" font-raleway text-[12px] font-bold text-[#718297]">REPORT</p>
+
+
+                <a href="{{ route('admin.show.report.interview-result') }}"
+                    class=" px-4 py-2 hover:cursor-pointer hover:bg-[#EAF0FF] rounded-[8px] flex  items-center text-[#718297] my-2 {{ request()->routeIs('admin.dashboard.show-review') ? 'bg-gradient-to-r from-[#234BDA] to-[#6499FF] text-white' : '' }}
+            {{ request()->routeIs('admin.show.report.interview-result') ? 'bg-gradient-to-r from-[#234BDA] to-[#6499FF] text-white' : '' }}">
+                    <div class=" whitespace-nowrap"><i class='bx bxs-report pr-2'></i>Result
+                    </div>
+                </a>
+            </div>
+
+
+        </div>
     @endif
 
 

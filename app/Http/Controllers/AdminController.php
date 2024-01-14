@@ -42,8 +42,9 @@ class AdminController extends Controller
         $pendingInterview = User::where('role', 'Student')->where('status', 'Pending Interview')->count();
 
         $finishedInterview = StudentInfo::where('interview', true)->count();
-        return view('admin.dashboard-overview', compact('users' , 'totalInterview', 'pendingInterview','finishedInterview'));
+        return view('admin.dashboard-overview-proctor', compact('users' , 'totalInterview', 'pendingInterview','finishedInterview'));
     }
+    
     function ShowScheduledCalendar(Request $request){
 
         $users = DB::table('users')
@@ -51,8 +52,6 @@ class AdminController extends Controller
         ->join('qualified_students', 'qualified_students.user_id', '=', 'users.id')
         ->where('users.role', 'Student')->where('users.status', 'Pending Interview');
 
-    
-      
         $selectedDate = $request->input('selectDate');
 
         // Check if a date is selected
@@ -70,7 +69,8 @@ class AdminController extends Controller
         $slotLimit = $option->slot_per_day;
         return view('admin.dashboard-view-appointed-date', compact( 'users' ,'slotLimit','scheduledUsersCount'));
     }
-    
+
+
 
     function ShowScheduleInterview(Request $request){
         
@@ -106,8 +106,14 @@ class AdminController extends Controller
         }
 
         $users = $users->paginate(10);
-        $users->appends(['academicYears' => $request->academicYears]);
-        return view('admin.dashboard-view-schedule-for-interview',[
+        $users->appends([
+            'academicYears' => $request->academicYears,
+            // 'sort_column' => $sortColumn,
+            // 'sort_order' => $sortOrder,
+            // 'searchTerm' => $searchTerm,
+        ]);       
+
+         return view('admin.dashboard-view-schedule-for-interview',[
             'userCount' => $userCount,
             'academicYears' => $academicYears,
             'users' => $users,
@@ -152,8 +158,13 @@ class AdminController extends Controller
         }
       
         $users = $users->paginate(10);
-        $users->appends(['academicYears' => $request->academicYears]);
-        return view('admin.dashboard-view-scheduled-interview',[
+        $users->appends([
+            'academicYears' => $request->academicYears,
+            // 'sort_column' => $sortColumn,
+            // 'sort_order' => $sortOrder,
+            // 'searchTerm' => $searchTerm,
+        ]);     
+           return view('admin.dashboard-view-scheduled-interview',[
             'userCount' => $userCount,
             'academicYears' => $academicYears,
             'users' => $users,

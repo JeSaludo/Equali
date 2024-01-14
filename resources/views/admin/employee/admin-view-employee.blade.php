@@ -37,30 +37,7 @@
             @include('layouts.sidebar')
 
 
-            <nav class="ml-[218px] flex justify-between items-center border-b border-[#D9DBE3] h-[60px] bg-white px-4">
-
-
-                <div class="my-2 flex items-center">
-                    <div class="block">
-
-                        <h1 class="text-[#26386A] text-[18px]  font-bold font-raleway">
-                        </h1>
-                        <p class="text-slate-400 text-[14px] font-raleway font-medium "></p>
-
-                    </div>
-
-                </div>
-
-
-                <div class="my-2">
-                    <i class='bx bx-cog bx-sm text-[#8B8585]'></i>
-                    <i class='bx bx-bell text-[#8B8585] bx-sm'></i>
-                    <i class='bx bx-user-circle bx-sm text-[#8B8585]'></i>
-                </div>
-
-            </nav>
-
-
+            @include('layouts.navigation', ['route' => null, 'show' => false])
 
 
 
