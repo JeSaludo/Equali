@@ -9,19 +9,20 @@
         transform 150ms ease-in-out;
 }
 
-.dropdown.active {
-    height: auto;
-}
+
 
 
 .dropdown.active .dropdown-menu {
     opacity: 1;
     transform: translateY(0);
-
+    height: auto;
     pointer-events: auto;
     transition: opacity 50ms ease-in-out, transform 150ms ease-in-out;
 }
 
+.dropdown.active {
+    height: auto;
+}
 .dropdown.active .dropdown-button {
     /* background-color: #eaf0ff; */
 }
