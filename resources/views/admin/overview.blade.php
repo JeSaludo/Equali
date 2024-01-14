@@ -126,7 +126,7 @@
                             </div>
                             <div class="mx-6 py-1">
                                 <p class="text-xl">Total Applicants</p>
-                                <p class="text-[40px] font-bold">100</p>
+                                <p class="text-[40px] font-bold">{{ $user->where('role', 'Student')->count() }}</p>
                             </div>
                         </div>
                     </div>
@@ -139,7 +139,8 @@
                             </div>
                             <div class="mx-6 py-1">
                                 <p class="text-xl">Qualified Applicants</p>
-                                <p class="text-[40px] font-bold">100</p>
+                                <p class="text-[40px] font-bold">
+                                    {{ $user->where('role', 'Student')->where('status', 'Qualified')->count() }}</p>
                             </div>
                         </div>
                     </div>
@@ -152,7 +153,8 @@
                             </div>
                             <div class="mx-6 py-1">
                                 <p class="text-xl">Unqualified Applicants</p>
-                                <p class="text-[40px] font-bold">100</p>
+                                <p class="text-[40px] font-bold">
+                                    {{ $user->where('role', 'Student')->where('status', 'Unqualified')->count() }}</p>
                             </div>
                         </div>
                     </div>
@@ -165,7 +167,8 @@
                             </div>
                             <div class="mx-6 py-1">
                                 <p class="text-xl">Waitlisted Applicants</p>
-                                <p class="text-[40px] font-bold">100</p>
+                                <p class="text-[40px] font-bold">
+                                    {{ $user->where('role', 'Student')->where('status', 'Waitlisted')->count() }}</p>
                             </div>
                         </div>
                     </div>
