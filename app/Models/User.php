@@ -80,5 +80,11 @@ class User extends Authenticatable
     public function examResponse(){
         return $this->hasMany(ExamResponse::class);
     }
+
+    public function userTimeStamp()
+    {
+        return $this->hasOne(UserTimeStamp::class);
+    }
+
     
 }

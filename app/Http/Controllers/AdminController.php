@@ -11,14 +11,90 @@ use App\Models\Exam;
 use App\Models\ExamQuestion;
 use Carbon\Carbon;
 use App\Models\StudentInfo;
+use App\Models\UserTimeStamp;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 class AdminController extends Controller
 {
 
-    function ShowOverview(){
-        return view('admin.overview');
+    function ShowOverview(Request $request){
+        $academicYears = AcademicYears::all();
+      
+        $selectedAcademicYear = $request->input('academicYears');
+        
+        if(isset($selectedAcademicYear))
+        {
+            
+        }
+        $user = DB::table('users')
+        ->select('users.*');
+        
+       $user = $user->get();
+
+       $option = Option::first();
+
+       if($option->academic_year_name != null){
+            $selectedDefaultYear = AcademicYears::where('year_name', $option->academic_year_name)->first();
+        
+            
+            $dateRange = [];
+
+
+            $start = Carbon::parse($selectedDefaultYear->start_date);
+            $end = Carbon::parse($selectedDefaultYear->end_date);
+            
+            $dateRangeLabels = [];
+            while ($start <= $end) {
+                $dateRangeLabels[] = $start->format('F Y');
+                $start->addMonth();
+            }
+            
+          
+            $userTimeStamps = DB::table('user_time_stamps')
+            ->select(DB::raw('MONTH(qualification_date) as month'), 'qualification_status', DB::raw('count(*) as count'))
+            ->groupBy('month', 'qualification_status')
+            ->get();
+
+        // Separate the data into arrays for each qualification status
+        $qualifiedData = [];
+        $unqualifiedData = [];
+        $waitlistedData = [];
+
+        foreach ($userTimeStamps as $row) {
+            switch ($row->qualification_status) {
+                case 'Qualified':
+                    $qualifiedData[$row->month] = $row->count;
+                    break;
+                case 'Unqualified':
+                    $unqualifiedData[$row->month] = $row->count;
+                    break;
+                case 'Waitlisted':
+                    $waitlistedData[$row->month] = $row->count;
+                    break;
+            }
+        }
+
+            // Pass the chart data to the view
+            $chartData = [
+                'qualifiedData' => json_encode(array_values($qualifiedData)),
+                'unqualifiedData' => json_encode(array_values($unqualifiedData)),
+                'waitlistedData' => json_encode(array_values($waitlistedData)),
+            ];
+            $dateRange = json_encode($dateRangeLabels);
+        // Return the view with all the data
+        return view('admin.overview', compact('academicYears', 'selectedAcademicYear', 'request', 'user', 'selectedDefaultYear', 'dateRange', 'chartData'));
+    
+            
+           // return view('admin.overview', compact('academicYears','selectedAcademicYear','request','user','selectedDefaultYear' ,'dateRange'));
+        
+
+        }else{
+            return redirect()->back()->with('error', 'Add academic year first to proceed');
+        }
+       
+       
     }
+
     function ShowRecent(){
         return view('admin.recent-activity');
     }
@@ -44,7 +120,6 @@ class AdminController extends Controller
         $finishedInterview = StudentInfo::where('interview', true)->count();
         return view('admin.dashboard-overview-proctor', compact('users' , 'totalInterview', 'pendingInterview','finishedInterview'));
     }
-    
     function ShowScheduledCalendar(Request $request){
 
         $users = DB::table('users')
@@ -87,7 +162,7 @@ class AdminController extends Controller
         ->whereNull('student_infos.user_id')
         ->orderBy('users.created_at', 'desc');                
         
-      
+       
         $userCount = User::all();        
 
         if(isset($selectedAcademicYear)){
@@ -218,12 +293,12 @@ class AdminController extends Controller
                 return redirect()->route('admin.show-setting')->with('error','Create a Academic Year to complete the setup');
             }
             else{
-                return redirect()->route('admin.overview.dean');
+                return redirect()->route('dean.admission');
             }
             
         }
         else if($user->role === "ProgramHead"){
-            return redirect()->route('dean.admission');
+            return redirect()->route('programhead.admission');
         }
         
     }
@@ -292,20 +367,41 @@ class AdminController extends Controller
             if ($qualifiedCount < $numberOfQualified) {
                 if ($userModel->result->weighted_average >= $option->qualified_student_passing_average) {
                     $userModel->status = "Qualified";
+                    $timestamp = UserTimeStamp::where('user_id', $user->id)->first();
+            
+                    $timestamp->qualification_date = Carbon::now();
+                    $timestamp->qualification_status = "Qualified";
+                    $timestamp->save(); 
                     $qualifiedCount++; // Increment qualified count
                 } else {
                     $userModel->status = "Unqualified";
+                    $timestamp = UserTimeStamp::where('user_id', $user->id)->first();
+            
+                    $timestamp->qualification_date = Carbon::now();
+                    $timestamp->qualification_status = "Unqualified";
+                    $timestamp->save(); 
                     // No email sending for unqualification
                 }
             } else {
                 if ($userModel->result->weighted_average >= $option->qualified_student_passing_average) {
                     $userModel->status = "Waitlisted";
+                    $timestamp = UserTimeStamp::where('user_id', $user->id)->first();
+            
+                    $timestamp->qualification_date = Carbon::now();
+                    $timestamp->qualification_status = "Waitlisted";
+                    $timestamp->save(); 
                     // No email sending for waitlisting
                 } else {
                     $userModel->status = "Unqualified";
-                    // No email sending for unqualification
+                    $timestamp = UserTimeStamp::where('user_id', $user->id)->first();
+            
+                    $timestamp->qualification_date = Carbon::now();
+                    $timestamp->qualification_status = "Unqualified";
+                    $timestamp->save(); 
                 }
             }
+          
+          
         
             $userModel->save();
         }
@@ -330,7 +426,7 @@ class AdminController extends Controller
                 }
             }
         }
-        return redirect()->route('admin.overview.dean')->with('success', 'Setting updated successfully!');
+        return redirect()->route('dean.admission')->with('success', 'Setting updated successfully!');
     }
     
     function UpdateSettingForAcad(Request $request){    
@@ -340,7 +436,7 @@ class AdminController extends Controller
         $option = Option::first();           
         $option->academic_year_name = $request->acad_year;
         $option->save();
-        return redirect()->route('admin.overview.dean')->with('success', 'setting updated successfully!');
+        return redirect()->route('dean.admission')->with('success', 'setting updated successfully!');
     }
 
 

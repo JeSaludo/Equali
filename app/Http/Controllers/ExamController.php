@@ -6,6 +6,7 @@ use App\Mail\ExamReports;
 use App\Models\Choice;
 use App\Models\Exam;
 use App\Models\ExamQuestion;
+use App\Models\UserTimeStamp;
 use App\Models\ExamResponse;
 use App\Models\Question;
 use App\Models\Result;
@@ -157,10 +158,24 @@ class ExamController extends Controller
                     if ($qualifiedCount < $option->number_of_qualified) {
                         if ($result->weighted_average >= $option->qualified_student_passing_average) {
                             $user->status = "Qualified";
+
+                            $timestamp = UserTimeStamp::where('user_id', $user->id)->first();
+                      
+                            $timestamp->qualification_date = Carbon::now();
+                            $timestamp->qualification_status = "Qualified";
+                            $timestamp->save(); 
+
+
                             //SendQualifyMail::dispatch($user->email, $user->first_name, $user->last_name);
                             Mail::to($user->email)->send(new QualifyMail( $user->first_name,$user->last_name));
                         } else {
                             $user->status = "Unqualified";
+
+                            $timestamp = UserTimeStamp::where('user_id', $user->id)->first();
+                      
+                            $timestamp->qualification_date = Carbon::now();
+                            $timestamp->qualification_status = "Unqualified";
+                            $timestamp->save(); 
                             //SendUnqualifyMail::dispatch($user->email, $user->first_name, $user->last_name);
                             //Mail::to($user->email)->send(new UnqualifyMail( $user->first_name,$user->last_name));
         
@@ -169,17 +184,28 @@ class ExamController extends Controller
 
                         if ($result->weighted_average >= $option->qualified_student_passing_average) {
                             $user->status = "WaitListed";
+
+                            $timestamp = UserTimeStamp::where('user_id', $user->id)->first();
+                      
+                            $timestamp->qualification_date = Carbon::now();
+                            $timestamp->qualification_status = "Waitlisted";
+                            $timestamp->save(); 
                             // SendQualifyMail::dispatch($user->email, $user->first_name, $user->last_name);
                         } else {
                             $user->status = "Unqualified";
+
+                            $timestamp = UserTimeStamp::where('user_id', $user->id)->first();
+                      
+                            $timestamp->qualification_date = Carbon::now();
+                            $timestamp->qualification_status = "Qualified";
+                            $timestamp->save(); 
                             //SendUnqualifyMail::dispatch($user->email, $user->first_name, $user->last_name);
                            // Mail::to($user->email)->send(new UnqualifyMail( $user->first_name,$user->last_name));
         
                         }
-                       
                     }
 
-                    
+                 
                    
                     $user->save();
                     $userAnswers = $request->answer;

@@ -116,76 +116,77 @@
                                 </script>
                             </div>
 
+                            @if (isset($user->studentInfo))
+                                <div class=" px-8 flex justify-between gap-4 my-4">
 
 
-                            <div class=" px-8 flex justify-between gap-4 my-4">
+                                    <div class="relative w-full">
+                                        <label for="rawScore" class="font-poppins text-[14px] text-gray-500 ">
+                                            Raw Score:</label>
+                                        <input type="number" name="rawScore"
+                                            class="border font-poppins border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
+                                            placeholder="Raw Score" required autocomplete="off" min="1"
+                                            value="{{ $user->admissionExam->raw_score }}" max="100"
+                                            oninput="checkRawScore(this.value)">
 
+                                        @error('rawScore')
+                                            <label for="rawScore" class="text-red-500 text-sm">{{ $message }}</label>
+                                        @enderror
 
-                                <div class="relative w-full">
-                                    <label for="rawScore" class="font-poppins text-[14px] text-gray-500 ">
-                                        Raw Score:</label>
-                                    <input type="number" name="rawScore"
-                                        class="border font-poppins border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
-                                        placeholder="Raw Score" required autocomplete="off" min="1"
-                                        value="{{ $user->admissionExam->raw_score }}" max="100"
-                                        oninput="checkRawScore(this.value)">
-
-                                    @error('rawScore')
-                                        <label for="rawScore" class="text-red-500 text-sm">{{ $message }}</label>
-                                    @enderror
-
-                                    <div id="rawScoreWarning" class="text-red-500 text-sm hidden">
-                                        Warning: Raw Score should be between 1 and 100.
+                                        <div id="rawScoreWarning" class="text-red-500 text-sm hidden">
+                                            Warning: Raw Score should be between 1 and 100.
+                                        </div>
                                     </div>
-                                </div>
 
-                                <div class="relative w-full">
-                                    <label for="percentage" class="font-poppins text-[14px] text-gray-500 ">
-                                        Percentage:</label>
-                                    <input type="number" name="percentage"
-                                        class="border font-poppins border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
-                                        placeholder="Percentage" required autocomplete="off" min="1"
-                                        value="{{ $user->admissionExam->percentage }}" max="100"
-                                        oninput="checkPercentage(this.value)">
+                                    <div class="relative w-full">
+                                        <label for="percentage" class="font-poppins text-[14px] text-gray-500 ">
+                                            Percentage:</label>
+                                        <input type="number" name="percentage"
+                                            class="border font-poppins border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
+                                            placeholder="Percentage" required autocomplete="off" min="1"
+                                            value="{{ $user->admissionExam->percentage }}" max="100"
+                                            oninput="checkPercentage(this.value)">
 
-                                    @error('percentage')
-                                        <label for="percentage" class="text-red-500 text-sm">{{ $message }}</label>
-                                    @enderror
+                                        @error('percentage')
+                                            <label for="percentage"
+                                                class="text-red-500 text-sm">{{ $message }}</label>
+                                        @enderror
 
-                                    <div id="percentageWarning" class="text-red-500 text-sm hidden">
-                                        Warning: Percentage should be between 1 and 100.
+                                        <div id="percentageWarning" class="text-red-500 text-sm hidden">
+                                            Warning: Percentage should be between 1 and 100.
+                                        </div>
                                     </div>
+
+                                    <script>
+                                        function checkRawScore(value) {
+                                            // Reset warning
+                                            document.getElementById("rawScoreWarning").classList.add("hidden");
+
+                                            // Check if value is outside the range
+                                            if (value < 1 || value > 100) {
+                                                document.getElementById("rawScoreWarning").classList.remove("hidden");
+                                            }
+                                        }
+
+                                        function checkPercentage(value) {
+                                            // Reset warning
+                                            document.getElementById("percentageWarning").classList.add("hidden");
+
+                                            // Check if value is outside the range
+                                            if (value < 1 || value > 100) {
+                                                document.getElementById("percentageWarning").classList.remove("hidden");
+                                            }
+                                        }
+                                    </script>
+
+
+
+
+
+
+
                                 </div>
-
-                                <script>
-                                    function checkRawScore(value) {
-                                        // Reset warning
-                                        document.getElementById("rawScoreWarning").classList.add("hidden");
-
-                                        // Check if value is outside the range
-                                        if (value < 1 || value > 100) {
-                                            document.getElementById("rawScoreWarning").classList.remove("hidden");
-                                        }
-                                    }
-
-                                    function checkPercentage(value) {
-                                        // Reset warning
-                                        document.getElementById("percentageWarning").classList.add("hidden");
-
-                                        // Check if value is outside the range
-                                        if (value < 1 || value > 100) {
-                                            document.getElementById("percentageWarning").classList.remove("hidden");
-                                        }
-                                    }
-                                </script>
-
-
-
-
-
-
-
-                            </div>
+                            @endif
 
                             <div class="relative mx-8 selection: ">
                                 <label for="admission" class="font-poppins text-[14px] text-gray-500 ">

@@ -21,6 +21,8 @@ use App\Jobs\SendAcceptanceEmail;
 use App\Jobs\SendProctorMail;
 use App\Mail\NotifyProctor;
 use App\Models\AcademicYears;
+use App\Models\UserTimeStamp;
+use Carbon\Carbon;
 class ApplicantController extends Controller
 {
     
@@ -79,10 +81,15 @@ class ApplicantController extends Controller
             $user->contact_number = $request->contactNumber;         
             $user->status = "Pending Schedule";
 
+          
             
             $academicYearId = AcademicYears::where('year_name', $option->academic_year_name)->value('id');
             $user->academic_year_id = $academicYearId;
             $user->save();
+
+            $timestamp = new UserTimeStamp();
+            $timestamp->user_id = $user->id;
+            $timestamp->save(); 
 
             $tempPassword = $user->last_name . $user->first_name . "12345";
             $tempPassword = preg_replace('/\s+/u', '', $tempPassword);
@@ -137,14 +144,25 @@ class ApplicantController extends Controller
             return redirect()->back()->with('error', 'Failed to add the applicant. Please try again .' . $e->getMessage());
         }
        
-      return redirect()->route('dean.admission')->with('success', 'Applicant added successfully!');       
+      return redirect()->route('programhead.admission')->with('success', 'Applicant added successfully!');       
        
     }
     function UpdateApplicantStatus(Request $request , $id){
    
         $user = User::find($id);
+        
         $user->status = $request->status;
         $user->save();
+
+        if($user->status === "Qualified" || $user->status === "Unqualified" || $user->status === "Waitlisted"){
+            $timestamp = UserTimeStamp::where('user_id', $id)->first();
+          
+            $timestamp->qualification_date = Carbon::now();
+            $timestamp->qualification_status = $request->status;;
+            $timestamp->save(); 
+        }
+
+       
         return redirect()->back()->with('success', 'Applicant Status Changed Successfuly');
     }
 
@@ -268,6 +286,15 @@ class ApplicantController extends Controller
         $user = User::where('role', 'Student')->findOrFail($id);
         $user->status = "Unqualified";
         $user->save();      
+
+        
+       
+        $timestamp = UserTimeStamp::where('user_id', $user->id)->first();
+        $timestamp->qualification_date = Carbon::now();
+        $timestamp->qualification_status = "Unqualified";
+        $timestamp->save(); 
+        
+
         return redirect()->back()->with('success', 'Unqualify Applicant successfully!');       
     }
 
@@ -275,6 +302,15 @@ class ApplicantController extends Controller
         $user = User::where('role', 'Student')->findOrFail($id);
         $user->status = "Qualified";
         $user->save();      
+
+        
+       
+        $timestamp = UserTimeStamp::where('user_id', $user->id)->first();
+        $timestamp->qualification_date = Carbon::now();
+        $timestamp->qualification_status = 'Qualified';
+        $timestamp->save(); 
+       
+
         return redirect()->back()->with('success', 'Qualify Applicant successfully!');       
     }
 
@@ -322,6 +358,12 @@ class ApplicantController extends Controller
         $user->status = $request->status;       
         $user->save();
 
+        if($user->status === "Qualified" || $user->status === "Unqualified" || $user->status === "Waitlisted"){
+            $timestamp = UserTimeStamp::where('user_id', $user->id)->first();
+            $timestamp->qualification_date = Carbon::now();
+            $timestamp->qualification_status = $request->status;;
+            $timestamp->save(); 
+        }
         return redirect()->back()->with('success', 'You have successfuly update the waitlisted');
     }
     function UpdateQualifiedApplicant(Request $request, $id){
@@ -349,6 +391,8 @@ class ApplicantController extends Controller
  
     function Schedule(Request $request){
 
+
+     
         $option = Option::first();
     
         // Validate the request
@@ -361,11 +405,11 @@ class ApplicantController extends Controller
     
         // Get the selected user IDs
         $selectedUserIds = $request->input('selectedUsers');
-    
+     
         // Loop through each selected user
         foreach ($selectedUserIds as $userId) {
-            $user = QualifiedStudent::where('user_id', $userId)->with('user')->first();
-    
+            $user = QualifiedStudent::where('user_id', $userId)->first();
+            
             // Check if scheduling limit for the date has been reached
             $scheduleCountForDate = QualifiedStudent::where('exam_schedule_date', $request->date)->count();
             if ($scheduleCountForDate > $option->slot_per_day )  {
@@ -374,6 +418,8 @@ class ApplicantController extends Controller
             }
             else{
             // Update user's schedule
+
+           
             $user->exam_schedule_date = $request->date;
             $user->start_time = $request->start_time;
             $user->location = $request->location;

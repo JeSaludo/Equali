@@ -88,13 +88,8 @@
                 </div>
 
 
-                <form action="{{ route('admin.dashboard.show-schedule-interview') }}" method="POST">
+                <form action="{{ route('admin.dashboard.schedule-applicant') }}" method="POST">
                     @csrf
-
-
-
-
-
 
                     <div class="bg-white mx-4 relative  border   border-[#D9DBE3] shadow-md rounded-lg ">
                         <div class="overflow-x-auto">
@@ -111,7 +106,7 @@
 
                                             </div>
                                         </td>
-                                        <td class="px-6 py-2">ID</td>
+
                                         <td class="px-6 py-2">Applicant Name</td>
                                         <td class="px-6 py-2">Email</td>
                                         <td class="px-6 py-2">Action</td>
@@ -138,12 +133,12 @@
                                                 <td class="px-6 py-3 w-[40px]">
                                                     <div class="flex items-center">
                                                         <input id="default-checkbox" name="selectedUsers[]"
-                                                            type="checkbox" value="{{ $user->id }}"
+                                                            type="checkbox" value="{{ $user->user_id }}"
                                                             class="user-checkbox w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded">
                                                     </div>
                                                 </td>
 
-                                                <td class="px-6 py-3">{{ $user->id }}</td>
+
                                                 <td class="px-6 py-3 ">
                                                     {{ $user->last_name . ', ' . $user->first_name }} </td>
 
