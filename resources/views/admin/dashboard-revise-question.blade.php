@@ -38,15 +38,14 @@
 
 
 
-            @include('layout.sidenav', ['active' => 0])
-            <nav class="ml-[218px] flex justify-end items-center border-b border-[#D9DBE3] h-[60px] bg-white px-4">
+            @include('layouts.sidebar')
 
 
-
-
-                @include('layout.user-popup')
-            </nav>
-            <section class="ml-[218px] main ">
+            @include('layouts.navigation', [
+                'route' => null,
+                'show' => false,
+            ])
+            <section class="sm:ml-64 main">
 
                 @include('layout.popup')
                 <div class="flex justify-between items-center mb-2 mx-4 ">

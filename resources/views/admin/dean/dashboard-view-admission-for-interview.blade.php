@@ -41,14 +41,14 @@
 
             @include('layout.danger-alert')
 
-            @include('layout.sidenav', ['active' => 0])
-            <nav class="ml-[218px] flex justify-between items-center border-b border-[#D9DBE3] h-[60px] bg-white px-4 ">
+            @include('layouts.sidebar')
 
-                @include('admin.partials.search-term', ['route' => 'admin.overview.interview.dean']);
-                @include('layout.user-popup')
-            </nav>
+            @include('layouts.navigation', [
+                'route' => 'dean.admission.interview',
+                'show' => true,
+            ])
 
-            <section class="ml-[218px] main">
+            <section class="sm:ml-64 main">
                 @include('layout.popup')
 
                 @include('admin.dean.card')
@@ -59,7 +59,7 @@
                     'sortColumn' => $sortColumn,
                     'sortOrder' => $sortOrder,
                     'academicYears' => $academicYears,
-                    'route' => 'admin.overview.interview.dean',
+                    'route' => 'dean.admission.interview',
                 ])
 
 

@@ -38,7 +38,9 @@
         <div class="min-h-screen  bg-[#F7F7F7]">
 
             @include('layout.danger-alert')
-            @include('layout.sidenav', ['active' => 0])
+            @include('layouts.sidebar')
+
+
             <nav class="ml-[218px] flex justify-between items-center border-b border-[#D9DBE3] h-[60px] bg-white px-4">
 
                 <diV>
@@ -54,7 +56,7 @@
 
                 @include('layout.user-popup')
             </nav>
-            <section class="ml-[218px] main ">
+            <section class="sm:ml-64 main">
 
                 @include('layout.popup')
 

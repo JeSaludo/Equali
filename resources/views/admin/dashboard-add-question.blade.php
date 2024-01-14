@@ -39,17 +39,13 @@
 
 
 
-            @include('layout.sidenav', ['active' => 0])
-            <nav class="ml-[218px] flex justify-between items-center border-b border-[#D9DBE3] h-[60px] bg-white px-4">
+            @include('layouts.sidebar')
 
-                <h1 class="text-[#26386A] text-[18px]  font-bold font-raleway ">Add Question </h1>
-
-
-
-
-                @include('layout.user-popup')
-            </nav>
-            <section class="ml-[218px] main ">
+            @include('layouts.navigation', [
+                'route' => null,
+                'show' => false,
+            ])
+            <section class="sm:ml-64 main">
 
                 @include('layout.popup')
 

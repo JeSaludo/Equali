@@ -28,7 +28,6 @@
         <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
         <link rel="stylesheet" href="{{ asset('css/main.css') }}">
 
-
     </head>
 
     <body>
@@ -43,34 +42,15 @@
 
             @include('layouts.sidebar')
 
-
             @include('layouts.navigation', [
-                'route' => 'dean.admission.unqualified',
-                'show' => true,
+                'route' => null,
+                'show' => false,
             ])
+
 
 
             <section class="sm:ml-64 main">
                 @include('layout.popup')
-
-                @include('admin.dean.card')
-
-                @include('admin.partials.admission-table', [
-                    'title' => 'List of Unqualified Applicants',
-                    'showAdmissionExam' => false,
-                    'users' => $users,
-                    'sortColumn' => $sortColumn,
-                    'sortOrder' => $sortOrder,
-                    'academicYears' => $academicYears,
-                    'route' => 'dean.admission.unqualified',
-                ])
-
-
-
-                @include('admin.program-head.add-applicant')
-
-
-
 
 
 
@@ -78,7 +58,9 @@
             </section>
 
         </div>
-        <script src="{{ asset('js/add-applicant.js') }}"></script>
+
+
+
     </body>
 
 </html>

@@ -27,7 +27,7 @@
         </script>
         <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
         <link rel="stylesheet" href="{{ asset('css/main.css') }}">
-
+        <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
 
     </head>
 
@@ -41,16 +41,19 @@
 
             @include('layout.danger-alert')
 
-            @include('layout.sidenav', ['active' => 0])
-            <nav class="ml-[218px] flex justify-between items-center border-b border-[#D9DBE3] h-[60px] bg-white px-4 ">
-                @include('admin.partials.search-term', ['route' => 'admin.overview.dean']);
-                @include('layout.user-popup')
-            </nav>
+            @include('layouts.sidebar')
 
-            <section class="ml-[218px] main">
+
+            @include('layouts.navigation', ['route' => 'dean.admission', 'show' => true])
+
+
+
+
+            <section class="sm:ml-64 main">
                 @include('layout.popup')
 
                 @include('admin.dean.card')
+
 
                 @include('admin.partials.admission-table', [
                     'title' => 'List of Applicants',
@@ -59,19 +62,22 @@
                     'sortColumn' => $sortColumn,
                     'sortOrder' => $sortOrder,
                     'academicYears' => $academicYears,
-                    'route' => 'admin.overview.dean',
+                    'route' => 'dean.admission',
                 ])
-
-
                 @include('admin.program-head.add-applicant')
 
 
+                <div class="mt-6 mx-4">
 
 
 
+
+                </div>
 
 
             </section>
+
+
 
         </div>
         <script src="{{ asset('js/add-applicant.js') }}"></script>

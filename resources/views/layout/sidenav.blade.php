@@ -11,7 +11,7 @@
 
         <nav class="relative">
             @if (Auth::user()->role === 'ProgramHead')
-                <a href="{{ route('admin.dashboard.admission') }}"
+                <a href="{{ route('programhead') }}"
                     class="mx-4 bg-gradient-to-r from-[#234BDA] to-[#6499FF] text-white   px-4 py-2 rounded-[15px] flex justify-between items-center  my-2">
                     <div class=""><i class='bx bxs-dashboard '></i> Admission </i></div>
                     <i class='bx bxs-circle {{ $active == 0 ? 'opacity-100' : 'opacity-0' }}'></i>

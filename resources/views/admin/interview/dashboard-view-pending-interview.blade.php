@@ -37,14 +37,16 @@
         <div class="min-h-screen  bg-[#EEF4F6]">
 
 
-            @include('layout.sidenav', ['active' => 0])
+            @include('layouts.sidebar')
+
+
             <nav class="ml-[218px] flex justify-between items-center border-b border-[#D9DBE3] h-[60px] bg-white px-4">
 
                 @include('admin.partials.search-term', ['route' => 'admin.dashboard.pending-interview'])
 
                 @include('layout.user-popup')
             </nav>
-            <section class="ml-[218px] main ">
+            <section class="sm:ml-64 main">
 
                 @include('layout.popup')
                 <div class="flex-row md:flex justify-evenly my-4 ">

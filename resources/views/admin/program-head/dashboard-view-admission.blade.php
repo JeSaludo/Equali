@@ -40,15 +40,16 @@
 
             @include('layout.danger-alert')
 
-            @include('layout.sidenav', ['active' => 0])
-            <nav class="ml-[218px] flex justify-between items-center border-b border-[#D9DBE3] h-[60px] bg-white px-4 ">
-                @include('admin.partials.search-term', [
-                    'route' => 'admin.dashboard.admission',
-                ])
-                @include('layout.user-popup')
-            </nav>
+            @include('layouts.sidebar')
 
-            <section class="ml-[218px] main">
+            @include('layouts.navigation', [
+                'route' => 'programhead.admission',
+                'show' => true,
+            ])
+
+
+
+            <section class="sm:ml-64 main">
                 @include('layout.popup')
 
                 @include('admin.program-head.card')
@@ -61,7 +62,7 @@
                     'sortColumn' => $sortColumn,
                     'sortOrder' => $sortOrder,
                     'academicYears' => $academicYears,
-                    'route' => 'admin.dashboard.admission',
+                    'route' => 'programhead.admission',
                 ])
 
                 @include('admin.program-head.add-applicant')

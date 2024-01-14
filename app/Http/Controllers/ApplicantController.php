@@ -137,10 +137,11 @@ class ApplicantController extends Controller
             return redirect()->back()->with('error', 'Failed to add the applicant. Please try again .' . $e->getMessage());
         }
        
-      return redirect()->route('admin.dashboard.admission')->with('success', 'Applicant added successfully!');       
+      return redirect()->route('dean.admission')->with('success', 'Applicant added successfully!');       
        
     }
     function UpdateApplicantStatus(Request $request , $id){
+   
         $user = User::find($id);
         $user->status = $request->status;
         $user->save();

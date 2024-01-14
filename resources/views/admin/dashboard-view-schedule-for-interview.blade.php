@@ -36,14 +36,14 @@
         <div class="min-h-screen  bg-[#F7F7F7]">
             @include('layout.danger-alert')
 
-            @include('layout.sidenav', ['active' => 0])
-            <nav class="ml-[218px] flex justify-between items-center border-b border-[#D9DBE3] h-[60px] bg-white px-4">
-                @include('admin.partials.search-term', [
-                    'route' => 'admin.dashboard.show-schedule-interview',
-                ])
-                @include('layout.user-popup')
-            </nav>
-            <section class="ml-[218px] main ">
+            @include('layouts.sidebar')
+
+            @include('layouts.navigation', [
+                'route' => 'admin.dashboard.show-schedule-interview',
+                'show' => true,
+            ])
+
+            <section class="sm:ml-64 main">
 
                 @include('layout.popup')
 
@@ -68,11 +68,21 @@
                 <div class="flex justify-between mx-4 mt-4 mb-4">
 
                     <h1 class="text-[#26386A] text-[18px]  font-bold font-raleway ">List of Interviews</h1>
-                    <div class="w-2/12">
-                        @include('admin.partials.select-acad-year', [
-                            'route' => 'admin.dashboard.show-schedule-interview',
-                        ])
+
+                    <div class="flex justify-between items-center gap-2 mx-4 ">
+                        <div class="w-[180px]">
+                            @include('admin.partials.select-acad-year', [
+                                'route' => 'admin.dashboard.show-schedule-interview',
+                            ])
+                        </div>
+                        <div class=" my-2 sm:w-[80px]  ">
+                            <a disabled id="openPopup"
+                                class=" bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2 cursor-pointer text-white ">
+                                Schedule
+                            </a>
+                        </div>
                     </div>
+
 
 
                 </div>
@@ -84,12 +94,6 @@
 
 
 
-                    <div class="mx-4 my-2 ">
-                        <a disabled id="openPopup"
-                            class="w-[120px] border border-[#D9DBE3] hover:cursor-pointer hover:border-slate-400 flex items-center text-[14px] tezt-poppin hover:text-[#384b94] font-poppins text-slate-600 py-1 px-4 rounded-lg">
-                            <i class='bx bx-user-check text-[16px] pr-1'></i></i>Schedule
-                        </a>
-                    </div>
 
 
                     <div class="bg-white mx-4 relative  border   border-[#D9DBE3] shadow-md rounded-lg ">

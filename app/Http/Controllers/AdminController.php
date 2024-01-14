@@ -15,6 +15,22 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 class AdminController extends Controller
 {
+
+    function ShowOverview(){
+        return view('admin.overview');
+    }
+    function ShowRecent(){
+        return view('admin.recent-activity');
+    }
+
+
+
+    function ShowDashboard()
+    {
+        
+        return view('admin.dean.dashboard');
+    }
+
     function ShowAdminOverview()
     {   
         $users = User::where('role','Student')->where('status','Pending Interview')->orWhere('status', 'Pending Schedule');
@@ -196,7 +212,7 @@ class AdminController extends Controller
             
         }
         else if($user->role === "ProgramHead"){
-            return redirect()->route('admin.dashboard.admission');
+            return redirect()->route('dean.admission');
         }
         
     }

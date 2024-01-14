@@ -35,16 +35,14 @@
         <div class="min-h-screen  bg-[#F7F7F7]">
             @include('layout.danger-alert')
 
-            @include('layout.sidenav', ['active' => 0])
-            <nav class="ml-[218px] flex justify-between items-center border-b border-[#D9DBE3] h-[60px] bg-white px-4">
+            @include('layouts.sidebar')
 
-                <h1 class="text-[#26386A] text-[18px]  font-bold font-raleway ">Edit Applicant </h1>
 
-                <div class="my-2">
-
-                    @include('layout.user-popup')
-            </nav>
-            <section class="ml-[218px] main ">
+            @include('layouts.navigation', [
+                'route' => null,
+                'show' => false,
+            ])
+            <section class="sm:ml-64 main">
 
                 @include('layout.popup')
 
@@ -56,7 +54,7 @@
                         <div class="bg-white mx-4 rounded-[12px] mt-4  p-4 border-gray-100 border-2">
                             <div class=" font-poppins text-[22px] flex justify-between font-semibold  text-[#26386A] ">
                                 <h1>Applicant Details </h1>
-                                <a href="{{ route('admin.dashboard.admission') }}"
+                                <a href="{{ route('programhead.admission') }}"
                                     class="text-white bg-blue-600 hover:bg-blue-600 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 ">Back</a>
                             </div>
 

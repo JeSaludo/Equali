@@ -1,6 +1,6 @@
 <div class="grid md:mx-2 grid-col md:grid-cols-3 gap-4 mt-4">
 
-    <a href="{{ route('admin.overview.dean') }}">
+    <a href="{{ route('dean.admission') }}">
         <div class="bg-white mx-4 px-6 relative rounded-lg border  border-[#D9DBE3] shadow-sm ">
             <h1 class="text-[16px] pt-2 font-poppins font-bold text-[#26386A] ">Total Applicants</h1>
 
@@ -18,7 +18,7 @@
 
     </a>
 
-    <a href="{{ route('admin.overview.exam.dean') }}">
+    <a href="{{ route('dean.admission.exam') }}">
         <div class="bg-white mx-4 px-6  relative rounded-lg border  border-[#D9DBE3] shadow-sm ">
             <h1 class="text-[18px] pt-2 font-poppins font-bold text-[#26386A] ">For Qualifying Exam</h1>
 
@@ -35,7 +35,7 @@
         </div>
     </a>
 
-    <a href="{{ route('admin.overview.interview.dean') }}">
+    <a href="{{ route('dean.admission.interview') }}">
         <div class="bg-white mx-4 px-6  relative rounded-lg border  border-[#D9DBE3] shadow-sm ">
             <h1 class="text-[18px] pt-2 font-poppins font-bold text-[#26386A] ">For Interview</h1>
 
@@ -54,7 +54,7 @@
     </a>
 
 
-    <a href="{{ route('admin.overview.qualified.dean') }}">
+    <a href="{{ route('dean.admission.qualified') }}">
         <div class="bg-white mx-4 px-6 relative rounded-lg border  border-[#D9DBE3] shadow-sm ">
             <h1 class="text-[18px] pt-2 font-poppins font-bold text-[#26386A] ">Qualified</h1>
 
@@ -72,7 +72,7 @@
     </a>
 
 
-    <a href="{{ route('admin.overview.waitlisted.dean') }}">
+    <a href="{{ route('dean.admission.waitlisted') }}">
         <div class="bg-white mx-4 px-6 relative rounded-lg border  border-[#D9DBE3] shadow-sm ">
             <h1 class="text-[18px] pt-2 font-poppins font-bold text-[#26386A] ">Waitlisted</h1>
 
@@ -89,7 +89,7 @@
         </div>
     </a>
 
-    <a href="{{ route('admin.overview.unqualified.dean') }}">
+    <a href="{{ route('dean.admission.unqualified') }}">
         <div class="bg-white mx-4 px-6 relative rounded-lg border  border-[#D9DBE3] shadow-sm ">
             <h1 class="text-[18px] pt-2 font-poppins font-bold text-[#26386A] ">Not Qualified</h1>
 

@@ -49,21 +49,24 @@ Route::middleware(['admin', 'check.profile'])->group(function () {
    
     Route::get('dashboard/overview-interview', [AdminController::class, 'ShowAdminOverview'])->name('admin.dashboard.overview.proctor');
 
-    
-    Route::get('dashboard/admission', [ProgramHeadController::class, 'ShowAdmission'])->name('admin.dashboard.admission');   
-    Route::get('dashboard/admission-qualified', [ProgramHeadController::class, 'ShowAdmissionQualified'])->name('admin.dashboard.admission.qualified');   
-    Route::get('dashboard/admission-unqualified', [ProgramHeadController::class, 'ShowAdmissionUnqualified'])->name('admin.dashboard.admission.unqualified');   
-    Route::get('dashboard/admission-waitlisted', [ProgramHeadController::class, 'ShowAdmissionWaitlisted'])->name('admin.dashboard.admission.waitlisted');   
-    Route::get('dashboard/admission-for-interview', [ProgramHeadController::class, 'ShowAdmissionInterview'])->name('admin.dashboard.admission.interview');   
-    Route::get('dashboard/admission-for-exam', [ProgramHeadController::class, 'ShowAdmissionExam'])->name('admin.dashboard.admission.exam');   
+    Route::get('dashboard/overview', [AdminController::class, 'ShowOverview'])->name('dashboard.overview');
+    Route::get('dashboard/recent', [AdminController::class, 'ShowRecent'])->name('dashboard.recent');
+
+
+    Route::get('program-head/admission', [ProgramHeadController::class, 'ShowAdmission'])->name('programhead.admission');   
+    Route::get('program-head/admission-qualified', [ProgramHeadController::class, 'ShowAdmissionQualified'])->name('programhead.admission.qualified');   
+    Route::get('program-head/admission-unqualified', [ProgramHeadController::class, 'ShowAdmissionUnqualified'])->name('programhead.admission.unqualified');   
+    Route::get('program-head/admission-waitlisted', [ProgramHeadController::class, 'ShowAdmissionWaitlisted'])->name('programhead.admission.waitlisted');   
+    Route::get('program-head/admission-for-interview', [ProgramHeadController::class, 'ShowAdmissionInterview'])->name('programhead.admission.interview');   
+    Route::get('program-head/admission-for-exam', [ProgramHeadController::class, 'ShowAdmissionExam'])->name('programhead.admission.exam');   
    
     
-    Route::get('dashboard/overview', [DeanController::class, 'ShowAdmission'])->name('admin.overview.dean');   
-    Route::get('dashboard/overview-qualified', [DeanController::class, 'ShowAdmissionQualified'])->name('admin.overview.qualified.dean');   
-    Route::get('dashboard/overview-unqualified', [DeanController::class, 'ShowAdmissionUnqualified'])->name('admin.overview.unqualified.dean');   
-    Route::get('dashboard/overview-waitlisted', [DeanController::class, 'ShowAdmissionWaitlisted'])->name('admin.overview.waitlisted.dean');   
-    Route::get('dashboard/overview-for-interview', [DeanController::class, 'ShowAdmissionInterview'])->name('admin.overview.interview.dean');   
-    Route::get('dashboard/overview-for-exam', [DeanController::class, 'ShowAdmissionExam'])->name('admin.overview.exam.dean');   
+    Route::get('dean/admission', [DeanController::class, 'ShowAdmission'])->name('dean.admission');   
+    Route::get('dean/admission-qualified', [DeanController::class, 'ShowAdmissionQualified'])->name('dean.admission.qualified');   
+    Route::get('dean/admission-unqualified', [DeanController::class, 'ShowAdmissionUnqualified'])->name('dean.admission.unqualified');   
+    Route::get('dean/admission-waitlisted', [DeanController::class, 'ShowAdmissionWaitlisted'])->name('dean.admission.waitlisted');   
+    Route::get('dean/admission-for-interview', [DeanController::class, 'ShowAdmissionInterview'])->name('dean.admission.interview');   
+    Route::get('dean/admission-for-exam', [DeanController::class, 'ShowAdmissionExam'])->name('dean.admission.exam');   
    
     
     
@@ -228,9 +231,8 @@ Route::middleware(['admin', 'check.profile'])->group(function () {
     Route::post('/dashboard/setting/create-acad-year', [AcademicYearController::class,'CreateAcademicYear'])->name('admin.setting.create-acad')->withoutMiddleware('check.profile');
 
     
-  
 });
-
+   
     Route::put('/dashboard/{id}/update-profile', [AdminController::class,'UpdateProfile'])->name('admin.update.profile')->middleware('admin');
    
     Route::middleware('auth')->group(function(){
@@ -243,4 +245,4 @@ Route::middleware(['admin', 'check.profile'])->group(function () {
    })->name('error.page');
 
 
-   
+   //Route::get('dashboard/overview')

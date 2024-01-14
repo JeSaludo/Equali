@@ -10,16 +10,9 @@
 }
 
 .dropdown.active {
-    height: 180px;
+    height: auto;
 }
 
-/* .dropdown.active:first-child {
-    height: 180px;
-}
-
-.dropdown.active:nth-child(1) {
-    height: 180px;
-} */
 
 .dropdown.active .dropdown-menu {
     opacity: 1;
@@ -30,7 +23,7 @@
 }
 
 .dropdown.active .dropdown-button {
-    background-color: #eaf0ff;
+    /* background-color: #eaf0ff; */
 }
 
 .nav-link {

@@ -36,16 +36,15 @@
         <div class="min-h-screen  bg-[#F7F7F7]">
             @include('layout.danger-alert')
 
-            @include('layout.sidenav', ['active' => 0])
-            <nav class="ml-[218px] flex justify-between items-center border-b border-[#D9DBE3] h-[60px] bg-white px-4">
-                @include('admin.partials.search-term', [
-                    'route' => 'admin.dashboard.show-scheduled-interview',
-                ])
+            @include('layouts.sidebar')
+
+            @include('layouts.navigation', [
+                'route' => 'admin.dashboard.show-scheduled-interview',
+                'show' => true,
+            ])
 
 
-                @include('layout.user-popup')
-            </nav>
-            <section class="ml-[218px] main ">
+            <section class="sm:ml-64 main">
 
                 @include('layout.popup')
                 @include('layout.schedule-interview-count')

@@ -41,13 +41,11 @@
 
             @include('layout.danger-alert')
 
-            @include('layout.sidenav', ['active' => 0])
-            <nav class="ml-[218px] flex justify-between items-center border-b border-[#D9DBE3] h-[60px] bg-white px-4 ">
-                @include('admin.partials.search-term', ['route' => 'admin.overview.waitlisted.dean']);
-                @include('layout.user-popup')
-            </nav>
+            @include('layouts.sidebar')
 
-            <section class="ml-[218px] main">
+            @include('layouts.navigation', ['route' => 'dean.admission.waitlisted', 'show' => true])
+
+            <section class="sm:ml-64 main">
                 @include('layout.popup')
 
                 @include('admin.dean.card')
@@ -59,7 +57,7 @@
                     'sortColumn' => $sortColumn,
                     'sortOrder' => $sortOrder,
                     'academicYears' => $academicYears,
-                    'route' => 'admin.overview.waitlisted.dean',
+                    'route' => 'dean.admission.waitlisted',
                 ])
 
 

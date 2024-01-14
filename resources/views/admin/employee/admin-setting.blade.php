@@ -48,14 +48,16 @@
     <body>
         <div class="min-h-screen  bg-[#F7F7F7]">
             @include('layout.danger-alert')
-            @include('layout.sidenav', ['active' => 0])
+            @include('layouts.sidebar')
+
+
             <nav class="ml-[218px] flex justify-end items-center border-b border-[#D9DBE3] h-[60px] bg-white px-4">
                 @include('layout.user-popup')
 
 
 
             </nav>
-            <section class="ml-[218px] main ">
+            <section class="sm:ml-64 main">
 
                 @include('layout.popup')
                 <div class="mx-auto my-8 text-center w-9/12   bg-white border rounded-lg  border-[#D9DBE3]">

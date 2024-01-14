@@ -37,10 +37,10 @@ class AuthController extends Controller
                 return redirect()->route('home');
             }
             else if(Auth::user()->role === "Dean" ){
-                return redirect()->route('admin.overview.dean');
+                return redirect()->route('dean.admission');
             }
             else if(Auth::user()->role === "ProgramHead"){
-                return redirect()->route('admin.dashboard.admission');
+                return redirect()->route('programhead.admission');
             }
             return redirect()->intended('/')->with('status', 'Login Successfull');
         }
