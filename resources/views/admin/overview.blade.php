@@ -174,96 +174,194 @@
                     </div>
                 </div>
 
-                <div class="mt-4 bg-white border border-gray-300 shadow-md mx-4 p-4 rounded-lg ">
-                    <p class="mx-4 text-lg font-poppins font-bold">Overview</p>
 
 
 
-                    <canvas id="myChart"></canvas>
-                    <div class="my-4 mx-4">
-                        <button
-                            class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5"
-                            onclick="previousMonth()">Previous Month</button>
-                        <button
-                            class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5"
-                            onclick="nextMonth()">Next Month</button>
+
+                <div class="mx-4 mt-6 border border-gray-300 max-w-sm w-full bg-white rounded-lg shadow  p-4 md:p-6">
+                    <div class="flex justify-between border-gray-200 border-b  pb-3">
+                        <dl>
+                            <dt class="text-base font-normal text-gray-500 dark:text-gray-400 pb-1">Admission
+                            </dt>
+
+                        </dl>
+
                     </div>
 
+                    <div class="grid grid-cols-3 py-3">
+                        <dl>
+                            <dt class="text-base font-normal text-gray-500  pb-1">Qualified</dt>
+                            <dd class="leading-none text-xl font-bold text-green-500 ">
+                                {{-- {{ $qualifiedCount->where('status', 'Qualified')->count() }} --}}
+                            </dd>
+                        </dl>
+                        <dl>
+                            <dt class="text-base font-normal text-gray-500  pb-1">Unqualified</dt>
+                            <dd class="leading-none text-xl font-bold text-red-600 ">
+                                {{-- {{ $qualifiedCount->where('status', 'Unqualified')->count() }} --}}
+                            </dd>
+                        </dl>
+                        <dl>
+                            <dt class="text-base font-normal text-gray-500  pb-1">Waitlisted</dt>
+                            <dd class="leading-none text-xl font-bold text-blue-600 ">
+                                {{-- {{ $qualifiedCount->where('status', 'Waitlisted')->count() }} --}}
+                            </dd>
+                        </dl>
+                    </div>
 
-                    <script>
-                        var dateRangeLabels = {!! $dateRange !!};
-                        var qualifiedData = {!! isset($chartData['qualifiedData']) ? $chartData['qualifiedData'] : '[]' !!};
-                        var unqualifiedData = {!! isset($chartData['unqualifiedData']) ? $chartData['unqualifiedData'] : '[]' !!};
-                        var waitlistedData = {!! isset($chartData['waitlistedData']) ? $chartData['waitlistedData'] : '[]' !!};
-
-                        var currentMonthIndex = 0; // Initial index
-
-                        var ctx = document.getElementById('myChart').getContext('2d');
-                        var myChart;
-
-                        function updateChart() {
-                            myChart.data.labels = dateRangeLabels.slice(currentMonthIndex, currentMonthIndex + 4);
-                            myChart.data.datasets[0].data = qualifiedData.slice(currentMonthIndex, currentMonthIndex + 4);
-                            myChart.data.datasets[1].data = unqualifiedData.slice(currentMonthIndex, currentMonthIndex + 4);
-                            myChart.data.datasets[2].data = waitlistedData.slice(currentMonthIndex, currentMonthIndex + 4);
-                            myChart.update();
-                        }
-
-                        function nextMonth() {
-                            currentMonthIndex = (currentMonthIndex + 1) % (dateRangeLabels.length - 3);
-                            updateChart();
-                        }
-
-                        function previousMonth() {
-                            // Ensure the index doesn't go below 0
-                            currentMonthIndex = (currentMonthIndex - 1 + dateRangeLabels.length - 3) % (dateRangeLabels.length - 3);
-                            updateChart();
-                        }
-
-                        myChart = new Chart(ctx, {
-                            type: 'bar',
-                            data: {
-                                labels: dateRangeLabels.slice(currentMonthIndex, currentMonthIndex + 4),
-                                datasets: [{
-                                        label: 'Qualified',
-                                        data: qualifiedData.slice(currentMonthIndex, currentMonthIndex + 4),
-                                        backgroundColor: 'rgba(39, 220, 101, 1)'
-                                    },
-                                    {
-                                        label: 'Unqualified',
-                                        data: unqualifiedData.slice(currentMonthIndex, currentMonthIndex + 4),
-                                        backgroundColor: 'rgba(220, 39, 82, 1)'
-                                    },
-                                    {
-                                        label: 'Waitlisted',
-                                        data: waitlistedData.slice(currentMonthIndex, currentMonthIndex + 4),
-                                        backgroundColor: 'rgba(39, 79, 220, 1)'
-                                    }
-                                ]
-                            },
-                            options: {
-                                scales: {
-                                    y: {
-                                        beginAtZero: true,
-                                        precision: 0,
-
-                                    }
-                                },
-                            }
-                        });
-                    </script>
+                    <div id="bar-chart"></div>
+                    <div
+                        class="grid grid-cols-1 items-center border-gray-200 border-t dark:border-gray-700 justify-between">
+                        <div class="flex justify-between items-center pt-5">
 
 
 
+                            @if (Auth()->user()->role === 'Dean')
+                                <a href="{{ route('dean.admission') }}"
+                                    class="uppercase text-sm font-semibold inline-flex items-center rounded-lg text-blue-600 hover:text-blue-700 dark:hover:text-blue-500  hover:bg-gray-100 dark:hover:bg-gray-700 dark:focus:ring-gray-700 dark:border-gray-700 px-3 py-2">
+                                    Admission Report
+                                    <svg class="w-2.5 h-2.5 ms-1.5 rtl:rotate-180" aria-hidden="true"
+                                        xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
+                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                                            stroke-width="2" d="m1 9 4-4-4-4" />
+                                    </svg>
+                                </a>
+                            @elseif (Auth()->user()->role === 'ProgramHead')
+                                <a href="{{ route('programhead.admission') }}"
+                                    class="uppercase text-sm font-semibold inline-flex items-center rounded-lg text-blue-600 hover:text-blue-700 dark:hover:text-blue-500  hover:bg-gray-100 dark:hover:bg-gray-700 dark:focus:ring-gray-700 dark:border-gray-700 px-3 py-2">
+                                    Admission Report
+                                    <svg class="w-2.5 h-2.5 ms-1.5 rtl:rotate-180" aria-hidden="true"
+                                        xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
+                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                                            stroke-width="2" d="m1 9 4-4-4-4" />
+                                    </svg>
+                                </a>
+                            @endif
 
+                        </div>
+                    </div>
                 </div>
 
 
+                <script>
+                    // ApexCharts options and config
+                    window.addEventListener("load", function() {
+                        var labels = {!! json_encode($labels) !!};
+                        var qualifiedData = {!! json_encode($qualifiedDataset) !!};
+                        var unqualifiedData = {!! json_encode($unqualifiedDataset) !!};
+                        var waitlistedData = {!! json_encode($waitlistedDataset) !!};
+
+                        var options = {
+                            series: [{
+                                    name: "Qualified",
+                                    color: "#31C48D",
+                                    data: qualifiedData,
+                                },
+                                {
+                                    name: "Unqualified",
+                                    color: "#FF0000",
+                                    data: unqualifiedData,
+                                },
+                                {
+                                    name: "Waitlisted",
+                                    color: "#0000FF",
+                                    data: waitlistedData,
+                                },
+                            ],
+                            chart: {
+                                sparkline: {
+                                    enabled: false,
+                                },
+                                type: "bar",
+                                width: "100%",
+                                height: 400,
+                                toolbar: {
+                                    show: false,
+                                }
+                            },
+                            fill: {
+                                opacity: 1,
+                            },
+                            plotOptions: {
+                                bar: {
+                                    horizontal: true,
+                                    columnWidth: "100%",
+                                    borderRadiusApplication: "end",
+                                    borderRadius: 6,
+                                    dataLabels: {
+                                        position: "top",
+                                    },
+                                },
+                            },
+                            legend: {
+                                show: true,
+                                position: "bottom",
+                            },
+                            dataLabels: {
+                                enabled: false,
+                            },
+                            tooltip: {
+                                shared: true,
+                                intersect: false,
+                                formatter: function(value) {
+                                    return "$" + value
+                                }
+                            },
+                            xaxis: {
+                                labels: {
+                                    show: true,
+                                    style: {
+                                        fontFamily: "Inter, sans-serif",
+                                        cssClass: 'text-xs font-normal fill-gray-500 dark:fill-gray-400'
+                                    }
+                                },
+                                categories: labels,
+                                axisTicks: {
+                                    show: false,
+                                },
+                                axisBorder: {
+                                    show: false,
+                                },
+                            },
+                            yaxis: {
+                                labels: {
+                                    show: true,
+                                    style: {
+                                        fontFamily: "Inter, sans-serif",
+                                        cssClass: 'text-xs font-normal fill-gray-500 dark:fill-gray-400'
+                                    }
+                                }
+                            },
+                            grid: {
+                                show: true,
+                                strokeDashArray: 4,
+                                padding: {
+                                    left: 2,
+                                    right: 2,
+                                    top: -20
+                                },
+                            },
+                            fill: {
+                                opacity: 1,
+                            }
+                        }
+
+                        if (document.getElementById("bar-chart") && typeof ApexCharts !== 'undefined') {
+                            const chart = new ApexCharts(document.getElementById("bar-chart"), options);
+                            chart.render();
+                        }
+                    });
+                </script>
+
+
+        </div>
 
 
 
 
-            </section>
+
+
+        </section>
 
         </div>
 

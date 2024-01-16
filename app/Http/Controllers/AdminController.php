@@ -17,76 +17,247 @@ use Illuminate\Support\Facades\Hash;
 class AdminController extends Controller
 {
 
+    // function ShowOverview(Request $request){
+    //     $academicYears = AcademicYears::all();
+      
+    //     $selectedAcademicYear = $request->input('academicYears');
+        
+    //     if(isset($selectedAcademicYear))
+    //     {
+            
+    //     }
+    //     $user = DB::table('users')
+    //     ->select('users.*');
+        
+    //    $user = $user->get();
+
+    //    $option = Option::first();
+
+    //    if($option->academic_year_name != null){
+    //         $selectedDefaultYear = AcademicYears::where('year_name', $option->academic_year_name)->first();
+        
+            
+    //         $dateRange = [];
+
+
+    //         $start = Carbon::parse($selectedDefaultYear->start_date);
+    //         $end = Carbon::parse($selectedDefaultYear->end_date);
+            
+    //         $dateRangeLabels = [];
+    //         while ($start <= $end) {
+    //             $dateRangeLabels[] = $start->format('F Y');
+    //             $start->addMonth();
+    //         }
+            
+    //         $startMonth = $request->input('start_month');
+    //         $endMonth = $request->input('end_month');
+        
+    //         // Additional condition to filter data based on selected date range
+    //         $userTimeStamps = DB::table('user_time_stamps')
+    //             ->select(DB::raw('MONTH(qualification_date) as month'), 'qualification_status', DB::raw('count(*) as count'))
+    //             ->whereBetween('qualification_date', [$startMonth, $endMonth])
+    //             ->groupBy('month', 'qualification_status')
+    //             ->get();
+
+    //     // Separate the data into arrays for each qualification status
+    //     $qualifiedData = [];
+    //     $unqualifiedData = [];
+    //     $waitlistedData = [];
+
+    //     foreach ($userTimeStamps as $row) {
+    //         switch ($row->qualification_status) {
+    //             case 'Qualified':
+    //                 $qualifiedData[$row->month] = $row->count;
+    //                 break;
+    //             case 'Unqualified':
+    //                 $unqualifiedData[$row->month] = $row->count;
+    //                 break;
+    //             case 'Waitlisted':
+    //                 $waitlistedData[$row->month] = $row->count;
+    //                 break;
+    //         }
+    //     }
+
+    //         // Pass the chart data to the view
+    //         $chartData = [
+    //             'qualifiedData' => json_encode(array_values($qualifiedData)),
+    //             'unqualifiedData' => json_encode(array_values($unqualifiedData)),
+    //             'waitlistedData' => json_encode(array_values($waitlistedData)),
+    //         ];
+    //         $dateRange = json_encode($dateRangeLabels);
+    //     // Return the view with all the data
+    //     return view('admin.overview', compact(
+    //     'academicYears',
+    //     'selectedAcademicYear',
+    //     'request',
+    //     'user',
+    //     'selectedDefaultYear',
+    //     'dateRange',
+    //     'chartData'
+    // ));
+            
+    //        // return view('admin.overview', compact('academicYears','selectedAcademicYear','request','user','selectedDefaultYear' ,'dateRange'));
+        
+
+    //     }else{
+    //         return redirect()->back()->with('error', 'Add academic year first to proceed');
+    //     }
+       
+       
+    // }
+   
+    function getMonthsArray($startDate, $endDate)
+    {
+        $start = Carbon::parse($startDate);
+        $end = Carbon::parse($endDate);
+    
+        $months = [];
+    
+        while ($start->lessThanOrEqualTo($end)) {
+            $months[] = $start->format('F Y'); // Format as "Month Year"
+            $start->addMonth(); // Move to the next month
+        }
+    
+        return $months;
+    }
     function ShowOverview(Request $request){
         $academicYears = AcademicYears::all();
       
-        $selectedAcademicYear = $request->input('academicYears');
-        
-        if(isset($selectedAcademicYear))
-        {
-            
-        }
-        $user = DB::table('users')
-        ->select('users.*');
-        
-       $user = $user->get();
-
+        $selectedAcademicYear = $request->input('academicYears');        
+       
+        // $user = DB::table('users')
+        // ->select('users.*');       
+      
        $option = Option::first();
 
        if($option->academic_year_name != null){
             $selectedDefaultYear = AcademicYears::where('year_name', $option->academic_year_name)->first();
-        
-            
-            $dateRange = [];
+           
+            // $startDate = null;
+            // $endDate  = null;
+           
 
+            // if (isset($selectedAcademicYear)) {
+            //     $selected_academicYear = AcademicYears::where('id', $selectedAcademicYear)->first();
+            //     $startDate = $selected_academicYear->start_date;
+            //     $endDate = $selectedDefaultYear->end_date;
+             
+            // }
+            // else{
+               
+            //     $startDate = $selectedDefaultYear->start_date;
+            //     $endDate = $selectedDefaultYear->end_date;
+             
 
-            $start = Carbon::parse($selectedDefaultYear->start_date);
-            $end = Carbon::parse($selectedDefaultYear->end_date);
+            // }
+           
+           
             
-            $dateRangeLabels = [];
-            while ($start <= $end) {
-                $dateRangeLabels[] = $start->format('F Y');
-                $start->addMonth();
-            }
+            // $qualifiedCount = DB::table('users')
+            // ->select('users.*', 'user_time_stamps.qualification_date', 'user_time_stamps.qualification_status')
+            // ->join('user_time_stamps', 'user_time_stamps.user_id', '=', 'users.id')
+            // ->where('users.role', 'Student');
+                        
+
+            
+            
+            
+            
+            // $qualifiedCount = $qualifiedCount->get();
             
           
-            $userTimeStamps = DB::table('user_time_stamps')
-            ->select(DB::raw('MONTH(qualification_date) as month'), 'qualification_status', DB::raw('count(*) as count'))
-            ->groupBy('month', 'qualification_status')
-            ->get();
-
-        // Separate the data into arrays for each qualification status
-        $qualifiedData = [];
-        $unqualifiedData = [];
-        $waitlistedData = [];
-
-        foreach ($userTimeStamps as $row) {
-            switch ($row->qualification_status) {
-                case 'Qualified':
-                    $qualifiedData[$row->month] = $row->count;
-                    break;
-                case 'Unqualified':
-                    $unqualifiedData[$row->month] = $row->count;
-                    break;
-                case 'Waitlisted':
-                    $waitlistedData[$row->month] = $row->count;
-                    break;
-            }
-        }
-
-            // Pass the chart data to the view
-            $chartData = [
-                'qualifiedData' => json_encode(array_values($qualifiedData)),
-                'unqualifiedData' => json_encode(array_values($unqualifiedData)),
-                'waitlistedData' => json_encode(array_values($waitlistedData)),
-            ];
-            $dateRange = json_encode($dateRangeLabels);
-        // Return the view with all the data
-        return view('admin.overview', compact('academicYears', 'selectedAcademicYear', 'request', 'user', 'selectedDefaultYear', 'dateRange', 'chartData'));
-    
-            
-           // return view('admin.overview', compact('academicYears','selectedAcademicYear','request','user','selectedDefaultYear' ,'dateRange'));
+            // $user = $user->get();
         
+           
+            
+           
+            // Now $qualificationData is an associative array where keys are status and month_year, and values are counts
+            $qualifiedData = User::selectRaw('MONTH(updated_at) as month, COUNT(*) as count')
+            ->where('role', 'Student')
+            ->where('status', 'Qualified');
+        
+        if (isset($selectedAcademicYear)) {
+            $qualifiedData->where('users.academic_year_id', $selectedAcademicYear);
+        } else {
+            $qualifiedData->where('users.academic_year_id', $selectedDefaultYear->id);
+        }
+        
+        $qualifiedData = $qualifiedData->groupBy('month')->get();
+        
+        $unqualifiedData = User::selectRaw('MONTH(updated_at) as month, COUNT(*) as count')
+            ->where('role', 'Student')
+            ->where('status', 'Unqualified');
+        
+        if (isset($selectedAcademicYear)) {
+            $unqualifiedData->where('users.academic_year_id', $selectedAcademicYear);
+        } else {
+            $unqualifiedData->where('users.academic_year_id', $selectedDefaultYear->id);
+        }
+        
+        $unqualifiedData = $unqualifiedData->groupBy('month')->get();
+        
+        $waitlistedData = User::selectRaw('MONTH(updated_at) as month, COUNT(*) as count')
+            ->where('role', 'Student')
+            ->where('status', 'Waitlisted');
+        
+        if (isset($selectedAcademicYear)) {
+            $waitlistedData->where('users.academic_year_id', $selectedAcademicYear);
+        } else {
+            $waitlistedData->where('users.academic_year_id', $selectedDefaultYear->id);
+        }
+        
+        $waitlistedData = $waitlistedData->groupBy('month')->get();
+        
+        $labels = [];
+        $qualifiedDataset = [];
+        $unqualifiedDataset = [];
+        $waitlistedDataset = [];
+        
+        foreach ($qualifiedData as $user) {
+            $month = date('F', mktime(0, 0, 0, $user->month, 1));
+            array_push($labels, $month);
+            array_push($qualifiedDataset, $user->count);
+        }
+        
+        foreach ($unqualifiedData as $user) {
+            array_push($unqualifiedDataset, $user->count);
+        }
+        
+        foreach ($waitlistedData as $user) {
+            array_push($waitlistedDataset, $user->count);
+        }
+        
+        $datasets = [
+            [
+                'label' => "Qualified",
+                'data' => $qualifiedDataset,
+            ],
+            [
+                'label' => "Unqualified",
+                'data' => $unqualifiedDataset,
+            ],
+            [
+                'label' => "Waitlisted",
+                'data' => $waitlistedDataset,
+            ],
+        ];
+        
+
+        return view('admin.overview', compact(
+            'academicYears',
+            'selectedAcademicYear',
+            'request',
+            'user',
+            'selectedDefaultYear',
+            'labels',
+            'qualifiedDataset',
+            'unqualifiedDataset',
+            'waitlistedDataset'
+        ));
+
+            
+            
+           
 
         }else{
             return redirect()->back()->with('error', 'Add academic year first to proceed');
@@ -94,6 +265,7 @@ class AdminController extends Controller
        
        
     }
+
 
     function ShowRecent(){
         return view('admin.recent-activity');

@@ -150,7 +150,7 @@
 
                                                 <td class="px-6 py-3 ">
 
-                                                    <a href="{{ route('admin.dashboard.show-scheduler-applicant-individual', $user->id) }}"
+                                                    <a href="{{ route('admin.dashboard.show-scheduler-applicant-individual', $user->user_id) }}"
                                                         class="text-[12px] bg-blue-600 py-1 px-3 hover:bg-blue-900 text-white rounded-md">View</a>
 
 
