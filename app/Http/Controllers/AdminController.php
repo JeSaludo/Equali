@@ -125,8 +125,8 @@ class AdminController extends Controller
       
         $selectedAcademicYear = $request->input('academicYears');        
        
-        // $user = DB::table('users')
-        // ->select('users.*');       
+        $user = DB::table('users')
+        ->select('users.*');       
       
        $option = Option::first();
 
@@ -166,7 +166,7 @@ class AdminController extends Controller
             // $qualifiedCount = $qualifiedCount->get();
             
           
-            // $user = $user->get();
+             $user = $user->get();
         
            
             
@@ -247,7 +247,7 @@ class AdminController extends Controller
             'academicYears',
             'selectedAcademicYear',
             'request',
-           
+            'user',
             'selectedDefaultYear',
             'labels',
             'qualifiedDataset',
