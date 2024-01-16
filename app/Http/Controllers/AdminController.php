@@ -247,7 +247,7 @@ class AdminController extends Controller
             'academicYears',
             'selectedAcademicYear',
             'request',
-            'user',
+           
             'selectedDefaultYear',
             'labels',
             'qualifiedDataset',
