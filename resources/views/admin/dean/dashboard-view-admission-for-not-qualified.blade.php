@@ -63,6 +63,7 @@
                     'sortOrder' => $sortOrder,
                     'academicYears' => $academicYears,
                     'route' => 'dean.admission.unqualified',
+                    'show' => true,
                 ])
 
 

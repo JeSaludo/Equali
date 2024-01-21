@@ -31,38 +31,18 @@
 
 
 
-            {{-- <script>
-                // Function to update the academic year and store it
-                function updateAcademicYear() {
-                    var selectedAcademicYear = document.getElementById("selectAcademicYear").value;
-
-                    // Store the selected academic year in local storage
-                    localStorage.setItem('selectedAcademicYear', selectedAcademicYear);
-
-                    // Update the label
-                    updateSelectedYearLabel();
-                }
-
-                // Function to update the selected year label
-                function updateSelectedYearLabel() {
-                    var storedAcademicYear = localStorage.getItem('selectedAcademicYear');
-                    document.getElementById("selectedYearLabel").innerText = "Selected Year: " + storedAcademicYear;
-                }
-
-                // Retrieve the stored academic year on page load
-                document.addEventListener("DOMContentLoaded", function() {
-                    updateSelectedYearLabel();
-                });
-            </script> --}}
 
 
         </div>
 
+
         @if (Auth::user()->role === 'ProgramHead')
-            <button id="addApplicantBtn"
-                class="bg-[#365EFF] hover:bg-[#384b94] font-poppins text-white py-1 px-4 rounded-lg">
-                <i id="icon" class='bx bx-plus pr-1'></i>Add Applicant
-            </button>
+            @if ($show === true)
+                <button id="addApplicantBtn"
+                    class="bg-[#365EFF] hover:bg-[#384b94] font-poppins text-white py-1 px-4 rounded-lg">
+                    <i id="icon" class='bx bx-plus pr-1'></i>Add Applicant
+                </button>
+            @endif
         @endif
     </div>
 

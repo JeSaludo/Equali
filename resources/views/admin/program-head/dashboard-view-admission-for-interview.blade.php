@@ -61,6 +61,7 @@
                     'sortOrder' => $sortOrder,
                     'academicYears' => $academicYears,
                     'route' => 'programhead.admission.interview',
+                    'show' => true,
                 ])
 
 

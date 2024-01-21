@@ -192,15 +192,12 @@ class AdminController extends Controller
         $waitlistedData->where('academic_year_id', $selectedDefaultYear->id);
     }
     
-    $waitlistedData = $waitlistedData->groupBy(DB::raw('MONTH(updated_at)'))->get();
-    
+    $waitlistedData = $waitlistedData->groupBy(DB::raw('MONTH(updated_at)'))->get();    
         
     $labels = [];
     $qualifiedDataset = [];
     $unqualifiedDataset = [];
-    $waitlistedDataset = [];
-    
-
+    $waitlistedDataset = [];   
     
     for ($month = 1; $month <= 12; $month++) {
         $labels[] = date('F', mktime(0, 0, 0, $month, 1));
@@ -222,8 +219,7 @@ class AdminController extends Controller
     foreach ($waitlistedData as $user) {
         $monthIndex = $user->month - 1;
         $waitlistedDataset[$monthIndex] = $user->count;
-    }
-        
+    }        
         $datasets = [
             [
                 'label' => "Qualified",
@@ -251,30 +247,30 @@ class AdminController extends Controller
        $usersData = User::where('role', 'Student')
     ->where('created_at', '>=', now()->subDays(7));
 
-if (isset($selectedAcademicYear)) {
-    $usersData->where('academic_year_id', $selectedAcademicYear);
-} else {
-    $usersData->where('academic_year_id', $selectedDefaultYear->id);
-}
+    if (isset($selectedAcademicYear)) {
+        $usersData->where('academic_year_id', $selectedAcademicYear);
+    } else {
+        $usersData->where('academic_year_id', $selectedDefaultYear->id);
+    }
 
-$usersData = $usersData->orderBy('created_at')->get();
+    $usersData = $usersData->orderBy('created_at')->get();
 
-// Group users by created_at date and count the number of users for each day
-$usersCountPerDay = $usersData->groupBy(function ($user) {
-    return $user->created_at->format('d F Y');
-})->map(function ($users) {
-    return count($users);
-});
+    // Group users by created_at date and count the number of users for each day
+    $usersCountPerDay = $usersData->groupBy(function ($user) {
+        return $user->created_at->format('d F Y');
+    })->map(function ($users) {
+        return count($users);
+    });
 
-$userDataSet = [
-    'categories' => $usersCountPerDay->keys()->toArray(),
-    'series' => [
-        [
-            'name' => 'New Applicant',
-            'data' => $usersCountPerDay->values()->toArray(),
+    $userDataSet = [
+        'categories' => $usersCountPerDay->keys()->toArray(),
+        'series' => [
+            [
+                'name' => 'New Applicant',
+                'data' => $usersCountPerDay->values()->toArray(),
+            ],
         ],
-    ],
-];
+    ];
 
         return view('admin.overview', compact(
             'academicYears',

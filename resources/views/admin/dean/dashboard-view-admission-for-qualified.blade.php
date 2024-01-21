@@ -59,6 +59,7 @@
                     'sortOrder' => $sortOrder,
                     'academicYears' => $academicYears,
                     'route' => 'dean.admission.qualified',
+                    'show' => true,
                 ])
 
                 @include('admin.program-head.add-applicant')

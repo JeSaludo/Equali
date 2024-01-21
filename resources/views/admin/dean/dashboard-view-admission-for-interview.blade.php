@@ -60,6 +60,7 @@
                     'sortOrder' => $sortOrder,
                     'academicYears' => $academicYears,
                     'route' => 'dean.admission.interview',
+                    'show' => true,
                 ])
 
 

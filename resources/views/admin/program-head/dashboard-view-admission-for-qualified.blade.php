@@ -60,6 +60,7 @@
                     'sortOrder' => $sortOrder,
                     'academicYears' => $academicYears,
                     'route' => 'programhead.admission.qualified',
+                    'show' => true,
                 ])
 
 

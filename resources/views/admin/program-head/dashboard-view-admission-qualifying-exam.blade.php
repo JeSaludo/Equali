@@ -62,6 +62,7 @@
                     'sortOrder' => $sortOrder,
                     'academicYears' => $academicYears,
                     'route' => 'programhead.admission.exam',
+                    'show' => true,
                 ])
 
 

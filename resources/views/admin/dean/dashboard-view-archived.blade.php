@@ -56,13 +56,14 @@
 
 
                 @include('admin.partials.admission-table', [
-                    'title' => 'List of Applicants',
+                    'title' => 'List of Archived Applicants',
                     'showAdmissionExam' => true,
                     'users' => $users,
                     'sortColumn' => $sortColumn,
                     'sortOrder' => $sortOrder,
                     'academicYears' => $academicYears,
                     'route' => 'admin.dashboard.show-archive',
+                    'show' => false,
                 ])
                 @include('admin.program-head.add-applicant')
 

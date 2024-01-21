@@ -63,6 +63,7 @@
                     'sortOrder' => $sortOrder,
                     'academicYears' => $academicYears,
                     'route' => 'programhead.admission',
+                    'show' => true,
                 ])
 
                 @include('admin.program-head.add-applicant')

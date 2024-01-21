@@ -58,6 +58,7 @@
                     'sortOrder' => $sortOrder,
                     'academicYears' => $academicYears,
                     'route' => 'dean.admission.waitlisted',
+                    'show' => true,
                 ])
 
 
