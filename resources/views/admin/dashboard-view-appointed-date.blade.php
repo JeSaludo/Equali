@@ -98,6 +98,7 @@
                                                 <td class="px-6 py-2">Start Time </td>
                                                 <td class="px-6 py-2">Applicant Name</td>
                                                 <td class="px-6 py-2">Email</td>
+                                                <td class="px-6 py-2">Action</td>
 
                                             </tr>
                                         </thead>
@@ -119,6 +120,11 @@
                                                         </td>
                                                         <td class="px-6 py-2">{{ $user->email }}</td>
 
+                                                        <td class="px-6 py-2">
+                                                            <a href="{{ route('admin.dashboard.edit-applicant', $user->user_id) }}"
+                                                                class="text-[12px] bg-blue-600 py-1 px-3 hover:bg-blue-900 text-white rounded-md">View</a>
+
+                                                        </td>
                                                     </tr>
                                                 @endforeach
                                             @endif
