@@ -29,6 +29,58 @@ class DeanController extends Controller
         ];
     }
 
+    function ShowArchivedApplicant(Request $request){
+        $userCounts = $this->getUserCounts($request->input('academicYears'));
+        $sortColumn = $request->input('sort_column', 'id'); 
+        $sortOrder = $request->input('sort_order', 'asc');  
+
+        $academicYears = AcademicYears::all();
+
+        $selectedAcademicYear = $request->input('academicYears');
+        
+
+        $users = DB::table('users')
+        ->select('users.*', 'admission_exams.raw_score', 'admission_exams.percentage')
+        ->join('admission_exams', 'admission_exams.user_id', '=', 'users.id')
+        ->where('users.role', 'Student')->where('users.status', 'Archived');;
+        
+        if(isset($selectedAcademicYear)){
+            $users->where('academic_year_id', $selectedAcademicYear);
+        }
+
+        $searchTerm = $request->input('searchTerm');
+
+        if($searchTerm) {
+            $users->where('users.first_name', 'like', '%' . $searchTerm . '%')
+            ->orWhere('users.last_name', 'like', '%' . $searchTerm . '%')
+            ->orWhere('users.id', 'like', '%' . $searchTerm . '%')  ;         
+   
+        }
+        
+        $users->orderBy($sortColumn, $sortOrder);
+        $users = $users->paginate(10);
+        $users->appends([
+            'academicYears' => $request->academicYears,
+            'sort_column' => $sortColumn,
+            'sort_order' => $sortOrder,
+            'searchTerm' => $searchTerm,
+        ]);
+        return view('admin.dean.dashboard-view-archived', [
+            'totalUserCount' => $userCounts['totalUserCount'],
+            'forInterviewCount' => $userCounts['forInterviewCount'],           
+            'forQualifiedCount' => $userCounts['forQualifiedCount'],
+            'forUnqualifiedCount' => $userCounts['forUnqualifiedCount'],
+            'forWaitListedCount' => $userCounts['forWaitListedCount'],
+            'forQualifyingExamCount' => $userCounts['forQualifyingExamCount'],
+            'academicYears' => $academicYears,
+            'users' => $users,
+            'request' => $request,
+            'sortColumn' => $sortColumn,
+            'sortOrder' => $sortOrder,
+            'searchTerm' => $searchTerm,
+        ]);
+    }
+
     public function ShowAdmission(Request $request){
        
         $userCounts = $this->getUserCounts($request->input('academicYears'));

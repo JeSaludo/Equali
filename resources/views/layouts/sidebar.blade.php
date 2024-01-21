@@ -16,42 +16,12 @@
             <div class="mt-4 mx-4">
                 <p class=" font-raleway text-[12px] font-bold text-[#718297]">NAVIGATION</p>
 
-
-                <div class="dropdown font-poppins" data-dropdown>
-
-                    <a class=" dropdown-button  cursor-pointer hover:bg-[#EAF0FF]  px-4 py-2 rounded-[8px] flex justify-between  items-center  my-2  ' }}"
-                        data-dropdown-button>
-                        <div
-                            class="relative z-10  pointer-events-none {{ request()->routeIs('dashboard.overview') ? 'text-[#234BDA]' : 'text-[#718297]' }}">
-                            <i class='bx bx-home pr-2'></i></i>Dashboard
-                        </div>
-                        <i class='caret-icon pointer-events-none  bx bx-caret-right text-[#718297] '></i>
-                    </a>
-
-                    <div class="  dropdown-menu  pointer-events-none opacity-0 transition-transform ease-in-out delay-75"
-                        data-dropdown-content>
-
-                        <a href="{{ route('dashboard.overview') }}"
-                            class="mx-4 px-4 py-2 hover:cursor-pointer hover:bg-[#EAF0FF] rounded-[8px] flex  items-center text-[#718297] my-2 {{ request()->routeIs('dashboard.overview') ? 'bg-gradient-to-r from-[#234BDA] to-[#6499FF] hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 text-white' : '' }}">
-                            <div class="px-4 whitespace-nowrap">Overview</div>
-                        </a>
-
-                        {{-- <a href="{{ route('admin.test1') }}"
-                            class=" mx-4 px-4 py-2 hover:cursor-pointer hover:bg-[#EAF0FF] rounded-[8px] flex  items-center text-[#718297] my-2 {{ request()->routeIs('admin.test1') ? 'bg-gradient-to-r from-[#234BDA] to-[#6499FF] text-white' : '' }}">
-                            <div class="px-4 whitespace-nowrap">Analytics
-                            </div>
-                        </a> --}}
-
-                        <a href=""
-                            class=" mx-4 px-4 py-2 hover:cursor-pointer hover:bg-[#EAF0FF] rounded-[8px] flex  items-center text-[#718297] my-2 ">
-                            <div class="px-4 whitespace-nowrap">Recent Activity
-                            </div>
-                        </a>
-
-
-
+                <a href="{{ route('dashboard.overview') }}"
+                    class=" px-4 py-2 hover:cursor-pointer hover:bg-[#EAF0FF] rounded-[8px] flex  items-center text-[#718297] my-2 {{ request()->routeIs('dashboard.overview') ? 'bg-gradient-to-r from-[#234BDA] to-[#6499FF] text-white' : '' }}">
+                    <div class=" whitespace-nowrap"> <i class='bx bx-home pr-2'></i></i>Dashboard
                     </div>
-                </div>
+                </a>
+
             </div>
 
 
@@ -71,7 +41,11 @@
                     <div class=" whitespace-nowrap"><i class='bx bxs-user-detail pr-2'></i>Admission
                     </div>
                 </a>
-
+                <a href="{{ route('admin.dashboard.show-archive') }}"
+                    class=" px-4 py-2 hover:cursor-pointer hover:bg-[#EAF0FF] rounded-[8px] flex  items-center text-[#718297] my-2 {{ request()->routeIs('admin.dashboard.show-archive') ? 'bg-gradient-to-r from-[#234BDA] to-[#6499FF] text-white' : '' }}">
+                    <div class=" whitespace-nowrap"><i class='bx bx-box pr-2'></i></i>Archive
+                    </div>
+                </a>
                 <a href="{{ route('admin.dashboard.show-exam') }}"
                     class=" px-4 py-2 hover:cursor-pointer hover:bg-[#EAF0FF] rounded-[8px] flex  items-center text-[#718297] my-2 {{ request()->routeIs('admin.dashboard.show-exam') ? 'bg-gradient-to-r from-[#234BDA] to-[#6499FF] text-white' : '' }}">
                     <div class=" whitespace-nowrap"><i class='bx bx-file pr-2'></i></i>Exam
@@ -187,45 +161,7 @@
     @elseif (Auth::user()->role === 'ProgramHead')
         <div class="mt-6">
 
-            <div class="mt-4 mx-4">
-                <p class=" font-raleway text-[12px] font-bold text-[#718297]">NAVIGATION</p>
 
-
-                <div class="dropdown font-poppins" data-dropdown>
-
-                    <a class=" dropdown-button  cursor-pointer hover:bg-[#EAF0FF]  px-4 py-2 rounded-[8px] flex justify-between  items-center  my-2  ' }}"
-                        data-dropdown-button>
-                        <div
-                            class="relative z-10  pointer-events-none {{ request()->routeIs('dashboard.overview') ? 'text-[#234BDA]' : 'text-[#718297] ?>' }}">
-                            <i class='bx bx-home pr-2'></i></i>Dashboard
-                        </div>
-                        <i class='caret-icon pointer-events-none  bx bx-caret-right text-[#718297] '></i>
-                    </a>
-
-                    <div class="  dropdown-menu  pointer-events-none opacity-0 transition-transform ease-in-out delay-75"
-                        data-dropdown-content>
-
-                        <a href="{{ route('dashboard.overview') }}"
-                            class=" mx-4 px-4 py-2 hover:cursor-pointer hover:bg-[#EAF0FF] rounded-[8px] flex  items-center text-[#718297] my-2 {{ request()->routeIs('dashboard.overview') ? 'bg-gradient-to-r from-[#234BDA] to-[#6499FF] hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 text-white' : '' }}">
-                            <div class="px-4 whitespace-nowrap">Overview</div>
-                        </a>
-
-                        {{-- <a href="{{ route('admin.test1') }}"
-                        class=" mx-4 px-4 py-2 hover:cursor-pointer hover:bg-[#EAF0FF] rounded-[8px] flex  items-center text-[#718297] my-2 {{ request()->routeIs('admin.test1') ? 'bg-gradient-to-r from-[#234BDA] to-[#6499FF] text-white' : '' }}">
-                        <div class="px-4 whitespace-nowrap">Analytics
-                        </div>
-                    </a> --}}
-
-                        <a href=""
-                            class=" mx-4 px-4 py-2 hover:cursor-pointer hover:bg-[#EAF0FF] rounded-[8px] flex  items-center text-[#718297] my-2 ">
-                            <div class="px-4 whitespace-nowrap">Recent Activity
-                            </div>
-                        </a>
-
-
-                    </div>
-                </div>
-            </div>
 
 
             <div class="mt-4 mx-4 ">
@@ -242,6 +178,12 @@
                     {{ request()->routeIs('programhead.admission.waitlisted') ? 'bg-gradient-to-r from-[#234BDA] to-[#6499FF] text-white' : '' }}
                     ">
                     <div class=" whitespace-nowrap"><i class='bx bxs-user-detail pr-2'></i>Admission
+                    </div>
+                </a>
+
+                <a href="{{ route('admin.dashboard.show-archive') }}"
+                    class=" px-4 py-2 hover:cursor-pointer hover:bg-[#EAF0FF] rounded-[8px] flex  items-center text-[#718297] my-2 {{ request()->routeIs('admin.dashboard.show-archive') ? 'bg-gradient-to-r from-[#234BDA] to-[#6499FF] text-white' : '' }}">
+                    <div class=" whitespace-nowrap"><i class='bx bx-box pr-2'></i></i>Archive
                     </div>
                 </a>
 

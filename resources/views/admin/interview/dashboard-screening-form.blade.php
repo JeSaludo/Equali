@@ -50,7 +50,8 @@
                 @include('layout.popup')
                 <form action="{{ route('admin.dashboard.store-interview') }}" method="POST">
                     @csrf
-                    <div class="bg-white mx-4">
+                    <div class="bg-white
+                    mx-4">
                         <h1 class="text-center text-[#26386A] font-poppins font-bold text-2xl my-3 py-4">Screening Form
                         </h1>
                         <div class="flex mx-4 justify-between l gap-2 ">
@@ -392,21 +393,36 @@
             function validateYear(input) {
                 var yearError = document.getElementById('yearError');
                 var yearValue = parseInt(input.value);
+                var currentYear = new Date().getFullYear();
 
-                if (isNaN(yearValue) || input.value.length !== 4 || yearValue < 1900 || yearValue > 2099) {
+                if (isNaN(yearValue) || input.value.length !== 4 || yearValue < 1950 || yearValue > currentYear) {
                     input.setCustomValidity('');
 
                     if (isNaN(yearValue) || input.value.length !== 4) {
                         yearError.textContent = 'Please enter a valid four-digit year.';
-                    } else if (yearValue < 1900) {
-                        yearError.textContent = 'Year cannot be earlier than 1900.';
+                    } else if (yearValue < 2000) {
+                        yearError.textContent = 'Year cannot be earlier than 2000.';
                     } else {
-                        yearError.textContent = 'Year cannot be later than 2099.';
+                        yearError.textContent = 'Year cannot be later than the current year (' + currentYear + ').';
                     }
                 } else {
                     input.setCustomValidity('');
                     yearError.textContent = '';
                 }
+            }
+
+            function validateForm() {
+                var yearInput = document.getElementsByName('year_graduated')[0];
+                validateYear(yearInput);
+
+                // Check if the input is valid before allowing the form to submit
+                if (!yearInput.checkValidity()) {
+                    return false;
+                }
+
+                // Additional form validation logic can be added here if needed
+
+                return true; // Allow the form to submit
             }
         </script>
     </body>

@@ -241,17 +241,17 @@
                                         Exam Score:</label>
                                     <input type="text" name="quali"
                                         class="border font-poppins border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
-                                        placeholder="Email Address" required autocomplete="off" disabled
+                                        placeholder="Qualifying Exam Score" required autocomplete="off" disabled
                                         value="{{ $user->result->scaled_exam_score }}">
 
                                 </div>
 
                                 <div class="relative  w-full">
                                     <label for="weighted_score" class="font-poppins text-[14px] text-gray-500 ">
-                                        Weighted Score:</label>
+                                        Weighted Qualifying Score:</label>
                                     <input type="text" name="weighted_score"
                                         class="border font-poppins border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
-                                        placeholder="Contact Number" required autocomplete="off" disabled
+                                        placeholder="Weighted Score" required autocomplete="off" disabled
                                         value="{{ $user->result->measure_c_score }}">
                                 </div>
 
@@ -264,17 +264,17 @@
                                         Score:</label>
                                     <input type="text" name="interview"
                                         class="border font-poppins border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
-                                        placeholder="Email Address" required autocomplete="off" disabled
+                                        placeholder="Score" required autocomplete="off" disabled
                                         value="{{ $user->studentInfo->average_score }}">
 
                                 </div>
 
                                 <div class="relative  w-full">
                                     <label for="weighted" class="font-poppins text-[14px] text-gray-500 ">
-                                        Weighted Score:</label>
+                                        Weighted Interview Score:</label>
                                     <input type="text" name="weighted"
                                         class="border font-poppins border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
-                                        placeholder="Contact Number" required autocomplete="off" disabled
+                                        placeholder="Weighted Score" required autocomplete="off" disabled
                                         value="{{ $user->result->measure_b_score }}">
                                 </div>
 
@@ -283,21 +283,21 @@
 
                             <div class=" px-8 flex justify-between gap-4 mt-6 ">
                                 <div class="relative   w-full">
-                                    <label for="interview" class="font-poppins text-[14px] text-gray-500 ">Admission
+                                    <label for="admission" class="font-poppins text-[14px] text-gray-500 ">Admission
                                         Score:</label>
-                                    <input type="text" name="interview"
+                                    <input type="text" name="admission"
                                         class="border font-poppins border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
-                                        placeholder="Email Address" required autocomplete="off" disabled
+                                        placeholder="Admission Score" required autocomplete="off" disabled
                                         value="{{ $user->result->admission_score }}">
 
                                 </div>
 
                                 <div class="relative  w-full">
                                     <label for="weighted" class="font-poppins text-[14px] text-gray-500 ">
-                                        Weighted Score:</label>
+                                        Weighted Admission Score:</label>
                                     <input type="text" name="weighted"
                                         class="border font-poppins border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
-                                        placeholder="Contact Number" required autocomplete="off" disabled
+                                        placeholder="Weighted Score" required autocomplete="off" disabled
                                         value="{{ $user->result->measure_a_score }}">
                                 </div>
 
@@ -306,13 +306,12 @@
 
                             <div class=" px-8 flex justify-between gap-4 mt-6 ">
                                 <div class="relative   w-full">
-                                    <label for="interview" class="font-poppins text-[14px] text-gray-500 ">Total
-                                        Weighted
-                                        Average
-                                        :</label>
+                                    <label for="interview" class="font-poppins text-[14px] text-gray-500 ">
+                                        Total Weighted Average :
+                                    </label>
                                     <input type="text" name="interview"
                                         class="border font-poppins border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
-                                        placeholder="Email Address" required autocomplete="off" disabled
+                                        placeholder="Total Weighted Average" required autocomplete="off" disabled
                                         value="{{ $user->result->weighted_average }}">
 
                                 </div>

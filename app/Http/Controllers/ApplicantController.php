@@ -460,6 +460,8 @@ class ApplicantController extends Controller
 
 
     function ScheduleIndividual(Request $request, $id){
+
+       
         $option = Option::first();
     
         
@@ -470,9 +472,11 @@ class ApplicantController extends Controller
             'location' => 'required',
         ]);
         
-      
+        
        
-        $user = QualifiedStudent::with('user')->findOrFail($id);
+        $user = QualifiedStudent::with('user')->where('user_id', $id)->first();
+
+      
         $scheduleCountForDate = QualifiedStudent::where('exam_schedule_date', $request->date)->count();
         if ($scheduleCountForDate > $option->slot_per_day )  {
             // Limit reached, handle accordingly (e.g., show an error message)
@@ -497,6 +501,8 @@ class ApplicantController extends Controller
         foreach ($proctors as $proctor) {
             Mail::to($proctor->email)->send(new NotifyProctor($pendingInterviewCount));
         }
+
+       
         return redirect()->route('admin.dashboard.show-schedule-interview')->with("success",'Schedule added successfuly');
   
     }

@@ -127,105 +127,102 @@ class AdminController extends Controller
        
         $user = DB::table('users')
         ->select('users.*');       
-      
+
+        $users = User::where('role','Student')->orderBy('created_at')->orderBy('updated_at');
+
+        
        $option = Option::first();
 
        if($option->academic_year_name != null){
             $selectedDefaultYear = AcademicYears::where('year_name', $option->academic_year_name)->first();
            
-            // $startDate = null;
-            // $endDate  = null;
-           
-
-            // if (isset($selectedAcademicYear)) {
-            //     $selected_academicYear = AcademicYears::where('id', $selectedAcademicYear)->first();
-            //     $startDate = $selected_academicYear->start_date;
-            //     $endDate = $selectedDefaultYear->end_date;
-             
-            // }
-            // else{
-               
-            //     $startDate = $selectedDefaultYear->start_date;
-            //     $endDate = $selectedDefaultYear->end_date;
-             
-
-            // }
-           
-           
-            
-            // $qualifiedCount = DB::table('users')
-            // ->select('users.*', 'user_time_stamps.qualification_date', 'user_time_stamps.qualification_status')
-            // ->join('user_time_stamps', 'user_time_stamps.user_id', '=', 'users.id')
-            // ->where('users.role', 'Student');
-                        
-
-            
-            
-            
-            
-            // $qualifiedCount = $qualifiedCount->get();
-            
           
-             $user = $user->get();
         
-           
-            
-           
             // Now $qualificationData is an associative array where keys are status and month_year, and values are counts
-            $qualifiedData = User::selectRaw('MONTH(updated_at) as month, COUNT(*) as count')
-            ->where('role', 'Student')
-            ->where('status', 'Qualified');
+         
         
         if (isset($selectedAcademicYear)) {
-            $qualifiedData->where('users.academic_year_id', $selectedAcademicYear);
+            $user->where('users.academic_year_id', $selectedAcademicYear);         
+            $users->where('users.academic_year_id', $selectedAcademicYear);
+            // $qualifiedData->where('users.academic_year_id', $selectedAcademicYear);
         } else {
-            $qualifiedData->where('users.academic_year_id', $selectedDefaultYear->id);
+            $user->where('users.academic_year_id', $selectedDefaultYear->id);
+            $users->where('users.academic_year_id', $selectedDefaultYear->id);
+            // $qualifiedData->where('users.academic_year_id', $selectedDefaultYear->id);
         }
+        $user = $user->get();
+        $users = $users->paginate(10);
+
+        $qualifiedCount = $user->where('role', 'Student')->where('status', 'Qualified')->count();
+        $unqualifiedCount = $user->where('role', 'Student')->where('status', 'Unqualified')->count();
+        $waitlistedCount = $user->where('role', 'Student')->where('status', 'Waitlisted')->count();
+        $totalCount = $user->where('role', 'Student')->count();
+    
+        $qualifiedData = User::selectRaw('MONTH(updated_at) as month, COUNT(*) as count')
+        ->where('role', 'Student')
+        ->where('status', 'Qualified');
+    
+    if (isset($selectedAcademicYear)) {
+        $qualifiedData->where('academic_year_id', $selectedAcademicYear);
+    } else {
+        $qualifiedData->where('academic_year_id', $selectedDefaultYear->id);
+    }
+    
+    $qualifiedData = $qualifiedData->groupBy(DB::raw('MONTH(updated_at)'))->get();
+    
+    $unqualifiedData = User::selectRaw('MONTH(updated_at) as month, COUNT(*) as count')
+        ->where('role', 'Student')
+        ->where('status', 'Unqualified');
+    
+    if (isset($selectedAcademicYear)) {
+        $unqualifiedData->where('academic_year_id', $selectedAcademicYear);
+    } else {
+        $unqualifiedData->where('academic_year_id', $selectedDefaultYear->id);
+    }
+    
+    $unqualifiedData = $unqualifiedData->groupBy(DB::raw('MONTH(updated_at)'))->get();
+    
+    $waitlistedData = User::selectRaw('MONTH(updated_at) as month, COUNT(*) as count')
+        ->where('role', 'Student')
+        ->where('status', 'Waitlisted');
+    
+    if (isset($selectedAcademicYear)) {
+        $waitlistedData->where('academic_year_id', $selectedAcademicYear);
+    } else {
+        $waitlistedData->where('academic_year_id', $selectedDefaultYear->id);
+    }
+    
+    $waitlistedData = $waitlistedData->groupBy(DB::raw('MONTH(updated_at)'))->get();
+    
         
-        $qualifiedData = $qualifiedData->groupBy('month')->get();
-        
-        $unqualifiedData = User::selectRaw('MONTH(updated_at) as month, COUNT(*) as count')
-            ->where('role', 'Student')
-            ->where('status', 'Unqualified');
-        
-        if (isset($selectedAcademicYear)) {
-            $unqualifiedData->where('users.academic_year_id', $selectedAcademicYear);
-        } else {
-            $unqualifiedData->where('users.academic_year_id', $selectedDefaultYear->id);
-        }
-        
-        $unqualifiedData = $unqualifiedData->groupBy('month')->get();
-        
-        $waitlistedData = User::selectRaw('MONTH(updated_at) as month, COUNT(*) as count')
-            ->where('role', 'Student')
-            ->where('status', 'Waitlisted');
-        
-        if (isset($selectedAcademicYear)) {
-            $waitlistedData->where('users.academic_year_id', $selectedAcademicYear);
-        } else {
-            $waitlistedData->where('users.academic_year_id', $selectedDefaultYear->id);
-        }
-        
-        $waitlistedData = $waitlistedData->groupBy('month')->get();
-        
-        $labels = [];
-        $qualifiedDataset = [];
-        $unqualifiedDataset = [];
-        $waitlistedDataset = [];
-        
-        foreach ($qualifiedData as $user) {
-            $month = date('F', mktime(0, 0, 0, $user->month, 1));
-            array_push($labels, $month);
-            array_push($qualifiedDataset, $user->count);
-        }
-        
-        foreach ($unqualifiedData as $user) {
-            array_push($unqualifiedDataset, $user->count);
-        }
-        
-        foreach ($waitlistedData as $user) {
-            array_push($waitlistedDataset, $user->count);
-        }
+    $labels = [];
+    $qualifiedDataset = [];
+    $unqualifiedDataset = [];
+    $waitlistedDataset = [];
+    
+
+    
+    for ($month = 1; $month <= 12; $month++) {
+        $labels[] = date('F', mktime(0, 0, 0, $month, 1));
+        $qualifiedDataset[] = 0;
+        $unqualifiedDataset[] = 0;
+        $waitlistedDataset[] = 0;
+    }
+    
+    foreach ($qualifiedData as $user) {
+        $monthIndex = $user->month - 1;
+        $qualifiedDataset[$monthIndex] = $user->count;
+    }
+    
+    foreach ($unqualifiedData as $user) {
+        $monthIndex = $user->month - 1;
+        $unqualifiedDataset[$monthIndex] = $user->count;
+    }
+    
+    foreach ($waitlistedData as $user) {
+        $monthIndex = $user->month - 1;
+        $waitlistedDataset[$monthIndex] = $user->count;
+    }
         
         $datasets = [
             [
@@ -242,17 +239,60 @@ class AdminController extends Controller
             ],
         ];
         
+        $question = Question::all();
+
+        $questionDataset = [];
+
+       array_push($questionDataset, $question->where("category", "Retain")->count());
+       array_push($questionDataset, $question->where("category", "Revised")->count());        
+       array_push($questionDataset, $question->where("category", "Discard")->count());
+       array_push($questionDataset, $question->where("category", "")->count());
+
+       $usersData = User::where('role', 'Student')
+    ->where('created_at', '>=', now()->subDays(7));
+
+if (isset($selectedAcademicYear)) {
+    $usersData->where('academic_year_id', $selectedAcademicYear);
+} else {
+    $usersData->where('academic_year_id', $selectedDefaultYear->id);
+}
+
+$usersData = $usersData->orderBy('created_at')->get();
+
+// Group users by created_at date and count the number of users for each day
+$usersCountPerDay = $usersData->groupBy(function ($user) {
+    return $user->created_at->format('d F Y');
+})->map(function ($users) {
+    return count($users);
+});
+
+$userDataSet = [
+    'categories' => $usersCountPerDay->keys()->toArray(),
+    'series' => [
+        [
+            'name' => 'New Applicant',
+            'data' => $usersCountPerDay->values()->toArray(),
+        ],
+    ],
+];
 
         return view('admin.overview', compact(
             'academicYears',
             'selectedAcademicYear',
             'request',
             'user',
+            'users',
             'selectedDefaultYear',
             'labels',
             'qualifiedDataset',
             'unqualifiedDataset',
-            'waitlistedDataset'
+            'waitlistedDataset',
+            'qualifiedCount',
+            'unqualifiedCount',
+            'waitlistedCount',
+            'totalCount',
+            'questionDataset',
+            'userDataSet'
         ));
 
             
@@ -267,6 +307,7 @@ class AdminController extends Controller
     }
 
 
+    
     function ShowRecent(){
         return view('admin.recent-activity');
     }

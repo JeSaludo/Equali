@@ -59,7 +59,8 @@ Route::middleware(['admin', 'check.profile'])->group(function () {
     Route::get('program-head/admission-waitlisted', [ProgramHeadController::class, 'ShowAdmissionWaitlisted'])->name('programhead.admission.waitlisted');   
     Route::get('program-head/admission-for-interview', [ProgramHeadController::class, 'ShowAdmissionInterview'])->name('programhead.admission.interview');   
     Route::get('program-head/admission-for-exam', [ProgramHeadController::class, 'ShowAdmissionExam'])->name('programhead.admission.exam');   
-   
+    Route::get('dashboard/archived', [DeanController::class, 'ShowArchivedApplicant'])->name('admin.dashboard.show-archive');   
+  
     
     Route::get('dean/admission', [DeanController::class, 'ShowAdmission'])->name('dean.admission');   
     Route::get('dean/admission-qualified', [DeanController::class, 'ShowAdmissionQualified'])->name('dean.admission.qualified');   
