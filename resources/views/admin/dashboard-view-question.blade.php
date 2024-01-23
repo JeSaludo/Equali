@@ -123,6 +123,14 @@
                                 <tr>
                                     <td class="px-6 py-2">Question No.</td>
                                     <td class="px-6 py-2">Question</td>
+                                    {{-- <a
+                                        href="{{ route('admin.dashboard.view-question', [
+                                            'sort_column' => 'category',
+                                            'sort_order' => $sortColumn == 'category' && $sortOrder == 'asc' ? 'desc' : 'asc',
+                                            
+                                        ]) }}">
+                                        Category <i class='bx bxs-sort-alt'></i>
+                                    </a> --}}
                                     <td class="px-6 py-2">Category</td>
                                     <td class="px-6 py-2">Created Date</td>
                                     <td class="px-6 py-2">Action</td>
@@ -161,6 +169,9 @@
                                                 @elseif ($question->category == 'Retain')
                                                     <span
                                                         class="py-1 px-4 rounded-md bg-blue-200 text-blue-600">Retained</span>
+                                                @elseif ($question->category == 'Revised')
+                                                    <span
+                                                        class="py-1 px-4 rounded-md bg-yellow-200 text-yellow-600">Revised</span>
                                                 @elseif ($question->category == 'Revised')
                                                 @endif
                                             </td>

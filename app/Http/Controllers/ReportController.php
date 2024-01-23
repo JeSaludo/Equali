@@ -543,9 +543,9 @@ class ReportController extends Controller
         if($acad && $acad->year_name != null)
         {
             $year = $acad->year_name;
-            return Excel::download(new ApplicantRankingExport($request->academicYears), 'Qualifying-Rankings-Report-' . $year .'.xlsx');
+            return Excel::download(new ApplicantRankingExport($request->academicYears), 'Qualifying-Rankings-Report-' . $year .'.pdf', \Maatwebsite\Excel\Excel::DOMPDF);
         }
-        return Excel::download(new ApplicantRankingExport($request->academicYears), 'Qualifying-Rankings-Report.xlsx');
+        return Excel::download(new ApplicantRankingExport($request->academicYears), 'Qualifying-Rankings-Report.pdf', \Maatwebsite\Excel\Excel::DOMPDF);
    }
 
     public function ExportQualifyingExam(Request $request) 
@@ -556,9 +556,9 @@ class ReportController extends Controller
         if($acad && $acad->year_name != null)
         {
             $year = $acad->year_name;
-            return Excel::download(new ResultExport($request->academicYears), 'Qualifying-Exam-Report-' . $year .'.xlsx');
+            return Excel::download(new ResultExport($request->academicYears), 'Qualifying-Exam-Report-' . $year .'.pdf', \Maatwebsite\Excel\Excel::DOMPDF);
         }
-        return Excel::download(new ResultExport($request->academicYears), 'Qualifying-Exam-Report-All.xlsx');
+        return Excel::download(new ResultExport($request->academicYears), 'Qualifying-Exam-Report-All.pdf', \Maatwebsite\Excel\Excel::DOMPDF);
     }
 
     public function ExportItemAnalysis(Request $request) 
@@ -574,7 +574,7 @@ class ReportController extends Controller
             $items->where('year', $selectedYear);
         }
         
-        return Excel::download(new ItemAnalysisReport($items, $selectedYear), 'Item-Analysis-Report.xlsx');
+        return Excel::download(new ItemAnalysisReport($items, $selectedYear), 'Item-Analysis-Report.pdf', \Maatwebsite\Excel\Excel::DOMPDF);
     }
    public function ShowUnqualifiedApplicants(Request $request)
    {
@@ -766,9 +766,9 @@ class ReportController extends Controller
         if($acad && $acad->year_name != null)
         {
             $year = $acad->year_name;
-            return Excel::download(new QualifiedApplicantExport($request->academicYears), 'QualifiedApplicant-' . $year .'.xlsx');
+            return Excel::download(new QualifiedApplicantExport($request->academicYears), 'QualifiedApplicant-' . $year .'.pdf', \Maatwebsite\Excel\Excel::DOMPDF);
         }
-        return Excel::download(new QualifiedApplicantExport($request->academicYears), 'QualifiedApplicant.xlsx');
+        return Excel::download(new QualifiedApplicantExport($request->academicYears), 'QualifiedApplicant.pdf', \Maatwebsite\Excel\Excel::DOMPDF);
     }
 
     public function ExportUnqualified(Request $request){
@@ -779,9 +779,9 @@ class ReportController extends Controller
         if($acad && $acad->year_name != null)
         {
             $year = $acad->year_name;
-            return Excel::download(new UnqualifiedApplicantExport($request->academicYears), 'Unqualified-Applicant-' . $year .'.xlsx');
+            return Excel::download(new UnqualifiedApplicantExport($request->academicYears), 'Unqualified-Applicant-' . $year .'.pdf', \Maatwebsite\Excel\Excel::DOMPDF);
         }
-        return Excel::download(new UnqualifiedApplicantExport($request->academicYears), 'UnqualifiedApplicant-All.xlsx');
+        return Excel::download(new UnqualifiedApplicantExport($request->academicYears), 'UnqualifiedApplicant-All.pdf', \Maatwebsite\Excel\Excel::DOMPDF);
     }
 
     public function ExportInterview(Request $request){        
@@ -792,10 +792,10 @@ class ReportController extends Controller
         if($acad && $acad->year_name != null)
         {
             $year = $acad->year_name;
-            return Excel::download(new InterviewExport($request->academicYears), 'Interview-' . $year .'.xlsx');
+            return Excel::download(new InterviewExport($request->academicYears), 'Interview-' . $year .'.pdf', \Maatwebsite\Excel\Excel::DOMPDF);
         }
         
-        return Excel::download(new InterviewExport($request->academicYears), 'Interview-all.xlsx');
+        return Excel::download(new InterviewExport($request->academicYears), 'Interview-all.pdf', \Maatwebsite\Excel\Excel::DOMPDF);
 
         
        }
@@ -807,10 +807,10 @@ class ReportController extends Controller
         if($acad && $acad->year_name != null)
         {
             $year = $acad->year_name;
-            return Excel::download(new QualifiedITExport($request->academicYears), 'QualifidIT-' . $year .'.xlsx');
+            return Excel::download(new QualifiedITExport($request->academicYears), 'QualifidIT-' . $year .'.pdf', \Maatwebsite\Excel\Excel::DOMPDF);
         }
         
-        return Excel::download(new QualifiedITExport($request->academicYears), 'QuaifiedIT-all.xlsx');
+        return Excel::download(new QualifiedITExport($request->academicYears), 'QuaifiedIT-all.pdf', \Maatwebsite\Excel\Excel::DOMPDF);
     }
     public function ExportQualifiedIS(Request $request){
         $acad = AcademicYears::find($request->academicYears);
@@ -819,10 +819,10 @@ class ReportController extends Controller
         if($acad && $acad->year_name != null)
         {
             $year = $acad->year_name;
-            return Excel::download(new QualifiedISExport($request->academicYears), 'QualifidIS-' . $year .'.xlsx');
+            return Excel::download(new QualifiedISExport($request->academicYears), 'QualifidIS-' . $year .'.pdf', \Maatwebsite\Excel\Excel::DOMPDF);
         }
         
-        return Excel::download(new QualifiedISExport($request->academicYears), 'QuaifiedIS-all.xlsx');
+        return Excel::download(new QualifiedISExport($request->academicYears), 'QuaifiedIS-all.pdf', \Maatwebsite\Excel\Excel::DOMPDF);
     }
 
 }
