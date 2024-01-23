@@ -139,7 +139,7 @@ class ExamController extends Controller
                     
                     $result = Result::where('user_id', $request->user_id)->first();
                     $result->total_exam_score = $score;
-                    //$result->scaled_exam_score = $scaledValue;
+                    $result->scaled_exam_score = $scaledValue;
                     $result->measure_c_score = $scaledValue * 0.4;
                     
                     $result->save();
