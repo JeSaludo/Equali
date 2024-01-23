@@ -1,10 +1,10 @@
-<table class="w-full font-poppins border-collapse   text-md text-left rtl:text-right text-gray-500 table-auto ">
+<table class="w-full font-poppins border-collapse text-md text-left rtl:text-right text-gray-500 table-auto">
     <thead class="border-b text-[#26386A] border-[#D9DBE3] font-semibold text-center whitespace-nowrap">
         <tr>
-            <td class="px-6 py-2">Ranking No.</td>
-            <td class="px-6 py-2">Applicant Name</td>
-            <td class="px-6 py-2">Interview Average</td>
-            <td class="px-6 py-2">Date Interviewed</td>
+            <td class="px-6 py-2 whitespace-nowrap">Ranking No.</td>
+            <td class="px-6 py-2 whitespace-nowrap">Applicant Name</td>
+            <td class="px-6 py-2 whitespace-nowrap">Interview Average</td>
+            <td class="px-6 py-2 whitespace-nowrap">Date Interviewed</td>
         </tr>
     </thead>
 
