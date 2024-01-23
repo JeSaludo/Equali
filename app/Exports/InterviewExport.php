@@ -49,7 +49,7 @@ class InterviewExport implements FromView, WithStyles
     public function styles(Worksheet $sheet)
     {
         // Apply styles to the header row (A1:F1)
-        $headerRow = $sheet->getStyle('A1:F1');
+        $headerRow = $sheet->getStyle('A1:D1');
         $headerRow->applyFromArray([
             'font' => [
                 'bold' => true,
@@ -64,12 +64,10 @@ class InterviewExport implements FromView, WithStyles
         // Set margin (column width) for each data column
         $columnWidths = [
             'A' => 8,  // Adjust the width for column A
-            'B' => 20,  // Adjust the width for column B
-            'C' => 20,  // Adjust the width for column C
-            'D' => 18,  // Adjust the width for column D
-            'E' => 22,  // Adjust the width for column E
-            'F' => 15,  // Adjust the width for column F
-            // Add more columns as needed
+            'B' => 25,  // Adjust the width for column B
+            'C' => 25,  // Adjust the width for column C
+            'D' => 25,  // Adjust the width for column D
+           
         ];
 
         foreach ($columnWidths as $column => $width) {
