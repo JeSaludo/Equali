@@ -28,6 +28,7 @@
         <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
         <link rel="stylesheet" href="{{ asset('css/main.css') }}">
         <script src="https://unpkg.com/cropperjs/dist/cropper.min.js"></script>
+        <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 
 
     </head>
@@ -45,16 +46,54 @@
                 'route' => null,
                 'show' => false,
             ])
+
             <section class="sm:ml-64 main">
 
                 @include('layout.popup')
+
+
+
+
+                <div id="popup-modal" tabindex="-1"
+                    class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 bottom-0 left-0 z-50 flex items-center justify-center">
+                    <div class="relative p-4 w-full max-w-md mx-auto max-h-full">
+                        <div class="relative bg-white rounded-lg shadow ">
+                            <button type="button"
+                                class="absolute top-3 end-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center "
+                                data-modal-hide="popup-modal">
+                                <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                                    fill="none" viewBox="0 0 14 14">
+                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                                        stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6" />
+                                </svg>
+                                <span class="sr-only">Close modal</span>
+                            </button>
+                            <div class="p-4 md:p-5 text-center">
+                                <svg class="mx-auto mb-4 text-gray-400 w-12 h-12 " aria-hidden="true"
+                                    xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                                        stroke-width="2" d="M10 11V6m0 8h.01M19 10a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+                                </svg>
+                                <h3 class="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">Cannot add
+                                    duplicate question</h3>
+                                <button data-modal-hide="popup-modal" type="button"
+                                    class="text-white bg-blue-600 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300  font-medium rounded-lg text-sm inline-flex items-center px-5 py-2.5 text-center me-2">
+                                    Ok
+                                </button>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+
+
 
                 <div class="w-full mx-auto mt-4">
                     <form id="form" action="{{ route('admin.dashboard.store-question') }}" method="POST"
                         enctype="multipart/form-data">
                         @csrf
-
-
                         <div class="bg-white mx-4 rounded-[12px]  h-[500] p-4 border-2 border-gray-500 relative">
                             <div class="absolute  z-80 m-2">
 
@@ -139,32 +178,6 @@
                         </div>
 
 
-                        <div id="popup"
-                            class="fixed top-0 left-0 w-full h-full flex justify-center items-center bg-gray-500 bg-opacity-50 z-50 hidden">
-                            <div class="bg-white rounded-lg p-4 w-4/12 relative">
-                                <button type="button" id="back"
-                                    class="absolute top-2 right-2  text-gray-600 px-4 py-2 rounded-md hover:bg-gray-400 transition-colors duration-200 ml-2"><i
-                                        class='bx bx-x'></i>
-                                </button>
-                                <h2 class="text-lg font-semibold mb-8">Upload a Image</h2>
-
-                                <div>
-                                    <div class="h-[200px]">
-                                        <div class="my-4 flex justify-center py-12" id="dragContainer">
-                                            <label for="imageInput"
-                                                class="cursor-pointer bg-[#e4eaf5] text-[#2B6CE6] px-4 py-2 rounded">
-                                                <span class="font-medium">Upload from Device</span>
-                                                <input type="file" name="img" id="imageInput"
-                                                    accept="image/*" class="hidden">
-                                            </label>
-
-                                            <img id="previewImage" class="hidden max-w-full max-h-36 mb-2"
-                                                alt="Preview" draggable="true" ondragstart="handleDragStart(event)">
-                                        </div>
-
-
-                                    </div>
-                                </div>
 
 
                     </form>
@@ -177,13 +190,12 @@
                             </ul>
                         </div>
                     @endif
+
+
                 </div>
-                <div>
-                    <button type="button" id="addQuestionBtn"
-                        class="text-lg font-poppins font-normal w-full h-[50px] rounded-[18px] bg-[#2B6CE6] hover:bg-[#134197] transition-colors duration-200 text-white">
-                        Add Another Question
-                    </button>
-                </div>
+
+
+
 
             </section>
 
@@ -239,6 +251,60 @@
                 document.getElementById("popup").classList.add("hidden");
             });
         </script>
+        <script>
+            $(document).ready(function() {
+                var delayTimer;
+
+                // Listen for changes in the input fields with name "choice_text[]"
+                $('input[name^="choice_text"]').on('input', function() {
+                    clearTimeout(delayTimer);
+
+                    // Get the current input value
+                    var currentInput = $(this).val();
+                    var $currentInputField = $(this);
+
+                    // Set a delay (e.g., 500 milliseconds) before checking for duplicates
+                    delayTimer = setTimeout(function() {
+                        // Flag to track if a duplicate is found
+                        var duplicateFound = false;
+
+                        // Loop through all other input fields
+                        $('input[name^="choice_text"]').not($currentInputField).each(function() {
+                            // Compare with the current input value
+                            if ($(this).val() === currentInput) {
+                                // Set the flag if a duplicate is found
+                                duplicateFound = true;
+                            }
+                        });
+
+                        // If a duplicate is found, remove the current input field
+                        if (duplicateFound) {
+                            showModal();
+                            $currentInputField.val('');
+                        }
+                    }, 500); // Adjust the delay time as needed
+                });
+
+                // Function to show the popup modal
+                function showModal() {
+                    // Show the modal by adding the "hidden" class
+                    $('#popup-modal').removeClass('hidden');
+
+                    // Add event listeners to handle actions on the modal
+                    $('[data-modal-hide="popup-modal"]').on('click', function() {
+                        // Hide the modal
+                        $('#popup-modal').addClass('hidden');
+                    });
+
+                    // Add additional actions as needed for the "Yes, I'm sure" button
+                    // ...
+
+                    // Add additional actions as needed for the "No, cancel" button
+                    // ...
+                }
+            });
+        </script>
+
 
 
 
