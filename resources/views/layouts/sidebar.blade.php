@@ -53,7 +53,7 @@
                 </a>
 
                 <a href="{{ route('admin.dashboard.view-question') }}"
-                    class=" px-4 py-2 hover:cursor-pointer hover:bg-[#EAF0FF] rounded-[8px] flex  items-center text-[#718297] my-2 {{ request()->routeIs('admin.dashboard.view-question') ? 'bg-gradient-to-r from-[#234BDA] to-[#6499FF] text-white' : '' }}">
+                    class="  {{ request()->routeIs('admin.dashboard.view-question') ? 'bg-gradient-to-r from-[#234BDA] to-[#6499FF] text-white' : '' }} first-letter: px-4 py-2 hover:cursor-pointer hover:bg-[#EAF0FF] rounded-[8px] flex  items-center text-[#718297] my-2 {{ request()->routeIs('admin.dashboard.add-question') ? 'bg-gradient-to-r from-[#234BDA] to-[#6499FF] text-white' : '' }}">
                     <div class=" whitespace-nowrap"><i class='bx bxs-hdd pr-2'></i></i>Question Bank
                     </div>
                 </a>
@@ -147,21 +147,19 @@
 
             <a href="{{ route('admin.reports.show.unqualified-applicants') }}"
                 class="mx-4 px-4 py-2 hover:cursor-pointer hover:bg-[#EAF0FF] rounded-[8px] flex  items-center text-[#718297] my-2 {{ request()->routeIs('admin.test1') ? 'bg-gradient-to-r from-[#234BDA] to-[#6499FF] text-white' : '' }}">
-                <div class=" whitespace-nowrap"></i>Qualified
+                <div class=" whitespace-nowrap"></i>Unqualified
                 </div>
             </a>
 
             <a href="{{ route('admin.reports.show.qualified-applicants') }}"
                 class="mx-4 px-4 py-2 hover:cursor-pointer hover:bg-[#EAF0FF] rounded-[8px] flex  items-center text-[#718297] my-2 {{ request()->routeIs('admin.test1') ? 'bg-gradient-to-r from-[#234BDA] to-[#6499FF] text-white' : '' }}">
-                <div class=" whitespace-nowrap"></i>Unqualified
+                <div class=" whitespace-nowrap"></i>Qualified
                 </div>
             </a>
 
         </div>
     @elseif (Auth::user()->role === 'ProgramHead')
         <div class="mt-6">
-
-
 
 
             <div class="mt-4 mx-4 ">

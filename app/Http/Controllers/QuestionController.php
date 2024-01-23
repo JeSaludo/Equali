@@ -83,29 +83,59 @@ class QuestionController extends Controller
       
        return view('admin.dashboard-view-read-only-question', compact('question'));
     }
-    function ShowQuestions(){
+    function ShowQuestions(Request $request){
 
         $questionCount = Question::all();
-        $questions  = Question::paginate(10);
+        
+        $sortColumn = $request->input('sort_column', 'id'); 
+        $sortOrder = $request->input('sort_order', 'asc');  
 
-        return view('admin.dashboard-view-question', compact('questionCount', 'questions'));
+        $questions = Question::orderBy($sortColumn, $sortOrder)->paginate(10);
+        $questions->appends([
+          
+            'sort_column' => $sortColumn,
+            'sort_order' => $sortOrder,
+           
+        ]);
+
+        return view('admin.dashboard-view-question', compact('questionCount', 'questions', 'sortColumn',
+        'sortOrder', 'request'));
 
     }
 
-    function ShowRetainQuestions(){
+    function ShowRetainQuestions(Request $request){
         $questionCount = Question::all(); 
-        $questions  = Question::where('category', 'Retain')->paginate(10);
-
-        return view('admin.dashboard-view-question-retain', compact('questionCount', 'questions'));
+        
+        $questions  = Question::where('category', 'Retain');
+        $sortColumn = $request->input('sort_column', 'id'); 
+        $sortOrder = $request->input('sort_order', 'asc');  
+        $questions = $questions->orderBy($sortColumn, $sortOrder)->paginate(10);
+        $questions->appends([
+          
+            'sort_column' => $sortColumn,
+            'sort_order' => $sortOrder,
+           
+        ]);
+        return view('admin.dashboard-view-question-retain', compact('questionCount', 'questions','sortColumn',
+        'sortOrder', 'request'));
 
     }
 
-    function ShowDiscardQuestions(){
+    function ShowDiscardQuestions(Request $request){
 
         $questionCount = Question::all();
-        $questions  = Question::where('category', 'Discard')->paginate(10);
-
-        return view('admin.dashboard-view-question-discard', compact('questionCount', 'questions'));
+        $questions  = Question::where('category', 'Discard');
+        $sortColumn = $request->input('sort_column', 'id'); 
+        $sortOrder = $request->input('sort_order', 'asc');  
+        $questions = $questions->orderBy($sortColumn, $sortOrder)->paginate(10);
+        $questions->appends([
+          
+            'sort_column' => $sortColumn,
+            'sort_order' => $sortOrder,
+           
+        ]);
+        return view('admin.dashboard-view-question-discard', compact('questionCount', 'questions','sortColumn',
+        'sortOrder', 'request'));
 
     }
 
