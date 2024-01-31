@@ -10,6 +10,8 @@ use App\Models\User;
 class DeanController extends Controller
 {
     private function getUserCounts($academicYearId = null){
+
+      
         $users = User::where('role' , 'Student');
 
         if (isset($academicYearId)) {
@@ -19,18 +21,21 @@ class DeanController extends Controller
         }
         $users = $users->get();
       
+       
         return [
-            "totalUserCount" => User::where('role' , 'Student')->count(),
-            "forInterviewCount" => User::where('status' , 'Pending Interview')->count(),
-            "forQualifiedCount" => User::where('status' , 'Qualified')->count(),
-            "forUnqualifiedCount" => User::where('status' , 'Unqualified')->count(),
-            "forWaitListedCount" => User::where('status' , 'Waitlisted')->count(),
-            "forQualifyingExamCount" => User::where('status' , 'Ready For Exam')->count(),
+            "totalUserCount" => $users->where('role' , 'Student')->count(),
+            "forInterviewCount" => $users->where('status' , 'Pending Interview')->count(),
+            "forQualifiedCount" => $users->where('status' , 'Qualified')->count(),
+            "forUnqualifiedCount" => $users->where('status' , 'Unqualified')->count(),
+            "forWaitListedCount" => $users->where('status' , 'Waitlisted')->count(),
+            "forQualifyingExamCount" => $users->where('status' , 'Ready For Exam')->count(),
         ];
     }
 
     function ShowArchivedApplicant(Request $request){
         $userCounts = $this->getUserCounts($request->input('academicYears'));
+
+      
         $sortColumn = $request->input('sort_column', 'id'); 
         $sortOrder = $request->input('sort_order', 'asc');  
 
@@ -84,6 +89,7 @@ class DeanController extends Controller
     public function ShowAdmission(Request $request){
        
         $userCounts = $this->getUserCounts($request->input('academicYears'));
+        
         $sortColumn = $request->input('sort_column', 'id'); 
         $sortOrder = $request->input('sort_order', 'asc');  
 

@@ -90,7 +90,7 @@
 
 
 
-                <div class="w-full mx-auto mt-4">
+                <div class="questions-container w-full mx-auto mt-4 ">
                     <form id="form" action="{{ route('admin.dashboard.store-question') }}" method="POST"
                         enctype="multipart/form-data">
                         @csrf
@@ -177,7 +177,34 @@
 
                         </div>
 
+                        <div id="popup"
+                            class="fixed top-0 left-0 w-full h-full flex justify-center items-center bg-gray-500 bg-opacity-50 z-50 hidden">
+                            <div class="bg-white rounded-lg p-4 w-4/12 relative">
+                                <button type="button" id="back"
+                                    class="absolute top-2 right-2  text-gray-600 px-4 py-2 rounded-md hover:bg-gray-400 transition-colors duration-200 ml-2"><i
+                                        class='bx bx-x'></i>
+                                </button>
+                                <h2 class="text-lg font-semibold mb-8">Upload a Image</h2>
 
+                                <div>
+                                    <div class="h-[200px]">
+                                        <div class="my-4 flex justify-center py-12" id="dragContainer">
+                                            <label for="imageInput"
+                                                class="cursor-pointer bg-[#e4eaf5] text-[#2B6CE6] px-4 py-2 rounded">
+                                                <span class="font-medium">Upload from Device</span>
+                                                <input type="file" name="img" id="imageInput"
+                                                    accept="image/*" class="hidden">
+                                            </label>
+
+                                            <img id="previewImage" class="hidden max-w-full max-h-36 mb-2"
+                                                alt="Preview" draggable="true" ondragstart="handleDragStart(event)">
+                                        </div>
+
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
 
 
                     </form>

@@ -14,8 +14,8 @@ class QuestionController extends Controller
     function StoreQuestion(Request $request){
 
         $img = $request->img;
-        
 
+       
         $request->validate([
             'question_text' => 'required|unique:questions,question_text',
 

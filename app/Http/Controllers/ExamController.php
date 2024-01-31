@@ -183,7 +183,7 @@ class ExamController extends Controller
                     } else {
 
                         if ($result->weighted_average >= $option->qualified_student_passing_average) {
-                            $user->status = "WaitListed";
+                            $user->status = "Waitlisted";
 
                             $timestamp = UserTimeStamp::where('user_id', $user->id)->first();
                       

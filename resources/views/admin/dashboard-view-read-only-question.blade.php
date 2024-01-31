@@ -41,8 +41,7 @@
                 'route' => null,
                 'show' => false,
             ])
-            <nav class="ml-[218px] flex justify-end items-center border-b border-[#D9DBE3] h-[60px] bg-white px-4">
-
+            <nav class="ml-64 flex justify-end items-center border-b border-[#D9DBE3] h-[60px] bg-white px-4">
                 @include('layout.user-popup')
             </nav>
             <section class="sm:ml-64 main">
